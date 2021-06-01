@@ -1,13 +1,10 @@
-# [DRAFT] WebExtensions Community Group Charter
-
-*This Charter is work in progress. To submit feedback, please [file
-issues](https://github.com/hober/web-extensions/issues).*
+# WebExtensions Community Group Charter
 
 The WebExtensions Community Group defines [WebExtensions](#web-extensions).
 
   * This Charter: https://github.com/hober/web-extensions/blob/main/charter.md
   * Previous Charter: None
-  * Start Date: TBD
+  * Start Date: June 2021
   * Last Modifed: This is the first version.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
