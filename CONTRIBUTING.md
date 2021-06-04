@@ -31,9 +31,9 @@ Once you have a Matrix client set up, you can join our room using the below addr
 
 All WECG-related work currently takes place in the [web-extensions repository][wecg-repo] on GitHub. As a new group, we are currently in the process of establishing our conventions.
 
-## Reporting and Feedback
+## Reporting
 
-Beyond posts needing moderator attention on Discourse, if you experience any violations to the above by any participant, please contact the Chairs or the W3C Head of Communications ([Coralie Mercier][email-coralie]).
+Beyond posts needing moderator attention in chat, if you experience any violations to the Code of Conduct by any participant, please contact the Chairs or the W3C Head of Communications ([Coralie Mercier][email-coralie]).
 
 [email-coralie]: mailto:coralie@w3.org
 [join-chat]: #joining-chat
@@ -44,4 +44,4 @@ Beyond posts needing moderator attention on Discourse, if you experience any vio
 [w3c-pwe-list]: https://lists.w3.org/Archives/Public/public-pwe/
 [wecg-issues]: https://github.com/hober/web-extensions/issues
 [wecg-join]: https://www.w3.org/community/wecg/join
-[wecg-repo]: https://github.com/hober/web-extensions
+[wecg-repo]: https://github.com/w3c/webextensions
