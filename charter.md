@@ -5,7 +5,7 @@ The WebExtensions Community Group defines [WebExtensions](#web-extensions).
   * This Charter: https://github.com/hober/web-extensions/blob/main/charter.md
   * Previous Charter: None
   * Start Date: June 2021
-  * Last Modifed: This is the first version.
+  * Last Modified: This is the first version.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -97,7 +97,7 @@ When choosing extensions to use, users should not have to make tradeoffs
 between functionality and security. We will specify new extension APIs,
 make model changes, and improve permissions to promote good security
 practices &amp; reduce the harm a compromised or malicious browser
-extensions can do. [[Security and privacy are
+extension can do. [[Security and privacy are
 essential](https://w3ctag.github.io/ethical-web-principles/#privacy)]
 
 ### Privacy
@@ -358,7 +358,7 @@ summary or minutes must be posted to GitHub.
 This group will seek to make decisions where there is consensus.
 [Editors](#editors) assess consensus on issues related to their
 [Deliverable](#deliverables). Where consensus isn't clear, or where
-there is sustained, subtantive disagreement with an Editor's decision,
+there is sustained, substantive disagreement with an Editor's decision,
 the Editors and [Chairs](#chairs) may issue a Call for Consensus [CfC]
 to allow multi-day online feedback for a proposed course of action.
 After discussion and due consideration of different opinions, a decision
