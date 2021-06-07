@@ -2,7 +2,7 @@
 
 The WebExtensions Community Group defines [WebExtensions](#web-extensions).
 
-  * This Charter: https://github.com/hober/web-extensions/blob/main/charter.md
+  * This Charter: https://github.com/w3c/webextensions/blob/main/charter.md
   * Previous Charter: None
   * Start Date: June 2021
   * Last Modified: This is the first version.
