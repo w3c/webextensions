@@ -42,6 +42,6 @@ Beyond posts needing moderator attention in chat, if you experience any violatio
 [w3c-code-of-conduct]: https://www.w3.org/Consortium/cepc/
 [w3c-new-account]: https://www.w3.org/accounts/request
 [w3c-pwe-list]: https://lists.w3.org/Archives/Public/public-pwe/
-[wecg-issues]: https://github.com/hober/web-extensions/issues
+[wecg-issues]: https://github.com/w3c/web-extensions/issues
 [wecg-join]: https://www.w3.org/community/webextensions/join
 [wecg-repo]: https://github.com/w3c/webextensions
