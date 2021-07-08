@@ -1,0 +1,11 @@
+<pre class='metadata'>
+Title: Web Extensions Draft
+Shortname: webextensions
+Level: 1
+Status: w3c/ED
+Group: w3c/webextensions
+URL: https://github.com/w3c/webextensions
+Editor: Mukul Purohit, Microsoft Corporation https://www.microsoft.com, mpurohit@microsoft.com
+Editor: Tomislav Jovanovic, Mozilla, https://www.mozilla.org/, tjovanovic@mozilla.com
+Abstract: [Placeholder] Abstract.
+</pre>
