@@ -14,10 +14,11 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-* 2021-07-22 at 11 PM PDT = https://everytimezone.com/?t=60f8b500,708
 * 2021-08-05 at 8 AM PDT = https://everytimezone.com/?t=610b2a00,384
+* 2021-08-19 at 11 PM PDT = https://everytimezone.com/?t=611d9f00,708
 
 ## Past meetings
 
+* 2021-07-22 ([minutes](2021-07-22-wecg.md))
 * 2021-07-08 ([minutes](2021-07-08-wecg.md))
 * 2021-06-24 ([minutes](2021-06-24-wecg.md))
