@@ -8,4 +8,182 @@ URL: https://w3c.github.io/webextensions
 Editor: Mukul Purohit, Microsoft Corporation https://www.microsoft.com, mpurohit@microsoft.com
 Editor: Tomislav Jovanovic, Mozilla https://www.mozilla.org/, tjovanovic@mozilla.com
 Abstract: [Placeholder] Abstract.
+Markup Shorthands: markdown yes
 </pre>
+
+# Manifest
+
+A WebExtension must have a manifest file at its root directory.
+
+## Manifest file
+
+A manifest file is a [[!JSON]] document named `manifest.json`. Malformed JSON files are not supported.
+
+## Manifest keys
+
+If manifest keys that are not defined in this specification are specified, implementors must ignore those keys.
+
+If manifest keys that are defined in this specification are specified with a different JSON type than defined in this specification, implementors must ignore those keys.
+
+The following keys must be considered valid:
+
+* <a href="#key-manifest_version">`manifest_version`</a>: required.
+* <a href="#key-name">`name`</a>: required.
+* <a href="#key-version">`version`</a>: required.
+* <a href="#key-default_locale">`default_locale`</a>: required under some conditions.
+* <a href="#key-action">`action`</a>: optional
+* <a href="#key-author">`author`</a>: optional
+* <a href="#key-background">`background`</a>: optional
+* <a href="#key-browser_action">`browser_action`</a>: optional
+* <a href="#key-chrome_settings_overrides">`chrome_settings_overrides`</a>: optional
+* <a href="#key-chrome_url_overrides">`chrome_url_overrides`</a>: optional
+* <a href="#key-commands">`commands`</a>: optional
+* <a href="#key-content_scripts">`content_scripts`</a>: optional
+* <a href="#key-content_security_policy">`content_security_policy`</a>: optional
+* <a href="#key-description">`description`</a>: optional
+* <a href="#key-developer">`developer`</a>: optional
+* <a href="#key-devtools_page">`devtools_page`</a>: optional
+* <a href="#key-externally_connectable">`externally_connectable`</a>: optional
+* <a href="#key-homepage_url">`homepage_url`</a>: optional
+* <a href="#key-icons">`icons`</a>: optional
+* <a href="#key-incognito">`incognito`</a>: optional
+* <a href="#key-omnibox">`omnibox`</a>: optional
+* <a href="#key-optional_permissions">`optional_permissions`</a>: optional
+* <a href="#key-options_page">`options_page`</a>: optional
+* <a href="#key-options_ui">`options_ui`</a>: optional
+* <a href="#key-page_action">`page_action`</a>: optional
+* <a href="#key-permissions">`permissions`</a>: optional
+* <a href="#key-short_name">`short_name`</a>: optional
+* <a href="#key-storage">`storage`</a>: optional
+* <a href="#key-theme">`theme`</a>: optional
+* <a href="#key-user_scripts">`user_scripts`</a>: optional
+* <a href="#key-version_name">`version_name`</a>: optional
+* <a href="#key-web_accessible_resources">`web_accessible_resources`</a>: optional
+
+### Key `manifest_version`
+
+This key must be present.
+
+### Key `name`
+
+This key must be present.
+
+### Key `version`
+
+This key must be present.
+
+### Key `default_locale`
+
+This key must be present if the `_locales` subdirectory is present, must be absent otherwise.
+
+### Key `action`
+
+This key may be present.
+
+### Key `author`
+
+This key may be present.
+
+### Key `background`
+
+This key may be present.
+
+### Key `browser_action`
+
+This key may be present.
+
+### Key `chrome_settings_overrides`
+
+This key may be present.
+
+### Key `chrome_url_overrides`
+
+This key may be present.
+
+### Key `commands`
+
+This key may be present.
+
+### Key `content_scripts`
+
+This key may be present.
+
+### Key `content_security_policy`
+
+This key may be present.
+
+### Key `description`
+
+This key may be present.
+
+### Key `developer`
+
+This key may be present.
+
+### Key `devtools_page`
+
+This key may be present.
+
+### Key `externally_connectable`
+
+This key may be present.
+
+### Key `homepage_url`
+
+This key may be present.
+
+### Key `icons`
+
+This key may be present.
+
+### Key `incognito`
+
+This key may be present.
+
+### Key `omnibox`
+
+This key may be present.
+
+### Key `optional_permissions`
+
+This key may be present.
+
+### Key `options_page`
+
+This key may be present.
+
+### Key `options_ui`
+
+This key may be present.
+
+### Key `page_action`
+
+This key may be present.
+
+### Key `permissions`
+
+This key may be present.
+
+### Key `short_name`
+
+This key may be present.
+
+### Key `storage`
+
+This key may be present.
+
+### Key `theme`
+
+This key may be present.
+
+### Key `user_scripts`
+
+This key may be present.
+
+### Key `version_name`
+
+This key may be present.
+
+### Key `web_accessible_resources`
+
+This key may be present.
