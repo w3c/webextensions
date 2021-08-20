@@ -66,7 +66,9 @@ This key must be present.
 
 ### Key `name`
 
-This key must be present.
+Name of the extension used in the browser’s user interface. This should be the full name used to identify the extension. See [[#key-short_name]] about declaring a shorter name for some user interface contexts.
+
+This key must be present. This property can be localized.
 
 ### Key `version`
 
@@ -166,7 +168,9 @@ This key may be present.
 
 ### Key `short_name`
 
-This key may be present.
+Short name of the extension used in the browser’s user interface when the [name](#key-name) is too long. If `short_name` is not included, `name` will be used and may be truncated by the browser if needed.
+
+This key may be present. This property can be localized.
 
 ### Key `storage`
 
