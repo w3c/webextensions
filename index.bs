@@ -54,6 +54,7 @@ The following keys must be considered valid:
 * <a href="#key-page_action">`page_action`</a>: optional
 * <a href="#key-permissions">`permissions`</a>: optional
 * <a href="#key-short_name">`short_name`</a>: optional
+* <a href="#key-sidebar_action">`sidebar_action`</a>: optional
 * <a href="#key-storage">`storage`</a>: optional
 * <a href="#key-theme">`theme`</a>: optional
 * <a href="#key-user_scripts">`user_scripts`</a>: optional
@@ -165,6 +166,10 @@ This key may be present.
 This key may be present.
 
 ### Key `short_name`
+
+This key may be present.
+
+### Key `sidebar_action`
 
 This key may be present.
 
