@@ -168,7 +168,7 @@ This key may be present.
 
 ### Key `short_name`
 
-Short name of the extension used in the browser’s user interface when the [name](#key-name) is too long. If `short_name` is not included, `name` will be used and may be truncated by the browser if needed.
+The short name of the extension. This value should be used in contexts where [`name`](#key-name) is too long to use in full. If `short_name` is not provided, manifest consumers should use a truncated version of `name`.
 
 This key may be present. This property can be localized.
 
