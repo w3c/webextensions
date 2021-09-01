@@ -67,7 +67,7 @@ This key must be present.
 
 ### Key `name`
 
-Name of the extension used in the browser’s user interface. This should be the full name used to identify the extension. See also [`short_name` key](#key-short_name).
+Name of the extension used in the browser’s user interface. This should be the full name used to identify the extension. See also <a href="#key-short_name">`short_name`</a>.
 
 This key must be present. This property can be localized.
 
@@ -169,7 +169,7 @@ This key may be present.
 
 ### Key `short_name`
 
-The short name of the extension. This value should be used in contexts where [`name`](#key-name) is too long to use in full. If `short_name` is not provided, manifest consumers should use a truncated version of `name`.
+The short name of the extension. This value should be used in contexts where <a href="#key-name">`name`</a> is too long to use in full. If `short_name` is not provided, manifest consumers should use a truncated version of `name`.
 
 This key may be present. This property can be localized.
 
