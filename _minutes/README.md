@@ -11,11 +11,12 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-* 2021-10-14 at 8 AM PDT = https://everytimezone.com/?t=61677300,384
 * 2021-10-28 at 8 AM PDT = https://everytimezone.com/?t=6179e800,384
+* 2021-11-11 at 8 AM PDT = https://everytimezone.com/?t=618c5d00,384
 
 ## Past meetings
 
+* 2021-10-14 ([minutes](2021-10-14-wecg.md))
 * 2021-09-30 ([minutes](2021-09-30-wecg.md))
 * 2021-09-16 ([minutes](2021-09-16-wecg.md))
 * 2021-09-02 ([minutes](2021-09-02-wecg.md))
