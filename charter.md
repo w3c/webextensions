@@ -1,6 +1,6 @@
 # WebExtensions Community Group Charter
 
-The WebExtensions Community Group defines [WebExtensions](#web-extensions).
+The WebExtensions Community Group defines [WebExtensions](#webextensions).
 
   * This Charter: https://github.com/w3c/webextensions/blob/main/charter.md
   * Previous Charter: None
