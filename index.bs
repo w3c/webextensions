@@ -11,6 +11,24 @@ Abstract: [Placeholder] Abstract.
 Markup Shorthands: markdown yes
 </pre>
 
+# File structure
+
+Once unpacked from the distribution format, a WebExtension is a directory containing a number of files.
+
+Note: In some operating systems, filenames are case insensitive. This can lead to naming collisions.
+
+## manifest.json
+
+A <a href="#manifest">Manifest</a> file.
+
+## _locales subdirectory
+
+An optional directory containing strings as defined in <a href="#localization">localization</a>.
+
+## Other files
+
+An extension may also contain other files, such as those referenced in the <a href="#key-content_scripts">content_scripts</a> and <a href="#key-background">background</a> part of the <a href="#manifest">Manifest</a>.
+
 # Manifest
 
 A WebExtension must have a manifest file at its root directory.
@@ -196,3 +214,9 @@ This key may be present.
 ### Key `web_accessible_resources`
 
 This key may be present.
+
+# Localization
+
+The _locales subdirectory of a WebExtension can contain strings for internationalization purposes.
+
+Issue(62): Specify localization handling.
