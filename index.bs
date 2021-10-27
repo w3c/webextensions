@@ -63,7 +63,6 @@ The following keys must be considered valid:
 * <a href="#key-homepage_url">`homepage_url`</a>: optional
 * <a href="#key-icons">`icons`</a>: optional
 * <a href="#key-optional_permissions">`optional_permissions`</a>: optional
-* <a href="#key-options_page">`options_page`</a>: optional
 * <a href="#key-options_ui">`options_ui`</a>: optional
 * <a href="#key-page_action">`page_action`</a>: optional
 * <a href="#key-permissions">`permissions`</a>: optional
@@ -146,10 +145,6 @@ This key may be present.
 This key may be present.
 
 ### Key `optional_permissions`
-
-This key may be present.
-
-### Key `options_page`
 
 This key may be present.
 
