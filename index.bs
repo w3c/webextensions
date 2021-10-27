@@ -54,17 +54,11 @@ The following keys must be considered valid:
 * <a href="#key-content_scripts">`content_scripts`</a>: optional
 * <a href="#key-content_security_policy">`content_security_policy`</a>: optional
 * <a href="#key-description">`description`</a>: optional
-* <a href="#key-devtools_page">`devtools_page`</a>: optional
-* <a href="#key-externally_connectable">`externally_connectable`</a>: optional
 * <a href="#key-icons">`icons`</a>: optional
 * <a href="#key-optional_permissions">`optional_permissions`</a>: optional
 * <a href="#key-options_ui">`options_ui`</a>: optional
 * <a href="#key-permissions">`permissions`</a>: optional
 * <a href="#key-short_name">`short_name`</a>: optional
-* <a href="#key-storage">`storage`</a>: optional
-* <a href="#key-theme">`theme`</a>: optional
-* <a href="#key-user_scripts">`user_scripts`</a>: optional
-* <a href="#key-version_name">`version_name`</a>: optional
 * <a href="#key-web_accessible_resources">`web_accessible_resources`</a>: optional
 
 ### Key `manifest_version`
@@ -105,14 +99,6 @@ This key may be present.
 
 This key may be present.
 
-### Key `devtools_page`
-
-This key may be present.
-
-### Key `externally_connectable`
-
-This key may be present.
-
 ### Key `icons`
 
 This key may be present.
@@ -134,22 +120,6 @@ This key may be present.
 The short name of the extension. This value should be used in contexts where <a href="#key-name">`name`</a> is too long to use in full. If `short_name` is not provided, manifest consumers should use a truncated version of `name`.
 
 This key may be present. This property can be localized.
-
-### Key `storage`
-
-This key may be present.
-
-### Key `theme`
-
-This key may be present.
-
-### Key `user_scripts`
-
-This key may be present.
-
-### Key `version_name`
-
-This key may be present.
 
 ### Key `web_accessible_resources`
 
