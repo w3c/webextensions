@@ -49,9 +49,7 @@ The following keys must be considered valid:
 * <a href="#key-name">`name`</a>: required.
 * <a href="#key-version">`version`</a>: required.
 * <a href="#key-default_locale">`default_locale`</a>: required under some conditions.
-* <a href="#key-action">`action`</a>: optional
 * <a href="#key-background">`background`</a>: optional
-* <a href="#key-browser_action">`browser_action`</a>: optional
 * <a href="#key-commands">`commands`</a>: optional
 * <a href="#key-content_scripts">`content_scripts`</a>: optional
 * <a href="#key-content_security_policy">`content_security_policy`</a>: optional
@@ -61,10 +59,8 @@ The following keys must be considered valid:
 * <a href="#key-icons">`icons`</a>: optional
 * <a href="#key-optional_permissions">`optional_permissions`</a>: optional
 * <a href="#key-options_ui">`options_ui`</a>: optional
-* <a href="#key-page_action">`page_action`</a>: optional
 * <a href="#key-permissions">`permissions`</a>: optional
 * <a href="#key-short_name">`short_name`</a>: optional
-* <a href="#key-sidebar_action">`sidebar_action`</a>: optional
 * <a href="#key-storage">`storage`</a>: optional
 * <a href="#key-theme">`theme`</a>: optional
 * <a href="#key-user_scripts">`user_scripts`</a>: optional
@@ -89,15 +85,7 @@ This key must be present.
 
 This key must be present if the `_locales` subdirectory is present, must be absent otherwise.
 
-### Key `action`
-
-This key may be present.
-
 ### Key `background`
-
-This key may be present.
-
-### Key `browser_action`
 
 This key may be present.
 
@@ -137,10 +125,6 @@ This key may be present.
 
 This key may be present.
 
-### Key `page_action`
-
-This key may be present.
-
 ### Key `permissions`
 
 This key may be present.
@@ -150,10 +134,6 @@ This key may be present.
 The short name of the extension. This value should be used in contexts where <a href="#key-name">`name`</a> is too long to use in full. If `short_name` is not provided, manifest consumers should use a truncated version of `name`.
 
 This key may be present. This property can be localized.
-
-### Key `sidebar_action`
-
-This key may be present.
 
 ### Key `storage`
 
