@@ -53,8 +53,6 @@ The following keys must be considered valid:
 * <a href="#key-author">`author`</a>: optional
 * <a href="#key-background">`background`</a>: optional
 * <a href="#key-browser_action">`browser_action`</a>: optional
-* <a href="#key-chrome_settings_overrides">`chrome_settings_overrides`</a>: optional
-* <a href="#key-chrome_url_overrides">`chrome_url_overrides`</a>: optional
 * <a href="#key-commands">`commands`</a>: optional
 * <a href="#key-content_scripts">`content_scripts`</a>: optional
 * <a href="#key-content_security_policy">`content_security_policy`</a>: optional
@@ -64,8 +62,6 @@ The following keys must be considered valid:
 * <a href="#key-externally_connectable">`externally_connectable`</a>: optional
 * <a href="#key-homepage_url">`homepage_url`</a>: optional
 * <a href="#key-icons">`icons`</a>: optional
-* <a href="#key-incognito">`incognito`</a>: optional
-* <a href="#key-omnibox">`omnibox`</a>: optional
 * <a href="#key-optional_permissions">`optional_permissions`</a>: optional
 * <a href="#key-options_page">`options_page`</a>: optional
 * <a href="#key-options_ui">`options_ui`</a>: optional
@@ -113,14 +109,6 @@ This key may be present.
 
 This key may be present.
 
-### Key `chrome_settings_overrides`
-
-This key may be present.
-
-### Key `chrome_url_overrides`
-
-This key may be present.
-
 ### Key `commands`
 
 This key may be present.
@@ -154,14 +142,6 @@ This key may be present.
 This key may be present.
 
 ### Key `icons`
-
-This key may be present.
-
-### Key `incognito`
-
-This key may be present.
-
-### Key `omnibox`
 
 This key may be present.
 
