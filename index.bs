@@ -50,17 +50,14 @@ The following keys must be considered valid:
 * <a href="#key-version">`version`</a>: required.
 * <a href="#key-default_locale">`default_locale`</a>: required under some conditions.
 * <a href="#key-action">`action`</a>: optional
-* <a href="#key-author">`author`</a>: optional
 * <a href="#key-background">`background`</a>: optional
 * <a href="#key-browser_action">`browser_action`</a>: optional
 * <a href="#key-commands">`commands`</a>: optional
 * <a href="#key-content_scripts">`content_scripts`</a>: optional
 * <a href="#key-content_security_policy">`content_security_policy`</a>: optional
 * <a href="#key-description">`description`</a>: optional
-* <a href="#key-developer">`developer`</a>: optional
 * <a href="#key-devtools_page">`devtools_page`</a>: optional
 * <a href="#key-externally_connectable">`externally_connectable`</a>: optional
-* <a href="#key-homepage_url">`homepage_url`</a>: optional
 * <a href="#key-icons">`icons`</a>: optional
 * <a href="#key-optional_permissions">`optional_permissions`</a>: optional
 * <a href="#key-options_ui">`options_ui`</a>: optional
@@ -96,10 +93,6 @@ This key must be present if the `_locales` subdirectory is present, must be abse
 
 This key may be present.
 
-### Key `author`
-
-This key may be present.
-
 ### Key `background`
 
 This key may be present.
@@ -124,19 +117,11 @@ This key may be present.
 
 This key may be present.
 
-### Key `developer`
-
-This key may be present.
-
 ### Key `devtools_page`
 
 This key may be present.
 
 ### Key `externally_connectable`
-
-This key may be present.
-
-### Key `homepage_url`
 
 This key may be present.
 
