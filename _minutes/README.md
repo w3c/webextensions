@@ -1,7 +1,7 @@
 # Meetings
 
 The [WebExtensions Community group](https://www.w3.org/community/webextensions/) meets virtually every other week, for one hour.
-The instructions to join the meeting and agenda are available at https://www.w3.org/events/meetings/7fc25ca5-a50c-498c-82e5-f48fc96e1637.
+The instructions to join the meeting and agenda are available at https://www.w3.org/groups/cg/webextensions/calendar.
 
 * Thursday 8 AM PST (4 PM UTC)
 * To convert to your local time zone, see https://everytimezone.com/
