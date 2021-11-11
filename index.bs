@@ -60,6 +60,8 @@ The following keys must be considered valid:
 * <a href="#key-permissions">`permissions`</a>: optional
 * <a href="#key-short_name">`short_name`</a>: optional
 * <a href="#key-web_accessible_resources">`web_accessible_resources`</a>: optional
+* <a href="#key-devtools_page">`devtools_page`</a>: optional
+* <a href="#key-externally_connectable">`externally_connectable`</a>: optional
 
 ### Key `manifest_version`
 
@@ -122,6 +124,14 @@ The short name of the extension. This value should be used in contexts where <a 
 This key may be present. This property can be localized.
 
 ### Key `web_accessible_resources`
+
+This key may be present.
+
+### Key `externally_connectable`
+
+This key may be present.
+
+### Key `devtools_page`
 
 This key may be present.
 
