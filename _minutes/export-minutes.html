@@ -167,6 +167,17 @@ function convertToMarkdown(elemRootInput) {
         prefix += " * ";
     }
     li.prepend(prefix);
+
+    // The structure is li > p > span, with the span containing the line content.
+    // When the li contains multiple lines (e.g. shift-Enter in Google docs),
+    // there may be multiple span elements (potentially containing just a single <br>)
+    for (let br of li.querySelectorAll(":scope > p > span > br")) {
+        // Indent the (text) content at the next span.
+        if (br.parentNode.nextElementSibling) {
+            br.after(" ".repeat(prefix.length));
+        }
+    }
+
     let isNewList = li.parentNode.previousElementSibling?.tagName !== li.parentNode.tagName;
     if (level === 1 && listIndex === 1 && isNewList) {
       // Insert blank line before top-level list.
