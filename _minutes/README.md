@@ -10,11 +10,12 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-* 2022-02-03 at 8 AM PST = https://everytimezone.com/?t=61fb1b00,3c0
 - 2022-02-17 at 8 AM PST = https://everytimezone.com/?t=620d9000,3c0
+* 2022-03-03 at 8 AM PST = https://everytimezone.com/?t=62200500,3c0
 
 ## Past meetings
 
+* 2022-02-03 ([minutes](2022-02-03-wecg.md))
 * 2022-01-20 ([minutes](2022-01-20-wecg.md))
 * 2022-01-06 ([minutes](2022-01-06-wecg.md))
 * 2021-12-09 ([minutes](2021-12-09-wecg.md))
