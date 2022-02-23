@@ -2,6 +2,10 @@
 
 WebExtension proposal to allow the secure storage of data in platform specific locations.
 
+## Champions
+
+- @oliverdunk (1Password) - oliver@1password.com
+
 ## Motivation
 
 Extensions such as password managers, messaging apps, and crypto wallets handle sensitive user data. Therefore, a common choice is to only persist this data to places like localStorage and IndexedDB in an encrypted form. The decryption keys needed to use this data at runtime are stored only in memory, meaning that to access the data after a browser restart, the user must be prompted for whatever the key is derived from, usually a long and hard to type password.
@@ -152,7 +156,3 @@ We’ve historically chosen not to do this because it makes the secrets too easy
 
 - We need to gather feedback from the community and browser vendors to decide which proposal to move forward with, and if any changes are needed.
 - It would be beneficial to support more fine-grained control of the keys generated in Proposal 1. We should document this in more detail, perhaps drawing inspiration from the [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/generateKey).
-
-## Contacts
-
-Oliver Dunk (oliver@1password.com)
