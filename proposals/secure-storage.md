@@ -4,7 +4,7 @@ WebExtension proposal to allow the secure storage of data in platform specific l
 
 ## Champions
 
-- [@oliverdunk](https://github.com/oliverdunk) (1Password) - oliver@1password.com
+- Oliver Dunk (1Password) - [@oliverdunk](https://github.com/oliverdunk), [email](oliver@1password.com)
 
 ## Motivation
 
