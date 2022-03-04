@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<!--
+This is a tool to convert the minutes from Google Docs to Github-flavored markdown.
+It is designed for use with https://github.com/w3c/webextensions
+and only supports the (standard Google Docs) syntax from
+https://docs.google.com/document/d/1QkwhEMtMS67JBUkl_WVPZ4lRSKoWcQNlLJSf_GwSXg8/edit
+
+Questions? Ask rob@robwu.nl
+-->
+<head>
+<meta charset="utf-8">
+<title>WECG minutes converter - from Google Docs to Markdown</title>
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+#extraInfoOutput {
+  white-space: pre-wrap;
+  height: 7em;
+}
+#input, #output {
+  flex: 1;
+  overflow: auto;
+  background: lightgrey;
+}
+</style>
+</head>
+<body>
+<div>Select the text in Google Docs and Paste the contents below:</div>
+<div id="input" contenteditable></div>
+<div>
+  <input type="button" id="convert" value="Convert above paste from Google Doc to (Github-flavored) markdown">
+</div>
+<div id="extraInfoOutput"></div>
+<textarea id="output" placeholder="Markdown output appears here"></textarea>
+<script>
+var input = document.getElementById("input");
+var output = document.getElementById("output");
+var extraInfoOutput = document.getElementById("extraInfoOutput");
+var convert = document.getElementById("convert");
+
+convert.onclick = function() {
+  let markdownText = convertToMarkdown(input);
+  output.value = markdownText;
+  let issues = new Set();
+  let prs = new Set();
+  let mentionedWithoutLink = new Set();
+  let pat = /https:\/\/github\.com\/w3c\/webextensions\/(issues|pull)\/(\d+)/g, match;
+  while ((match = pat.exec(markdownText)) !== null) {
+    let [, issueOrPr, issueNr] = match;
+    if (issueOrPr === "pull") {
+      prs.add(issueNr);
+    } else {
+      issues.add(issueNr);
+    }
+  }
+  pat = /\sissue (\d+)/gi;
+  while ((match = pat.exec(markdownText)) !== null) {
+    let [, issueNr] = match;
+    if (!issues.has(issueNr) && !prs.has(issueNr)) {
+      mentionedWithoutLink.add(issueNr);
+    }
+  }
+  function serializeIssues(issueNrs) {
+    return Array.from(issueNrs, issueNr => `#${issueNr}`).join(", ") || "-";
+  }
+  extraInfoOutput.textContent = `
+List of issues/PRs in order of appearance in the input:
+- Issues: ${serializeIssues(issues)}
+- PRs: ${serializeIssues(prs)}
+- Mentioned issues without link to issue: ${serializeIssues(mentionedWithoutLink)}`;
+};
+
+/**
+ This formatter does the following:
+
+- Apply code formatting.
+- Replace < with &lt;
+- Replace * and _ with \* and \_.
+- Replace boldfaced with **xx**
+- Replace italic with _xx_
+- Replace links with [text](anchor)
+- Replace h1, h2, h3 with #, ## and ###
+- Format h1 header for consistency.
+- Replace ol,ul and li with correctly indented list items.
+- Fixup whitespace.
+*/
+function convertToMarkdown(elemRootInput) {
+  let root = elemRootInput.cloneNode(true);
+
+  // Apply code formatting first, before escaping characters.
+  for (let c of root.querySelectorAll(`span[style*="font-family:'Courier New'"]`)) {
+      c.prepend("`");
+      c.append("`");
+      // replaceAllInTextNodes skips ` only if they are in the same text node.
+      c.normalize();
+  }
+
+  // Escape < to avoid rendering as HTML.
+  replaceAllInTextNodes(root, "<", "&lt;");
+
+  // Replace all unescaped _ and * with escaped ones to avoid undesired formatting.
+  replaceAllInTextNodes(root, /(?<=\s|^)[*_]|[*_](?=\s|$)/g, "\\$&");
+
+  // Apply boldfaced appearance.
+  for (let b of root.querySelectorAll(`span[style*="font-weight:700"]`)) {
+    b.prepend("**");
+    b.append("**");
+  }
+
+  // Apply italic appearance.
+  for (let i of root.querySelectorAll(`span[style*="font-style:italic"]`)) {
+    i.prepend("_");
+    i.append("_");
+  }
+
+  // Render links.
+  for (let a of root.querySelectorAll("a[href]")) {
+    if (a.href === a.textContent.trim()) {
+      continue;
+    }
+    let href = a.href.replaceAll(")", "%29");
+    a.prepend("[");
+    a.append(`](${href})`);
+  }
+
+  // Format headers
+  for (let h of root.querySelectorAll("h1")) {
+    // Replace header:
+    // WECG Meetings 2021, Public Notes—Oct 28, 2021
+    // WECG Meetings 2021, Public Notes, Oct 28
+    replaceAllInTextNodes(
+      h,
+      /(WECG Meetings \d{4}, Public Notes)—([A-Za-z]+ \d{1,2}), \d{4}/g,
+      "$1, $2"
+    );
+    h.prepend(`\n# `);
+  }
+  for (let h of root.querySelectorAll("h2")) {
+    h.prepend(`\n## `);
+  }
+  for (let h of root.querySelectorAll("h3")) {
+    h.prepend(`\n### `);
+  }
+
+  for (let li of root.querySelectorAll("li")) {
+    let level = 0;
+    for (let parentNode = li.parentNode; parentNode !== root; parentNode = parentNode.parentNode) {
+        if (parentNode.tagName === "OL" || parentNode.tagName === "UL") {
+            ++level;
+        }
+    }
+    let listItems = Array.from(li.parentNode.children).filter(e => e.tagName === "LI");
+    let listIndex = listItems.indexOf(li) + 1;
+
+    // Top-level (level 1) has no extra indentation, other levels 2 spaces per level.
+    let prefix = "  ".repeat(level - 1);
+    if (li.parentNode.tagName === "OL") {
+        prefix += ` ${listIndex}. `;
+    } else {
+        prefix += " * ";
+    }
+    li.prepend(prefix);
+
+    // The structure is li > p > span, with the span containing the line content.
+    // When the li contains multiple lines (e.g. shift-Enter in Google docs),
+    // there may be multiple span elements (potentially containing just a single <br>)
+    for (let br of li.querySelectorAll(":scope > p > span > br")) {
+        // Indent the (text) content at the next span.
+        if (br.parentNode.nextElementSibling) {
+            br.after(" ".repeat(prefix.length));
+        }
+    }
+
+    let isNewList = li.parentNode.previousElementSibling?.tagName !== li.parentNode.tagName;
+    if (level === 1 && listIndex === 1 && isNewList) {
+      // Insert blank line before top-level list.
+      li.before("\n");
+    }
+  }
+
+  // Forced line break after every paragraph and br.
+  for (let elem of root.querySelectorAll("p, br")) {
+    elem.after("\n");
+  }
+  // Blank line after every header.
+  for (let elem of root.querySelectorAll("h1,h2,h3")) {
+    elem.after("\n\n");
+  }
+
+  let textContent = root.textContent;
+
+  // Normalize ’ to '.
+  textContent = textContent.replaceAll("’", "'");
+
+  // Normalize non-breaking whitespace to regular whitespace.
+  textContent = textContent.replaceAll("\xA0", " ");
+
+  // Docs sometimes appends a space to a link even if not in the source text. Strip it
+  textContent = textContent.replaceAll(/ +(\]\([^)\n]+\)) */g, "$1 ");
+
+  // Trim trailing whitespace.
+  textContent = textContent.replaceAll(/ +$/gm, "");
+
+  // Remove consecutive line breaks to at most one empty line.
+  // May happen if header is followed by enumeration.
+  textContent = textContent.replace(/(\n\n)\n+/g, "$1")
+
+  // Each section header has two blank lines in front of it.
+  textContent = textContent.replace(/^(?=#+ )/gm, "\n");
+
+  // Trim leading whitespace.
+  textContent = textContent.trim();
+
+  return textContent;
+}
+
+function replaceAllInTextNodes(root, pattern, replacement) {
+  let treeWalker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let updatesNodes = [];
+  for (let node = treeWalker.nextNode(); node; node = treeWalker.nextNode()) {
+    let orig = node.nodeValue;
+    let proposed;
+    let origParts = orig.split("`");
+    if (origParts.length && (origParts.length % 2)) {
+      // Contains an even number of `; skip over code blocks.
+      proposed = origParts.map((str, i) => {
+        if (i % 2) {
+          // Outside backtick.
+          return str;
+        }
+        return str.replaceAll(pattern, replacement);
+      }).join("`");
+    } else {
+      proposed = orig.replaceAll(pattern, replacement);
+    }
+    if (orig !== proposed) {
+      updatesNodes.push([node, proposed]);
+    }
+  }
+  for (let [node, proposed] of updatesNodes) {
+    node.parentNode.replaceChild(document.createTextNode(proposed), node);
+  }
+}
+</script>
+</body>
+</html>

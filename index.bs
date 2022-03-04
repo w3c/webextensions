@@ -11,6 +11,24 @@ Abstract: [Placeholder] Abstract.
 Markup Shorthands: markdown yes
 </pre>
 
+# File structure
+
+Once unpacked from the distribution format, a WebExtension is a directory containing a number of files.
+
+Note: In some operating systems, filenames are case insensitive. This can lead to naming collisions.
+
+## manifest.json
+
+A <a href="#manifest">Manifest</a> file.
+
+## _locales subdirectory
+
+An optional directory containing strings as defined in <a href="#localization">localization</a>.
+
+## Other files
+
+An extension may also contain other files, such as those referenced in the <a href="#key-content_scripts">content_scripts</a> and <a href="#key-background">background</a> part of the <a href="#manifest">Manifest</a>.
+
 # Manifest
 
 A WebExtension must have a manifest file at its root directory.
@@ -31,35 +49,19 @@ The following keys must be considered valid:
 * <a href="#key-name">`name`</a>: required.
 * <a href="#key-version">`version`</a>: required.
 * <a href="#key-default_locale">`default_locale`</a>: required under some conditions.
-* <a href="#key-action">`action`</a>: optional
-* <a href="#key-author">`author`</a>: optional
 * <a href="#key-background">`background`</a>: optional
-* <a href="#key-browser_action">`browser_action`</a>: optional
-* <a href="#key-chrome_settings_overrides">`chrome_settings_overrides`</a>: optional
-* <a href="#key-chrome_url_overrides">`chrome_url_overrides`</a>: optional
 * <a href="#key-commands">`commands`</a>: optional
 * <a href="#key-content_scripts">`content_scripts`</a>: optional
 * <a href="#key-content_security_policy">`content_security_policy`</a>: optional
 * <a href="#key-description">`description`</a>: optional
-* <a href="#key-developer">`developer`</a>: optional
-* <a href="#key-devtools_page">`devtools_page`</a>: optional
-* <a href="#key-externally_connectable">`externally_connectable`</a>: optional
-* <a href="#key-homepage_url">`homepage_url`</a>: optional
 * <a href="#key-icons">`icons`</a>: optional
-* <a href="#key-incognito">`incognito`</a>: optional
-* <a href="#key-omnibox">`omnibox`</a>: optional
 * <a href="#key-optional_permissions">`optional_permissions`</a>: optional
-* <a href="#key-options_page">`options_page`</a>: optional
 * <a href="#key-options_ui">`options_ui`</a>: optional
-* <a href="#key-page_action">`page_action`</a>: optional
 * <a href="#key-permissions">`permissions`</a>: optional
 * <a href="#key-short_name">`short_name`</a>: optional
-* <a href="#key-sidebar_action">`sidebar_action`</a>: optional
-* <a href="#key-storage">`storage`</a>: optional
-* <a href="#key-theme">`theme`</a>: optional
-* <a href="#key-user_scripts">`user_scripts`</a>: optional
-* <a href="#key-version_name">`version_name`</a>: optional
 * <a href="#key-web_accessible_resources">`web_accessible_resources`</a>: optional
+* <a href="#key-devtools_page">`devtools_page`</a>: optional
+* <a href="#key-externally_connectable">`externally_connectable`</a>: optional
 
 ### Key `manifest_version`
 
@@ -79,27 +81,7 @@ This key must be present.
 
 This key must be present if the `_locales` subdirectory is present, must be absent otherwise.
 
-### Key `action`
-
-This key may be present.
-
-### Key `author`
-
-This key may be present.
-
 ### Key `background`
-
-This key may be present.
-
-### Key `browser_action`
-
-This key may be present.
-
-### Key `chrome_settings_overrides`
-
-This key may be present.
-
-### Key `chrome_url_overrides`
 
 This key may be present.
 
@@ -119,31 +101,7 @@ This key may be present.
 
 This key may be present.
 
-### Key `developer`
-
-This key may be present.
-
-### Key `devtools_page`
-
-This key may be present.
-
-### Key `externally_connectable`
-
-This key may be present.
-
-### Key `homepage_url`
-
-This key may be present.
-
 ### Key `icons`
-
-This key may be present.
-
-### Key `incognito`
-
-This key may be present.
-
-### Key `omnibox`
 
 This key may be present.
 
@@ -151,15 +109,7 @@ This key may be present.
 
 This key may be present.
 
-### Key `options_page`
-
-This key may be present.
-
 ### Key `options_ui`
-
-This key may be present.
-
-### Key `page_action`
 
 This key may be present.
 
@@ -173,26 +123,20 @@ The short name of the extension. This value should be used in contexts where <a 
 
 This key may be present. This property can be localized.
 
-### Key `sidebar_action`
-
-This key may be present.
-
-### Key `storage`
-
-This key may be present.
-
-### Key `theme`
-
-This key may be present.
-
-### Key `user_scripts`
-
-This key may be present.
-
-### Key `version_name`
-
-This key may be present.
-
 ### Key `web_accessible_resources`
 
 This key may be present.
+
+### Key `externally_connectable`
+
+This key may be present.
+
+### Key `devtools_page`
+
+This key may be present.
+
+# Localization
+
+The _locales subdirectory of a WebExtension can contain strings for internationalization purposes.
+
+Issue(62): Specify localization handling.
