@@ -120,6 +120,8 @@ This proposal is drafted by the team at 1Password. Our [extension](https://chrom
 
 The Dashlane browser extension, also a password manager with over 4M weekly active users in the Chrome Web Store, currently provides a remember me and biometric authentication feature in its extension to make repeated authentication easier. They would also be very quick to implement this in place of their solution which requires a network connection, as they don’t leverage a native application to interface with native storage.
 
+The [Keeper Security](https://keepersecurity.com) browser extensions ([public](https://chrome.google.com/webstore/detail/keeper%C2%AE-password-manager/bfogiafebfohielmmehodmfbbebbbpei?hl=en&authuser=0), [alternate](https://chrome.google.com/webstore/detail/keeper%C2%AE-password-manager/kbedblbpfmeicfpadihimgombbafaeeh?hl=en&authuser=0), [beta](https://chrome.google.com/webstore/detail/keeper%C2%AE-password-manager/hlkdkmefjphnecdoiaajhndjmkpkhifo?hl=en&authuser=0)) would also immediately use this API for storage of client-side generated encryption keys. Even though a desktop app is optionally provided to users, Keeper does not wish to use native app dependencies for biometric authentication and key storage. Keeper would also prefer to prompt users in the browser extension directly for biometric authentication instead of relying on a desktop app.
+
 We expect that the API would benefit a wide range of extensions, providing value far beyond password management. If you'd like to add your extension, feel free to open a PR.
 
 **Could a web API like WebAuthn cater for this use case?**
