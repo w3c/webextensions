@@ -12,7 +12,7 @@ Extensions such as password managers, messaging apps, and crypto wallets handle 
 
 Users understandably prefer not to type this, so in desktop applications, a common pattern is to store the decryption key in a system store (like macOS keychain). The system can be told to [only reveal the secret after biometrics have been provided](https://developer.apple.com/documentation/security/keychain_services/keychain_items/restricting_keychain_item_accessibility?language=objc#2974973), meaning the application can request the secret but access is only granted if the user that stored it is physically present. This pattern is good for users but currently only possible in extensions by communicating with a native application over [Native Messaging](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging). This is because access to both hardware based key stores and biometrics are not exposed by existing web APIs.
 
-## Proposed API
+## Proposal
 
 We propose a new browser.secureStorage API that would use platform-dependent APIs for storing sensitive data:
 
@@ -21,19 +21,7 @@ We propose a new browser.secureStorage API that would use platform-dependent API
 - Android: [Keystore](https://source.android.com/security/keystore)
 - Linux: See FAQ
 
-While all of these APIs support storing keys, only macOS Keychain provides a mechanism for storing other types of data. Consequently, we propose two possible APIs:
-
-- **Proposal 1:** The browser provides a way of storing keys exclusively, and simply retrieves these from the system level APIs.
-
-- **Proposal 2:** The browser accepts arbitrary data from an extension. Where possible, this is simply stored using the system level APIs. When the system only provides key storage, the browser transparently generates a key and uses this to encrypt the data.
-
-In both cases data can only be read by the extension that stored it.
-
-### Proposal 1
-
-ℹ️ Note: The feedback so far has been that Proposal 2 is preferred to this one. The general consensus from browser vendors seems to be that they’d rather not expose crypto primitives users can use to bite themselves, and that something simpler would encourage adoption by more extensions.
-
-In the simpler of the two proposals, the browser provides an API to store or retrieve a key, optionally protected by biometrics. It consists of three functions.
+### API
 
 **browser.secureStorage.getInfo**
 
@@ -59,35 +47,6 @@ Response:
 }
 ```
 
-**browser.secureStorage.generateKey**
-
-The generateKey API allows you to generate a key to be used for protecting your data, choosing which authentication types you will allow for retrieving it in the future.
-
-
-```
-const key = browser.secureStorage.generateKey({
-  id: "example-key"
-  type: "RSA",
-  authentication: ["BIOMETRY_FACE", "BIOMETRY_FINGERPRINT"]
-});
-```
-
-**browser.secureStorage.retrieveKey**
-
-Finally, you can retrieve the key. The browser will only provide it if the user authenticates with one of the allowed mechanisms for this secret, and will throw an error otherwise.
-
-```
-const key = browser.secureStorage.retrieveKey({ id: "example-key" });
-```
-
-### Proposal 2
-
-This proposal allows a string to be stored. It is much simpler for developers to consume, but adds complexity for browser vendors, as it is further from the hardware. On platforms other than macOS the browser must create a key behind the scenes to encrypt the data and then store it on disk. It must remember which key the data was encrypted with and use this to decrypt it in the future.
-
-**browser.secureStorage.getInfo**
-
-This is implemented identically to Proposal 1.
-
 **browser.secureStorage.store**
 
 This stores the provided string.
@@ -106,6 +65,14 @@ This retrieves the stored data. The browser will only provide it if the user aut
 
 ```
 browser.secureStorage.retrieve({ id: "example-data" });
+```
+
+**browser.secureStorage.remove**
+
+Removes an entry from secureStorage given an ID. No biometrics are required.
+
+```
+browser.secureStorage.remove({ id: "example-data" });
 ```
 
 ## FAQ
@@ -156,5 +123,4 @@ We’ve historically chosen not to do this because it makes the secrets too easy
 
 ## Remaining Work
 
-- We need to gather feedback from the community and browser vendors to decide which proposal to move forward with, and if any changes are needed.
-- It would be beneficial to support more fine-grained control of the keys generated in Proposal 1. We should document this in more detail, perhaps drawing inspiration from the [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/generateKey).
+Remaining work is tracked in the WECG [issue tracker](https://github.com/w3c/webextensions/issues).
