@@ -25,7 +25,7 @@ While all of these APIs support storing keys, only macOS Keychain provides a mec
 
 - **Proposal 1:** The browser provides a way of storing keys exclusively, and simply retrieves these from the system level APIs.
 
-- **Proposal 2:** The browser accepts arbitrary data from an extension. Where possible, this is simply stored using the system level APIs. When the system only provides key storage, the browser transparently generates a key and uses this to encrypt the data.
+- **Proposal 2:** The browser accepts arbitrary data from an extension. Where possible, this is simply stored using the system level APIs. When the system only provides key storage, the browser transparently generates a key and uses this to encrypt the data. A polyfill for this proposal is available [here](secure-storage-polyfill.js).
 
 In both cases data can only be read by the extension that stored it.
 
