@@ -1,9 +1,9 @@
 let global;
 
-if (window.browser?.runtime.id) {
-  global = window.browser;
-} else if (window.chrome?.runtime.id) {
-  global = window.chrome;
+if (globalThis.browser?.runtime.id) {
+  global = browser;
+} else if (globalThis.chrome?.runtime.id) {
+  global = chrome;
 } else {
   throw new Error(
     "browser.secureStorage polyfill must be run in extension contexts"
@@ -87,11 +87,11 @@ const secureStorage = {
 };
 
 // Attach to browser namespace in Firefox/Safari
-if (window.browser?.runtime?.id) {
-  window.browser.secureStorage = secureStorage;
+if (globalThis.browser?.runtime?.id) {
+  browser.secureStorage = secureStorage;
 }
 
 // Attach to chrome namespace in all browsers
-if (window.chrome?.runtime?.id) {
-  window.chrome.secureStorage = secureStorage;
+if (globalThis.chrome?.runtime?.id) {
+  chrome.secureStorage = secureStorage;
 }
