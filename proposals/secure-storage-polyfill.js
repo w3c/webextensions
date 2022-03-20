@@ -1,3 +1,19 @@
+let global;
+
+if (window.browser?.runtime.id) {
+  global = window.browser;
+} else if (window.chrome?.runtime.id) {
+  global = window.chrome;
+} else {
+  throw new Error(
+    "browser.secureStorage polyfill must be run in extension contexts"
+  );
+}
+
+if (!global.storage?.local) {
+  throw new Error("Using this polyfill requires the 'storage' permission");
+}
+
 // Existing browser APIs don't give us access to the system's secure storage,
 // meaning all data in this polyfill is stored in less secure mechanisms.
 console.warn(
@@ -42,7 +58,9 @@ const secureStorage = {
 
     if (typeof data !== "string") throw new Error("data must be a string");
 
-    localStorage.setItem(id, data);
+    return new Promise((resolve) =>
+      global.storage.local.set({ [id]: data }, resolve)
+    );
   },
   retrieve: async (request) => {
     if (typeof request !== "object")
@@ -52,7 +70,9 @@ const secureStorage = {
 
     if (typeof id !== "string") throw new Error("id must be a string");
 
-    return localStorage.getItem(id);
+    return new Promise((resolve) => {
+      global.storage.local.get(id, (result) => resolve(result[id]));
+    });
   },
   remove: async (request) => {
     if (typeof request !== "object")
@@ -62,22 +82,16 @@ const secureStorage = {
 
     if (typeof id !== "string") throw new Error("id must be a string");
 
-    return localStorage.removeItem(id);
+    return new Promise((resolve) => global.storage.local.remove(id, resolve));
   },
 };
 
-let isExtension = false;
-
+// Attach to browser namespace in Firefox/Safari
 if (window.browser?.runtime?.id) {
   window.browser.secureStorage = secureStorage;
-  isExtension = true;
 }
 
+// Attach to chrome namespace in all browsers
 if (window.chrome?.runtime?.id) {
   window.chrome.secureStorage = secureStorage;
-  isExtension = true;
-}
-
-if (!isExtension) {
-  window.secureStorage = secureStorage;
 }
