@@ -11,7 +11,7 @@ const RECOGNISED_AUTH_METHODS = [
   "BIOMETRY_FINGERPRINT",
 ];
 
-window.secureStorage = {
+const secureStorage = {
   getInfo: () => {
     return {
       type: "MACOS_KEYCHAIN",
@@ -65,3 +65,19 @@ window.secureStorage = {
     return localStorage.removeItem(id);
   },
 };
+
+let isExtension = false;
+
+if (window.browser?.runtime?.id) {
+  window.browser.secureStorage = secureStorage;
+  isExtension = true;
+}
+
+if (window.chrome?.runtime?.id) {
+  window.chrome.secureStorage = secureStorage;
+  isExtension = true;
+}
+
+if (!isExtension) {
+  window.secureStorage = secureStorage;
+}
