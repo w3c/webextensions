@@ -100,7 +100,7 @@ browser.secureStorage.store({
 });
 ```
 
-The authentication array is optional. If omitted, the secret is available without biometrics but is still stored in the hardware backed location.
+The authentication array is optional. If omitted, the secret is available without the need for any of the recognised auth methods but is still stored in the hardware backed location.
 
 **browser.secureStorage.retrieve**
 
