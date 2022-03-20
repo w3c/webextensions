@@ -12,13 +12,13 @@ const RECOGNISED_AUTH_METHODS = [
 ];
 
 const secureStorage = {
-  getInfo: () => {
+  getInfo: async () => {
     return {
       type: "MACOS_KEYCHAIN",
       availableAuthentication: RECOGNISED_AUTH_METHODS,
     };
   },
-  store: (request) => {
+  store: async (request) => {
     if (typeof request !== "object")
       throw new Error("secureStorage.store takes an object");
 
@@ -44,7 +44,7 @@ const secureStorage = {
 
     localStorage.setItem(id, data);
   },
-  retrieve: (request) => {
+  retrieve: async (request) => {
     if (typeof request !== "object")
       throw new Error("secureStorage.retrieve takes an object");
 
@@ -54,7 +54,7 @@ const secureStorage = {
 
     return localStorage.getItem(id);
   },
-  remove: (request) => {
+  remove: async (request) => {
     if (typeof request !== "object")
       throw new Error("secureStorage.remove takes an object");
 
