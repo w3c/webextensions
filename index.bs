@@ -63,7 +63,8 @@ The following keys must be considered valid:
 * <a href="#key-devtools_page">`devtools_page`</a>: optional
 * <a href="#key-externally_connectable">`externally_connectable`</a>: optional
 
-The following keys must be considered valid in manifest v3:
+The following keys must be considered valid in Manifest V3:
+
 * <a href="#key-host_permissions">`host_permissions`</a>: optional
 * <a href="#key-optional_host_permissions">`optional_host_permissions`</a>: optional
 
