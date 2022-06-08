@@ -38,34 +38,81 @@ Response:
 ```
 {
   type: "MACOS_KEYCHAIN",
-  availableAuthentication: [
-    "PIN",
-    "PASSWORD",
-    "BIOMETRY_FACE",
-    "BIOMETRY_FINGERPRINT"
+  supportedAuthenticationLevels: [
+    {
+      name: "BIOMETRIC",
+      implementation: [
+        "MACOS_KEYCHAIN_FACE",
+        "MACOS_KEYCHAIN_TOUCHID"
+      ]
+    },
+    {
+      name: "DEVICE_CREDENTIAL",
+      implementation: [
+        "MACOS_ACCOUNT_PASSWORD"
+      ]
+    }
   ]
 }
 ```
 
+Name can be either `BIOMETRIC` or `DEVICE_CREDENTIAL`, indicating which authentication levels are supported for a `browser.secureStorage.store` call. These are intentionally vague descriptors that allow the API to be used with some level of abstraction away from the hardware.
+
+Implementation is an array of browser-specific descriptors that a developer can use to learn more about what specific implementations the browser will use. These are not standardised and therefore are not used elsewhere in the API. They simply exist so the developer can get a better idea about what will be used if they request a secret to be stored with a particular authentication level.
+
+On platforms like Windows, where the OS provides an API like Windows Hello but does not allow specific methods to be requested, the response will look as follows:
+
+```
+{
+  type: "WINDOWS_HELLO",
+  supportedAuthenticationLevels: [
+    {
+      name: "ANY",
+      implementation: []
+    }
+  ]
+}
+```
+
+In this case, a call to `browser.secureStorage.store` must set the `minimumAuthenticationLevel` to `ANY`. This indicates that the developer is willing to use whatever authentication method is picked by the OS.
+
 **browser.secureStorage.store**
 
-This stores the provided string.
+This stores the provided string. The minimumAuthenticationLevel key indicates the minimum level of authentication that should be required when this secret is retrieved in the future.
 
 ```
 browser.secureStorage.store({
   id: "example-data"
-  authentication: ["BIOMETRY_FACE", "BIOMETRY_FINGERPRINT"],
+  minimumAuthenticationLevel: "BIOMETRIC",
   data: JSON.stringify({ password: "!72AH8d_.-*gFgNFPUFz2" })
 });
 ```
+
+Unless required by the OS for enrollment, biometrics should not be required when storing data.
 
 **browser.secureStorage.retrieve**
 
 This retrieves the stored data. The browser will only provide it if the user authenticates with one of the allowed mechanisms for this secret, and will throw an error otherwise.
 
+Request:
+
 ```
 browser.secureStorage.retrieve({ id: "example-data" });
 ```
+
+Response:
+
+```
+{
+  data: "",
+  authentication: {
+    level: "BIOMETRIC",
+    implementation: "MACOS_KEYCHAIN_FACE"
+  }
+}
+```
+
+The response includes both the requested data, and the type of authentication that was performed.
 
 **browser.secureStorage.remove**
 
