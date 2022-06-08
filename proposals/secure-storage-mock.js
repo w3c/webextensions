@@ -6,18 +6,18 @@ if (globalThis.browser?.runtime.id) {
   global = chrome;
 } else {
   throw new Error(
-    "browser.secureStorage polyfill must be run in extension contexts"
+    "browser.secureStorage mock must be run in extension contexts"
   );
 }
 
 if (!global.storage?.local) {
-  throw new Error("Using this polyfill requires the 'storage' permission");
+  throw new Error("Using this mock requires the 'storage' permission");
 }
 
 // Existing browser APIs don't give us access to the system's secure storage,
-// meaning all data in this polyfill is stored in less secure mechanisms.
+// meaning all data in this mock is stored in less secure mechanisms.
 console.warn(
-  "Warning: browser.secureStorage polyfill loaded. This proof of concept stores data insecurely and should not be used in production."
+  "Warning: browser.secureStorage mock loaded. This proof of concept stores data insecurely and should not be used in production."
 );
 
 const RECOGNISED_AUTH_METHODS = [
