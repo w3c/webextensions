@@ -8,7 +8,7 @@
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version 37b7e7e68, updated Fri May 27 15:08:11 2022 -0700" name="generator">
   <link href="https://w3c.github.io/webextensions" rel="canonical">
-  <meta content="ed94d5956072fb302ae264478b00f3140df85cc9" name="document-revision">
+  <meta content="abcedeb4422dc9192d2f92042ed48509d9360e9b" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -462,20 +462,22 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
         <li><a href="#key-manifest_version"><span class="secno">2.2.1</span> <span class="content">Key <code>manifest_version</code></span></a>
         <li><a href="#key-name"><span class="secno">2.2.2</span> <span class="content">Key <code>name</code></span></a>
         <li><a href="#key-version"><span class="secno">2.2.3</span> <span class="content">Key <code>version</code></span></a>
-        <li><a href="#key-default_locale"><span class="secno">2.2.4</span> <span class="content">Key <code>default_locale</code></span></a>
-        <li><a href="#key-background"><span class="secno">2.2.5</span> <span class="content">Key <code>background</code></span></a>
-        <li><a href="#key-commands"><span class="secno">2.2.6</span> <span class="content">Key <code>commands</code></span></a>
-        <li><a href="#key-content_scripts"><span class="secno">2.2.7</span> <span class="content">Key <code>content_scripts</code></span></a>
-        <li><a href="#key-content_security_policy"><span class="secno">2.2.8</span> <span class="content">Key <code>content_security_policy</code></span></a>
-        <li><a href="#key-description"><span class="secno">2.2.9</span> <span class="content">Key <code>description</code></span></a>
-        <li><a href="#key-icons"><span class="secno">2.2.10</span> <span class="content">Key <code>icons</code></span></a>
-        <li><a href="#key-optional_permissions"><span class="secno">2.2.11</span> <span class="content">Key <code>optional_permissions</code></span></a>
-        <li><a href="#key-options_ui"><span class="secno">2.2.12</span> <span class="content">Key <code>options_ui</code></span></a>
-        <li><a href="#key-permissions"><span class="secno">2.2.13</span> <span class="content">Key <code>permissions</code></span></a>
-        <li><a href="#key-short_name"><span class="secno">2.2.14</span> <span class="content">Key <code>short_name</code></span></a>
-        <li><a href="#key-web_accessible_resources"><span class="secno">2.2.15</span> <span class="content">Key <code>web_accessible_resources</code></span></a>
-        <li><a href="#key-externally_connectable"><span class="secno">2.2.16</span> <span class="content">Key <code>externally_connectable</code></span></a>
-        <li><a href="#key-devtools_page"><span class="secno">2.2.17</span> <span class="content">Key <code>devtools_page</code></span></a>
+        <li><a href="#key-permissions"><span class="secno">2.2.4</span> <span class="content">Key <code>permissions</code></span></a>
+        <li><a href="#key-optional_permissions"><span class="secno">2.2.5</span> <span class="content">Key <code>optional_permissions</code></span></a>
+        <li><a href="#key-host_permissions"><span class="secno">2.2.6</span> <span class="content">Key <code>host_permissions</code></span></a>
+        <li><a href="#key-optional_host_permissions"><span class="secno">2.2.7</span> <span class="content">Key <code>optional_host_permissions</code></span></a>
+        <li><a href="#key-default_locale"><span class="secno">2.2.8</span> <span class="content">Key <code>default_locale</code></span></a>
+        <li><a href="#key-background"><span class="secno">2.2.9</span> <span class="content">Key <code>background</code></span></a>
+        <li><a href="#key-commands"><span class="secno">2.2.10</span> <span class="content">Key <code>commands</code></span></a>
+        <li><a href="#key-content_scripts"><span class="secno">2.2.11</span> <span class="content">Key <code>content_scripts</code></span></a>
+        <li><a href="#key-content_security_policy"><span class="secno">2.2.12</span> <span class="content">Key <code>content_security_policy</code></span></a>
+        <li><a href="#key-description"><span class="secno">2.2.13</span> <span class="content">Key <code>description</code></span></a>
+        <li><a href="#key-icons"><span class="secno">2.2.14</span> <span class="content">Key <code>icons</code></span></a>
+        <li><a href="#key-options_ui"><span class="secno">2.2.15</span> <span class="content">Key <code>options_ui</code></span></a>
+        <li><a href="#key-short_name"><span class="secno">2.2.16</span> <span class="content">Key <code>short_name</code></span></a>
+        <li><a href="#key-web_accessible_resources"><span class="secno">2.2.17</span> <span class="content">Key <code>web_accessible_resources</code></span></a>
+        <li><a href="#key-externally_connectable"><span class="secno">2.2.18</span> <span class="content">Key <code>externally_connectable</code></span></a>
+        <li><a href="#key-devtools_page"><span class="secno">2.2.19</span> <span class="content">Key <code>devtools_page</code></span></a>
        </ol>
      </ol>
     <li><a href="#localization"><span class="secno">3</span> <span class="content">Localization</span></a>
@@ -547,6 +549,13 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li data-md>
      <p><a href="#key-externally_connectable"><code>externally_connectable</code></a>: optional</p>
    </ul>
+   <p>The following keys must be considered valid in Manifest V3:</p>
+   <ul>
+    <li data-md>
+     <p><a href="#key-host_permissions"><code>host_permissions</code></a>: optional</p>
+    <li data-md>
+     <p><a href="#key-optional_host_permissions"><code>optional_host_permissions</code></a>: optional</p>
+   </ul>
    <h4 class="heading settled" data-level="2.2.1" id="key-manifest_version"><span class="secno">2.2.1. </span><span class="content">Key <code>manifest_version</code></span><a class="self-link" href="#key-manifest_version"></a></h4>
    <p>This key must be present.</p>
    <h4 class="heading settled" data-level="2.2.2" id="key-name"><span class="secno">2.2.2. </span><span class="content">Key <code>name</code></span><a class="self-link" href="#key-name"></a></h4>
@@ -554,34 +563,38 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <p>This key must be present. This property can be localized.</p>
    <h4 class="heading settled" data-level="2.2.3" id="key-version"><span class="secno">2.2.3. </span><span class="content">Key <code>version</code></span><a class="self-link" href="#key-version"></a></h4>
    <p>This key must be present.</p>
-   <h4 class="heading settled" data-level="2.2.4" id="key-default_locale"><span class="secno">2.2.4. </span><span class="content">Key <code>default_locale</code></span><a class="self-link" href="#key-default_locale"></a></h4>
+   <h4 class="heading settled" data-level="2.2.4" id="key-permissions"><span class="secno">2.2.4. </span><span class="content">Key <code>permissions</code></span><a class="self-link" href="#key-permissions"></a></h4>
+   <p>This key may be present.</p>
+   <h4 class="heading settled" data-level="2.2.5" id="key-optional_permissions"><span class="secno">2.2.5. </span><span class="content">Key <code>optional_permissions</code></span><a class="self-link" href="#key-optional_permissions"></a></h4>
+   <p>This key may be present.</p>
+   <h4 class="heading settled" data-level="2.2.6" id="key-host_permissions"><span class="secno">2.2.6. </span><span class="content">Key <code>host_permissions</code></span><a class="self-link" href="#key-host_permissions"></a></h4>
+   <p>This key may be present.</p>
+   <h4 class="heading settled" data-level="2.2.7" id="key-optional_host_permissions"><span class="secno">2.2.7. </span><span class="content">Key <code>optional_host_permissions</code></span><a class="self-link" href="#key-optional_host_permissions"></a></h4>
+   <p>This key may be present.</p>
+   <h4 class="heading settled" data-level="2.2.8" id="key-default_locale"><span class="secno">2.2.8. </span><span class="content">Key <code>default_locale</code></span><a class="self-link" href="#key-default_locale"></a></h4>
    <p>This key must be present if the <code>_locales</code> subdirectory is present, must be absent otherwise.</p>
-   <h4 class="heading settled" data-level="2.2.5" id="key-background"><span class="secno">2.2.5. </span><span class="content">Key <code>background</code></span><a class="self-link" href="#key-background"></a></h4>
+   <h4 class="heading settled" data-level="2.2.9" id="key-background"><span class="secno">2.2.9. </span><span class="content">Key <code>background</code></span><a class="self-link" href="#key-background"></a></h4>
    <p>This key may be present.</p>
-   <h4 class="heading settled" data-level="2.2.6" id="key-commands"><span class="secno">2.2.6. </span><span class="content">Key <code>commands</code></span><a class="self-link" href="#key-commands"></a></h4>
+   <h4 class="heading settled" data-level="2.2.10" id="key-commands"><span class="secno">2.2.10. </span><span class="content">Key <code>commands</code></span><a class="self-link" href="#key-commands"></a></h4>
    <p>This key may be present.</p>
-   <h4 class="heading settled" data-level="2.2.7" id="key-content_scripts"><span class="secno">2.2.7. </span><span class="content">Key <code>content_scripts</code></span><a class="self-link" href="#key-content_scripts"></a></h4>
+   <h4 class="heading settled" data-level="2.2.11" id="key-content_scripts"><span class="secno">2.2.11. </span><span class="content">Key <code>content_scripts</code></span><a class="self-link" href="#key-content_scripts"></a></h4>
    <p>This key may be present.</p>
-   <h4 class="heading settled" data-level="2.2.8" id="key-content_security_policy"><span class="secno">2.2.8. </span><span class="content">Key <code>content_security_policy</code></span><a class="self-link" href="#key-content_security_policy"></a></h4>
+   <h4 class="heading settled" data-level="2.2.12" id="key-content_security_policy"><span class="secno">2.2.12. </span><span class="content">Key <code>content_security_policy</code></span><a class="self-link" href="#key-content_security_policy"></a></h4>
    <p>This key may be present.</p>
-   <h4 class="heading settled" data-level="2.2.9" id="key-description"><span class="secno">2.2.9. </span><span class="content">Key <code>description</code></span><a class="self-link" href="#key-description"></a></h4>
+   <h4 class="heading settled" data-level="2.2.13" id="key-description"><span class="secno">2.2.13. </span><span class="content">Key <code>description</code></span><a class="self-link" href="#key-description"></a></h4>
    <p>This key may be present.</p>
-   <h4 class="heading settled" data-level="2.2.10" id="key-icons"><span class="secno">2.2.10. </span><span class="content">Key <code>icons</code></span><a class="self-link" href="#key-icons"></a></h4>
+   <h4 class="heading settled" data-level="2.2.14" id="key-icons"><span class="secno">2.2.14. </span><span class="content">Key <code>icons</code></span><a class="self-link" href="#key-icons"></a></h4>
    <p>This key may be present.</p>
-   <h4 class="heading settled" data-level="2.2.11" id="key-optional_permissions"><span class="secno">2.2.11. </span><span class="content">Key <code>optional_permissions</code></span><a class="self-link" href="#key-optional_permissions"></a></h4>
+   <h4 class="heading settled" data-level="2.2.15" id="key-options_ui"><span class="secno">2.2.15. </span><span class="content">Key <code>options_ui</code></span><a class="self-link" href="#key-options_ui"></a></h4>
    <p>This key may be present.</p>
-   <h4 class="heading settled" data-level="2.2.12" id="key-options_ui"><span class="secno">2.2.12. </span><span class="content">Key <code>options_ui</code></span><a class="self-link" href="#key-options_ui"></a></h4>
-   <p>This key may be present.</p>
-   <h4 class="heading settled" data-level="2.2.13" id="key-permissions"><span class="secno">2.2.13. </span><span class="content">Key <code>permissions</code></span><a class="self-link" href="#key-permissions"></a></h4>
-   <p>This key may be present.</p>
-   <h4 class="heading settled" data-level="2.2.14" id="key-short_name"><span class="secno">2.2.14. </span><span class="content">Key <code>short_name</code></span><a class="self-link" href="#key-short_name"></a></h4>
+   <h4 class="heading settled" data-level="2.2.16" id="key-short_name"><span class="secno">2.2.16. </span><span class="content">Key <code>short_name</code></span><a class="self-link" href="#key-short_name"></a></h4>
    <p>The short name of the extension. This value should be used in contexts where <a href="#key-name"><code>name</code></a> is too long to use in full. If <code>short_name</code> is not provided, manifest consumers should use a truncated version of <code>name</code>.</p>
    <p>This key may be present. This property can be localized.</p>
-   <h4 class="heading settled" data-level="2.2.15" id="key-web_accessible_resources"><span class="secno">2.2.15. </span><span class="content">Key <code>web_accessible_resources</code></span><a class="self-link" href="#key-web_accessible_resources"></a></h4>
+   <h4 class="heading settled" data-level="2.2.17" id="key-web_accessible_resources"><span class="secno">2.2.17. </span><span class="content">Key <code>web_accessible_resources</code></span><a class="self-link" href="#key-web_accessible_resources"></a></h4>
    <p>This key may be present.</p>
-   <h4 class="heading settled" data-level="2.2.16" id="key-externally_connectable"><span class="secno">2.2.16. </span><span class="content">Key <code>externally_connectable</code></span><a class="self-link" href="#key-externally_connectable"></a></h4>
+   <h4 class="heading settled" data-level="2.2.18" id="key-externally_connectable"><span class="secno">2.2.18. </span><span class="content">Key <code>externally_connectable</code></span><a class="self-link" href="#key-externally_connectable"></a></h4>
    <p>This key may be present.</p>
-   <h4 class="heading settled" data-level="2.2.17" id="key-devtools_page"><span class="secno">2.2.17. </span><span class="content">Key <code>devtools_page</code></span><a class="self-link" href="#key-devtools_page"></a></h4>
+   <h4 class="heading settled" data-level="2.2.19" id="key-devtools_page"><span class="secno">2.2.19. </span><span class="content">Key <code>devtools_page</code></span><a class="self-link" href="#key-devtools_page"></a></h4>
    <p>This key may be present.</p>
    <h2 class="heading settled" data-level="3" id="localization"><span class="secno">3. </span><span class="content">Localization</span><a class="self-link" href="#localization"></a></h2>
    <p>The _locales subdirectory of a WebExtension can contain strings for internationalization purposes.</p>
