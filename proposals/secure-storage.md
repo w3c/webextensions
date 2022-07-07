@@ -21,6 +21,8 @@ We propose a new browser.secureStorage API that would use platform-dependent API
 - Android: [Keystore](https://source.android.com/security/keystore)
 - Linux: See FAQ
 
+A mock for this proposal is available [here](secure-storage-mock.js).
+
 ### API
 
 **browser.secureStorage.getInfo**
@@ -58,6 +60,8 @@ browser.secureStorage.store({
   data: JSON.stringify({ password: "!72AH8d_.-*gFgNFPUFz2" })
 });
 ```
+
+The authentication array is optional. If omitted, the secret is available without the need for any of the recognised auth methods but is still stored in the hardware backed location.
 
 **browser.secureStorage.retrieve**
 
