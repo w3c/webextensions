@@ -63,6 +63,11 @@ The following keys must be considered valid:
 * <a href="#key-devtools_page">`devtools_page`</a>: optional
 * <a href="#key-externally_connectable">`externally_connectable`</a>: optional
 
+The following keys must be considered valid in Manifest V3:
+
+* <a href="#key-host_permissions">`host_permissions`</a>: optional
+* <a href="#key-optional_host_permissions">`optional_host_permissions`</a>: optional
+
 ### Key `manifest_version`
 
 This key must be present.
@@ -76,6 +81,22 @@ This key must be present. This property can be localized.
 ### Key `version`
 
 This key must be present.
+
+### Key `permissions`
+
+This key may be present.
+
+### Key `optional_permissions`
+
+This key may be present.
+
+### Key `host_permissions`
+
+This key may be present.
+
+### Key `optional_host_permissions`
+
+This key may be present.
 
 ### Key `default_locale`
 
@@ -105,15 +126,7 @@ This key may be present.
 
 This key may be present.
 
-### Key `optional_permissions`
-
-This key may be present.
-
 ### Key `options_ui`
-
-This key may be present.
-
-### Key `permissions`
 
 This key may be present.
 
