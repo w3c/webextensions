@@ -15,7 +15,7 @@ After the end of each meeting, meeting notes are published here.
 
 ## Past meetings
 
-* 2022-07-07 ([minutes](2022-0r-07-wecg.md))
+* 2022-07-07 ([minutes](2022-07-07-wecg.md))
 * 2022-06-23 ([minutes](2022-06-23-wecg.md))
 * 2022-06-09 ([minutes](2022-06-09-wecg.md))
 * 2022-05-26 ([minutes](2022-05-26-wecg.md))
