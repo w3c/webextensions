@@ -182,6 +182,7 @@ The following things are out-of-scope:
     * file extensions
     * mime types
 * WebDriver integration
+* Extension stores
 
 ## Deliverables
 
