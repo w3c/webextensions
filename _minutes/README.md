@@ -3,16 +3,16 @@
 The [WebExtensions Community group](https://www.w3.org/community/webextensions/) meets virtually every other week, for one hour.
 The instructions to join the meeting and agenda are available at https://www.w3.org/groups/cg/webextensions/calendar.
 
-* Thursday 8 AM PST (3 PM UTC)
+* Thursday 8 AM PDT (3 PM UTC)
 * To convert to your local time zone, see https://everytimezone.com/
 
 After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2022-09-01 at 8 AM PST = https://everytimezone.com/?t=630ff600,3c0
-- 2022-09-15 at 8 AM PST = https://everytimezone.com/?t=63226b00,3c0
-- 2022-09-15 at 13:30 AM PDT = TPAC 2022 ([issue 232](https://github.com/w3c/webextensions/issues/232) - [agenda item with time zone conversion](https://www.w3.org/events/meetings/7bbba4a3-8305-45cd-a998-67ede8b0a1a1)
+- 2022-09-15 at 8 AM PDT = https://everytimezone.com/?t=63226b00,384
+- 2022-09-15 at 13:30 AM PDT = TPAC 2022 ([issue 232](https://github.com/w3c/webextensions/issues/232) - [agenda item with time zone conversion](https://www.w3.org/events/meetings/7bbba4a3-8305-45cd-a998-67ede8b0a1a1))
+- 2022-09-29 at 8 AM PDT = https://everytimezone.com/?t=6334e000,384
 
 ## Past meetings
 
