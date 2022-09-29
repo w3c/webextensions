@@ -10,23 +10,24 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2022-09-29 at 8 AM PDT = https://everytimezone.com/?t=6334e000,384
 - 2022-10-13 at 8 AM PDT = https://everytimezone.com/?t=63475500,384
+- 2022-10-27 at 8 AM PDT = https://everytimezone.com/?t=6359ca00,384
 
 ## Past meetings
 
+* 2022-09-29 ([minutes](2022-09-29-wecg.md))
 * 2022-09-15 at TPAC ([minutes](2022-09-15-wecg-tpac.md))
 * 2022-09-15 ([minutes](2022-09-15-wecg.md))
 * 2022-09-01 ([minutes](2022-09-01-wecg.md))
 * 2022-08-18 ([minutes](2022-08-18-wecg.md))
 * 2022-08-04 ([minutes](2022-08-04-wecg.md))
-* 2022-07-21 ([minutes](2022-07-21-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2022**
 
+* 2022-09-29 ([minutes](2022-09-29-wecg.md))
 * 2022-09-15 at TPAC ([minutes](2022-09-15-wecg-tpac.md))
 * 2022-09-15 ([minutes](2022-09-15-wecg.md))
 * 2022-09-01 ([minutes](2022-09-01-wecg.md))
