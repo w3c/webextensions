@@ -5,3 +5,5 @@ Charter: [WebExtensions Community Group Charter](https://github.com/w3c/webexten
 WECG at W3C: https://www.w3.org/community/webextensions/
 
 Minutes of meetings: https://github.com/w3c/webextensions/tree/main/_minutes
+
+Contributing guidelines: [CONTRIBUTING.md](CONTRIBUTING.md)
