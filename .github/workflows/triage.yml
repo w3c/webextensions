@@ -1,0 +1,15 @@
+name: "Needs Triage"
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  triage:
+    if: github.event.issue.labels[0] == null
+    runs-on: ubuntu-latest
+    steps:
+      - uses: github/issue-labeler@v2.5
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          configuration-path: .github/labeler.yml
+          enable-versioned-regex: 0
