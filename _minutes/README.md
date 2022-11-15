@@ -15,18 +15,18 @@ After the end of each meeting, meeting notes are published here.
 
 ## Past meetings
 
+* 2022-11-15 User Scripts API kickoff ([minutes](2022-11-15-wecg-userscripts.md))
 * 2022-11-10 ([minutes](2022-11-10-wecg.md))
 * 2022-10-27 ([minutes](2022-10-27-wecg.md))
 * 2022-10-13 ([minutes](2022-10-13-wecg.md))
 * 2022-09-29 ([minutes](2022-09-29-wecg.md))
-* 2022-09-15 at TPAC ([minutes](2022-09-15-wecg-tpac.md))
-* 2022-09-15 ([minutes](2022-09-15-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2022**
 
+* 2022-11-15 User Scripts API kickoff ([minutes](2022-11-15-wecg-userscripts.md))
 * 2022-11-10 ([minutes](2022-11-10-wecg.md))
 * 2022-10-27 ([minutes](2022-10-27-wecg.md))
 * 2022-10-13 ([minutes](2022-10-13-wecg.md))
