@@ -28,7 +28,7 @@ User script support will have a multiphase design and implementation process. Th
 
 The rest of this proposal focuses on the first iteration with the following requirements:
 
-- **(A)** A mechanism to execute code in the main world 
+- **(A)** A mechanism to execute code in the main world
 - **(B)** The ability to execute code (with a separate CSP) in a world different from the main world and the extension's isolated world
 - **(C)** A separate user script permission
 - **(D)** Communication between JavaScript worlds
@@ -61,7 +61,7 @@ dictionary RegisteredUserScript {
   RunAt runAt;
   // Allows `USER_SCRIPT` (default) and `MAIN`
   // and returns error for `ISOLATED`.
-  ExecutionWorld? world; 
+  ExecutionWorld? world;
   string[]? includeGlobs;
   string[]? excludeGlobs;
 }
