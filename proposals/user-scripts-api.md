@@ -18,7 +18,7 @@ User scripts satisfy an important use case for power users, allowing them to qui
 
 ### Multi-phase design
 
-User script support will have a multiphase design and implementation process. The initial implementation has the following goals:
+User script support will have a multiphase design and implementation process.  The initial implementation has the following goals:
 
 - Achieving functional parity with MV2 for user scripts managers
 - Setting the foundations needed for future enhancements
@@ -37,7 +37,7 @@ The rest of this proposal focuses on the first iteration with the following requ
 
 ### New Namespace
 
-User scripting related features will be exposed in a new API namespace, tentatively named "userScripts". The proposal authors favor the use of a new namespace for several reasons.
+User scripting related features will be exposed in a new API namespace, tentatively named "userScripts".  The proposal authors favor the use of a new namespace for several reasons.
 
 1. **Better set developer expectations.**  The clear separation between user and content scripts will reduce confusion for developers for which API methods to use and what the capabilities / restrictions of each are.  This naming also more clearly communicates that this capability is not meant as a general purpose way to inject arbitrary scripts.
 
@@ -115,7 +115,7 @@ browser.userScripts.configureWorld(
   csp: string
 )
 ```
-- Extension can customize the `USER_SCRIPT` world CSP. This will only affect scripts registered for the `USER_SCRIPT` world.  Scripts registered for the `MAIN` world will abide by the main world CSP.
+- Extension can customize the `USER_SCRIPT` world CSP.  This will only affect scripts registered for the `USER_SCRIPT` world.  Scripts registered for the `MAIN` world will abide by the main world CSP.
 - By default, the `USER_SCRIPT` world CSP is undefined.
 - When `USER_SCRIPT` is undefined, the user agent will fall back to the extension’s `ISOLATED` world CSP
 
@@ -129,7 +129,7 @@ browser.userScripts.configureWorld(
 
 #### D. Communication between JavaScript worlds
 
-As mentioned in requirement A, the user script world can communicate with different JS worlds via [`window.postMessage()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) and DOM APIs. New communication methods are being considered as potential future enhancements.
+As mentioned in requirement A, the user script world can communicate with different JS worlds via [`window.postMessage()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) and DOM APIs.  New communication methods are being considered as potential future enhancements.
 
 ###  Other considerations
 
@@ -142,7 +142,7 @@ As mentioned in requirement A, the user script world can communicate with differ
 
 ### Browser level restrictions
 
-From here, each browser vendor should be able to implement their own restrictions. Chrome is exploring limiting the access to this API when the user has enabled developer mode (bug), but permission grants are outside of the scope of this API proposal. 
+From here, each browser vendor should be able to implement their own restrictions.  Chrome is exploring limiting the access to this API when the user has enabled developer mode (bug), but permission grants are outside of the scope of this API proposal.
 
 ## (Potential) Future Enhancements
 
@@ -156,8 +156,8 @@ In addition to specifying the execution world of `USER_SCRIPT`, we could allow e
 
 ### Execute user scripts one time
 
-Currently, user scripts are registered and executed every time it matches the origin in a persistent way. We may explore a way to execute a user script only one time to provide a new capability to user scripts (e.g `browser.userScripts.execute()`).
+Currently, user scripts are registered and executed every time it matches the origin in a persistent way.  We may explore a way to execute a user script only one time to provide a new capability to user scripts (e.g `browser.userScripts.execute()`).
 
 ## Discussion Guidelines
 
-Please keep discussion to the first iteration introduced by this proposal. Future enhancements can be tracked in the WECG [issue tracker](https://github.com/w3c/webextensions/issues).
+Please keep discussion to the first iteration introduced by this proposal.  Future enhancements can be tracked in the WECG [issue tracker](https://github.com/w3c/webextensions/issues).
