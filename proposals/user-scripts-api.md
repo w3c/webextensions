@@ -37,7 +37,7 @@ The rest of this proposal focuses on the first iteration with the following requ
 
 ### New Namespace
 
-User scripting related features will be exposed in a new API namespace, tentatively named "userScripts".  The proposal authors favor the use of a new namespace for several reasons.
+User scripting related features will be exposed in a new API namespace, tentatively named `userScripts`.  The proposal authors favor the use of a new namespace for several reasons.
 
 1. **Better set developer expectations.**  The clear separation between user and content scripts will reduce confusion for developers for which API methods to use and what the capabilities / restrictions of each are.  This naming also more clearly communicates that this capability is not meant as a general purpose way to inject arbitrary scripts.
 
@@ -96,17 +96,18 @@ browser.userScripts.update(
 #### A. A mechanism to execute code in the main world
 
 - User scripts can be registered in the `MAIN` world.
-- Extension can customize the `USER_SCRIPT` world CSP to inject a script tag into the host page (expanded in requirement B)
+- Extension can customize the `USER_SCRIPT` world's CSP to inject a script tag into the host page (expanded in requirement B)
 
 #### B. The ability to execute code (with a separate CSP) in a world different from the main world and the extension's isolated world
 
 ##### `USER_SCRIPT` World
 
 - Isolated from the web page (similar to other isolated worlds), but will be un-permissioned.  It will not have access to any extension APIs or cross-origin exceptions (these don't exist in Chrome, but do in other browsers).
-- Exempt from the page's CSP (see Relax CSP).
+- Exempt from the page's CSP (see [Relax CSP](#relax-csp)).
 - Share DOM with the web page.  Code from both worlds cannot directly interact with each other, except through DOM APIs.
 - Can communicate with different JS worlds via [`window.postMessage()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage).  A dedicated API to communicate between worlds is being considered as part of future work.
-When an asymmetric security relationship may exist, the `MAIN` world is considered to be less privileged than the `USER_SCRIPT` world
+
+When an asymmetric security relationship may exist, the `MAIN` world is considered to be less privileged than the `USER_SCRIPT` world.
 
 ##### Relax CSP
 
@@ -115,9 +116,10 @@ browser.userScripts.configureWorld(
   csp: string
 )
 ```
-- Extension can customize the `USER_SCRIPT` world CSP.  This will only affect scripts registered for the `USER_SCRIPT` world.  Scripts registered for the `MAIN` world will abide by the main world CSP.
+
+- Extension can customize the `USER_SCRIPT` world CSP.  This will only affect scripts registered for the `USER_SCRIPT` world.  Scripts registered for the `MAIN` world will abide by the main world's CSP.
 - By default, the `USER_SCRIPT` world CSP is undefined.
-- When `USER_SCRIPT` is undefined, the user agent will fall back to the extension’s `ISOLATED` world CSP
+- When `USER_SCRIPT` is undefined, the user agent will fall back to the extension’s `ISOLATED` world CSP.
 
 #### C. A separate user script permission
 
@@ -138,7 +140,7 @@ As mentioned in requirement A, the user script world can communicate with differ
   - Scripts registered via [`scripting.registerContentScripts()`](https://developer.chrome.com/docs/extensions/reference/scripting/#method-registerContentScripts)
   - Scripts registered via `userScripts.register()`
 - This ordering allows the extension to prepare the execution environment before the user script code is executed.
-- User scripts are always persisted across sessions, since the opposite behavior would be uncommon
+- User scripts are always persisted across sessions, since the opposite behavior would be uncommon.
 
 ### Browser level restrictions
 
