@@ -137,7 +137,7 @@ methods, one synchronous, and one asynchronous API methods:
     thread). If called from a service worker, it would likely only return the
     service worker `Context`.
 
-### Content Script Contexts
+### Content Script Contexts <a name="content-scripts-fw">Content Script Contexts</a>
 
 [Content scripts](https://developer.chrome.com/docs/extensions/mv3/content_scripts/)
 run in a separate
@@ -148,6 +148,16 @@ querying all Renderer processes in the browser to find content scripts. However,
 extensions could find it useful to have this `Context` metadata for places where
 the extension is executing javascript in a web page. It could be justified in
 the future if extension developers would have a significant need.
+
+### Messaging APIs Support `Context`s as Targets
+
+This new API now provides the ability to consider specifying targets via
+`Context`s to messaging APIs like `runtime.sendMessage()` or
+`tabs.sendMessage()`. With this support it would avoid
+[various workarounds](https://github.com/w3c/webextensions/pull/334#issuecomment-1343255899)
+needed to target specific pages with messages. `tabs.sendMessage()` accepting
+`Context`s would require work in retrieving content script `Context`s explained
+[above](#content-scripts-fw).
 
 ## <a name="footnotes">Footnotes</a>
 
