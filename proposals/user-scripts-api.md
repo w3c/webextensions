@@ -20,8 +20,8 @@ User scripts satisfy an important use case for power users, allowing them to qui
 
 User script support will have a multiphase design and implementation process.  The initial implementation has the following goals:
 
-- Achieving functional parity with MV2 for user scripts managers
-- Setting the foundations needed for future enhancements
+- Achieving functional parity with MV2 for user scripts managers, enabling migration to Manifest V3
+- Setting the foundations needed for future enhancements that will allow the browser to take more responsibility for the user script injection
 - Limiting abusability
 
 ### Initial Requirements
@@ -54,19 +54,26 @@ User scripting related features will be exposed in a new API namespace, tentativ
 ```
 dictionary RegisteredUserScript {
   boolean? allFrames;
-  string code;
+  ScriptSource[] js;
   string[]? excludeMatches;
   string id;
   string[]? matches;
+  // Default to `document_idle`
   RunAt runAt;
   // Allows `USER_SCRIPT` (default) and `MAIN`
   // and returns error for `ISOLATED`.
   ExecutionWorld? world;
+  // Implemented as disjunctions.
   string[]? includeGlobs;
   string[]? excludeGlobs;
 }
 dictionary UserScriptFilter {
   string[]? ids;
+}
+// Errors if both code and file are specified.
+dictionary ScriptSource {
+  string code;
+  string file;
 }
 ```
 
@@ -102,24 +109,30 @@ browser.userScripts.update(
 
 ##### `USER_SCRIPT` World
 
-- Isolated from the web page (similar to other isolated worlds), but will be un-permissioned.  It will not have access to any extension APIs or cross-origin exceptions (these don't exist in Chrome, but do in other browsers).
-- Exempt from the page's CSP (see [Relax CSP](#relax-csp)).
-- Share DOM with the web page.  Code from both worlds cannot directly interact with each other, except through DOM APIs.
-- Can communicate with different JS worlds via [`window.postMessage()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage).  A dedicated API to communicate between worlds is being considered as part of future work.
+- Exempt from the page's CSP, can customize its own CSP (e.g can allow injection of `unsafe-inline`).
+- Can communicate with the extension using extension messaging APIs (expanded under [Messaging](#Messaging)).
+- Isolated from the web page (similar to other isolated worlds), but will be largely un-permissioned. It will not have access to any extension APIs, except messaging APIs mentioned, and will not have any cross-origin exceptions (these don't exist in Chrome, but do in other browsers).  In the future, we may bring more APIs (such as chrome.dom APIs or a dedicated API to execute a script in the main world), but these APIs will not grant any additional privilege to the script beyond what it has to access the page content.
+- Can communicate with different JS worlds via `window.postMessage()`. A dedicated API to communicate between worlds is being considered as part of future work.
+- Shares DOM with the web page.  Code from both worlds cannot directly interact with each other, except through DOM APIs.
+- When an asymmetric security relationship may exist, the `MAIN` world is considered to be less privileged than the `USER_SCRIPT` world
 
-When an asymmetric security relationship may exist, the `MAIN` world is considered to be less privileged than the `USER_SCRIPT` world.
-
-##### Relax CSP
+##### Configuration
 
 ```
 browser.userScripts.configureWorld(
-  csp: string
+  csp?: string
+  enableMessaging?: bool
 )
 ```
+where
+- If csp is defined, it is used in the `USER_SCRIPT` world. Otherwise, the `ISOLATED` world CSP is used.
+- If `enableMessaging` is true, messaging APIs are exposed. Otherwise, if false or undefined, messaging APIs are not exposed.
+In the future, if we allow multiple user script worlds (see section in Future Work below), this method can be expanded to allow for a user script world identifier to customize a single user script world.
 
-- Extension can customize the `USER_SCRIPT` world CSP.  This will only affect scripts registered for the `USER_SCRIPT` world.  Scripts registered for the `MAIN` world will abide by the main world's CSP.
-- By default, the `USER_SCRIPT` world CSP is undefined.
-- When `USER_SCRIPT` is undefined, the user agent will fall back to the extension’s `ISOLATED` world CSP.
+##### Messaging
+
+User scripts can send messages to the extension using extension messaging APIs: `browser.runtime.sendMessage()` and `browser.runtime.connect()`. We leverage the runtime API (instead of introducing new userScripts.onMessage- and userScripts.sendMessage-style values) in order to keep extension messaging in the same API.  There is precedent in this (using the same API namespace to send messages from a different (and less trusted) context, as chrome.runtime is also the API used to send messages from web pages.
+Extensions can receive messages from user scripts with new event handlers: `browser.runtime.onUserScriptMessage()` and `browser.runtime.onUserScriptConnect()`. We want new events instead of using `browser.runtime.onMessage()` to make it clear the message is coming from a user script in a less-trusted context.  There is precedent for this in the form of onMessageExternal and onConnect external.
 
 #### C. A separate user script permission
 
@@ -131,16 +144,15 @@ browser.userScripts.configureWorld(
 
 #### D. Communication between JavaScript worlds
 
-As mentioned in requirement A, the user script world can communicate with different JS worlds via [`window.postMessage()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) and DOM APIs.  New communication methods are being considered as potential future enhancements.
+As mentioned in requirement A, the user script world can communicate with different JS worlds via [`window.postMessage()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) and DOM APIs.  New communication methods are being considered as potential future enhancements. This is clunky and imperfect, but allows extensions to migrate to MV3 leveraging the same logic they have in MV2 today.  New, dedicated communication methods are being considered as potential future enhancements.
 
 ###  Other considerations
 
 - When multiple scripts match and have the same runAt schedule, the execution order is:
   - Scripts registered via the content_scripts key in the manifest file
-  - Scripts registered via [`scripting.registerContentScripts()`](https://developer.chrome.com/docs/extensions/reference/scripting/#method-registerContentScripts)
-  - Scripts registered via `userScripts.register()`
-- This ordering allows the extension to prepare the execution environment before the user script code is executed.
-- User scripts are always persisted across sessions, since the opposite behavior would be uncommon.
+  - Scripts registered via [`scripting.registerContentScripts()`](https://developer.chrome.com/docs/extensions/reference/scripting/#method-registerContentScripts), following the order they were registered in. Updating a content script doesn't change its registration order.
+  - Scripts registered via `userScripts.register()`, following the order they were registered in. Updating a user script doesn’t change its registration order.
+- User scripts are always persisted across sessions, since the opposite behavior would be uncommon. (We may explore providing an option to customize this in the future.)
 
 ### Browser level restrictions
 
@@ -148,17 +160,29 @@ From here, each browser vendor should be able to implement their own restriction
 
 ## (Potential) Future Enhancements
 
-### `USER_SCRIPT` World Communication
+### `USER_SCRIPT`/ `ISOLATED` World Communication
 
 In the future, we may want to provide a more straightforward path for communication with a `USER_SCRIPT` world (as opposed to the [`window.postMessage()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) approach highlighted above).
 
 ### Separate `USER_SCRIPT` Worlds
 
-In addition to specifying the execution world of `USER_SCRIPT`, we could allow extensions to provide an identifier for the world.  Scripts injected with the same identifier would inject in the same world, while scripts with different world identifiers inject in different worlds.  This would allow for greater isolation between user scripts (if, for instance, the user had multiple unrelated user scripts injecting on the same page).
+In addition to specifying the execution world of `USER_SCRIPT`, we could allow extensions to inject in unique worlds by providing an identifier.  Scripts injected with the same identifier would inject in the same world, while scripts with different world identifiers inject in different worlds.  This would allow for greater isolation between user scripts (if, for instance, the user had multiple unrelated user scripts injecting on the same page).
 
 ### Execute user scripts one time
 
 Currently, user scripts are registered and executed every time it matches the origin in a persistent way.  We may explore a way to execute a user script only one time to provide a new capability to user scripts (e.g `browser.userScripts.execute()`).
+
+### Establish common behaviors for the CSP of scripts injected into the main world by an extension
+
+Create certain HTML elements even if their src, href or contents violates CSP of the page so that the users don't have to nuke the site's CSP header altogether.
+
+### Dedicated API to execute code in the `MAIN` world from another world
+
+Provide an explicit API for an extension to execute code on the main world from a `USER_SCRIPT` or `ISOLATED` world.
+
+### Direct access to the `MAIN` world from another world
+
+Provide a way for the `USER_SCRIPT` or `ISOLATED` world to directly access the MAIN world (e.g. via an iframe contentWindow-like object).
 
 ## Discussion Guidelines
 
