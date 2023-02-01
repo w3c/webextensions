@@ -79,6 +79,7 @@ dictionary ScriptSource {
 ```
 
 #### Methods
+When `callback` is omitted from these methods, a `Promise` is returned instead of `undefined`.
 
 ```
 browser.userScripts.register(
