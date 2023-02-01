@@ -92,7 +92,7 @@ browser.userScripts.unregister(
 )
 browser.userScripts.getScripts(
   filter?: UserScriptFilter[],
-  callback?: function
+  callback?: function // called with (RegisteredUserScript[]).
 )
 browser.userScripts.update(
   scripts: RegisteredUserScript[],
