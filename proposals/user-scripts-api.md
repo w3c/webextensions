@@ -71,10 +71,10 @@ dictionary RegisteredUserScript {
 dictionary UserScriptFilter {
   string[]? ids;
 }
-// Errors if both code and file are specified.
+// Must specify exactly one of: `file` or `code`.
 dictionary ScriptSource {
-  string code;
-  string file;
+  string? code;
+  string? file;
 }
 ```
 
