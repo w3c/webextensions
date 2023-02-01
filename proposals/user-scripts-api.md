@@ -95,7 +95,7 @@ browser.userScripts.getScripts(
   callback?: function
 )
 browser.userScripts.update(
-  scripts?: RegisteredUserScript[],
+  scripts: RegisteredUserScript[],
   callback?: function
 )
 ```
