@@ -123,17 +123,18 @@ browser.userScripts.update(
 ```
 browser.userScripts.configureWorld({
   csp?: string,
-  enableMessaging?: boolean,
+  messaging?: boolean,
 })
 ```
 where
 - If csp is defined, it is used in the `USER_SCRIPT` world. Otherwise, the `ISOLATED` world CSP is used.
-- If `enableMessaging` is true, messaging APIs are exposed. Otherwise, if false or undefined, messaging APIs are not exposed.
+- If `messaging` is true, messaging APIs are exposed. Otherwise, if false or undefined, messaging APIs are not exposed.
+- Configuration persists across sessions.
 In the future, if we allow multiple user script worlds (see section in Future Work below), this method can be expanded to allow for a user script world identifier to customize a single user script world.
 
 ##### Messaging
 
-User scripts can send messages to the extension using extension messaging APIs: `browser.runtime.sendMessage()` and `browser.runtime.connect()`. We leverage the runtime API (instead of introducing new userScripts.onMessage- and userScripts.sendMessage-style values) in order to keep extension messaging in the same API.  There is precedent in this (using the same API namespace to send messages from a different (and less trusted) context, as chrome.runtime is also the API used to send messages from web pages.
+User scripts can send messages to the extension using extension messaging APIs: `browser.runtime.sendMessage()` and `browser.runtime.connect()`. We leverage the runtime API (instead of introducing new userScripts.onMessage- and userScripts.sendMessage-style values) in order to keep extension messaging in the same API.  There is precedent in this (using the same API namespace to send messages from a different (and less trusted) context, as `chrome.runtime` is also the API used to send messages from web pages.
 Extensions can receive messages from user scripts with new event handlers: `browser.runtime.onUserScriptMessage()` and `browser.runtime.onUserScriptConnect()`. We want new events instead of using `browser.runtime.onMessage()` to make it clear the message is coming from a user script in a less-trusted context.  There is precedent for this in the form of onMessageExternal and onConnect external.
 
 #### C. A separate user script permission
