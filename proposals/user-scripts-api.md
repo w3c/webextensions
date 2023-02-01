@@ -188,4 +188,5 @@ Provide a way for the `USER_SCRIPT` or `ISOLATED` world to directly access the M
 
 ## Discussion Guidelines
 
-Please keep discussion to the first iteration introduced by this proposal.  Future enhancements can be tracked in the WECG [issue tracker](https://github.com/w3c/webextensions/issues).
+This is the first iteration of the userScripts API designed in https://github.com/w3c/webextensions/issues/279.
+Future enhancements can be tracked in the WECG [issue tracker](https://github.com/w3c/webextensions/issues).
