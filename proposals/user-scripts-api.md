@@ -63,7 +63,8 @@ dictionary RegisteredUserScript {
   // Allows `USER_SCRIPT` (default) and `MAIN`
   // and returns error for `ISOLATED`.
   ExecutionWorld? world;
-  // Implemented as disjunctions.
+  // Implemented as disjunction: runs in documents whose URL matches
+  // "matches" or "includeGlobs", and not "excludeMatches" nor "excludeGlobs".
   string[]? includeGlobs;
   string[]? excludeGlobs;
 }
