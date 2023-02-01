@@ -121,10 +121,10 @@ browser.userScripts.update(
 ##### Configuration
 
 ```
-browser.userScripts.configureWorld(
-  csp?: string
-  enableMessaging?: bool
-)
+browser.userScripts.configureWorld({
+  csp?: string,
+  enableMessaging?: boolean,
+})
 ```
 where
 - If csp is defined, it is used in the `USER_SCRIPT` world. Otherwise, the `ISOLATED` world CSP is used.
