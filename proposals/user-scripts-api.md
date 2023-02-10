@@ -130,6 +130,7 @@ where
 - If csp is defined, it is used in the `USER_SCRIPT` world. Otherwise, the `ISOLATED` world CSP is used.
 - If `messaging` is true, messaging APIs are exposed. Otherwise, if false or undefined, messaging APIs are not exposed.
 - Configuration persists across sessions.
+
 In the future, if we allow multiple user script worlds (see section in Future Work below), this method can be expanded to allow for a user script world identifier to customize a single user script world.
 
 ##### Messaging
