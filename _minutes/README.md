@@ -10,22 +10,23 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2023-02-02 at 8 AM PST = https://everytimezone.com/?t=63dafd00,3c0
 - 2023-02-16 at 8 AM PST = https://everytimezone.com/?t=63ed7200,3c0
+- 2023-03-02 at 8 AM PST = https://everytimezone.com/?t=63ffe700,3c0
 
 ## Past meetings
 
+* 2023-02-02 ([minutes](2023-02-02-wecg.md))
 * 2023-01-19 ([minutes](2023-01-19-wecg.md))
 * 2023-01-05 ([minutes](2023-01-05-wecg.md))
 * 2022-12-08 ([minutes](2022-12-08-wecg.md))
 * 2022-11-24 ([minutes](2022-11-24-wecg.md))
-* 2022-11-15 User Scripts API kickoff ([minutes](2022-11-15-wecg-userscripts.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2023**
 
+* 2023-02-02 ([minutes](2023-02-02-wecg.md))
 * 2023-01-19 ([minutes](2023-01-19-wecg.md))
 * 2023-01-05 ([minutes](2023-01-05-wecg.md))
 
