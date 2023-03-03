@@ -1,0 +1,34 @@
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+// This features file defines Chrome Apps APIs implemented under src/chrome.
+// See chrome/common/extensions/api/_features.md to understand this file, as
+// well as feature.h, simple_feature.h, and feature_provider.h.
+
+{
+  "arcAppsPrivate": {
+    "dependencies": ["permission:arcAppsPrivate"],
+    "contexts": ["blessed_extension"]
+  },
+  "browser": {
+    "dependencies": ["permission:browser"],
+    "contexts": ["blessed_extension"]
+  },
+  "enterprise.remoteApps": {
+    "dependencies": ["permission:enterprise.remoteApps"],
+    "contexts": ["blessed_extension"]
+  },
+  "firstRunPrivate": {
+    "dependencies": ["permission:firstRunPrivate"],
+    "contexts": ["blessed_extension"]
+  },
+  "mediaGalleries": {
+    "dependencies": ["permission:mediaGalleries"],
+    "contexts": ["blessed_extension"]
+  },
+  "syncFileSystem": {
+    "dependencies": ["permission:syncFileSystem"],
+    "contexts": ["blessed_extension"]
+  }
+}
