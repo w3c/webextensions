@@ -8,41 +8,41 @@ API method that allows an extension to get information about the "views" that
 are active for the extension. A "view" in this context is any HTML frame in the
 extension's process that commits to the extension origin; this may not be all
 the extension owns, such as in the case of incognito-mode frames. The returned
-values are a set of HTMLWindow objects, which the extension has permission to
+values are a set of `HTMLWindow` objects, which the extension has permission to
 reach directly into (as they are same-origin).
 
 Some common reasons for calling this method are: determining if a toolbar
 popup, tab, or options page is open; directly interacting with those pages by
-reaching into their HTMLWindow; etc.
+reaching into their `HTMLWindow`; etc.
 
 Chromium's implementation of Manifest V2 (MV2) allows for
-[background scripts (pages)](https://developer.chrome.com/docs/extensions/mv2/background_pages/)
-to call this API. This is possible because these scripts are themselves an
-extension frame (albeit one that is offscreen) and run on our main thread
-which allows them easy access to the JavaScript
+[background pages](https://developer.chrome.com/docs/extensions/mv2/background_pages/)
+to call this API. This is possible because these pages are themselves an
+extension frame (albeit one that isn't visibly rendered) and run on the main
+thread of the renderer; this allows them easy access to the JavaScript
 [`Window`](http://go/mdn/API/Window#instance_properties) objects provided by
 `extension.getViews()`.
 
 ## Problem
 
-However, with Chromium's migration to Manifest V3 (MV3), background pages
+With the migration to Manifest V3 (MV3), background pages
 [no longer exist](https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/);
 instead, an extension's background context is
 [service worker](https://developer.chrome.com/docs/workbox/service-worker-overview/)-based.
 For technical reasons<sup>[1](#footnotes)</sup>, service workers cannot access
 the [`Window`](http://go/mdn/API/Window#instance_properties) objects that
 `extension.getViews()` provides and it is not feasible to implement that with
-our browser design. Due to this we cannot provide access to the JavaScript
+our browser design. Due to this, we cannot provide access to the JavaScript
 context for these views, but we can allow an extension to query for them
 (determining if they exist) and target them for messaging purposes.
 
 ## Solution
 
 Considering the above situation, we'd like to propose a new extension API
-method, `runtime.getContexts()`, to asynchronously provide metadata about the
-view that is still useful for an extension. This will allow extension
-background scripts to identify the active contexts in the extension. For
-example, this can be used to target messages to send using
+method, `runtime.getContexts()`, to asynchronously provide metadata about
+associated contexts that is still useful for an extension. This will allow
+extension background scripts to identify the active contexts in the extension.
+For example, this can be used to target messages to send using
 [`runtime.sendMessage()`](https://developer.chrome.com/docs/extensions/reference/runtime/#method-sendMessage),
 etc.). Introducing this API will allow an easier migration from MV2.
 
@@ -91,6 +91,9 @@ extension.ContextType = {
   // Tabs the extension is running in.
   TAB: 'TAB',
   // Toolbar popups created by the extension.
+  // TODO: Should this be `TOOLBAR_POPUP` to avoid ambiguity with web popup
+  // windows? Or perhaps `ACTION_POPUP` to avoid tying it to a particular UI
+  // surface?
   POPUP: 'POPUP',
   // The background context for the extension (in Chromium, the extension
   // service worker).
@@ -99,6 +102,8 @@ extension.ContextType = {
   OFFSCREEN_DOCUMENT: 'OFFSCREEN_DOCUMENT',
 };
 ```
+
+This enum will be expanded in the future as more context types are added.
 
 The method signature will be defined as:
 
@@ -126,9 +131,9 @@ navigation.
 #### Incognito mode
 
 [Split-mode](https://developer.chrome.com/docs/extensions/mv3/manifest/incognito/#split)
-extensions will _not_ have access to the contexts from their associated profile.
-That is, the incognito extension process will not be able to access contexts
-from the non-incognito extension process, and vice versa.
+extensions will _not_ have access to the contexts from their corresponding
+profile. That is, the incognito extension process will not be able to access
+contexts from the non-incognito extension process, and vice versa.
 
 #### Sandboxed Pages
 
@@ -159,15 +164,29 @@ given context is the same as when they queried it).
     (such as service workers) and allows for potential future expansion where
     other URLs (such as script URLs) may exist.
 
+#### Default / Absent Values
+
+There is an inconsistency in how we represent a value for a context that doesn't
+have the associated trait, such as a `tabId` or `documentId` for an extension's
+background service worker context (which has neither an associated tab nor
+document). Some of these values -- `tabId`, `windowId`, and `frameId` -- use
+constant values to indicate "no state", such as `-1` for `tabId`. Others --
+`documentId`, `documentUrl`, and `documentOrigin` -- use undefined to indicate
+this.
+
+This is an artifact of existing APIs and precedence. Since many existing APIs
+use the constant integer values, we want to be consistent with those. However,
+for newly-introduced fields, we use the more intuitive `undefined` state.
+
 ## Future Work
 
 ### Messaging APIs Support `ContextId`s as Target
 
-Many extension messages are meant for a single target, but are broadcast to all
-extension contexts. With the ability to uniquely identify a single extension
-context, we will modify messaging APIs (such as `runtime.sendMessage()` and
-`runtime.connect()`) to allow specifying specific targets that should receive
-a message.
+In practice, many extension messages are meant for a single target, but are
+broadcast to all extension contexts. With the ability to uniquely identify a
+single extension context, we will modify messaging APIs (such as
+`runtime.sendMessage()` and `runtime.connect()`) to allow specifying specific
+targets that should receive a message.
 
 ### Multi Page Architecture Fields (`DocumentLifeCycle`, `FrameType`, and `parentDocumentId`, and `parentFrameId`)
 
@@ -206,8 +225,9 @@ such as `scriptUrl` (to indicate the content script's source).
 <sup>1</sup>: Non-main threads in a
 [Renderer](https://developer.chrome.com/blog/inside-browser-part3/) (where
 service workers run in Chromium) cannot access DOM concepts directly (they are
-only accessible from the main browser thread). Service workers run in these
-threads therefore they do not have access to the JavaScript
+only accessible from the main renderer thread). Service workers thus cannot
+synchronously access the JavaScript
 [`Window`](http://go/mdn/API/Window#instance_properties) objects provided by
-`extension.getViews()`. Supporting this access is likely years of software
-engineer work to implement.
+`extension.getViews()`. Supporting this access would take engineering years to
+change, and is likely undesirable due to the complexity and considerations it
+would introduce (threading and locking, slowing down main thread execution).
