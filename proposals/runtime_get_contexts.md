@@ -1,6 +1,6 @@
 # New API: runtime.getContexts()
 
-## Background / Summary
+## Background
 
 Chromium currently has the
 [`extension.getViews()`](https://developer.chrome.com/docs/extensions/reference/extension/#method-getViews)
@@ -40,7 +40,9 @@ context for these views, but we can allow an extension to query for them
 
 Considering the above situation, we'd like to propose a new extension API
 method, `runtime.getContexts()`, to asynchronously provide metadata about
-associated contexts that is still useful for an extension. This will allow
+associated contexts that is still useful for an extension. A "context" here is
+considered an environment running the extension's code; the contexts we will
+consider are described in more detail in later sections. This will allow
 extension background scripts to identify the active contexts in the extension.
 For example, this can be used to target messages to send using
 [`runtime.sendMessage()`](https://developer.chrome.com/docs/extensions/reference/runtime/#method-sendMessage),
@@ -54,8 +56,8 @@ separate APIs to query for the extension popup, offscreen documents, etc.
 This method will return an array of matching contexts, represented by a new
 `ExtensionContext` type. This will be defined as:
 
-```
-runtime.Context = {
+```js
+runtime.ExtensionContext = {
   // Context type -- tab, popup, etc.
   contextType: ContextType,
   // A unique identifier for this context.
@@ -86,7 +88,7 @@ runtime.Context = {
 `ContextType` will indicate the type of context retrieved. It is an enum
 defined as:
 
-```
+```js
 extension.ContextType = {
   // Tabs the extension is running in.
   TAB: 'TAB',
@@ -107,7 +109,7 @@ This enum will be expanded in the future as more context types are added.
 
 The method signature will be defined as:
 
-```
+```js
 runtime.getContexts(
   filter?: ContextFilter
 ): Promise<ExtensionContext[]>;
@@ -125,8 +127,27 @@ Each extension context will have a unique context ID, represented by a string.
 This is necessary to uniquely identify a context, since other fields may be
 non-unique (such as URL) or absent (such as documentId).
 
-Like `documentId`s, the extension `contextId` will update on (non-same-page)
-navigation.
+The `contextId` is unique and persistent for the lifetime of a context.  For
+contexts associated with a document, this means `contextId` behaves like
+`documentId`. For service worker contexts, the `contextId` is unique for the
+duration of the service worker context (but will be different across service
+worker restarts).
+
+#### Document Properties
+
+Document-related properties (`documentId`, `documentUrl`, `documentOrigin`)
+refer to the document associated with this context. For extension documents
+(such as tabs, popups, and offscreen documents), these will point to the
+extension (e.g., `chrome-extension://<id>/popup.html`). If/when we add support
+for content scripts, this will be the document the script is injected within.
+For service workers (which have no document), these are undefined.
+
+#### Frames
+
+`ContextType` refers to the overall embedder for a context; for instance,
+`ContextType.TAB` will be used for any context associated with a tab. This
+includes subframes and cached frames. Developers can determine the finer
+grained state of these via other properties, such as `frameId`.
 
 #### Incognito mode
 
@@ -135,10 +156,15 @@ extensions will _not_ have access to the contexts from their corresponding
 profile. That is, the incognito extension process will not be able to access
 contexts from the non-incognito extension process, and vice versa.
 
+For spanning-mode extensions, most contexts are accessible. Due to differences
+in browser architecture, exact details about whether incognito contexts (such as
+iframes in incognito pages) for spanning mode extensions are left as an exercise
+to the implementor.
+
 #### Sandboxed Pages
 
-Sandboxed pages will not be included in the returned contexts. They are
-a separate origin (`"null"`) and do not have access to extension APIs.
+Sandboxed pages will not be included in the returned contexts. They are on a
+separate origin (`"null"`) and do not have access to extension APIs.
 
 #### TOCTOU
 
