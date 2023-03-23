@@ -103,6 +103,8 @@ extension.ContextType = {
   BACKGROUND: 'BACKGROUND',
   // Offscreen documents for the extension.
   OFFSCREEN_DOCUMENT: 'OFFSCREEN_DOCUMENT',
+  // A side panel context. Currently under development in Chromium.
+  SIDE_PANEL,
 };
 ```
 
@@ -275,6 +277,17 @@ like to add these contexts in the future.
 
 With the content script additions, we may add new fields to `ExtensionContext`,
 such as `scriptUrl` (to indicate the content script's source).
+
+### Dev Tools Contexts
+
+Extensions can use the
+[Dev Tools API](https://developer.chrome.com/docs/extensions/mv3/devtools/] to
+extend the browser's developer tools. When doing so, these extensions can have
+a panel (an extension view) within the developer tools console. These views
+are a little different than others, though -- in Chromium, they commit to a
+different origin (one with a devtools:-scheme). These are also not currently
+returned from `chrome.extension.getViews()`. In the future, we will expand
+`runtime.getContexts()` with devtools context types to accommodate these.
 
 ## Footnotes
 
