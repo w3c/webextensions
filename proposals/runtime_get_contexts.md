@@ -20,8 +20,8 @@ Chromium's implementation of Manifest V2 (MV2) allows for
 to call this API. This is possible because these pages are themselves an
 extension frame (albeit one that isn't visibly rendered) and run on the main
 thread of the renderer; this allows them easy access to the JavaScript
-[`Window`](http://go/mdn/API/Window#instance_properties) objects provided by
-`extension.getViews()`.
+[`Window`](https://developer.mozilla.org/en-US/docs/Web/API/Window#instance_properties)
+objects provided by `extension.getViews()`.
 
 ## Problem
 
@@ -30,11 +30,12 @@ With the migration to Manifest V3 (MV3), background pages
 instead, an extension's background context is
 [service worker](https://developer.chrome.com/docs/workbox/service-worker-overview/)-based.
 For technical reasons<sup>[1](#footnotes)</sup>, service workers cannot access
-the [`Window`](http://go/mdn/API/Window#instance_properties) objects that
-`extension.getViews()` provides and it is not feasible to implement that with
-our browser design. Due to this, we cannot provide access to the JavaScript
-context for these views, but we can allow an extension to query for them
-(determining if they exist) and target them for messaging purposes.
+the [`Window`](https://developer.mozilla.org/en-US/docs/Web/API/Window#instance_properties)
+objects that `extension.getViews()` provides and it is not feasible to
+implement that with our browser design. Due to this, we cannot provide access
+to the JavaScript context for these views, but we can allow an extension to
+query for them (determining if they exist) and target them for messaging
+purposes.
 
 ## Solution
 
@@ -115,9 +116,38 @@ runtime.getContexts(
 ): Promise<ExtensionContext[]>;
 ```
 
-The `filter` argument will be used to filter down to a particular type of
-context. It will share the same properties as `ExtensionContext`, but will
-have all fields be optional. Any omitted field matches all available contexts.
+A `ContextFilter` will be defined as:
+
+```js
+runtime.ContextFilter = {
+  contextTypes?: ContextType[],
+  contextIds?: string[],
+  tabIds?: int[],
+  windowIds?: int[],
+  documentIds?: string[],
+  frameIds?: int[],
+  documentUrls?: string[],
+  documentOrigins?: string[],
+  incognito?: boolean,
+}
+```
+
+This type will be used to query for specific contexts. For each array property,
+a given `ExtensionContext` matches if it matches any properties within the
+array. If a property is undefined, all contexts match; thus, a filter of `{}`
+matches all available contexts. Note that `incognito`, as a boolean, is not an
+array (because to match both `true` and `false`, it is simply omitted).
+
+As examples:
+* `{}` matches all available contexts.
+* `{incognito: false}` matches all non-incognito contexts.
+* `{contextTypes: ['TAB', 'POPUP']}` matches any `ExtensionContext` that is
+  either a tab or a popup.
+* `{contextTypes: ['TAB'], tabIds: [1, 2, 3]}` matches any `ExtensionContext
+  that is a tab where that context is in a tab with the ID `1`, `2`, or `3`.
+* `{contextTypes: ['OFFSCREEN_DOCUMENT'], tabIds: [1, 2, 3]}` would inherently
+  match no contexts, since no offscreen documents are not hosted in tabs and
+  thus cannot match.
 
 ### Additional Considerations
 
