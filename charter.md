@@ -202,12 +202,6 @@ Extensions](https://browserext.github.io/browserext/). Much good
 progress was made, but unfortunately the spec did not gain sufficient
 interest from implementers and work on it ceased.
 
-The editors for this deliverable are:
-
-  * Mukul Purohit (Microsoft)
-  * Tomislav Jovanovic (Mozilla)
-
-
 ### Non-Normative Reports
 
 The group may produce other Community Group Reports within the scope of
@@ -234,7 +228,7 @@ standardization in an appropriate venue.
 
 The Chairs of the WebExtensions Community Group are:
 
-  * Simeon Vincent (Google)
+  * Simeon Vincent (Indepdent)
   * Timothy Hatcher (Apple)
 
 The Chairs are responsible for the day-to-day running of the group,
@@ -260,6 +254,12 @@ The Chairs have a number of other powers and responsibilities which are
 defined throughout this document.
 
 ## Editors
+
+The Editors of the WebExtensions Community Group are:
+
+  * Mukul Purohit (Microsoft)
+  * Tomislav Jovanovic (Mozilla)
+  * Oliver Dunk (Google)
 
 Each [Deliverable](#deliverables) has one or more Editors who are
 appointed by the [Chairs](#chairs).
