@@ -228,8 +228,8 @@ standardization in an appropriate venue.
 
 The Chairs of the WebExtensions Community Group are:
 
-  * Simeon Vincent (Independent)
-  * Timothy Hatcher (Apple)
+  * Simeon Vincent, Independent (and before at Google)
+  * Timothy Hatcher, Apple
 
 The Chairs are responsible for the day-to-day running of the group,
 including:
@@ -257,9 +257,9 @@ defined throughout this document.
 
 The Editors of the WebExtensions Community Group are:
 
-  * Mukul Purohit (Microsoft)
-  * Tomislav Jovanovic (Mozilla)
-  * Oliver Dunk (Google)
+  * Mukul Purohit, Microsoft
+  * Tomislav Jovanovic, Mozilla
+  * Oliver Dunk, Google
 
 Each [Deliverable](#deliverables) has one or more Editors who are
 appointed by the [Chairs](#chairs).
