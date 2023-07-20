@@ -15,17 +15,18 @@ After the end of each meeting, meeting notes are published here.
 
 ## Past meetings
 
+* 2023-07-20 ([minutes](2023-07-20-wecg.md))
 * 2023-07-06 ([minutes](2023-07-06-wecg.md))
 * 2023-06-22 ([minutes](2023-06-22-wecg.md))
 * 2023-06-08 ([minutes](2023-06-08-wecg.md))
 * 2023-05-25 ([minutes](2023-05-25-wecg.md))
-* 2023-05-11 ([minutes](2023-05-11-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2023**
 
+* 2023-07-20 ([minutes](2023-07-20-wecg.md))
 * 2023-07-06 ([minutes](2023-07-06-wecg.md))
 * 2023-06-22 ([minutes](2023-06-22-wecg.md))
 * 2023-06-08 ([minutes](2023-06-08-wecg.md))
