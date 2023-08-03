@@ -10,22 +10,23 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2023-07-20 at 8 AM PDT = https://everytimezone.com/?t=64b87900,384
-- 2023-08-03 at 8 AM PDT = https://everytimezone.com/?t=64caee00,384
+- 2023-08-17 at 8 AM PDT = https://everytimezone.com/?t=64dd6300,384
+- 2023-08-31 at 8 AM PDT = https://everytimezone.com/?t=64efd800,384
 
 ## Past meetings
 
+* 2023-08-03 ([minutes](2023-08-03-wecg.md))
 * 2023-07-20 ([minutes](2023-07-20-wecg.md))
 * 2023-07-06 ([minutes](2023-07-06-wecg.md))
 * 2023-06-22 ([minutes](2023-06-22-wecg.md))
 * 2023-06-08 ([minutes](2023-06-08-wecg.md))
-* 2023-05-25 ([minutes](2023-05-25-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2023**
 
+* 2023-08-03 ([minutes](2023-08-03-wecg.md))
 * 2023-07-20 ([minutes](2023-07-20-wecg.md))
 * 2023-07-06 ([minutes](2023-07-06-wecg.md))
 * 2023-06-22 ([minutes](2023-06-22-wecg.md))
