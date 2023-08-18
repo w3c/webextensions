@@ -1,4 +1,5 @@
 # New API: browser.readingList()
+Contributors: dljames@chromium.org
 
 ## Background
 
@@ -26,41 +27,56 @@ The `browser.readingList` will introduce a few new types and functions. Below is
 ## Types
 A ReadingListEntry is the extensions representation of a Reading List object. Where every URL stored in the Reading List must be unique.
 ```js
-
-dictionary ReadingListEntry {
-	// The url of the entry. Must have a valid protocol (Ex: http, https)
-	// and hostname (Ex: www.google.com). Can contain query parameters.
+ dictionary ReadingListEntry {
+	// The url of the entry.
 	DOMString url;
 	// The title of the entry.
 	DOMString title;
 	// True if the entry has been read.
 	boolean hasBeenRead;
-}
+	// The last update time of the entry.
+	// Recorded in microseconds since Jan 1st 1970.
+	double lastUpdateTime;
+	// The creation time of the entry.
+	// Recorded in microseconds since Jan 1st 1970.
+	double creationTime;
+ };
+```
+
+AddEntryOptions are the objects used to add entries into the Reading List.
+```js
+dictionary AddEntryOptions {
+	// The url of the entry.
+	DOMString url;
+	// The title of the entry.
+	DOMString title;
+	// True if the entry has been read.
+	boolean hasBeenRead;
+};
+
 ```
 
 A QueryInfo is the object used to query for ReadingListEntries in the Reading List.
 ```js
 dictionary QueryInfo {
-	// The url of the entry. Must have a valid protocol (Ex: http, https)
-	// and hostname (Ex: www.google.com). Can contain query parameters.
-  DOMString? url;
-  // The title to query for.
-  DOMString? title;
-  // The read status to query for.
-  boolean? hasBeenRead;
+	// The url to query for.
+	DOMString? url;
+	// The title to query for.
+	DOMString? title;
+	// The read status to query for.
+	boolean? hasBeenRead;
 }
 ```
 
 An UpdateEntryOptions is the object used to update a specific ReadingListEntry in the Reading List. A URL must be supplied.
 ```js
 dictionary UpdateEntryOptions {
-	// The url of the entry. Must have a valid protocol (Ex: http, https)
-	// and hostname (Ex: www.google.com). Can contain query parameters.
-  DOMString url;
-  // The updated title.
-  DOMString? title;
-  // The updated read status.
-  boolean? hasBeenRead;
+	// The url that will be updated.
+	DOMString url;
+	// The updated title.
+	DOMString? title;
+	// The updated read status.
+	boolean? hasBeenRead;
 }
 ```
 
@@ -121,6 +137,32 @@ The initially supported functions of the API.
 
 ```
 
+## Events
+The initially supported events this api will emit.
+
+### onEntryAdded()
+> Triggered when a ReadingListEntry was added to the reading list.
+>
+> |entry|: The entry that was added.
+```js
+static void onEntryAdded(ReadingListEntry entry);
+```
+### onEntryWillBeRemoved()
+> Triggered when a ReadingListEntry is about to be removed from the
+> reading list.
+>
+> |entry|: The entry that will be removed.
+```js
+static void onEntryWillBeRemoved(ReadingListEntry entry);
+```
+
+### onEntryUpdated()
+> Triggered when a ReadingListEntry was updated in the reading list.
+>
+> |entry|: The entry that was updated.
+```js
+static void onEntryUpdated(ReadingListEntry entry);
+```
 ### Additional Considerations
 
 #### Incognito mode
@@ -132,33 +174,30 @@ The `browser.readingList` API can be available in incognito mode assuming the us
 ```js
 namespace readingList {
  dictionary ReadingListEntry {
-	// The url of the entry. Must have a valid protocol (Ex: http, https)
-	// and hostname (Ex: www.google.com). Can contain query parameters.
-  DOMString url;
-  // The title of the entry.
-  DOMString title;
-  // True if the entry has been read.
-  boolean hasBeenRead;
- }
+	// The url of the entry.
+	DOMString url;
+	// The title of the entry.
+	DOMString title;
+	// True if the entry has been read.
+	boolean hasBeenRead;
+ };
 
 dictionary QueryInfo {
-	// The url of the entry. Must have a valid protocol (Ex: http, https)
-	// and hostname (Ex: www.google.com). Can contain query parameters.
-  DOMString? url;
-  // The title to query for.
-  DOMString? title;
-  // The read status to query for.
-  boolean? hasBeenRead;
+	// The url to query for.
+	DOMString? url;
+	// The title to query for.
+	DOMString? title;
+	// The read status to query for.
+	boolean? hasBeenRead;
 }
 
 dictionary UpdateEntryOptions {
-	// The url of the entry. Must have a valid protocol (Ex: http, https)
-	// and hostname (Ex: www.google.com). Can contain query parameters.
-  DOMString url;
-  // The updated title.
-  DOMString? title;
-  // The updated read status.
-  boolean? hasBeenRead;
+	// The url that will be updated.
+	DOMString url;
+	// The updated title.
+	DOMString? title;
+	// The updated read status.
+	boolean? hasBeenRead;
 }
 
  callback AddEntryCallback = void ();
@@ -179,6 +218,21 @@ dictionary UpdateEntryOptions {
 
    // Updates a reading list entries title and hasBeenRead status if it exists.
    [supportsPromises] static void updateEntry(UpdateEntryOptions info, UpdateEntryCallback callback);
+ };
+
+ interface Events {
+   // Triggered when a ReadingListEntry was added to the reading list.
+   // |entry|: The entry that was added.
+   static void onEntryAdded(ReadingListEntry entry);
+
+   // Triggered when a ReadingListEntry is about to be removed from the
+   // reading list.
+   // |entry|: The entry that will be removed.
+   static void onEntryWillBeRemoved(ReadingListEntry entry);
+
+   // Triggered when a ReadingListEntry was updated in the reading list.
+   // |entry|: The entry that was updated.
+   static void onEntryUpdated(ReadingListEntry entry);
  };
 };
 ```
