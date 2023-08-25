@@ -245,15 +245,15 @@ dictionary UpdateEntryOptions {
  interface Events {   
    // Triggered when a ReadingListEntry is added to the reading list.
    // |entry|: The entry that was added.
-   [supportsPromises] static void onEntryAdded(ReadingListEntry entry);
+   static void onEntryAdded(ReadingListEntry entry);
    
    // Triggered when a ReadingListEntry is removed from the reading list.
    // |entry|: The entry that was removed.
-   [supportsPromises] static void onEntryRemoved(ReadingListEntry entry);
+   static void onEntryRemoved(ReadingListEntry entry);
 
    // Triggered when a ReadingListEntry was updated in the reading list.
    // |entry|: The entry that was updated.
-   [supportsPromises] static void onEntryUpdated(ReadingListEntry entry);
+   static void onEntryUpdated(ReadingListEntry entry);
  };
 };
 
