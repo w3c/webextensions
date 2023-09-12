@@ -10,25 +10,25 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2023-09-11 at 5 PM CET at [TPAC 2023](https://github.com/w3c/webextensions/issues/385) = https://everytimezone.com/?t=64fe5880,384
 - 2023-09-12 at 5 PM CET at [TPAC 2023](https://github.com/w3c/webextensions/issues/385) = https://everytimezone.com/?t=64ffaa00,384
 - 2023-09-14 at 8 AM PDT = https://everytimezone.com/?t=65024d00,384
 - 2023-09-28 at 8 AM PDT = https://everytimezone.com/?t=6514c200,384
 
 ## Past meetings
 
+* 2023-09-11 at TPAC ([minutes](2023-09-11-wecg-tpac.md))
 * 2023-08-31 ([minutes](2023-08-31-wecg.md))
 * 2023-08-17 ([minutes](2023-08-17-wecg.md))
 * 2023-08-03 ([minutes](2023-08-03-wecg.md))
 * 2023-07-20 ([minutes](2023-07-20-wecg.md))
 * 2023-07-06 ([minutes](2023-07-06-wecg.md))
-* 2023-06-22 ([minutes](2023-06-22-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2023**
 
+* 2023-09-11 at TPAC ([minutes](2023-09-11-wecg-tpac.md))
 * 2023-08-31 ([minutes](2023-08-31-wecg.md))
 * 2023-08-17 ([minutes](2023-08-17-wecg.md))
 * 2023-08-03 ([minutes](2023-08-03-wecg.md))
