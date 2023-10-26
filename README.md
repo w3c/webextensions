@@ -4,7 +4,7 @@ The charter of the WebExtensions Community Group (WECG).
 
 🌐 WECG at W3C: https://www.w3.org/community/webextensions/
 
-📆 WECG at Calendar: https://www.w3.org/groups/cg/webextensions/calendar/
+📆 WECG calendar: https://www.w3.org/groups/cg/webextensions/calendar/
 
 📝 Minutes of meetings: https://github.com/w3c/webextensions/tree/main/_minutes
 
