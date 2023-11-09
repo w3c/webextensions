@@ -26,7 +26,7 @@ If developers want to keep states persistent across B, C or D, but the default p
 
 | API  | Chrome | Firefox | Safari |
 | ------------- | ------------- | ------------- | ------------- |
-| action.set* (e.g. setBadgeText)| A: in MV3 <br> B: in MV2 | A | A |
+| action.set* (e.g. setBadgeText)| A: in MV3 <br> B + D: in MV2 | A | A |
 | [alarms](https://developer.chrome.com/docs/extensions/reference/alarms)  | B + C + D (except [a bug](https://crbug.com/1285798)) | A | A |
 | [contextMenus](https://developer.chrome.com/docs/extensions/reference/contextMenus) | B + D | B + D | A |
 | [commands](https://developer.chrome.com/docs/extensions/reference/commands) | B + C + D (can't set by api) | | |
