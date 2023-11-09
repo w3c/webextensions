@@ -3,18 +3,19 @@
 The [WebExtensions Community group](https://www.w3.org/community/webextensions/) meets virtually every other week, for one hour.
 The instructions to join the meeting and agenda are available at https://www.w3.org/groups/cg/webextensions/calendar.
 
-* Thursday 8 AM PDT (3 PM UTC)
+* Thursday 8 AM PST (3 PM UTC)
 * To convert to your local time zone, see https://everytimezone.com/
 
 After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2023-10-26 at 8 AM PDT = https://everytimezone.com/?t=6539ac00,384
-- 2023-11-07 at 8 AM PST = https://everytimezone.com/?t=6539ac00,384
+- 2023-11-09 at 8 AM PST = https://everytimezone.com/?t=654c2100,3c0
+- 2023-11-23 at 8 AM PST = https://everytimezone.com/?t=655e9600,3c0
 
 ## Past meetings
 
+* 2023-10-26 ([minutes](2023-10-26-wecg.md))
 * 2023-10-12 ([minutes](2023-10-12-wecg.md))
 * 2023-09-28 ([minutes](2023-09-28-wecg.md))
 * 2023-09-14 ([minutes](2023-09-14-wecg.md))
@@ -22,13 +23,13 @@ After the end of each meeting, meeting notes are published here.
 * 2023-09-11 at TPAC ([minutes](2023-09-11-wecg-tpac.md))
 * 2023-09-11 until 2023-09-14, extra meetings at TPAC ([minutes](2023-09-11-2023-09-14-tpac-extra.md))
 * 2023-08-31 ([minutes](2023-08-31-wecg.md))
-* 2023-08-17 ([minutes](2023-08-17-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2023**
 
+* 2023-10-26 ([minutes](2023-10-26-wecg.md))
 * 2023-10-12 ([minutes](2023-10-12-wecg.md))
 * 2023-09-28 ([minutes](2023-09-28-wecg.md))
 * 2023-09-14 ([minutes](2023-09-14-wecg.md))
