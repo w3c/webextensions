@@ -176,7 +176,7 @@ Issue(62): Specify localization handling.
 
 ### Uniqueness of extension IDs
 
-### Promises & callbacks
+### Promises and callbacks
 
 ### User gestures and activeTab
 
