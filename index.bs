@@ -174,7 +174,7 @@ Issue(62): Specify localization handling.
 
 ## Concepts
 
-### Uniqueness of extnsion IDs
+### Uniqueness of extension IDs
 
 ### Promises & callbacks
 
