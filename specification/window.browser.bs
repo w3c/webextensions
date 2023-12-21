@@ -24,6 +24,9 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
   ## Introduction {#introduction}
   <em>This section is non-normative.</em>
 
+  Browser extensions are programs to extend the capabilities of web browsers.
+  Although not standardized at first, web browsers have independently implemented a common interoperable set of extension APIs, called WebExtensions.
+  
   Modern WebExtensions are an evolution of a system originally introduced in
   Chrome version 3. In that system, any API that was added was put under the
   <code>chrome</code> namespace. When WebExtensions were adopted outside of
