@@ -52,6 +52,6 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
 
   <pre class="idl">
   partial interface Window {
-    readonly attribute object browser;
+   attribute object browser;
   };
 </pre>
