@@ -48,13 +48,33 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
       <a attribute lt="browser"><code>window.browser</code></a> API
     </h3>
 
-  {{browser}} is UA defined attribute exposed on {{window}}. When implemented,
-  it MUST be used only for WebExtension related functionality.
+    {{browser}} is UA defined attribute exposed on {{window}}. When implemented,
+    it MUST be used only for WebExtension related functionality.
   </section>
 
 
-  <pre class="idl">
+<pre class="idl">
   partial interface Window {
    attribute object browser;
+  };
+
+</pre>
+
+  <section>
+    <h3 id="worker-interface">
+      Worker API
+    </h3>
+
+    When {{browser}} is defined on {{window}}, it SHOULD also be implemented on {{ServiceWorkerGlobalScope}} and {{DedicatedWorkerGlobalScope}}.
+    It MUST be used exclusivly for WebExtension purposes, however the contents of each instance of {{browser}} is UA defined.
+  </section>
+
+<pre class="idl">
+  partial interface DedicatedWorkerGlobalScope {
+    attribute object browser;
+  };
+
+  partial interface ServiceWorkerGlobalScope {
+    attribute object browser;
   };
 </pre>

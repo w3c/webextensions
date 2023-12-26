@@ -6,8 +6,8 @@
   <meta content="UD" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD" rel="stylesheet">
   <meta content="Bikeshed version fe5461827, updated Mon Dec 18 10:46:21 2023 -0800" name="generator">
-  <link href="https://patrickkettner.github.io/window.browser" rel="canonical">
-  <meta content="8e082534c5a28f252dae33ac7618b7145b1b02fb" name="revision">
+  <link href="https://w3c.github.io/webextensions/specification/window.browser.html" rel="canonical">
+  <meta content="0c9789208a9c689ccc89ab3a2e6e1d055ddde021" name="revision">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
     color: var(--a-normal-text);
@@ -693,13 +693,15 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">window.browser</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2023-12-20">20 December 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2023-12-26">26 December 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
      <dl>
       <dt>This version:
-      <dd><a class="u-url" href="https://patrickkettner.github.io/window.browser">https://patrickkettner.github.io/window.browser</a>
+      <dd><a class="u-url" href="https://w3c.github.io/webextensions/specification/window.browser.html">https://w3c.github.io/webextensions/specification/window.browser.html</a>
+      <dt>Issue Tracking:
+      <dd><a href="https://github.com/w3c/webextensions/issues/">GitHub</a>
       <dt class="editor">Editor:
       <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:patrickkettner@google.com">Patrick Kettner</a> (<span class="p-org org">Google</span>)
      </dl>
@@ -751,6 +753,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <section class="non-normative">
     <h3 class="heading settled" id="introduction"><span class="content">Introduction {#introduction}</span></h3>
      <em>This section is non-normative.</em> 
+    <p>Browser extensions are programs to extend the capabilities of web browsers.
+  Although not standardized at first, web browsers have independently implemented a common interoperable set of extension APIs, called WebExtensions.</p>
     <p>Modern WebExtensions are an evolution of a system originally introduced in
   Chrome version 3. In that system, any API that was added was put under the <code>chrome</code> namespace. When WebExtensions were adopted outside of
   Chromium, other vendors used the more neutral <code>browser</code> namespace.
@@ -764,12 +768,26 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   and are left up to User Agent implementation.</p>
    </section>
    <section>
-    <h3 class="heading settled" id="window-interface"><span class="content"> <a class="idl-code" data-link-type="attribute" href="#dom-window-browser" id="ref-for-dom-window-browser"><code>window.browser</code></a> API </span></h3>
-    <p><code class="idl"><a data-link-type="idl" href="#dom-window-browser" id="ref-for-dom-window-browser①">browser</a></code> is UA defined attribute exposed on <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-window" id="ref-for-dom-window">window</a></code>. When implemented,
-  it MUST be used only for WebExtension related functionality.</p>
+    <h3 class="heading settled" id="window-interface"><span class="content"> <a class="idl-code" data-link-type="attribute" href="#dom-serviceworkerglobalscope-browser" id="ref-for-dom-serviceworkerglobalscope-browser"><code>window.browser</code></a> API </span></h3>
+    <p><code class="idl"><a data-link-type="idl" href="#dom-dedicatedworkerglobalscope-browser" id="ref-for-dom-dedicatedworkerglobalscope-browser">browser</a></code> is UA defined attribute exposed on <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-window" id="ref-for-dom-window">window</a></code>. When implemented,
+    it MUST be used only for WebExtension related functionality.</p>
    </section>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window"><c- g>Window</c-></a> {
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-object" id="ref-for-idl-object"><c- b>object</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="attribute" data-export data-readonly data-type="object" id="dom-window-browser"><code><c- g>browser</c-></code></dfn>;
+ <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-object" id="ref-for-idl-object"><c- b>object</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="attribute" data-export data-type="object" id="dom-window-browser"><code><c- g>browser</c-></code></dfn>;
+};
+
+</pre>
+   <section>
+    <h3 class="heading settled" id="worker-interface"><span class="content"> Worker API </span></h3>
+    <p>When <code class="idl"><a data-link-type="idl" href="#dom-window-browser" id="ref-for-dom-window-browser">browser</a></code> is defined on <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-window" id="ref-for-dom-window①">window</a></code>, it SHOULD also be implemented on <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope" id="ref-for-serviceworkerglobalscope">ServiceWorkerGlobalScope</a></code> and <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/workers.html#dedicatedworkerglobalscope" id="ref-for-dedicatedworkerglobalscope">DedicatedWorkerGlobalScope</a></code>.
+    It MUST be used exclusivly for WebExtension purposes, however the contents of each instance of <code class="idl"><a data-link-type="idl" href="#dom-dedicatedworkerglobalscope-browser" id="ref-for-dom-dedicatedworkerglobalscope-browser①">browser</a></code> is UA defined.</p>
+   </section>
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/workers.html#dedicatedworkerglobalscope" id="ref-for-dedicatedworkerglobalscope①"><c- g>DedicatedWorkerGlobalScope</c-></a> {
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-object" id="ref-for-idl-object①"><c- b>object</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="DedicatedWorkerGlobalScope" data-dfn-type="attribute" data-export data-type="object" id="dom-dedicatedworkerglobalscope-browser"><code><c- g>browser</c-></code></dfn>;
+};
+
+<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope" id="ref-for-serviceworkerglobalscope①"><c- g>ServiceWorkerGlobalScope</c-></a> {
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-object" id="ref-for-idl-object②"><c- b>object</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="ServiceWorkerGlobalScope" data-dfn-type="attribute" data-export data-type="object" id="dom-serviceworkerglobalscope-browser"><code><c- g>browser</c-></code></dfn>;
 };
 </pre>
   </main>
@@ -804,15 +822,27 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span></h3>
   <ul class="index">
-   <li><a href="#dom-window-browser">browser</a><span>, in § Unnumbered section</span>
+   <li>
+    browser
+    <ul>
+     <li><a href="#dom-dedicatedworkerglobalscope-browser">attribute for DedicatedWorkerGlobalScope</a><span>, in § Unnumbered section</span>
+     <li><a href="#dom-serviceworkerglobalscope-browser">attribute for ServiceWorkerGlobalScope</a><span>, in § Unnumbered section</span>
+     <li><a href="#dom-window-browser">attribute for Window</a><span>, in § Unnumbered section</span>
+    </ul>
   </ul>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span></h3>
   <ul class="index">
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="b8308563">DedicatedWorkerGlobalScope</span>
      <li><span class="dfn-paneled" id="5d7209e9">Window</span>
      <li><span class="dfn-paneled" id="9f156e6b">window</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[SERVICE-WORKERS]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="86d2a717">ServiceWorkerGlobalScope</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
@@ -827,12 +857,23 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
+   <dt id="biblio-service-workers">[SERVICE-WORKERS]
+   <dd>Jake Archibald; Marijn Kruisselbrink. <a href="https://w3c.github.io/ServiceWorker/"><cite>Service Workers</cite></a>. URL: <a href="https://w3c.github.io/ServiceWorker/">https://w3c.github.io/ServiceWorker/</a>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span></h2>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"><c- g>Window</c-></a> {
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-object"><c- b>object</c-></a> <a data-readonly data-type="object" href="#dom-window-browser"><code><c- g>browser</c-></code></a>;
+ <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-object"><c- b>object</c-></a> <a data-type="object" href="#dom-window-browser"><code><c- g>browser</c-></code></a>;
+};
+
+
+<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/workers.html#dedicatedworkerglobalscope"><c- g>DedicatedWorkerGlobalScope</c-></a> {
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-object"><c- b>object</c-></a> <a data-type="object" href="#dom-dedicatedworkerglobalscope-browser"><code><c- g>browser</c-></code></a>;
+};
+
+<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope"><c- g>ServiceWorkerGlobalScope</c-></a> {
+  <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-object"><c- b>object</c-></a> <a data-type="object" href="#dom-serviceworkerglobalscope-browser"><code><c- g>browser</c-></code></a>;
 };
 
 </pre>
@@ -1037,9 +1078,13 @@ function parseHTML(markup) {
 {
 let dfnPanelData = {
 "5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"}],"title":"Unnumbered Section"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
-"9f156e6b": {"dfnID":"9f156e6b","dfnText":"window","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window"}],"title":"\n      window.browser API\n    "}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-window"},
-"dom-window-browser": {"dfnID":"dom-window-browser","dfnText":"browser","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-window-browser"},{"id":"ref-for-dom-window-browser\u2460"}],"title":"\n      window.browser API\n    "}],"url":"#dom-window-browser"},
-"efd1ec5d": {"dfnID":"efd1ec5d","dfnText":"object","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-object"}],"title":"Unnumbered Section"}],"url":"https://webidl.spec.whatwg.org/#idl-object"},
+"86d2a717": {"dfnID":"86d2a717","dfnText":"ServiceWorkerGlobalScope","external":true,"refSections":[{"refs":[{"id":"ref-for-serviceworkerglobalscope"}],"title":"\n      Worker API\n    "},{"refs":[{"id":"ref-for-serviceworkerglobalscope\u2460"}],"title":"Unnumbered Section"}],"url":"https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope"},
+"9f156e6b": {"dfnID":"9f156e6b","dfnText":"window","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window"}],"title":"\n      window.browser API\n    "},{"refs":[{"id":"ref-for-dom-window\u2460"}],"title":"\n      Worker API\n    "}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-window"},
+"b8308563": {"dfnID":"b8308563","dfnText":"DedicatedWorkerGlobalScope","external":true,"refSections":[{"refs":[{"id":"ref-for-dedicatedworkerglobalscope"}],"title":"\n      Worker API\n    "},{"refs":[{"id":"ref-for-dedicatedworkerglobalscope\u2460"}],"title":"Unnumbered Section"}],"url":"https://html.spec.whatwg.org/multipage/workers.html#dedicatedworkerglobalscope"},
+"dom-dedicatedworkerglobalscope-browser": {"dfnID":"dom-dedicatedworkerglobalscope-browser","dfnText":"browser","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-dedicatedworkerglobalscope-browser"}],"title":"\n      window.browser API\n    "},{"refs":[{"id":"ref-for-dom-dedicatedworkerglobalscope-browser\u2460"}],"title":"\n      Worker API\n    "}],"url":"#dom-dedicatedworkerglobalscope-browser"},
+"dom-serviceworkerglobalscope-browser": {"dfnID":"dom-serviceworkerglobalscope-browser","dfnText":"browser","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-serviceworkerglobalscope-browser"}],"title":"\n      window.browser API\n    "}],"url":"#dom-serviceworkerglobalscope-browser"},
+"dom-window-browser": {"dfnID":"dom-window-browser","dfnText":"browser","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-window-browser"}],"title":"\n      Worker API\n    "}],"url":"#dom-window-browser"},
+"efd1ec5d": {"dfnID":"efd1ec5d","dfnText":"object","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-object"},{"id":"ref-for-idl-object\u2460"},{"id":"ref-for-idl-object\u2461"}],"title":"Unnumbered Section"}],"url":"https://webidl.spec.whatwg.org/#idl-object"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -1452,9 +1497,13 @@ function genLinkingSyntaxes(dfn) {
 "use strict";
 {
 let refsData = {
+"#dom-dedicatedworkerglobalscope-browser": {"export":true,"for_":["DedicatedWorkerGlobalScope"],"level":"1","normative":true,"shortname":"wecg-browser","spec":"wecg-browser-1","status":"local","text":"browser","type":"attribute","url":"#dom-dedicatedworkerglobalscope-browser"},
+"#dom-serviceworkerglobalscope-browser": {"export":true,"for_":["ServiceWorkerGlobalScope"],"level":"1","normative":true,"shortname":"wecg-browser","spec":"wecg-browser-1","status":"local","text":"browser","type":"attribute","url":"#dom-serviceworkerglobalscope-browser"},
 "#dom-window-browser": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"wecg-browser","spec":"wecg-browser-1","status":"local","text":"browser","type":"attribute","url":"#dom-window-browser"},
 "https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-window": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"window","type":"attribute","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-window"},
 "https://html.spec.whatwg.org/multipage/nav-history-apis.html#window": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"Window","type":"interface","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
+"https://html.spec.whatwg.org/multipage/workers.html#dedicatedworkerglobalscope": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"DedicatedWorkerGlobalScope","type":"interface","url":"https://html.spec.whatwg.org/multipage/workers.html#dedicatedworkerglobalscope"},
+"https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"service-workers","spec":"service-workers","status":"current","text":"ServiceWorkerGlobalScope","type":"interface","url":"https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope"},
 "https://webidl.spec.whatwg.org/#idl-object": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"object","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-object"},
 };
 
