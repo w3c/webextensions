@@ -31,8 +31,13 @@ dictionary UserSettings {
 #### Events
 
 ```javascript
-// Fire when user-specified settings relating to an extension's action changed.
-<browser>.action.onUserSettingsChanged(
+// Fires when user-specified settings relating to an extension's action changed.
+<browser>.action.onUserSettingsChanged.addListener(
+  callback: function, // where callback looks like: (userSettings: UserSettings) => void
+);
+
+// Deregisters the event listener.
+<browser>.action.onUserSettingsChanged.removeListener(
   callback: function, // where callback looks like: (userSettings: UserSettings) => void
 );
 ```
