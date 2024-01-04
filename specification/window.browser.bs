@@ -33,7 +33,7 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
   Chromium, other vendors used the more neutral <code>browser</code> namespace.
   That <code>browser</code> is now considered the canonically correct namespace
   for all WebExtension APIs.  Some interactions with WebExtensions (such as
-  external messaging from content scripts to background processes) necessitate
+  external messaging from websites to background processes) necessitate
   the exposure of this namespace to the web.
 
   Given that, this document defines <code>window.browser</code> as reserved for
