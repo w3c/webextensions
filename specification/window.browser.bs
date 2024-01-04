@@ -31,7 +31,7 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
   Chrome version 3. In that system, any API that was added was put under the
   <code>chrome</code> namespace. When WebExtensions were adopted outside of
   Chromium, other vendors used the more neutral <code>browser</code> namespace.
-  That <code>browser</code> is now considered to canonically correct namespace
+  That <code>browser</code> is now considered the canonically correct namespace
   for all WebExtension APIs.  Some interactions with WebExtensions (such as
   external messaging from content scripts to background processes) necessitate
   the exposure of this namespace to the web.
