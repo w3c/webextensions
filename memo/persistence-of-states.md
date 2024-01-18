@@ -26,13 +26,13 @@ If developers want to keep states persistent across B, C or D, but the default p
 
 | API  | Chrome | Firefox | Safari |
 | ------------- | ------------- | ------------- | ------------- |
-| action.set* (e.g. setBadgeText)| A | | |
-| [alarms](https://developer.chrome.com/docs/extensions/reference/alarms)  | B + C + D (except [a bug](https://crbug.com/1285798)) | | |
-| [contextMenus](https://developer.chrome.com/docs/extensions/reference/contextMenus) | B + D | | |
+| action.set* (e.g. setBadgeText)| A: in MV3 <br> B + D: in MV2 | A | A |
+| [alarms](https://developer.chrome.com/docs/extensions/reference/alarms)  | B + C + D (except [a bug](https://crbug.com/1285798)) | A | A |
+| [contextMenus](https://developer.chrome.com/docs/extensions/reference/contextMenus) | B + D | B + D | A |
 | [commands](https://developer.chrome.com/docs/extensions/reference/commands) | B + C + D (can't set by api) | | |
 | [downloads.setUiOptions()](https://developer.chrome.com/docs/extensions/reference/downloads/#method-setUiOptions) | A | | |
 | "declarative_net_request" in manifest | B + D | | |
-| [declarativeNetRequest.updateDynamicRules()](https://developer.chrome.com/docs/extensions/reference/declarativeNetRequest/#method-updateDynamicRules) | B + C + D | | |
+| [declarativeNetRequest.updateDynamicRules()](https://developer.chrome.com/docs/extensions/reference/declarativeNetRequest/#method-updateDynamicRules) | B + C + D | B + C + D | B + C + D |
 | [declarativeNetRequest.updateSessionRules()](https://developer.chrome.com/docs/extensions/reference/declarativeNetRequest/#method-updateSessionRules) | A | | |
 | [power.requestKeepAwake()](https://developer.chrome.com/docs/extensions/reference/power/#method-requestKeepAwake) | A | | |
 | storage.session | A | | |
@@ -42,5 +42,6 @@ If developers want to keep states persistent across B, C or D, but the default p
 | [scripting.registerContentScripts()](https://developer.chrome.com/docs/extensions/reference/scripting/#method-registerContentScripts) | B + D: if `persistAcrossSessions` is true <br> A: if `persistAcrossSessions` is false | | |
 | proxy.settings.set() | | | |
 | [sidePanel.setPanelBehavior()](https://developer.chrome.com/docs/extensions/reference/sidePanel/#method-setPanelBehavior) | B + C + D | | |
+| privacy | B + C + D | B + C + D | Not supported |
 
 \* This table may not be exhaustive, nor may it be adequately tested. Additions and corrections are welcome.
