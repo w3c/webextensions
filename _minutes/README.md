@@ -10,22 +10,24 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2024-01-18 at 8 AM PST = https://everytimezone.com/?t=65a86a00,3c0
 - 2024-02-01 at 8 AM PST = https://everytimezone.com/?t=65badf00,3c0
+- 2024-02-15 at 8 AM PST = https://everytimezone.com/?t=65cd5400,3c0
+- 2024-03-18 until 2024-03-21, in-person meeting ([issue 525](https://github.com/w3c/webextensions/issues/525))
 
 ## Past meetings
 
+* 2024-01-18 ([minutes](2024-01-18-wecg.md))
 * 2024-01-04 ([minutes](2024-01-04-wecg.md))
 * 2023-12-07 ([minutes](2023-12-07-wecg.md))
 * 2023-11-23 ([minutes](2023-11-23-wecg.md))
 * 2023-11-09 ([minutes](2023-11-09-wecg.md))
-* 2023-10-26 ([minutes](2023-10-26-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2024**
 
+* 2024-01-18 ([minutes](2024-01-18-wecg.md))
 * 2024-01-04 ([minutes](2024-01-04-wecg.md))
 
 **2023**
