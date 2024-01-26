@@ -70,10 +70,6 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
   </section>
 
 <pre class="idl">
-  partial interface DedicatedWorkerGlobalScope {
-    attribute object browser;
-  };
-
   partial interface ServiceWorkerGlobalScope {
     attribute object browser;
   };
