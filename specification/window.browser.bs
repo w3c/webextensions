@@ -65,7 +65,8 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
       Worker API
     </h3>
 
-    When {{browser}} is defined on {{window}}, it SHOULD also be implemented on {{ServiceWorkerGlobalScope}} and {{DedicatedWorkerGlobalScope}}.
+    When {{browser}} is defined on {{window}}, it SHOULD also be exposed on {{ServiceWorkerGlobalScope}}
+    of origins associated with WebExtensions.
     It MUST be used exclusively for WebExtension purposes, however the contents of each instance of {{browser}} is UA defined.
   </section>
 
