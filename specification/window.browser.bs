@@ -21,7 +21,7 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
 </pre>
 
 <section class="non-normative">
-  ## Introduction {#introduction}
+  ## Introduction
   <em>This section is non-normative.</em>
 
   Browser extensions are programs to extend the capabilities of web browsers.
