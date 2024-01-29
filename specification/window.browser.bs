@@ -1,0 +1,77 @@
+<pre class="metadata">
+Title: window.browser
+Shortname: wecg-browser
+Level: 1
+Group: wecg
+Status: UD
+URL: https://w3c.github.io/webextensions/specification/window.browser.html
+Editor: Patrick Kettner, Google, patrickkettner@google.com
+Abstract: This specification reserves the <code>window.browser</code> namespace for use by WebExtensions.
+Repository: w3c/webextensions
+Complain About: accidental-2119 on, missing-example-ids on
+</pre>
+
+<pre class=link-defaults>
+spec:html; type:attribute; text:window
+</pre>
+
+<pre class="anchors">
+spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
+    type: dfn; text: valid non-empty URL; url: valid-non-empty-url-potentially-surrounded-by-spaces
+</pre>
+
+<section class="non-normative">
+  ## Introduction
+  <em>This section is non-normative.</em>
+
+  Browser extensions are programs to extend the capabilities of web browsers.
+  Although not standardized at first, web browsers have independently implemented a common interoperable set of extension APIs, called WebExtensions.
+
+  Modern WebExtensions are an evolution of a system originally introduced in
+  Chromium. In that system, any API that was added was put under the
+  <code>chrome</code> namespace. When WebExtensions were adopted outside of
+  Chromium, other vendors used the more neutral <code>browser</code> namespace.
+  That <code>browser</code> is now considered the canonically correct namespace
+  for all WebExtension APIs.  Some interactions with WebExtensions (such as
+  external messaging from websites to background processes) necessitate
+  the exposure of this namespace to the web.
+
+  Given that, this document defines <code>window.browser</code> as reserved for
+  the use of APIs designed to interact with WebExtensions. The specifics of what
+  APIs within <code>window.browser</code> are at present intentionally undefined,
+  and are left up to User Agent implementation.
+</section>
+
+
+  <section>
+    <h3 id="window-interface">
+      <a attribute lt="browser"><code>window.browser</code></a> API
+    </h3>
+
+    {{browser}} is UA defined attribute exposed on {{window}}. When implemented,
+    it MUST be used only for WebExtension related functionality.
+  </section>
+
+
+<pre class="idl">
+  partial interface Window {
+   attribute object browser;
+  };
+
+</pre>
+
+  <section>
+    <h3 id="worker-interface">
+      Worker API
+    </h3>
+
+    When {{browser}} is defined on {{window}}, it SHOULD also be exposed on {{ServiceWorkerGlobalScope}}
+    of origins associated with WebExtensions.
+    It MUST be used exclusively for WebExtension purposes, however the contents of each instance of {{browser}} is UA defined.
+  </section>
+
+<pre class="idl">
+  partial interface ServiceWorkerGlobalScope {
+    attribute object browser;
+  };
+</pre>
