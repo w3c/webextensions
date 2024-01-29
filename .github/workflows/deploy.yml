@@ -25,6 +25,12 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-20.04
 
+    strategy:
+      matrix:
+        include:
+          - source: ./specification/index.bs
+          - source: ./specification/window.browser.bs
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -37,4 +43,5 @@ jobs:
         with:
           GH_PAGES_BRANCH: gh-pages
           # Deployment will be available at: https://w3c.github.io/webextensions/specification
-          DESTINATION: specification/index.html
+          SOURCE: ${{ matrix.source }}
+          TOOLCHAIN: 'bikeshed'
