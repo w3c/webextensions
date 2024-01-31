@@ -121,7 +121,7 @@ None
 
 ### Existing Workarounds
 
-Currently, extensions have site access by default. Users can change the site access to be when clicked. The only way for extensions to signal the user they want access to the site is through permissions.request() flow which is noisy and requires a user gesture. Otherwise, they rely on the user realizing through the browser UI (e.g extensions menu).
+Users can change an extension's site access. The only way for extensions to signal the user they want to regain access to the site is through permissions.request() flow which is noisy and requires a user gesture. Otherwise, they rely on the user realizing through the browser UI (e.g extensions menu).
 
 Extensions have no way to signal the user that they want access to the site, and rely on the user realizing through the browser UI (e.g extensions menu)
 
