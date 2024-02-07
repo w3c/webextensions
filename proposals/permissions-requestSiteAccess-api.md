@@ -9,24 +9,24 @@ Extensions can request host permissions via:
 - Manifest declared `optional_host_permissions`, granted at runtime after a user gesture by `<browser>.permissions.request()`
 - Manifest declared `matches` for a `content_script`, granted at install time by default
 
-Users can withhold host permissions, causing the extension to only have access when the extension is [invoked](https://developer.chrome.com/docs/extensions/develop/concepts/activeTab#invoking-activeTabhttps://developer.chrome.com/docs/extensions/develop/concepts/activeTab#invoking-activeTab).
+In some browsers, users can withhold host permissions causing the extension to only have site access when the extension is invoked. For example, in Chrome a user can set an extension to run only "on click". When the extension is clicked, it gains site access to the tab's main frame origin (effectively acting like [`activeTab` permission](https://developer.chrome.com/docs/extensions/develop/concepts/activeTab#what-activeTab-allows).
 
 Each browser may decide how it signals the user when an extension is requesting access (e.g through the extensions menu). However, there is no way for an extension to explicitly signal at runtime it’s requesting site access after it was withheld without a user gesture and a heavy-weight permission dialog.
 
 
 ### Objective
 
-Allow the extension to show site access requests at runtime without any user gesture in a less-obtrusive way than with permissions.request(). This can be done with a new API that:
+Allow the extension to show site access requests at runtime without any user gesture in a less-obtrusive way than with `permissions.request()`. This can be done with a new API that:
 
 - Applies to a specific tab or document id
 - Doesn’t need to be made inside the handler for a user action
 - Shows the request in the UI, handled differently by each browser. See more in [UI Elements and User-Visible Effects](#ui-elements-and-user-visible\-effects) section
-- When accepted, grants always access to the site’s origin
+- When accepted, grants always access to the site’s top origin
 - Resets the request on cross-origin navigation
 
 #### Use Cases
 
-An extension requested access to a site but the user withheld its access and forgot about it. Extension wants to signal it needs site access to execute. For example, “shopping” extension wants to show site access when user navigates to “amazon.com” and access was withheld.
+An extension requested access to a site but the user withheld its access and forgot about it. Extension wants to signal it needs site access to execute without user action. For example, “shopping” extension wants to show site access when user navigates to “amazon.com” and access was withheld.
 
 ### Consumers
 
@@ -62,7 +62,7 @@ Note: We don’t support iframes since they are not included in the runtime host
 
 #### Other Alternatives considered
 
-Action API is used to control the extension’s button in the browser’s toolbar. It’s exposed if the extension includes the "action" key in the manifest. This is troublesome since an extension could not have an action, but still want to show site access requests. We should not limit requests for extensions with actions.
+Action API is used to control the extension’s button in the browser’s toolbar. It’s exposed if the extension includes the "action" key in the manifest. This is troublesome since an extension could not have an action, but still want to show site access requests. We should not limit requests for extensions with actions
 
 ### Manifest Changes
 
@@ -127,9 +127,10 @@ Extensions have no way to signal the user that they want access to the site, and
 
 ### Other Alternatives Considered
 
-Specifying URL patterns instead of tabId or documentId in `permissions.requestSiteAccess`. We decided against that because:
-- This is designed to be a highly-contextual signal -- the extension should do it only if they have strong believe they will provide value to the user on the given page
-- We do not want extensions to simply show a request on every page, and specifying a list of patterns would lend itself to that behavior
+Specifying URL patterns instead of tabId or documentId in `permissions.requestSiteAccess` or in the extension's manifest. We decided against that because:
+- This is designed to be a highly-contextual signal. The extension should do it only if they have strong believe they will provide value to the user on the given page. This should not be a passive, "hey, I think I can do something here", it should be a "hey, you, the user, probably want me to do something here".
+- We do not want extensions to simply show a request on every page, and specifying a list of patterns would lend itself to that behavior (even by not allowing broad match patterns).
+- It's too close to host permissions themselves. We suspect that the vast majority of extensions would just have the same field match as in their host permissions, since there is no more knowledge at manifest time about why the extension would run on a specific site.
 
 ### Open Web API
 This is related to the extensions showing site access requests in the browser; it doesn't affect the web.
