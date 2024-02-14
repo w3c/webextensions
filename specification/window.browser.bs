@@ -52,6 +52,39 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
     it MUST be used only for WebExtension related functionality.
   </section>
 
+  <section>
+    For backwards compatibility with older versions of web extensions, a UA MAY
+    alias individual properties of {{browser}} to <code>chrome</code>. {{browser}}
+    and <code>chrome</code> SHOULD NOT be direct aliases. Instead, individual
+    subproperties SHOULD be what is alaised. Any modification of a property of
+    {{browser}} SHOULD be reflected on <code>chrome</code>, and vice versa.
+
+    <div class="example" id="example-1">
+      Here's an example of the expected alias behavior
+      <pre><code class="lang-js">
+        // As `chrome` and `browser` are not direct aliases,
+        // modifying one top level values will not change the other
+
+        globalThis.browser.FAKE = true
+
+        console.log(globalThis.chrome.FAKE);
+        // undefined
+
+        // Individual properies are aliased, so updating a known property
+        // directly changes the existing property on the other
+        globalThis.browser.runtime.FAKE = 123
+
+        console.log(globalThis.chrome.runtime.FAKE);
+        // 123
+      </code></pre>
+
+    </div>
+
+
+  </section>
+
+/e
+
 
 <pre class="idl">
   partial interface Window {
