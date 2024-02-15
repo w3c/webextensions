@@ -74,6 +74,8 @@ dictionary InjectionResult {
   frameId: number,
   // The result of the script execution.
   result?: any
+  // The error, if any. error and result are mutually exclusive.
+  error?: any
 }
 ```
 
@@ -118,10 +120,10 @@ This API does not directly expose any new sensitive data, as it relies on the ho
 
 ### Abuse Scenarios
 
-With any script injection API, there are significant abuse possibilities - such as injecting malicious JavaScript intended to collect user data maliciously.  Additionally, this allows extensions to inject code that's not contained within the extension's package  However, this is inline with the existing userScripts API, and there are no new abuse mechanisms introduced as a part of this API.
+With any script injection API, there are significant abuse possibilities - such as injecting malicious JavaScript intended to collect user data maliciously.  Additionally, this allows extensions to inject code that's not contained within the extension's package. However, this is inline with the existing userScripts API, and there are no new abuse mechanisms introduced as a part of this API.
 
 #### Mitigations
-The existing mitigations for host permissions - most dominantly, runtime host permissions - apply here.  Additionally, we can leverage client-side telemetry for the injected scripts as-needed.
+The existing mitigations for host permissions - most dominantly, runtime host permissions - apply here.
 
 ### Additional Security Considerations
 
@@ -139,7 +141,7 @@ Developers can utilize `userScripts.register()` to inject JavaScript into a know
 
 ### Open Web API
 
-Since this API exposes the ability to inject JavaScript on sites that are not in the same origin, it does not belong on the web
+Since this API exposes the ability to inject JavaScript on sites that are not in the same origin, it does not belong on the web.
 
 ## (Potential) Future Enhacements
 
