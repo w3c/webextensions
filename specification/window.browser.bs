@@ -70,7 +70,7 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
         globalThis.browser.FAKE = true
         console.log(globalThis.chrome.FAKE); //undefined
 
-        // Individual properies are aliased, so updating a known property
+        // Individual properties are aliased, so updating a known property
         // directly changes the matching property on the other
         globalThis.browser.runtime.FAKE = 123
 
