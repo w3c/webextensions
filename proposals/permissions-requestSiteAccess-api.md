@@ -37,19 +37,42 @@ Extensions that want to signal the user when they need site access.
 ### API Schema
 
 ```
-// Requests access to a specific tab or document. Access request will only be
-// signaled to the user if requesting access to a site the extension can be
-// granted access to (i.e., one specified in host_permissions,
-// optional_host_permissions, a content script match pattern, or an applicable
-// activeTab site).
-// Only one of tabId or documentId must be declared. Request will be
-// automatically reset on navigation.
-<browser>.permissions.requestSiteAccess(
-  // The id of the tab where site access requests can be shown.
+// Shows a site access request. Request will only be signaled to the user if
+// extension can be granted access to site in the request (i.e., one specified
+// in host_permissions, optional_host_permissions, a content script match
+// pattern, or an applicable activeTab site).
+// Resolves whether the request is valid and is signaled to the user.
+Promise<bool> <browser>.permissions.showSiteAccessRequest(
+  // The id of the tab where site access requests can be shown. If provided,
+  // the request is shown on the specified tab and is removed when the tab
+  // navigates to a new origin.
+  // Chrome requires either this or `documentId` to be specified.
   number?: tabId,
-  // The id of a document where site access requests can be shown.
+  // The id of a document where site access requests can be shown.  Must be
+  // the top-level document within a tab.  If provided, the request is shown on
+  // the tab of the specified document and is removed when the document
+  // navigates to a new origin.
+  // Chrome requires either this or `tabId` to be specified.
   string?: documentId,
-  callback?: function
+  // The URL pattern where site access requests can be shown. If provided,
+  // site access requests will only be shown on URLs that match this pattern.
+  // Browsers may require different levels of specificity.
+  string?: url
+  callback?: function,
+);
+
+// Removes a site access request, if existent.
+// Resolves whther the request was removed.
+Promise<bool> <browser>.permissions.removeSiteAccessRequest(
+  // The id of the tab where site access request will be removed.
+  // Chrome requires either this or `documentId` to be specified.
+  number?: tabId,
+  // The id of a document where site access request will be removed.
+  // Chrome requires either this or `tabId` to be specified.
+  string?: documentId,
+  // The URL pattern where site access request will be removed.
+  string?: url
+  callback?: function,
 );
 ```
 
@@ -62,7 +85,8 @@ Note: We don’t support iframes since they are not included in the runtime host
 
 #### Other Alternatives considered
 
-Action API is used to control the extension’s button in the browser’s toolbar. It’s exposed if the extension includes the "action" key in the manifest. This is troublesome since an extension could not have an action, but still want to show site access requests. We should not limit requests for extensions with actions
+- Action API is used to control the extension’s button in the browser’s toolbar. It’s exposed if the extension includes the "action" key in the manifest. This is troublesome since an extension could not have an action, but still want to show site access requests. We should not limit requests for extensions with actions
+- `permissions.showSiteAccessRequest()` resolves when request is accepted/rejected. An extension could be requesting site access and be granted site access through another mechanism (e.g changing site access in the extensions menu). We would either return a) true if we consider permissions granted through other mechanisms or b) false, because permission wasn't explicitely granted through the request. a) adds complexity and b) may cause confusion. Thus, we consider better to resolve whether the request is valid, and separately extension can listen whether permission is granted through `permissions.onAdded()`.
 
 ### Manifest Changes
 
