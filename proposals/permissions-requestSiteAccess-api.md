@@ -1,4 +1,4 @@
-# permissions.requestSiteAccess() API
+# permissions.showSiteAccessRequest() API
 
 ## API Overview
 
