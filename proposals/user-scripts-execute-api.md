@@ -51,7 +51,7 @@ dictionary UserScriptInjection {
   // Details specifying the target into which to inject the script.
   target: InjectionTarget,
   // The JavaScript "world" to run the script in. The default is `USER_SCRIPT`.
-  world?: ExecutionWorld
+  world?: ExecutionWorld,
 }
 
 dictionary InjectionTarget {
@@ -60,11 +60,11 @@ dictionary InjectionTarget {
   allFrames?: boolean,
   // The IDs of specific documentIds to inject into. This must not be set if
   // frameIds is set.
-  documentIds?: string[]
+  documentIds?: string[],
   // The IDs of specific frames to inject into.
-  frameIds?: number[]
+  frameIds?: number[],
   // The ID of the tab into which to inject.
-  tabId: number
+  tabId: number,
 }
 
 dictionary InjectionResult {
@@ -73,9 +73,9 @@ dictionary InjectionResult {
   // The frame associated with the injection.
   frameId: number,
   // The result of the script execution.
-  result?: any
+  result?: any,
   // The error, if any. error and result are mutually exclusive.
-  error?: any
+  error?: any,
 }
 ```
 
@@ -86,7 +86,7 @@ dictionary InjectionResult {
 // `document_idle` unless the `injectImmediately` property is set. If the
 // script evaluates to a promise, the browser will wait
 // for the promise to settle and return the resulting value.
-Promise<InjectionResult[]> <browser>.userScripts.execute(
+Promise<InjectionResult[]> browser.userScripts.execute(
   // The details of the script which to inject
   injection: UserScriptInjection
 )
