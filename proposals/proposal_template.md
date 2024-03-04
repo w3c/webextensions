@@ -1,5 +1,12 @@
 # Proposal: &lt;API>
 
+** How to Use This Template **
+
+See [Proposal Process](proposal_process.md) for the detailed process on how to
+propose new APIs and use this template.  Each section includes instructions on
+what to include.  Delete the instructions for a given section once it's filled
+out.  Remove this section once the template is filled out.
+
 **Summary**
 
 An API proposal for your new API.  Describe in **one sentence** what it will be
@@ -12,7 +19,7 @@ used for.
 **Sponsoring Browser:** The browser vendor committed to implementing this API
 if approved.
 
-**Contributors:** &lt;other contributors @>
+**Contributors:** &lt;other contributors emails or GitHub handles>
 
 **Created:** YYYY-MM-DD
 
@@ -43,10 +50,11 @@ call out explicitly what has changed.
 
 A few notes:
 
-*   Extension APIs are almost always asynchronous.  Anything that cannot be
-    resolved directly in the renderer must be asynchronous, and even if
-    something can be done in the renderer today, it should frequently be
-    asynchronous to prevent future breakage if we move something to the browser
+*   Extension APIs are almost always asynchronous.  In most browsers, extensions
+    run in a separate child process for security purposes.  Anything that cannot
+    be resolved directly in a child process must be asynchronous, and even if
+    something can be done in a child process today, it should frequently be
+    asynchronous to prevent future breakage if we move something to the parent
     process.
 *   Failures should be indicated by either synchronously throwing an error
     (rare) or rejecting the returned promise.  (Note that in legacy versions,
@@ -66,7 +74,7 @@ A few notes:
 | New Permission 1 | Add a proposed warning string for the permission.  If there should be no warning, provide justification as to why. Browser vendors can ultimately choose if there should be a warning and what it should be independently, but this can be useful to define especially if it has implications for the likelihood this proposal will succeed or be useful to developers. |
 
 Document any new permission added by this API.  Permissions are frequently the
-same as the API itself, e.g. the browser.storage API has the permission
+same as the API itself, e.g. the `browser.storage` API has the permission
 "storage".
 
 If this is a new API, it should add a new permission.  A new permission does
@@ -84,8 +92,13 @@ note why this falls within the current bounds of the API's capabilities.
 ### Manifest File Changes
 
 Document if your API will require additional manifest fields to be added or
-modified (other than a new permission), and what they will do.  If there are no
-new manifest fields, indicate so here.
+modified (other than a new permission), and what they will do.  If non-trivial,
+describe the validation and error handling.  When a failure is not critical,
+prefer a soft warning over a hard error.  Hard errors will prevent the extension
+from loading, which makes it more challenging to change or expand behavior in
+the future.
+
+If there are no new manifest fields, indicate so here.
 
 ## Security and Privacy
 

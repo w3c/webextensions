@@ -10,7 +10,7 @@ extension APIs.
 
 Historically, different browsers had (very) different forms of "web extension"
 (also known as "browser extension") platforms, including Chrome Extensions and
-Firefox Add-Ons.  Over the past several years, browser vendors have aligned on
+Firefox Add-ons.  Over the past several years, browser vendors have aligned on
 a common set of WebExtension APIs and all major browser vendors (including
 Google Chrome, Mozilla Firefox, and Apple Safari, along with the majority of
 other Chromium-based browsers such as Microsoft Edge, Opera, Brave, and more)
@@ -35,7 +35,7 @@ presented in different formats and manners based on historical precedence for a
 specific browser.  This makes it more difficult to review, as well as risking
 the omission of important criteria or details.
 
-In order to address these concerns, we propose a defined and consistent
+In order to address these concerns, we use a defined and consistent
 proposal process.
 
 ## Goals
@@ -68,7 +68,7 @@ ideally reducing or eliminating duplicate work.
 proposal should be viewed as a possible "next step" from a suggested change or
 developer issue and should imply that one or more browser vendors are actively
 or imminently going to begin implementation.  Most feature requests and bug
-reports should continue to be reported as github issues in the WECG repository
+reports should continue to be reported as GitHub issues in the WECG repository
 (or a browser's individual bug tracker).
 
 **Address all implementation details.**  Due to the dramatically different
@@ -127,9 +127,12 @@ processes for such APIs.)
     of a suggestion in a filed issue.  As such, these proposals should only be
     used for APIs that have support and commitment to implement from at least
     one browser.
-*   Fill out the API Proposal.  There are instructions in each section.  For any
-    section that is not relevant, you may put "N/A" (likely with a brief summary
-    of why the section is not relevant, if it is not immediately obvious).
+*   Copy the [API Proposal template](proposal_template.md) and fill it out.  
+    There are instructions in each section of the proposal template.  As you
+    fill out each section, you may delete the instructions for that section.
+    For any section that is not relevant, you may put "N/A" (likely with a
+    brief summary of why the section is not relevant, if it is not immediately
+    obvious).
 *   Submit a pull request with the completed proposal to the
     [Proposals directory](https://github.com/w3c/webextensions/tree/main/proposals)
     of the WECG repository.
