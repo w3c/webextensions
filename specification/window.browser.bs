@@ -55,7 +55,8 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
   <section>
     For backwards compatibility with older versions of WebExtensions that used
     <code>chrome</code> as a global identifier for WebExtension related methods,
-    a UA MAY alias individual properties of {{browser}} to <code>chrome</code>.
+    a UA MAY define a global <code>chrome</code> object that includes all
+    properties of {{browser}}.
     {{browser}} and <code>chrome</code> SHOULD NOT be direct aliases. Instead,
     individual subproperties SHOULD be alaised. Any modification of a property
     of {{browser}} SHOULD be reflected on the same subproperty of <code>chrome</code>,
