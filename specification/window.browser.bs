@@ -57,10 +57,11 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
     <code>chrome</code> as a global identifier for WebExtension related methods,
     a UA MAY define a global <code>chrome</code> object that includes all
     properties of {{browser}}.
-    {{browser}} and <code>chrome</code> SHOULD NOT be direct aliases. Instead,
-    individual subproperties SHOULD be alaised. Any modification of a property
-    of {{browser}} SHOULD be reflected on the same subproperty of <code>chrome</code>,
-    and vice versa.
+    {{browser}} and <code>chrome</code> MAY be direct aliases of each other.
+    When {{browser}} and <code>chrome</code> are distinct objects, each initial
+    property of {{browser}} SHOULD be defined on the <code>chrome</code> object,
+    and each property descriptor on the <code>chrome</code> object SHOULD return
+    the same value as the corresponding property on the {{browser}} object.
 
     <div class="example" id="example-1">
       Here's an example of the expected alias behavior
