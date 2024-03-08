@@ -3,7 +3,7 @@ Title: window.browser
 Shortname: wecg-browser
 Level: 1
 Group: wecg
-Status: UD
+Status: w3c/CG-DRAFT
 URL: https://w3c.github.io/webextensions/specification/window.browser.html
 Editor: Patrick Kettner, Google, patrickkettner@google.com
 Abstract: This specification reserves the <code>window.browser</code> namespace for use by WebExtensions.
