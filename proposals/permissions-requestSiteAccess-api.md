@@ -18,7 +18,7 @@ Each browser may decide how it signals the user when an extension is requesting 
 
 Allow the extension to show site access requests at runtime without any user gesture in a less-obtrusive way than with `permissions.request()`. This can be done with a new API that:
 
-- Applies to a specific tab or document id
+- Applies to a specific tab or document id. Developers can specify inactive tabs (request will be shown by the browser when the user activated them).
 - Doesn’t need to be made inside the handler for a user action
 - Shows the request in the UI, handled differently by each browser. See more in [UI Elements and User-Visible Effects](#ui-elements-and-user-visible\-effects) section
 - When accepted, grants always access to the site’s top origin
