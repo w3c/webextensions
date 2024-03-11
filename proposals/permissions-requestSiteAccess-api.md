@@ -42,7 +42,7 @@ Extensions that want to signal the user when they need site access.
 // in host_permissions, optional_host_permissions, a content script match
 // pattern, or an applicable activeTab site).
 // Resolves whether the request is valid.
-Promise<bool> <browser>.permissions.addSiteAccessRequest(
+Promise<{bool}> <browser>.permissions.addSiteAccessRequest(
   // The id of the tab where site access requests can be shown. If provided,
   // the request is shown on the specified tab and is removed when the tab
   // navigates to a new origin.
@@ -57,7 +57,7 @@ Promise<bool> <browser>.permissions.addSiteAccessRequest(
   // The URL pattern where site access requests can be shown. If provided,
   // site access requests will only be shown on URLs that match this pattern.
   // Browsers may require different levels of specificity.
-  string?: url
+  string?: pattern
   callback?: function,
 );
 
@@ -71,7 +71,7 @@ Promise<bool> <browser>.permissions.removeSiteAccessRequest(
   // Chrome requires either this or `tabId` to be specified.
   string?: documentId,
   // The URL pattern where site access request will be removed.
-  string?: url
+  string?: pattern
   callback?: function,
 );
 ```
@@ -81,7 +81,7 @@ Note: We don’t support iframes since they are not included in the runtime host
 ### New Permissions
 | Permission Added | Proposed Warning                                         |
 | ---------------- | -------------------------------------------------------- |
-| N/A              | Permission’s API is used to “request declared optional permissions at run time rather than install time, so users understand why the permissions are needed and grant only those that are necessary” (according to documentation). The goal of this new method is for the extension to request site access, which is effectively a permission. We can adjust the  description to not be restricted just to optional permissions. |
+| N/A              | Permissions API is used to “request declared optional permissions at run time rather than install time, so users understand why the permissions are needed and grant only those that are necessary” (according to documentation). The goal of this new method is for the extension to request site access, which is effectively a permission. We can adjust the  description to not be restricted just to optional permissions. |
 
 #### Other Alternatives considered
 
