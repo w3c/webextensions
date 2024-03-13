@@ -15,7 +15,7 @@ Allow developers to configure and use multiple user script worlds in the
 
 **Created:** 2024-03-07
 
-**Related Issues:** TODO
+**Related Issues:** [565](https://github.com/w3c/webextensions/issues/565)
 
 ## Motivation
 
@@ -78,43 +78,51 @@ export namespace userScripts {
      * frame is matched.
      */
     allFrames?: boolean;
+
     /**
      * Specifies wildcard patterns for pages this user script will NOT be
      * injected into.
      */
     excludeGlobs?: string[];
+
     /**
      * Excludes pages that this user script would otherwise be injected into.
      * See Match Patterns for more details on the syntax of these strings.
      */
     excludeMatches?: string[];
+
     /**
      * The ID of the user script specified in the API call. This property
      * must not start with a '_' as it's reserved as a prefix for generated
      * script IDs.
      */
     id: string;
+
     /**
      * Specifies wildcard patterns for pages this user script will be
      * injected into.
      */
     includeGlobs?: string[];
+
     /**
      * The list of ScriptSource objects defining sources of scripts to be
      * injected into matching pages.
      */
     js: ScriptSource[];
+
     /**
      * Specifies which pages this user script will be injected into. See
      * Match Patterns for more details on the syntax of these strings. This
      * property must be specified for ${ref:register}.
      */
     matches?: string[];
+
     /**
      * Specifies when JavaScript files are injected into the web page. The
      * preferred and default value is document_idle
      */
     runAt?: RunAt;
+
     /**
      * The JavaScript execution environment to run the script in. The default
      * is `USER_SCRIPT`
@@ -125,7 +133,8 @@ export namespace userScripts {
 ```
 
 We will add a new property, `worldId`, to the `WorldProperties` and
-`RegisteredUserScript` types, as below.
+`RegisteredUserScript` types, as below. Changed fields are indicated with
+"+".
 
 ```
 export namespace userScripts {
@@ -133,11 +142,12 @@ export namespace userScripts {
     /**
 +    * Specifies the ID of the specific user script world to update.
 +    * If not provided, updates the properties of the default user script world.
++    * Values with leading underscores (`_`) are reserved.
 +    */
 +   worldId?: string;
 
     /**
-     * Specifies the world csp. The default is the `ISOLATED` world csp.
+     * Specifies the world's CSP. The default is the `ISOLATED` world CSP.
      */
     csp?: string;
 
@@ -159,43 +169,51 @@ export namespace userScripts {
      * frame is matched.
      */
     allFrames?: boolean;
+
     /**
      * Specifies wildcard patterns for pages this user script will NOT be
      * injected into.
      */
     excludeGlobs?: string[];
+
     /**
      * Excludes pages that this user script would otherwise be injected into.
      * See Match Patterns for more details on the syntax of these strings.
      */
     excludeMatches?: string[];
+
     /**
      * The ID of the user script specified in the API call. This property
      * must not start with a '_' as it's reserved as a prefix for generated
      * script IDs.
      */
     id: string;
+
     /**
      * Specifies wildcard patterns for pages this user script will be
      * injected into.
      */
     includeGlobs?: string[];
+
     /**
      * The list of ScriptSource objects defining sources of scripts to be
      * injected into matching pages.
      */
     js: ScriptSource[];
+
     /**
      * Specifies which pages this user script will be injected into. See
      * Match Patterns for more details on the syntax of these strings. This
      * property must be specified for ${ref:register}.
      */
     matches?: string[];
+
     /**
      * Specifies when JavaScript files are injected into the web page. The
      * preferred and default value is document_idle
      */
     runAt?: RunAt;
+
     /**
      * The JavaScript execution environment to run the script in. The default
      * is `USER_SCRIPT`
@@ -206,6 +224,7 @@ export namespace userScripts {
 +    * If specified, specifies a specific user script world ID to execute in.
 +    * Only valid if `world` is omitted or is `USER_SCRIPT`. If omitted, the
 +    * script will execute in the default user script world.
++    * Values with leading underscores (`_`) are reserved.
 +    */
 +   worldId?: string;
   }
@@ -217,8 +236,17 @@ Note that the signatures of the related functions, including `configureWorld()`,
 
 When the developer specifies a `worldId` in either the `WorldProperties` or
 a `RegisteredUserScript`, the browser will create a separate user script world
-for those cases. If `worldId` is omitted, a "default" user script world will
+for those cases. If `worldId` is omitted, the default user script world will
 be used.
+
+Additionally, `runtime.Port` and `runtime.MessageSender` will each be extended
+with a new, optional `userScriptWorldId` property that will be populated in the
+arguments passed to `runtime.onUserScriptConnect` and
+`runtime.onUserScriptMessage` if the message initiator is a non-default user
+script world. We do not need to populate a value for messages from the default
+user script world, since this is unambiguous given the distinction in the
+event listeners (`onUserScriptMessage` already indicates the message was from
+a user script).
 
 ### New Permissions
 
@@ -279,7 +307,10 @@ N/A
 ## Future Work
 
 With the addition of a `userScripts.execute()` function (as described in
-this [PR](https://github.com/w3c/webextensions/pull/540) and
-[issue](https://github.com/w3c/webextensions/issues/477), we should also
+[PR 540](https://github.com/w3c/webextensions/pull/540) and
+[issue 477](https://github.com/w3c/webextensions/issues/477), we should also
 allow developers to specify the `worldId` when injecting dynamically. This
 will behave similarly to its behavior for a `RegisteredUserScript`.
+
+We have also discussed enabling more seamless inter-world communication, and
+the `worldId` could potentially be used in those purposes.
