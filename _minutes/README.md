@@ -3,16 +3,16 @@
 The [WebExtensions Community group](https://www.w3.org/community/webextensions/) meets virtually every other week, for one hour.
 The instructions to join the meeting and agenda are available at https://www.w3.org/groups/cg/webextensions/calendar.
 
-* Thursday 8 AM PST (3 PM UTC)
+* Thursday 8 AM PDT (3 PM UTC)
 * To convert to your local time zone, see https://everytimezone.com/
 
 After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2024-03-14 at 8 AM PST = https://everytimezone.com/?t=65f23e00,3c0
+- 2024-03-14 at 8 AM PDT = https://everytimezone.com/?t=65f23e00,384
 - 2024-03-18 until 2024-03-21, in-person meeting ([issue 525](https://github.com/w3c/webextensions/issues/525))
-- 2024-03-28 at 8 AM PST = https://everytimezone.com/?t=6604b300,3c0
+- 2024-03-28 at 8 AM PDT = https://everytimezone.com/?t=6604b300,384
 
 ## Past meetings
 
