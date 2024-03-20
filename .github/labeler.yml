@@ -1,4 +1,4 @@
-# Add a 'needs triage' label for each browser to all new issues
+# Add a 'needs triage' label for each browser engine to all new issues
 "needs-triage: chrome":
   - ""
 
