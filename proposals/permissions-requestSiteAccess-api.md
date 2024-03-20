@@ -153,10 +153,11 @@ Extensions have no way to signal the user that they want access to the site, and
 
 ### Other Alternatives Considered
 
-Specifying URL patterns instead of tabId or documentId in `permissions.addSiteAccessRequest` or in the extension's manifest. We decided against that because:
+Specifying URL patterns in the extension's manifest. We decided against that because:
 - This is designed to be a highly-contextual signal. The extension should do it only if they have strong believe they will provide value to the user on the given page. This should not be a passive, "hey, I think I can do something here", it should be a "hey, you, the user, probably want me to do something here".
 - We do not want extensions to simply show a request on every page, and specifying a list of patterns would lend itself to that behavior (even by not allowing broad match patterns).
 - It's too close to host permissions themselves. We suspect that the vast majority of extensions would just have the same field match as in their host permissions, since there is no more knowledge at manifest time about why the extension would run on a specific site.
+That being said, each browser a URL pattern can be specified in `permissions.addSiteAccessRequest`. Each browser can determine whether other parameters must be specified apart from the URL pattern.
 
 ### Open Web API
 This is related to the extensions showing site access requests in the browser; it doesn't affect the web.
