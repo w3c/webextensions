@@ -42,7 +42,7 @@ Extensions that want to signal the user when they need site access.
 // in host_permissions, optional_host_permissions, a content script match
 // pattern, or an applicable activeTab site).
 // Resolves whether the request is valid.
-Promise<{bool}> <browser>.permissions.addSiteAccessRequest(
+Promise<boolean> browser.permissions.addSiteAccessRequest({
   // The id of the tab where site access requests can be shown. If provided,
   // the request is shown on the specified tab and is removed when the tab
   // navigates to a new origin.
@@ -57,13 +57,14 @@ Promise<{bool}> <browser>.permissions.addSiteAccessRequest(
   // The URL pattern where site access requests can be shown. If provided,
   // site access requests will only be shown on URLs that match this pattern.
   // Browsers may require different levels of specificity.
-  string?: pattern
+  string?: pattern,
+},
   callback?: function,
 );
 
 // Removes a site access request, if existent.
 // Resolves whther the request was removed.
-Promise<bool> <browser>.permissions.removeSiteAccessRequest(
+Promise<boolean> browser.permissions.removeSiteAccessRequest({
   // The id of the tab where site access request will be removed.
   // Chrome requires either this or `documentId` to be specified.
   number?: tabId,
@@ -71,7 +72,8 @@ Promise<bool> <browser>.permissions.removeSiteAccessRequest(
   // Chrome requires either this or `tabId` to be specified.
   string?: documentId,
   // The URL pattern where site access request will be removed.
-  string?: pattern
+  string?: pattern,
+},
   callback?: function,
 );
 ```
