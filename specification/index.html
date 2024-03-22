@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
   <link href="https://w3c.github.io/webextensions" rel="canonical">
-  <meta content="43ff042ebc800c436d2eea3605a2062e684d2fe8" name="document-revision">
+  <meta content="e02ace0c34a17ae99a446c6e73fb4db778f41a53" name="document-revision">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
     color: var(--a-normal-text);
@@ -552,7 +552,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <h2 class="heading settled" data-level="2" id="manifest"><span class="secno">2. </span><span class="content">Manifest</span><a class="self-link" href="#manifest"></a></h2>
    <p>A WebExtension must have a manifest file at its root directory.</p>
    <h3 class="heading settled" data-level="2.1" id="manifest-file"><span class="secno">2.1. </span><span class="content">Manifest file</span><a class="self-link" href="#manifest-file"></a></h3>
-   <p>A manifest file is a <a data-link-type="biblio" href="#biblio-json" title="The JavaScript Object Notation (JSON) Data Interchange Format">[JSON]</a> document named <code>manifest.json</code>. Malformed JSON files are not supported.</p>
+   <p>A manifest file is a <a data-link-type="biblio" href="#biblio-json" title="The JavaScript Object Notation (JSON) Data Interchange Format">[JSON]</a> document named <code>manifest.json</code>. Malformed JSON files are not supported. Note that some implementors may accept comments, represented by any content following <code>//</code> outside of a JSON string.</p>
    <h3 class="heading settled" data-level="2.2" id="manifest-keys"><span class="secno">2.2. </span><span class="content">Manifest keys</span><a class="self-link" href="#manifest-keys"></a></h3>
    <p>If manifest keys that are not defined in this specification are specified, implementors must ignore those keys.</p>
    <p>If manifest keys that are defined in this specification are specified with a different JSON type than defined in this specification, implementors must ignore those keys.</p>
