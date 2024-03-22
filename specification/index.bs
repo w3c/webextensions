@@ -35,7 +35,7 @@ A WebExtension must have a manifest file at its root directory.
 
 ### Manifest file
 
-A manifest file is a [[!JSON]] document named `manifest.json`. Malformed JSON files are not supported.
+A manifest file is a [[!JSON]] document named `manifest.json`. Malformed JSON files are not supported. Note that some implementors may accept comments, represented by any content following `//` outside of a JSON string.
 
 ### Manifest keys
 
