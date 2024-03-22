@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
   <link href="https://w3c.github.io/webextensions" rel="canonical">
-  <meta content="1d3d2adce859ce9aaaf86c3d16d424176844542e" name="document-revision">
+  <meta content="43ff042ebc800c436d2eea3605a2062e684d2fe8" name="document-revision">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
     color: var(--a-normal-text);
@@ -412,7 +412,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Web Extensions</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2024-03-21">21 March 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2024-03-22">22 March 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -452,6 +452,81 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
     <li>
+     <a href="#file-structure"><span class="secno">1</span> <span class="content">File structure</span></a>
+     <ol class="toc">
+      <li><a href="#manifestjson"><span class="secno">1.1</span> <span class="content">manifest.json</span></a>
+      <li><a href="#_locales-subdirectory"><span class="secno">1.2</span> <span class="content">_locales subdirectory</span></a>
+      <li><a href="#other-files"><span class="secno">1.3</span> <span class="content">Other files</span></a>
+     </ol>
+    <li>
+     <a href="#manifest"><span class="secno">2</span> <span class="content">Manifest</span></a>
+     <ol class="toc">
+      <li><a href="#manifest-file"><span class="secno">2.1</span> <span class="content">Manifest file</span></a>
+      <li>
+       <a href="#manifest-keys"><span class="secno">2.2</span> <span class="content">Manifest keys</span></a>
+       <ol class="toc">
+        <li><a href="#key-manifest_version"><span class="secno">2.2.1</span> <span class="content">Key <code>manifest_version</code></span></a>
+        <li><a href="#key-name"><span class="secno">2.2.2</span> <span class="content">Key <code>name</code></span></a>
+        <li><a href="#key-version"><span class="secno">2.2.3</span> <span class="content">Key <code>version</code></span></a>
+        <li><a href="#key-permissions"><span class="secno">2.2.4</span> <span class="content">Key <code>permissions</code></span></a>
+        <li><a href="#key-optional_permissions"><span class="secno">2.2.5</span> <span class="content">Key <code>optional_permissions</code></span></a>
+        <li><a href="#key-host_permissions"><span class="secno">2.2.6</span> <span class="content">Key <code>host_permissions</code></span></a>
+        <li><a href="#key-optional_host_permissions"><span class="secno">2.2.7</span> <span class="content">Key <code>optional_host_permissions</code></span></a>
+        <li><a href="#key-default_locale"><span class="secno">2.2.8</span> <span class="content">Key <code>default_locale</code></span></a>
+        <li><a href="#key-background"><span class="secno">2.2.9</span> <span class="content">Key <code>background</code></span></a>
+        <li><a href="#key-commands"><span class="secno">2.2.10</span> <span class="content">Key <code>commands</code></span></a>
+        <li><a href="#key-content_scripts"><span class="secno">2.2.11</span> <span class="content">Key <code>content_scripts</code></span></a>
+        <li><a href="#key-content_security_policy"><span class="secno">2.2.12</span> <span class="content">Key <code>content_security_policy</code></span></a>
+        <li><a href="#key-description"><span class="secno">2.2.13</span> <span class="content">Key <code>description</code></span></a>
+        <li><a href="#key-icons"><span class="secno">2.2.14</span> <span class="content">Key <code>icons</code></span></a>
+        <li><a href="#key-options_ui"><span class="secno">2.2.15</span> <span class="content">Key <code>options_ui</code></span></a>
+        <li><a href="#key-short_name"><span class="secno">2.2.16</span> <span class="content">Key <code>short_name</code></span></a>
+        <li><a href="#key-web_accessible_resources"><span class="secno">2.2.17</span> <span class="content">Key <code>web_accessible_resources</code></span></a>
+        <li><a href="#key-externally_connectable"><span class="secno">2.2.18</span> <span class="content">Key <code>externally_connectable</code></span></a>
+        <li><a href="#key-devtools_page"><span class="secno">2.2.19</span> <span class="content">Key <code>devtools_page</code></span></a>
+       </ol>
+      <li><a href="#reserved-file-names"><span class="secno">2.3</span> <span class="content">Reserved file names</span></a>
+     </ol>
+    <li><a href="#isolated-worlds"><span class="secno">3</span> <span class="content">Isolated worlds</span></a>
+    <li><a href="#unavailable-apis"><span class="secno">4</span> <span class="content">Unavailable APIs</span></a>
+    <li><a href="#the-browser-global"><span class="secno">5</span> <span class="content">The <code>browser</code> global</span></a>
+    <li><a href="#extension-origin"><span class="secno">6</span> <span class="content">Extension origin</span></a>
+    <li><a href="#localization"><span class="secno">7</span> <span class="content">Localization</span></a>
+    <li>
+     <a href="#host-permissions"><span class="secno">8</span> <span class="content">Host permissions</span></a>
+     <ol class="toc">
+      <li><a href="#cross-origin-fetch"><span class="secno">8.1</span> <span class="content">Cross-origin fetch</span></a>
+     </ol>
+    <li><a href="#match-patterns"><span class="secno">9</span> <span class="content">Match patterns</span></a>
+    <li>
+     <a href="#concepts"><span class="secno">10</span> <span class="content">Concepts</span></a>
+     <ol class="toc">
+      <li><a href="#uniqueness-of-extension-ids"><span class="secno">10.1</span> <span class="content">Uniqueness of extension IDs</span></a>
+      <li><a href="#promises-and-callbacks"><span class="secno">10.2</span> <span class="content">Promises and callbacks</span></a>
+      <li><a href="#user-gestures-and-activetab"><span class="secno">10.3</span> <span class="content">User gestures and activeTab</span></a>
+      <li><a href="#extension-permissions-and-web-perissions"><span class="secno">10.4</span> <span class="content">Extension permissions and web perissions</span></a>
+     </ol>
+    <li><a href="#content-security-policy"><span class="secno">11</span> <span class="content">Content security policy</span></a>
+    <li>
+     <a href="#architecture"><span class="secno">12</span> <span class="content">Architecture</span></a>
+     <ol class="toc">
+      <li><a href="#background-content"><span class="secno">12.1</span> <span class="content">Background content</span></a>
+      <li>
+       <a href="#content-scripts"><span class="secno">12.2</span> <span class="content">Content scripts</span></a>
+       <ol class="toc">
+        <li><a href="#isolated-worlds①"><span class="secno">12.2.1</span> <span class="content">Isolated worlds</span></a>
+       </ol>
+      <li><a href="#extension-pages"><span class="secno">12.3</span> <span class="content">Extension pages</span></a>
+     </ol>
+    <li><a href="#classes-of-security-risk"><span class="secno">13</span> <span class="content">Classes of security risk</span></a>
+    <li><a href="#web-accessible-resources"><span class="secno">14</span> <span class="content">Web accessible resources</span></a>
+    <li>
+     <a href="#interaction-with-the-web"><span class="secno">15</span> <span class="content">Interaction with the web</span></a>
+     <ol class="toc">
+      <li><a href="#current-behavior-of-cookie-partitioning"><span class="secno">15.1</span> <span class="content">Current behavior of cookie partitioning</span></a>
+     </ol>
+    <li><a href="#version-number-handling"><span class="secno">16</span> <span class="content">Version number handling</span></a>
+    <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
      <ol class="toc">
       <li><a href="#w3c-conventions"><span class="secno"></span> <span class="content">Document conventions</span></a>
@@ -465,20 +540,20 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    </ol>
   </nav>
   <main>
-   <h3 class="heading settled" id="file-structure"><span class="content">File structure</span></h3>
+   <h2 class="heading settled" data-level="1" id="file-structure"><span class="secno">1. </span><span class="content">File structure</span><a class="self-link" href="#file-structure"></a></h2>
    <p>Once unpacked from the distribution format, a WebExtension is a directory containing a number of files.</p>
    <p class="note" role="note"><span class="marker">Note:</span> In some operating systems, filenames are case insensitive. This can lead to naming collisions.</p>
-   <h4 class="heading settled" id="manifestjson"><span class="content">manifest.json</span></h4>
+   <h3 class="heading settled" data-level="1.1" id="manifestjson"><span class="secno">1.1. </span><span class="content">manifest.json</span><a class="self-link" href="#manifestjson"></a></h3>
    <p>A <a href="#manifest">Manifest</a> file.</p>
-   <h4 class="heading settled" id="_locales-subdirectory"><span class="content">_locales subdirectory</span></h4>
+   <h3 class="heading settled" data-level="1.2" id="_locales-subdirectory"><span class="secno">1.2. </span><span class="content">_locales subdirectory</span><a class="self-link" href="#_locales-subdirectory"></a></h3>
    <p>An optional directory containing strings as defined in <a href="#localization">localization</a>.</p>
-   <h4 class="heading settled" id="other-files"><span class="content">Other files</span></h4>
+   <h3 class="heading settled" data-level="1.3" id="other-files"><span class="secno">1.3. </span><span class="content">Other files</span><a class="self-link" href="#other-files"></a></h3>
    <p>An extension may also contain other files, such as those referenced in the <a href="#key-content_scripts">content_scripts</a> and <a href="#key-background">background</a> part of the <a href="#manifest">Manifest</a>.</p>
-   <h3 class="heading settled" id="manifest"><span class="content">Manifest</span></h3>
+   <h2 class="heading settled" data-level="2" id="manifest"><span class="secno">2. </span><span class="content">Manifest</span><a class="self-link" href="#manifest"></a></h2>
    <p>A WebExtension must have a manifest file at its root directory.</p>
-   <h4 class="heading settled" id="manifest-file"><span class="content">Manifest file</span></h4>
+   <h3 class="heading settled" data-level="2.1" id="manifest-file"><span class="secno">2.1. </span><span class="content">Manifest file</span><a class="self-link" href="#manifest-file"></a></h3>
    <p>A manifest file is a <a data-link-type="biblio" href="#biblio-json" title="The JavaScript Object Notation (JSON) Data Interchange Format">[JSON]</a> document named <code>manifest.json</code>. Malformed JSON files are not supported.</p>
-   <h4 class="heading settled" id="manifest-keys"><span class="content">Manifest keys</span></h4>
+   <h3 class="heading settled" data-level="2.2" id="manifest-keys"><span class="secno">2.2. </span><span class="content">Manifest keys</span><a class="self-link" href="#manifest-keys"></a></h3>
    <p>If manifest keys that are not defined in this specification are specified, implementors must ignore those keys.</p>
    <p>If manifest keys that are defined in this specification are specified with a different JSON type than defined in this specification, implementors must ignore those keys.</p>
    <p>The following keys must be considered valid:</p>
@@ -525,78 +600,78 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li data-md>
      <p><a href="#key-optional_host_permissions"><code>optional_host_permissions</code></a>: optional</p>
    </ul>
-   <h5 class="heading settled" id="key-manifest_version"><span class="content">Key <code>manifest_version</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.1" id="key-manifest_version"><span class="secno">2.2.1. </span><span class="content">Key <code>manifest_version</code></span><a class="self-link" href="#key-manifest_version"></a></h4>
    <p>This key must be present.</p>
-   <h5 class="heading settled" id="key-name"><span class="content">Key <code>name</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.2" id="key-name"><span class="secno">2.2.2. </span><span class="content">Key <code>name</code></span><a class="self-link" href="#key-name"></a></h4>
    <p>Name of the extension used in the browser’s user interface. This should be the full name used to identify the extension. See also <a href="#key-short_name"><code>short_name</code></a>.</p>
    <p>This key must be present. This property can be localized.</p>
-   <h5 class="heading settled" id="key-version"><span class="content">Key <code>version</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.3" id="key-version"><span class="secno">2.2.3. </span><span class="content">Key <code>version</code></span><a class="self-link" href="#key-version"></a></h4>
    <p>This key must be present.</p>
-   <h5 class="heading settled" id="key-permissions"><span class="content">Key <code>permissions</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.4" id="key-permissions"><span class="secno">2.2.4. </span><span class="content">Key <code>permissions</code></span><a class="self-link" href="#key-permissions"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-optional_permissions"><span class="content">Key <code>optional_permissions</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.5" id="key-optional_permissions"><span class="secno">2.2.5. </span><span class="content">Key <code>optional_permissions</code></span><a class="self-link" href="#key-optional_permissions"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-host_permissions"><span class="content">Key <code>host_permissions</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.6" id="key-host_permissions"><span class="secno">2.2.6. </span><span class="content">Key <code>host_permissions</code></span><a class="self-link" href="#key-host_permissions"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-optional_host_permissions"><span class="content">Key <code>optional_host_permissions</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.7" id="key-optional_host_permissions"><span class="secno">2.2.7. </span><span class="content">Key <code>optional_host_permissions</code></span><a class="self-link" href="#key-optional_host_permissions"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-default_locale"><span class="content">Key <code>default_locale</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.8" id="key-default_locale"><span class="secno">2.2.8. </span><span class="content">Key <code>default_locale</code></span><a class="self-link" href="#key-default_locale"></a></h4>
    <p>This key must be present if the <code>_locales</code> subdirectory is present, must be absent otherwise.</p>
-   <h5 class="heading settled" id="key-background"><span class="content">Key <code>background</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.9" id="key-background"><span class="secno">2.2.9. </span><span class="content">Key <code>background</code></span><a class="self-link" href="#key-background"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-commands"><span class="content">Key <code>commands</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.10" id="key-commands"><span class="secno">2.2.10. </span><span class="content">Key <code>commands</code></span><a class="self-link" href="#key-commands"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-content_scripts"><span class="content">Key <code>content_scripts</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.11" id="key-content_scripts"><span class="secno">2.2.11. </span><span class="content">Key <code>content_scripts</code></span><a class="self-link" href="#key-content_scripts"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-content_security_policy"><span class="content">Key <code>content_security_policy</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.12" id="key-content_security_policy"><span class="secno">2.2.12. </span><span class="content">Key <code>content_security_policy</code></span><a class="self-link" href="#key-content_security_policy"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-description"><span class="content">Key <code>description</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.13" id="key-description"><span class="secno">2.2.13. </span><span class="content">Key <code>description</code></span><a class="self-link" href="#key-description"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-icons"><span class="content">Key <code>icons</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.14" id="key-icons"><span class="secno">2.2.14. </span><span class="content">Key <code>icons</code></span><a class="self-link" href="#key-icons"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-options_ui"><span class="content">Key <code>options_ui</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.15" id="key-options_ui"><span class="secno">2.2.15. </span><span class="content">Key <code>options_ui</code></span><a class="self-link" href="#key-options_ui"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-short_name"><span class="content">Key <code>short_name</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.16" id="key-short_name"><span class="secno">2.2.16. </span><span class="content">Key <code>short_name</code></span><a class="self-link" href="#key-short_name"></a></h4>
    <p>The short name of the extension. This value should be used in contexts where <a href="#key-name"><code>name</code></a> is too long to use in full. If <code>short_name</code> is not provided, manifest consumers should use a truncated version of <code>name</code>.</p>
    <p>This key may be present. This property can be localized.</p>
-   <h5 class="heading settled" id="key-web_accessible_resources"><span class="content">Key <code>web_accessible_resources</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.17" id="key-web_accessible_resources"><span class="secno">2.2.17. </span><span class="content">Key <code>web_accessible_resources</code></span><a class="self-link" href="#key-web_accessible_resources"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-externally_connectable"><span class="content">Key <code>externally_connectable</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.18" id="key-externally_connectable"><span class="secno">2.2.18. </span><span class="content">Key <code>externally_connectable</code></span><a class="self-link" href="#key-externally_connectable"></a></h4>
    <p>This key may be present.</p>
-   <h5 class="heading settled" id="key-devtools_page"><span class="content">Key <code>devtools_page</code></span></h5>
+   <h4 class="heading settled" data-level="2.2.19" id="key-devtools_page"><span class="secno">2.2.19. </span><span class="content">Key <code>devtools_page</code></span><a class="self-link" href="#key-devtools_page"></a></h4>
    <p>This key may be present.</p>
-   <h4 class="heading settled" id="reserved-file-names"><span class="content">Reserved file names</span></h4>
+   <h3 class="heading settled" data-level="2.3" id="reserved-file-names"><span class="secno">2.3. </span><span class="content">Reserved file names</span><a class="self-link" href="#reserved-file-names"></a></h3>
    <p>Filenames beginning with an underscore (<code>_</code>) are reserved for use by user agent.</p>
-   <h3 class="heading settled" id="isolated-worlds"><span class="content">Isolated worlds</span></h3>
-   <h3 class="heading settled" id="unavailable-apis"><span class="content">Unavailable APIs</span></h3>
-   <h3 class="heading settled" id="the-browser-global"><span class="content">The <code>browser</code> global</span></h3>
-   <h3 class="heading settled" id="extension-origin"><span class="content">Extension origin</span></h3>
-   <h3 class="heading settled" id="localization"><span class="content">Localization</span></h3>
+   <h2 class="heading settled" data-level="3" id="isolated-worlds"><span class="secno">3. </span><span class="content">Isolated worlds</span><a class="self-link" href="#isolated-worlds"></a></h2>
+   <h2 class="heading settled" data-level="4" id="unavailable-apis"><span class="secno">4. </span><span class="content">Unavailable APIs</span><a class="self-link" href="#unavailable-apis"></a></h2>
+   <h2 class="heading settled" data-level="5" id="the-browser-global"><span class="secno">5. </span><span class="content">The <code>browser</code> global</span><a class="self-link" href="#the-browser-global"></a></h2>
+   <h2 class="heading settled" data-level="6" id="extension-origin"><span class="secno">6. </span><span class="content">Extension origin</span><a class="self-link" href="#extension-origin"></a></h2>
+   <h2 class="heading settled" data-level="7" id="localization"><span class="secno">7. </span><span class="content">Localization</span><a class="self-link" href="#localization"></a></h2>
    <p>The _locales subdirectory of a WebExtension can contain strings for internationalization purposes.</p>
    <p class="issue" id="issue-e5b8cfc7"><a class="self-link" href="#issue-e5b8cfc7"></a> Specify localization handling. <a href="https://github.com/w3c/webextensions/issues/62">[Issue #62]</a></p>
-   <h3 class="heading settled" id="host-permissions"><span class="content">Host permissions</span></h3>
-   <h4 class="heading settled" id="cross-origin-fetch"><span class="content">Cross-origin fetch</span></h4>
-   <h3 class="heading settled" id="match-patterns"><span class="content">Match patterns</span></h3>
-   <h3 class="heading settled" id="concepts"><span class="content">Concepts</span></h3>
-   <h4 class="heading settled" id="uniqueness-of-extension-ids"><span class="content">Uniqueness of extension IDs</span></h4>
-   <h4 class="heading settled" id="promises-and-callbacks"><span class="content">Promises and callbacks</span></h4>
-   <h4 class="heading settled" id="user-gestures-and-activetab"><span class="content">User gestures and activeTab</span></h4>
-   <h4 class="heading settled" id="extension-permissions-and-web-perissions"><span class="content">Extension permissions and web perissions</span></h4>
-   <h3 class="heading settled" id="content-security-policy"><span class="content">Content security policy</span></h3>
-   <h3 class="heading settled" id="architecture"><span class="content">Architecture</span></h3>
-   <h4 class="heading settled" id="background-content"><span class="content">Background content</span></h4>
-   <h4 class="heading settled" id="content-scripts"><span class="content">Content scripts</span></h4>
-   <h5 class="heading settled" id="isolated-worlds①"><span class="content">Isolated worlds</span></h5>
-   <h4 class="heading settled" id="extension-pages"><span class="content">Extension pages</span></h4>
-   <h3 class="heading settled" id="classes-of-security-risk"><span class="content">Classes of security risk</span></h3>
-   <h3 class="heading settled" id="web-accessible-resources"><span class="content">Web accessible resources</span></h3>
-   <h3 class="heading settled" id="interaction-with-the-web"><span class="content">Interaction with the web</span></h3>
-   <h4 class="heading settled" id="current-behavior-of-cookie-partitioning"><span class="content">Current behavior of cookie partitioning</span></h4>
-   <h3 class="heading settled" id="version-number-handling"><span class="content">Version number handling</span></h3>
+   <h2 class="heading settled" data-level="8" id="host-permissions"><span class="secno">8. </span><span class="content">Host permissions</span><a class="self-link" href="#host-permissions"></a></h2>
+   <h3 class="heading settled" data-level="8.1" id="cross-origin-fetch"><span class="secno">8.1. </span><span class="content">Cross-origin fetch</span><a class="self-link" href="#cross-origin-fetch"></a></h3>
+   <h2 class="heading settled" data-level="9" id="match-patterns"><span class="secno">9. </span><span class="content">Match patterns</span><a class="self-link" href="#match-patterns"></a></h2>
+   <h2 class="heading settled" data-level="10" id="concepts"><span class="secno">10. </span><span class="content">Concepts</span><a class="self-link" href="#concepts"></a></h2>
+   <h3 class="heading settled" data-level="10.1" id="uniqueness-of-extension-ids"><span class="secno">10.1. </span><span class="content">Uniqueness of extension IDs</span><a class="self-link" href="#uniqueness-of-extension-ids"></a></h3>
+   <h3 class="heading settled" data-level="10.2" id="promises-and-callbacks"><span class="secno">10.2. </span><span class="content">Promises and callbacks</span><a class="self-link" href="#promises-and-callbacks"></a></h3>
+   <h3 class="heading settled" data-level="10.3" id="user-gestures-and-activetab"><span class="secno">10.3. </span><span class="content">User gestures and activeTab</span><a class="self-link" href="#user-gestures-and-activetab"></a></h3>
+   <h3 class="heading settled" data-level="10.4" id="extension-permissions-and-web-perissions"><span class="secno">10.4. </span><span class="content">Extension permissions and web perissions</span><a class="self-link" href="#extension-permissions-and-web-perissions"></a></h3>
+   <h2 class="heading settled" data-level="11" id="content-security-policy"><span class="secno">11. </span><span class="content">Content security policy</span><a class="self-link" href="#content-security-policy"></a></h2>
+   <h2 class="heading settled" data-level="12" id="architecture"><span class="secno">12. </span><span class="content">Architecture</span><a class="self-link" href="#architecture"></a></h2>
+   <h3 class="heading settled" data-level="12.1" id="background-content"><span class="secno">12.1. </span><span class="content">Background content</span><a class="self-link" href="#background-content"></a></h3>
+   <h3 class="heading settled" data-level="12.2" id="content-scripts"><span class="secno">12.2. </span><span class="content">Content scripts</span><a class="self-link" href="#content-scripts"></a></h3>
+   <h4 class="heading settled" data-level="12.2.1" id="isolated-worlds①"><span class="secno">12.2.1. </span><span class="content">Isolated worlds</span><a class="self-link" href="#isolated-worlds①"></a></h4>
+   <h3 class="heading settled" data-level="12.3" id="extension-pages"><span class="secno">12.3. </span><span class="content">Extension pages</span><a class="self-link" href="#extension-pages"></a></h3>
+   <h2 class="heading settled" data-level="13" id="classes-of-security-risk"><span class="secno">13. </span><span class="content">Classes of security risk</span><a class="self-link" href="#classes-of-security-risk"></a></h2>
+   <h2 class="heading settled" data-level="14" id="web-accessible-resources"><span class="secno">14. </span><span class="content">Web accessible resources</span><a class="self-link" href="#web-accessible-resources"></a></h2>
+   <h2 class="heading settled" data-level="15" id="interaction-with-the-web"><span class="secno">15. </span><span class="content">Interaction with the web</span><a class="self-link" href="#interaction-with-the-web"></a></h2>
+   <h3 class="heading settled" data-level="15.1" id="current-behavior-of-cookie-partitioning"><span class="secno">15.1. </span><span class="content">Current behavior of cookie partitioning</span><a class="self-link" href="#current-behavior-of-cookie-partitioning"></a></h3>
+   <h2 class="heading settled" data-level="16" id="version-number-handling"><span class="secno">16. </span><span class="content">Version number handling</span><a class="self-link" href="#version-number-handling"></a></h2>
   </main>
   <div data-fill-with="conformance">
-   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span></h2>
-   <h3 class="no-ref no-num heading settled" id="w3c-conventions"><span class="content">Document conventions</span></h3>
+   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
+   <h3 class="no-ref no-num heading settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
    <p>Conformance requirements are expressed
     with a combination of descriptive assertions
     and RFC 2119 terminology.
@@ -622,15 +697,15 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <p class="note" role="note">Note, this is an informative note.</p>
   </div>
 <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
-  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span></h2>
-  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span></h3>
+  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-json">[JSON]
    <dd>T. Bray, Ed.. <a href="https://www.rfc-editor.org/rfc/rfc8259"><cite>The JavaScript Object Notation (JSON) Data Interchange Format</cite></a>. December 2017. Internet Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc8259">https://www.rfc-editor.org/rfc/rfc8259</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
   </dl>
-  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span></h2>
+  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Specify localization handling. <a href="https://github.com/w3c/webextensions/issues/62">[Issue #62]</a> <a class="issue-return" href="#issue-e5b8cfc7" title="Jump to section">↵</a></div>
   </div>
