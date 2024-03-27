@@ -45,6 +45,14 @@ We are still working on establishing a process on creating the deliverables as s
 
 Beyond posts needing moderator attention in chat, if you experience any violations to the Code of Conduct by any participant, please contact the Chairs or the W3C Head of Communications ([Coralie Mercier][email-coralie]).
 
+## Proposing an API Change
+
+If you would like to file a feature request or propose an API change, the first
+step is likely to [file a new issue](https://github.com/w3c/webextensions/issues/new)
+to solicit feedback. If there is general support on the issue, the next step is
+to write up a full API proposal following the process documented
+[here](proposals/proposal_process.md).
+
 [email-coralie]: mailto:coralie@w3.org
 [join-chat]: #joining-chat
 [matrix-site]: https://matrix.org/
