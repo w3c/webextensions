@@ -184,3 +184,58 @@ sponsored by a browser vendor) and a reviewing browser vendor are unable to
 reach consensus (with regard to either the API's concept or an individual
 aspect of it).  In this scenario, the reviewing vendor must choose a stance
 (which will very likely be "Opposed") to allow the API to move forward.
+
+## Review Process
+
+Reviewing new proposals is one of the most important and impactful roles of the
+Web Extensions Community Group. This ensures browsers have the opportunity to
+align on shared functionality when desirable for new functionality and helps
+prevent drift between the API surfaces. As such, it is critical to ensure
+timely reviews.
+
+### Authors
+
+Authors should request a review from at least one representative from each
+browser engine.
+
+When responding to feedback from reviewers, authors should resolve conversations
+if they feel they have been fully addressed. This makes it easy to see if there
+are outstanding comments. Authors can (and should) leave comments open if they
+would like further input from reviewers (e.g., "Is this what you were looking
+for").
+
+If reviewers haven't responded within a few business days, authors should ping
+the relevant reviewers.
+
+### Reviewers
+
+Reviewers should strive to respond to a review within one or two business days;
+this is not a strict SLO, but is a target -- we understand that this may not
+always be possible (e.g. if multiple reviewers are at a summit).
+
+Reviewers should indicate if they are supportive of a proposal by approving it.
+
+Reviewers should resolve any comment threads they began if they feel the comment
+has been sufficiently addressed. This makes it easy to see if there are
+outstanding comments.
+
+Reviewers should *not* block on other reviewers in most cases. A reviewer's
+approval is only indicative of their own approval, not of the readiness of a
+proposal to merge. This prevents a deadlock where reviewer A waits on reviewer
+B and reviewer B waits on reviewer A.
+
+Reviewers should be clear whether they have blocking requests by indicating
+they "Request changes" on the review.
+
+Reviewers may approve a proposal "with nits" if they trust the author to update
+the proposal before (or shortly after) it's merged. As an example, a typo or
+slight rephrasing need not block a proposal from being merged.
+
+### Merge Managers
+
+A proposal should be merged only when no reviewers have requested additional
+changes. Just because a single reviewer has approved a proposal does *not*
+mean it should be merged.
+
+When all reviewers have approved (or abstained by not leaving any comments),
+a proposal should be merged.
