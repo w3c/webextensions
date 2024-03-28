@@ -228,7 +228,7 @@ standardization in an appropriate venue.
 
 The Chairs of the WebExtensions Community Group are:
 
-  * Simeon Vincent, Independent (and before at Google)
+  * Simeon Vincent, Mozilla (previously Google)
   * Timothy Hatcher, Apple
 
 The Chairs are responsible for the day-to-day running of the group,
