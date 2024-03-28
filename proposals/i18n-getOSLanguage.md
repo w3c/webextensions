@@ -71,4 +71,4 @@ There is no current workaround.
 
 ### Open Web API
 
-To combat fingerprinting, this should not be an Open Web API. Just like browser.i18n.getUILanguage is not.
+To combat fingerprinting, this should not be an Open Web API, just like browser.i18n.getUILanguage is not.
