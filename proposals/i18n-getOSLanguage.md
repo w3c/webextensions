@@ -34,7 +34,7 @@ Language-related extensions and extensions wanting to match the language of the 
 
 ### Schema
 
-`i18n.getOSLanguage()` would synchronously return an IETF tag just like `i18n.getUILanguage()` does right now.
+`i18n.getOSLanguage()` would synchronously return an [IETF tag](https://www.w3.org/International/core/langtags/rfc3066bis.html) just like `i18n.getUILanguage()` does right now.
 
 It would follow the following signature for [i18n.json](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/extensions/common/api/i18n.json):
 
