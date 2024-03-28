@@ -67,7 +67,7 @@ The language of the OS will be purposely exposed.
 
 ### Existing Workarounds
 
-There is no current workaround.
+Currently, if an extension wants to offer languages outside of what the current browser language uses, it must do so by presenting a user-facing options page. However, currently there is no way to reasonably detect a language code outside of the browser's UI language with existing APIs.
 
 ### Open Web API
 
