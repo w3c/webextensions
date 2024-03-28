@@ -20,7 +20,7 @@ https://bugzilla.mozilla.org/show_bug.cgi?id=1888486
 
 ### Objective
 
-As browsers often do not directly use the OS language but some reflection of it based on what languages are supported by the browser UI.
+Allow extensions to display UI in the user's system language, even when this is distinct from the browser's UI language (which is restricted to languages supported by the browser).
 
 #### Use Cases
 
