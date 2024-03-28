@@ -12,7 +12,9 @@ Allow to get the language of your operating system as an `IETF tag`
 
 **Created:** 2024-03-18
 
-**Related Issues:** https://github.com/w3c/webextensions/issues/252
+**Related Issues:**
+https://github.com/w3c/webextensions/issues/252
+https://bugzilla.mozilla.org/show_bug.cgi?id=1888486
 
 ## Motivation
 
