@@ -6,7 +6,7 @@ Allow to get the language of your operating system as an `IETF tag`
 
 **Document Metadata**
 
-**Author:** carlosjeurissen
+**Author:** [carlosjeurissen](https://github.com/carlosjeurissen)
 
 **Sponsoring Browser:** TBD
 
