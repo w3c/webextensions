@@ -51,7 +51,7 @@ It would follow the following signature for [i18n.json](https://chromium.googles
 
 ### New Permissions
 
-As browser.i18n.getUILanguage does not require a permission. browser.i18n.getOSLanguage also should not.
+As `browser.i18n.getUILanguage()` does not require a permission, browser.i18n.getOSLanguage also should not.
 
 ### Manifest File Changes
 
