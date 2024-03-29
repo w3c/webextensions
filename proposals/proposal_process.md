@@ -189,9 +189,8 @@ aspect of it).  In this scenario, the reviewing vendor must choose a stance
 
 Reviewing new proposals is one of the most important and impactful roles of the
 Web Extensions Community Group. This ensures browsers have the opportunity to
-align on shared functionality when desirable for new functionality and helps
-prevent drift between the API surfaces. As such, it is critical to ensure
-timely reviews.
+align on shared functionality when desirable and helps prevent drift between the
+API surfaces. As such, it is critical to ensure timely reviews.
 
 ### Authors
 
@@ -209,15 +208,18 @@ the relevant reviewers.
 
 ### Reviewers
 
-Reviewers should strive to respond to a review within one or two business days;
-this is not a strict SLO, but is a target -- we understand that this may not
-always be possible (e.g. if multiple reviewers are at a summit).
-
-Reviewers should indicate if they are supportive of a proposal by approving it.
+Reviewers should strive to respond to a review within one or two business days.
+This is a target, not strict SLO; we understand that this may not always be
+possible (e.g. if multiple reviewers are at a summit).
 
 Reviewers should resolve any comment threads they began if they feel the comment
 has been sufficiently addressed. This makes it easy to see if there are
 outstanding comments.
+
+Reviewers should indicate they, individually, are happy with a proposal and
+think it is in good shape to merge by approving it. (See
+[Browser Vendor Support](#browser-vendor-support) for details on indicating
+support or opposition.)
 
 Reviewers should *not* block on other reviewers in most cases. A reviewer's
 approval is only indicative of their own approval, not of the readiness of a
