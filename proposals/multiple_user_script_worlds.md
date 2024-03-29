@@ -48,92 +48,10 @@ others to use this new capability.
 
 ### Schema
 
-This change would modify existing schemas.
+This change would modify existing schemas. We will add a new property,
+`worldId`, to the `WorldProperties` and `RegisteredUserScript` types, as below.
 
 Relevant methods and types:
-
-```
-export namespace userScripts {
-  export interface WorldProperties {
-    /**
-     * Specifies the world csp. The default is the `` `ISOLATED` `` world csp.
-     */
-    csp?: string;
-
-    /**
-     * Specifies whether messaging APIs are exposed. The default is `false`.
-     */
-    messaging?: boolean;
-  }
-
-  /**
-   * Properties for a registered user script.
-   */
-  export interface RegisteredUserScript {
-    /**
-     * If true, it will inject into all frames, even if the frame is not the
-     * top-most frame in the tab. Each frame is checked independently for URL
-     * requirements; it will not inject into child frames if the URL
-     * requirements are not met. Defaults to false, meaning that only the top
-     * frame is matched.
-     */
-    allFrames?: boolean;
-
-    /**
-     * Specifies wildcard patterns for pages this user script will NOT be
-     * injected into.
-     */
-    excludeGlobs?: string[];
-
-    /**
-     * Excludes pages that this user script would otherwise be injected into.
-     * See Match Patterns for more details on the syntax of these strings.
-     */
-    excludeMatches?: string[];
-
-    /**
-     * The ID of the user script specified in the API call. This property
-     * must not start with a '_' as it's reserved as a prefix for generated
-     * script IDs.
-     */
-    id: string;
-
-    /**
-     * Specifies wildcard patterns for pages this user script will be
-     * injected into.
-     */
-    includeGlobs?: string[];
-
-    /**
-     * The list of ScriptSource objects defining sources of scripts to be
-     * injected into matching pages.
-     */
-    js: ScriptSource[];
-
-    /**
-     * Specifies which pages this user script will be injected into. See
-     * Match Patterns for more details on the syntax of these strings. This
-     * property must be specified for ${ref:register}.
-     */
-    matches?: string[];
-
-    /**
-     * Specifies when JavaScript files are injected into the web page. The
-     * preferred and default value is document_idle
-     */
-    runAt?: RunAt;
-
-    /**
-     * The JavaScript execution environment to run the script in. The default
-     * is `USER_SCRIPT`
-     */
-    world?: ExecutionWorld;
-  }
-}
-```
-
-We will add a new property, `worldId`, to the `WorldProperties` and
-`RegisteredUserScript` types, as below.
 
 ```diff
  export namespace userScripts {
