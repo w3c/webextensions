@@ -2,7 +2,7 @@
 
 **Summary**
 
-Allow to get the language of your operating system as an `IETF tag`
+Allow to get the language of your operating system as an [BCP47 language tag](https://www.w3.org/International/core/langtags/rfc3066bis.html).
 
 **Document Metadata**
 
@@ -34,7 +34,7 @@ Language-related extensions and extensions wanting to match the language of the 
 
 ### Schema
 
-`i18n.getOSLanguage()` would synchronously return an [IETF tag](https://www.w3.org/International/core/langtags/rfc3066bis.html) just like `i18n.getUILanguage()` does right now.
+`i18n.getOSLanguage()` would synchronously return a [BCP47 language tag](https://www.w3.org/International/core/langtags/rfc3066bis.html) like `i18n.getUILanguage()` does right now.
 
 It would follow the following signature for [i18n.json](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/extensions/common/api/i18n.json):
 
@@ -48,7 +48,7 @@ It would follow the following signature for [i18n.json](https://chromium.googles
   "parameters": [],
   "returns": {
     "type": "string",
-    "description": "An IETF BCP 47 language tag such as en-US or pt-BR."
+    "description": "A BCP47 language tag such as en-US or pt-BR."
   }
 }
 ```
@@ -75,4 +75,4 @@ Currently, if an extension wants to offer languages outside of what the current 
 
 ### Open Web API
 
-To combat fingerprinting, this should not be an Open Web API, just like browser.i18n.getUILanguage is not.
+To combat fingerprinting, this should not be an Open Web API, like browser.i18n.getUILanguage is not.
