@@ -1,4 +1,4 @@
-# Proposal: i18n.getOSLanguage>
+# Proposal: i18n.getOSLanguage
 
 **Summary**
 
