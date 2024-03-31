@@ -36,7 +36,7 @@ Language-related extensions and extensions wanting to match the language of the 
 
 `i18n.getOSLanguage()` would synchronously return a [BCP47 language tag](https://www.w3.org/International/core/langtags/rfc3066bis.html) like `i18n.getUILanguage()` does right now.
 
-It would follow the following signature for [i18n.json](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/extensions/common/api/i18n.json):
+It would follow the following signature for [i18n.json](https://chromium.googlesource.com/chromium/src/+/4299ce68496b32ba309e2f012e0db5b4b8cd478a/extensions/common/api/i18n.json):
 
 
 ```json
