@@ -146,16 +146,37 @@ Relevant methods and types:
 +     */
 +    worldId?: string;
    }
+
+   ...
+
++   /**
++    * Removes the configuration for a given world.
++    */
++   export function removeWorld(worldId: string): Promise<void>;
++
++   /**
++    * Returns a promise that resolves to an array of the the configurations
++    * for all user script worlds.
++    */
++   export function getWorldConfigurations(): Promise<WorldProperties[]>;
  }
 ```
 
 Note that the signatures of the related functions, including `configureWorld()`,
 `register()`, and others are left unchanged.
 
-When the developer specifies a `worldId` in either the `WorldProperties` or
-a `RegisteredUserScript`, the browser will create a separate user script world
-for those cases. If `worldId` is omitted, the default user script world will
-be used.
+When the developer specifies a `RegisteredUserScript`, the browser will use a
+separate user script world when injecting the scripts into a document. If
+`worldId` is omitted, the default user script world will be used.
+
+Worlds may be configured via `userScripts.configureWorld()` by indicating the
+given `worldId`. User scripts injected into a world with the given `worldId`
+will have the associated properties from the world configuration. If a world
+does not have a corresponding configuration, it uses the default user script
+world properties.
+
+World configurations can be removed via the new `userScripts.removeWorld()`
+method.
 
 Additionally, `runtime.Port` and `runtime.MessageSender` will each be extended
 with a new, optional `userScriptWorldId` property that will be populated in the
@@ -165,6 +186,29 @@ script world. We do not need to populate a value for messages from the default
 user script world, since this is unambiguous given the distinction in the
 event listeners (`onUserScriptMessage` already indicates the message was from
 a user script).
+
+### Behavioral Notes
+
+#### World Persistence
+
+Configured worlds are persisted until the owning extension is updated (in order
+to align with the behavior of the rest of the `userScripts` API) or manually
+removes them via the new `userScripts.removeWorld()` method.
+
+#### World Limits
+
+User agents may place limits on both the number of registered worlds and the
+number of worlds that may be active in a given document. These limits may be
+different (since an extension may want more individual world configurations than
+they would expect to be practically encountered on a given site).
+
+If an extension reaches the limit of the number of registered worlds, attempts
+to register a new world via `userScripts.configureWorld()` will fail with an
+error.
+
+If an extension tries to inject more scripts into a single document than the
+per-document limit, all additional scripts will be injected into the default
+world.
 
 ### New Permissions
 
