@@ -24,7 +24,10 @@ To interact with partitioned cookies containing a cross-site ancestor chain bit 
 
 #### Use Cases
 
-The methods used to get, set, remove and getAll cookies.
+#### Password Manager:
+Let’s say a password manager extension (with host permissions) is used by users to access their login information by setting a cookie that stores their usernames and passwords in an encrypted partitioned cookie. To protect their users against clickjacking, the extension adds a setting that prevents their cookies from being accessed, by default, in embeds that have cross site ancestors without triggering a user prompt. If permission is given through the prompt, the extension sets a cookie with a hasCrossSiteAncestor value of true. Upon subsequent visits, the extension checks the cookie store for the presence of a cookie with a hasCrossSiteAncestor value of true to determine whether the prompt needs to be rendered.
+
+To allow for this protection and UX flow to work, the extension would need to have the ability to set/get cookies with specific hasCrossSiteAncestor values. 
 
 ### Known Consumers
 All extensions that access and/or modify cookies with awareness of partitioned cookies, through the use of the `partitionKey` property in the `cookies` extension API.
