@@ -27,7 +27,7 @@ To interact with partitioned cookies containing a cross-site ancestor chain bit 
 The methods used to get, set, remove and getAll cookies.
 
 ### Known Consumers
-All adopters of partitioned cookies
+All extensions that access and/or modify cookies with awareness of partitioned cookies, through the use of the `partitionKey` property in the `cookies` extension API.
 
 ## Specification
 
