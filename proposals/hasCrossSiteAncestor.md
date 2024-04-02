@@ -69,7 +69,7 @@ None
 The hasCrossSiteAncestor value could be a value that is not exposed to extensions at all. Browsers that choose to include a cross-site ancestor chain bit in their partitioned cookies, could calculate the expected value of the cross-site ancestor chain bit from the URL associated with the cookie and the topLevelSite in the partitionKey. However, this could cause extensions to be unable to correctly set or get cookies (in an A1->B->A2 situation) as the browser may calculate the incorrect value for hasCrossSiteAncestor since it would not be explicitly provided by the extension.
 
 ### Existing Workarounds
-To access cookies with the same topLevelSite but different hasCrossSiteAncestor values (A1->B->A2 context), developers can remove the partitioned attribute from the cookie and use the Storage Access Api. 
+To access cookies with the same `topLevelSite` but different `hasCrossSiteAncestor` values (A1->B->A2 context), developers can remove the `Partitioned` attribute from the cookie and use the Storage Access API in the context of web pages.
 
 ### Open Web API
 The APIs being expanded to include the hasCrossSiteAncestor boolean are specific to extensions.
