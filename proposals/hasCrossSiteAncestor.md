@@ -14,7 +14,7 @@ Allow extensions to utilize a hasCrossSiteAncestor boolean value when interactin
 
 **Created:** 2024-04-01
 
-**Related Issues:** [How do Partitioned cookies interact with browser extensions?](https://github.com/privacycg/CHIPS/issues/6)
+**Related Issues:** [PrivacyCG/CHIPS issue 6 - How do Partitioned cookies interact with browser extensions?](https://github.com/privacycg/CHIPS/issues/6)
 
 ## Motivation
 https://github.com/privacycg/CHIPS/issues/40 is adding a cross-site ancestor bit value to partitioned cookies.
