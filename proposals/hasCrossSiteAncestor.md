@@ -33,7 +33,9 @@ All adopters of partitioned cookies
 
 ### Schema
 
-Adds a new optional boolean value hasCrossSiteAncestor to the partitionKey of the cookies details object. Which is the parameter used in the methods `cookies.get()`, `cookies.set()`, `cookies.remove()` and `cookies.getAll()`.
+Adds a new boolean property `hasCrossSiteAncestor` to the `partitionKey` property of the `cookies.Cookie` type.
+
+Adds a new optional boolean property `hasCrossSiteAncestor` to the `partitionKey` property of the details object. Which is the parameter used in the methods `cookies.get()`, `cookies.set()`, `cookies.remove()` and `cookies.getAll()`.
 
 ```
 //Cookie details object with partitionKey containing hasCrossSiteAncestor value of true.
