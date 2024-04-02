@@ -20,7 +20,7 @@ Allow extensions to utilize a hasCrossSiteAncestor boolean value when interactin
 https://github.com/privacycg/CHIPS/issues/40 is adding a cross-site ancestor bit value to partitioned cookies.
 
 ### Objective
-To interact with partitioned cookies containing a cross-site ancestor chain bit correctly, extensions will need to have the ability to to specify a value (hasCrossSiteAncestor) that cooresponds to the value of the cross-site ancestor chain bit in partitioned cookies.
+To interact with partitioned cookies containing a cross-site ancestor chain bit correctly, extensions will need to have the ability to to specify a value (hasCrossSiteAncestor) that corresponds to the value of the cross-site ancestor chain bit in partitioned cookies.
 
 #### Use Cases
 
