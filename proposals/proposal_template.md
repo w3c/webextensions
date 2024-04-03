@@ -67,6 +67,22 @@ A few notes:
     additional optional properties.  Even if you currently only accept one
     property, it often makes sense to wrap this in an object.
 
+### Behavior
+
+Describe the behavior of the new API if there is anything that is not
+immediately obvious from the schema above. Include descriptions of:
+
+*   Behavior on the newly-introduced types and methods.
+*   Impacted behavior on existing API methods and surfaces, if any.
+
+This does not (yet) need to follow strict spec language; however, the more clear
+you can be the better. This helps reduce the number of questions that may arise
+during the API review as well as ensure browsers are able to align with one
+another.
+
+You may add subsections (e.g., `#### Behavior Section 1` and
+`#### Behavior Section 2`) as appropriate to aid in readbility.
+
 ### New Permissions
 
 | Permission Added | Suggested Warning |
