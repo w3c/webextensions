@@ -56,7 +56,7 @@ Relevant methods and types:
 ```diff
  export namespace userScripts {
    export interface WorldProperties {
-     /**
++    /**
 +     * Specifies the ID of the specific user script world to update.
 +     * If not provided, updates the properties of the default user script
 +     * world.
@@ -150,9 +150,12 @@ Relevant methods and types:
    ...
 
 +   /**
-+    * Removes the configuration for a given world.
++    * Resets the configuration for a given world. Any scripts that inject into
++    * the world with the specified ID will use the default world configuration.
++    * Does nothing (but does not throw an error) if provided a `worldId` that
++    * does not correspond to a current configuration.
 +    */
-+   export function removeWorld(worldId: string): Promise<void>;
++   export function resetWorldConfiguration(worldId: string): Promise<void>;
 +
 +   /**
 +    * Returns a promise that resolves to an array of the the configurations
@@ -173,10 +176,15 @@ Worlds may be configured via `userScripts.configureWorld()` by indicating the
 given `worldId`. User scripts injected into a world with the given `worldId`
 will have the associated properties from the world configuration. If a world
 does not have a corresponding configuration, it uses the default user script
-world properties.
+world properties. Any existing worlds are not directly affected by
+`userScripts.configureWorld()` calls; however, the browser may revoke
+certain privileges (for instance, message calls from existing user script worlds
+may beging to fail if the extension sets `messaging` to false). This is inline
+with behavior extensions encounter when e.g. the extension is unloaded and the
+content script continues running.
 
-World configurations can be removed via the new `userScripts.removeWorld()`
-method.
+World configurations can be removed via the new
+`userScripts.resetWorldConfiguration()` method.
 
 Additionally, `runtime.Port` and `runtime.MessageSender` will each be extended
 with a new, optional `userScriptWorldId` property that will be populated in the
@@ -193,7 +201,7 @@ a user script).
 
 Configured worlds are persisted until the owning extension is updated (in order
 to align with the behavior of the rest of the `userScripts` API) or manually
-removes them via the new `userScripts.removeWorld()` method.
+removes them via the new `userScripts.resetWorldConfiguration()` method.
 
 #### World Limits
 
@@ -202,9 +210,9 @@ number of worlds that may be active in a given document. These limits may be
 different (since an extension may want more individual world configurations than
 they would expect to be practically encountered on a given site).
 
-If an extension reaches the limit of the number of registered worlds, attempts
-to register a new world via `userScripts.configureWorld()` will fail with an
-error.
+If an extension reaches the limit of the number of registered world
+configurations, attempts to register a new world via
+`userScripts.configureWorld()` will fail with an error.
 
 If an extension tries to inject more scripts into a single document than the
 per-document limit, all additional scripts will be injected into the default
