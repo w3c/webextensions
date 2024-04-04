@@ -179,7 +179,7 @@ does not have a corresponding configuration, it uses the default user script
 world properties. Any existing worlds are not directly affected by
 `userScripts.configureWorld()` calls; however, the browser may revoke
 certain privileges (for instance, message calls from existing user script worlds
-may beging to fail if the extension sets `messaging` to false). This is inline
+may beging to fail if the extension sets `messaging` to false). This is in line
 with behavior extensions encounter when e.g. the extension is unloaded and the
 content script continues running.
 
@@ -253,13 +253,20 @@ No additional security considerations. This API may (mildly) increase security
 by (somewhat) isolating individual user scripts from interacting with one
 another.
 
+Note that since isolated world boundaries are not considered "hard" boundaries,
+we would not consider this isolation a security measure from the browser's
+security model (just as we don't consider isolated worlds to be a strict
+security boundary today).
+
 ## Alternatives
 
 ### Existing Workarounds
 
 Today, user script managers go to various lengths to try to isolate behavior
-between user scripts. This includes having various frozen types, making heavy
-use of function closures, ensuring injection before untrusted code, and more.
+between user scripts (for more information, see conversation in
+[issue 279](https://github.com/w3c/webextensions/issues/279). This includes
+having various frozen types, making heavy use of function closures, ensuring
+injection before untrusted code, and more.
 
 These workarounds are fragile and require significantly more complex code in
 user script managers, while providing a lesser guarantee of isolation than a
