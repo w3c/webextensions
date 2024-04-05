@@ -23,9 +23,10 @@ Feature to enable developers to enhance extension icon visibility in dark mode.
 ### Objective
 
 Extension developers will be able to supply and define a set of icons to be used
-in the event that browser system settings are set to dark mode. The set of dark
-mode icons can and will be made automatically visible once the system setting is
-in dark mode, thereby enhancing the overall browser experience.
+in the event that user has expressed the preference for a page that has a dark
+theme. The set of dark mode icons can and will be made automatically visible
+once the system setting is in dark mode, thereby enhancing the overall browser
+experience.
 
 #### Use Cases
 
@@ -33,8 +34,10 @@ in dark mode, thereby enhancing the overall browser experience.
 1. Improved icon visibility on management the management and shortcuts pages.
 1. Dark mode icon declarations made possible through the extension manifest.
 1. setIcon() will allow setting of dark and/or light mode specific icons.
-1. Improved icon visibility on context menu (Chrome and Safari reply on default icons, only Firefox can specify icons).
-1. Improved icon visibility on side panel (Chrome replies on default icons, Firefox can specify icons).
+1. Improved icon visibility on context menu (Chrome and Safari reply on default
+icons, only Firefox can specify icons).
+1. Improved icon visibility on side panel (Chrome replies on default icons,
+Firefox can specify icons).
 
 ### Known Consumers
 
@@ -173,21 +176,37 @@ N/A.
 `icon_variants` is also an optional sub-key in the action key dictionary.
 
 #### Fallback
-* `icon_variants` will be used if they're supplied. Otherwise `default_icon` will be used if it's supplied. If neither are supplied, then `icons` will be used.
+* `icon_variants` will be used if they're supplied. Otherwise `default_icon`
+will be used if it's supplied. If neither are supplied, then `icons` will be
+used.
 
-* icon_variants or variants in action.setIcon() must provide both dark and light icon if they occur, right? This can simplify the fallback problem.
+* icon_variants or variants in action.setIcon() must provide both dark and light
+icon, if they occur.
 
 * Order of precedence for action:
-API: action.setIcon() → action.icon_variants → action.default_icon → icon_variants → icons
+<api>.action.setIcon() -> action.icon_variants -> action.default_icon ->
+icon_variants -> icons
 
 * Order of precedence for non-action:
-icon_variants → icons
+icon_variants -> icons
 
-What happens if you specify icon_variants.dark but not icon_variants.light, and also icons? Do we use the dark mode icon from icon_variants for light as well, or fallback to icons?
-TBD
+### FAQ
+* What happens if you specify icon_variants.dark but not icon_variants.light,
+and also icons?
+If either is provided, both are expected.
 
-What happens if you specify icon_variants.dark but not icon_variants.light, and you don't have icons? Do we use the dark mode icon from icon_variants or show an auto-generated icon?
-TBD
+Do we use the dark mode icon from icon_variants for light as well, or fallback
+to icons?
+Both are expected if either "light" or "dark" are supplied.
+
+What happens if you specify icon_variants.dark but not icon_variants.light, and
+you don't have icons?
+This could be a warning and a silent fallback to "icons", as the goal is to try
+to reduce errors as much as possible.
+
+Do we use the dark mode icon from icon_variants or show an auto-generated icon?
+The dark mode icon from variants will be shown if supplied and the user is
+currently in dark mode.
 
 #### Warning or error?
 The new `icon_variants` key (or sub-key) will only emit a non-blocking warning
