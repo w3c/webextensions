@@ -14,7 +14,9 @@ Feature to enable developers to enhance extension icon visibility in dark mode.
 
 **Created:** 2024-04-05
 
-**Related Issues:** &lt;https://crbug.com/893175>
+**Related Issues:**
+* https://crbug.com/893175
+* https://github.com/w3c/webextensions/issues/229
 
 ## Motivation
 
@@ -28,9 +30,11 @@ in dark mode, thereby enhancing the overall browser experience.
 #### Use Cases
 
 1. Improved icon visibility in the extension toolbar.
-2. Improved icon visibility on management the management and shortcuts pages.
+1. Improved icon visibility on management the management and shortcuts pages.
 1. Dark mode icon declarations made possible through the extension manifest.
-3. setIcon() will allow storage of dark mode specific icons.
+1. setIcon() will allow setting of dark and/or light mode specific icons.
+1. Improved icon visibility on context menu (Chrome and Safari reply on default icons, only Firefox can specify icons).
+1. Improved icon visibility on side panel (Chrome replies on default icons, Firefox can specify icons).
 
 ### Known Consumers
 
@@ -40,40 +44,83 @@ The associated and linked bug has 48 stars and 31 comments.
 
 ### Schema
 
+Some browsers don't currently have plans to support svg. Therefore, a drop-in
+replacement of an already supported image type will be allowed.
+
+numberToPathDictionary
+```
+{
+  "<number>": "<path>"
+}
+```
+
+manifest.json
+```
+{
+  "icon_variants": {
+    "<dark|light>": <numberToPathDictionary>
+  },
+  "action": {
+    "default_icon": <numberToPathDictionary>|<svgPathString|pathString>,
+    "icon_variants": {
+      "<dark|light>": <numberToPathDictionary>
+    }
+  }
+}
+```
+
+Action
+```
+action.setIcon({
+  imageData?: ImageData | object:<numberToPathDictionary>,
+  path?: string | object:<numberToPathDictionary>,
+  tabId?: number,
+  variants?: {
+    "<dark|light>": <numberToPathDictionary>
+  },
+});
+```
+
+### Examples
+
 manifest.json
 ```
 {
   "icon_variants": {
     "dark": {
-      "128": "icons/128_dark.png"
+      "128": "128_dark.png"
     },
     "light": {
-      "128": "icons/128_light.png"
+      "128": "128_light.png"
     }
   },
   "action": {
     "default_icon": {
-      "128": "icons/128.png"
+      "128": "128_action.png"
     },
     "icon_variants": {
       "dark": {
-        "128": "icons/128_action_dark.png"
+        "128": "128_action_dark.png"
       },
       "light": {
-        "128": "icons/128_action_light.png"
+        "128": "128_action_light.png"
       }
     }
   }
 }
 ```
 
-Browser action.
+Action
 ```
 action.setIcon({
-  imageData?: ImageData | object,
-  path?: string | object,
-  tabId?: number,
-  mode?: string
+  variants?: {
+    "dark": {
+      "128": "128_action_dark.png"
+    },
+    "light": {
+      "128": "128_action_light.png"
+    }
+  },
 });
 ```
 
@@ -102,15 +149,21 @@ N/A.
 
 ### Manifest File Changes
 
-A new icon_variants key and sub-key will be added. The schema is listed in the
-schema section. Failure to parse this key and/or subkey will prevent the
-extension from loading. `icon_variants` are required in the manifest and there
-will be no warning whether they're present or not. If one or both
-`icon_variants` keys are present, they must include at least a "dark" or "light"
-sub-key. Failure to do so will result in an error. Any of those theme keys must
-have at least one size key as a string, containing the path to the icon as the
-value. Failure to find any file at the specified path will result in an error.
-Such errors prevent the extension frm loading.
+#### Optional or required?
+`icon_variants` is an optional key of the top level manifest dictionary.
+`icon_variants` is also an optional sub-key in the action key dictionary.
+
+#### Fallback
+`icon_variants` will be used if they're supplied. Otherwise `default_icon` will
+be used if it's supplied. If neither are supplied, then `icons` will be used.
+
+#### Warning or error?
+The new `icon_variants` key (or sub-key) will only emit a non-blocking warning
+rather than a hard error in the event of unexpected values or missing icons.
+This will allow this optional key to be more flexible in the event of ideas for
+future changes. The `icons` key cannot be used for dark mode support because it
+errors in cases when a warning would have otherwise sufficed. The warning is
+ok for `icon_variants` based on the safety net outlined in the fallback section.
 
 ## Security and Privacy
 
@@ -149,10 +202,4 @@ N/A.
 
 ## Future Work
 
-#comment13 in the linked bug asks for the action popup background color to be
-changed [to become become dark] along with the icon in dark mode. That is out of
-scope for this proposal as it would require rethinking the blank page in a
-normal browser tab, in addition to what happens when loading an iframe on top of
-the dark background. Also, which color should be chosen for the background.
-Perhaps to seed the idea, one of these colors could be analyzed and compared to
-others not included here: #202124, #2D2E2F.
+Svg support may be considered at some point for some browsers.
