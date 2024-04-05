@@ -47,25 +47,44 @@ The associated and linked bug has 48 stars and 31 comments.
 Some browsers don't currently have plans to support svg. Therefore, a drop-in
 replacement of an already supported image type will be allowed.
 
-numberToPathDictionary
+Shared IDL
 ```
-{
-  "<number>": "<path>"
+// DOMString <mode> : "dark" | "light";
+
+dictionary IconSizeToPath {
+  DOMString <size> => DOMString <path>;
+}
+
+dictionary IconVariants {
+  DOMString <mode> => IconSizeToPath;
+}
+
+dictionary IconVariantsKey {
+  DOMString <icon_variants> => IconVariants | DOMString <default_path>;
 }
 ```
 
-manifest.json
+manifest.json IDL
 ```
-{
-  "icon_variants": {
-    "<dark|light>": <numberToPathDictionary>
-  },
-  "action": {
-    "default_icon": <numberToPathDictionary>|<svgPathString|pathString>,
-    "icon_variants": {
-      "<dark|light>": <numberToPathDictionary>
-    }
-  }
+dictionary ManifestKeys {
+  IconVariantsKey? action;
+  IconVariantsKey? icon_variants;
+}
+```
+
+action.setIcon() IDL
+```
+interface SetIconArguments {
+  ImageData | Object imageData;
+  DOMString | Object path?;
+  Number tabId;
+  IconVariantsKey icon_variants?;
+}
+
+interface Function {
+  static void setIcon(
+    SetIconArguments arguments,
+    optional DoneCallback callback);
 }
 ```
 
@@ -75,8 +94,8 @@ action.setIcon({
   imageData?: ImageData | object:<numberToPathDictionary>,
   path?: string | object:<numberToPathDictionary>,
   tabId?: number,
-  variants?: {
-    "<dark|light>": <numberToPathDictionary>
+  icon_variants?: {
+    "<dark|light>": I
   },
 });
 ```
@@ -113,7 +132,7 @@ manifest.json
 Action
 ```
 action.setIcon({
-  variants?: {
+  variants: {
     "dark": {
       "128": "128_action_dark.png"
     },
@@ -154,8 +173,21 @@ N/A.
 `icon_variants` is also an optional sub-key in the action key dictionary.
 
 #### Fallback
-`icon_variants` will be used if they're supplied. Otherwise `default_icon` will
-be used if it's supplied. If neither are supplied, then `icons` will be used.
+* `icon_variants` will be used if they're supplied. Otherwise `default_icon` will be used if it's supplied. If neither are supplied, then `icons` will be used.
+
+* icon_variants or variants in action.setIcon() must provide both dark and light icon if they occur, right? This can simplify the fallback problem.
+
+* Order of precedence for action:
+API: action.setIcon() → action.icon_variants → action.default_icon → icon_variants → icons
+
+* Order of precedence for non-action:
+icon_variants → icons
+
+What happens if you specify icon_variants.dark but not icon_variants.light, and also icons? Do we use the dark mode icon from icon_variants for light as well, or fallback to icons?
+TBD
+
+What happens if you specify icon_variants.dark but not icon_variants.light, and you don't have icons? Do we use the dark mode icon from icon_variants or show an auto-generated icon?
+TBD
 
 #### Warning or error?
 The new `icon_variants` key (or sub-key) will only emit a non-blocking warning
