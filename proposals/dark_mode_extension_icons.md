@@ -47,8 +47,7 @@ The associated and linked bug has 48 stars and 31 comments.
 
 ### Schema
 
-Some browsers don't currently have plans to support svg. Therefore, a drop-in
-replacement of an already supported image type will be allowed.
+The supplied icon path points to the an icon file in a browser-supported format.
 
 Shared IDL
 ```
@@ -59,11 +58,11 @@ dictionary IconSizeToPath {
 }
 
 dictionary IconVariants {
-  DOMString <mode> => IconSizeToPath;
+  DOMString <mode> => IconSizeToPath | DOMString <default_path>;
 }
 
 dictionary IconVariantsKey {
-  DOMString <icon_variants> => IconVariants | DOMString <default_path>;
+  DOMString <icon_variants> => IconVariants;
 }
 ```
 
@@ -72,35 +71,23 @@ manifest.json IDL
 dictionary ManifestKeys {
   IconVariantsKey? action;
   IconVariantsKey? icon_variants;
-}
+};
 ```
 
 action.setIcon() IDL
 ```
-interface SetIconArguments {
-  ImageData | Object imageData;
-  DOMString | Object path?;
-  Number tabId;
-  IconVariantsKey icon_variants?;
-}
+// ImageData is an interface representing canvas element pixels.
 
-interface Function {
+dictionary ImageDataDictionary {
+  DOMString? <size> => ImageData;
+};
+
+interface Functions {
   static void setIcon(
-    SetIconArguments arguments,
-    optional DoneCallback callback);
-}
-```
-
-Action
-```
-action.setIcon({
-  imageData?: ImageData | object:<numberToPathDictionary>,
-  path?: string | object:<numberToPathDictionary>,
-  tabId?: number,
-  icon_variants?: {
-    "<dark|light>": I
-  },
-});
+    ...
+    IconVariantsKey icon_variants?,
+  );
+};
 ```
 
 ### Examples
@@ -209,12 +196,9 @@ The dark mode icon from variants will be shown if supplied and the user is
 currently in dark mode.
 
 #### Warning or error?
-The new `icon_variants` key (or sub-key) will only emit a non-blocking warning
-rather than a hard error in the event of unexpected values or missing icons.
-This will allow this optional key to be more flexible in the event of ideas for
-future changes. The `icons` key cannot be used for dark mode support because it
-errors in cases when a warning would have otherwise sufficed. The warning is
-ok for `icon_variants` based on the safety net outlined in the fallback section.
+The new `icon_variants` key (or sub-key) will not cause an error in the event
+that it is invalid. Instead, either ignore it altogether, or emit a warning.
+Warnings are preferred over errors as they're future-resilient.
 
 ## Security and Privacy
 
