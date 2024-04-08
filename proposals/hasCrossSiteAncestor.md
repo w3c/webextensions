@@ -61,7 +61,7 @@ Adds a new optional boolean property `hasCrossSiteAncestor` to the `partitionKey
 // Cookie details object with partitionKey containing hasCrossSiteAncestor value of true.
 "details" {
   "partitionKey": {
-    "topLevelSite" : "https://example.com"
+    "topLevelSite" : "https://example.com",
     "hasCrossSiteAncestor" : true
   }
 }
