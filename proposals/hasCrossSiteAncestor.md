@@ -23,7 +23,7 @@ A third party context occurs when any parent frame, in the frame tree, is cross-
 
 **Document Metadata**
 
-**Author:**  aselya 
+**Author:** aselya 
 
 **Sponsoring Browser:** Chrome
 
