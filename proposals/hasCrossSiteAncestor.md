@@ -109,5 +109,5 @@ If no value is set for hasCrossSiteAncestor cookies with both true and false val
 As described the Abuse Mitigations section, this method will not allow a hasCrossSiteAncestor value of false, if the URL associated with the cookie and the topLevelSite in the partitionKey are not first party. If this is attempted, an error will be returned. If no topLevelSite is provided and a hasCrossSiteAncestor value is provided, the cookie will not be set and an error will be returned.
 
 - `cookies.remove()`:
-If no value is set for hasCrossSiteAncestor, cookies.remove() will remove cookies with both true and false values. If no topLevelSite value is included in the partitionKey object and a value is set for hasCrossSiteAncestor, no cookies will be removed and an error will be returned.
+If no value is set for hasCrossSiteAncestor, cookies.remove() will not consider the hasCrossSiteAncestor value when determing the cookie to remove. If no topLevelSite value is included in the partitionKey object and a value is set for hasCrossSiteAncestor, no cookie will be removed and an error will be returned.
 
