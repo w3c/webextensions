@@ -152,6 +152,10 @@ Existing manifest key. The behavior of the icons manifest key will remain unchan
 Order of precedence. The new `icon_variants` keys and subkeys will take
 precedent, followed by the incumbent `icons` key.
 
+The `dark` icon variant is used when a dark color scheme is used for the
+surrounding UI, often referred to as "dark mode".
+The `light` icon variant is used otherwise.
+
 ### New Permissions
 
 N/A.
