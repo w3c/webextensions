@@ -62,7 +62,7 @@ Adds a new optional boolean property `hasCrossSiteAncestor` to the `partitionKey
 "details": {
   "partitionKey": {
     "topLevelSite": "https://example.com",
-    "hasCrossSiteAncestor" : true
+    "hasCrossSiteAncestor": true
   }
 }
 ```
