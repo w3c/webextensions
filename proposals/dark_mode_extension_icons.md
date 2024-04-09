@@ -41,7 +41,7 @@ Firefox can specify icons).
 
 ### Known Consumers
 
-The associated and linked bug has 48 stars and 31 comments.
+The Chromium bug has a significant amount of developer interest.
 
 ## Specification
 
