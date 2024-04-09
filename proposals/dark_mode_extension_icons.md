@@ -241,4 +241,4 @@ N/A.
 
 ## Future Work
 
-Svg support may be considered at some point for some browsers.
+N/A.
