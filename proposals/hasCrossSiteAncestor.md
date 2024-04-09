@@ -8,9 +8,9 @@ Allow extensions to utilize a hasCrossSiteAncestor boolean value when interactin
 
 A cross-site ancestor chain bit is a value that is set by the browser when a partitioned cookie is created. The value is used as part of the key in the partition key to determine access to a partitioned cookie. If the bit indicates true, it means the cookie has been set in a third party context.
 
-A third party context occurs when any parent frame, in the frame tree, is cross-site with the frame the cookie is being set on. If one site of the frame tree is third party, then all children frames of that frame are also third party and have a cross site ancestor.
+A third party context occurs when any parent frame, in the frame tree, is cross-site with the frame the cookie is being set on. If one site of the frame tree is third party, then all children frames of that frame are also third party and have a cross site ancestor. 
 
-
+Note: In the table below, sites A1, A2 and A3 are all first party to each other.
 | Site frame tree |Site cookie is set on| hasCrossSiteAncestor value of cookie|
 |---|---|--|
 | A1         |A1| false         | 
@@ -41,8 +41,11 @@ To interact with partitioned cookies containing a cross-site ancestor chain bit 
 
 #### Use Cases
 
+#### Cookie Manager:
+Let's say a cookie manager extension (with host permissions) is used by users to get/set/remove their cookies. As browsers include the cross-site ancestor chain bit in their implementation of partitioned cookies, the extension will need the ability to use the `hasCrossSiteAncestor` parameter to give full insight into the existing cookies and allow the user to set new cookies that include the cross-site ancestor bit correctly.
+
 #### Password Manager:
-Let’s say a password manager extension (with host permissions) is used by users to access their login information by setting a cookie that stores their usernames and passwords in an encrypted partitioned cookie. To protect their users against clickjacking, the extension adds a setting that prevents their cookies from being accessed, by default, in embeds that have cross site ancestors without triggering a user prompt. If permission is given through the prompt, the extension sets a cookie with a hasCrossSiteAncestor value of true. Upon subsequent visits, the extension checks the cookie store for the presence of a cookie with a hasCrossSiteAncestor value of true to determine whether the prompt needs to be rendered.
+Let’s say a password manager extension (with host permissions) is used by users to access their login information by setting a cookie that stores their usernames and passwords in an encrypted partitioned cookie. To protect their users against clickjacking, the extension adds a setting that prevents their cookies from being accessed, by default, in embeds that have cross site ancestors without triggering a user prompt. If permission is given through the prompt, the extension sets a cookie with a `hasCrossSiteAncestor` value of true. Upon subsequent visits, the extension checks the cookie store for the presence of a cookie with a `hasCrossSiteAncestor` value of true to determine whether the prompt needs to be rendered.
 
 To allow for this protection and UX flow to work, the extension would need to have the ability to set/get cookies with specific hasCrossSiteAncestor values. 
 
