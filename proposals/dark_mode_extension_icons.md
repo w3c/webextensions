@@ -186,16 +186,16 @@ icon_variants -> icons
 and also icons?
 If either is provided, both are expected.
 
-Do we use the dark mode icon from icon_variants for light as well, or fallback
+* Do we use the dark mode icon from icon_variants for light as well, or fallback
 to icons?
 Both are expected if either "light" or "dark" are supplied.
 
-What happens if you specify icon_variants.dark but not icon_variants.light, and
+* What happens if you specify icon_variants.dark but not icon_variants.light, and
 you don't have icons?
 This could be a warning and a silent fallback to "icons", as the goal is to try
 to reduce errors as much as possible.
 
-Do we use the dark mode icon from icon_variants or show an auto-generated icon?
+* Do we use the dark mode icon from icon_variants or show an auto-generated icon?
 The dark mode icon from variants will be shown if supplied and the user is
 currently in dark mode.
 
