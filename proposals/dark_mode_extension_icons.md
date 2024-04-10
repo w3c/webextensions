@@ -196,7 +196,8 @@ Both are expected if either "light" or "dark" are supplied.
 you don't have icons?
 
 This could be a warning and a silent fallback to "icons", as the goal is to try
-to reduce errors as much as possible.
+to reduce errors as much as possible. Another option could be to fall back to
+the dark mode icon if in light mode and no light mode icon is supplied.
 
 * Do we use the dark mode icon from icon_variants or show an auto-generated icon?
 
