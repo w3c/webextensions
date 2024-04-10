@@ -47,47 +47,47 @@ The Chromium bug has a significant amount of developer interest.
 
 ### Schema
 
-The supplied icon path points to the an icon file in a browser-supported format.
-
-Shared IDL
+Common
 ```
-// DOMString <mode> : "dark" | "light";
+// `Mode` is dark or light (if either is used, both are expected).
+const Modes: string[] = ["dark", "light];
+const Mode = Modes[Math.floor(Math.random() * Modes.length())];
 
-dictionary IconSizeToPath {
-  DOMString <size> => DOMString <path>;
-}
+// Primitive type declaration.
+type Size = string;
+type Path = string;
 
-dictionary IconVariants {
-  DOMString <mode> => IconSizeToPath | DOMString <default_path>;
-}
-
-dictionary IconVariantsKey {
-  DOMString <icon_variants> => IconVariants;
-}
+// Map icon size to path.
+const IconSizeToPath: map<Size, Path>;
 ```
 
-manifest.json IDL
+manifest.json
 ```
-dictionary ManifestKeys {
-  IconVariantsKey? action;
-  IconVariantsKey? icon_variants;
+// Map mode to a string path or a dictionary mapping icon size to a string path.
+const IconVariants: map<Mode, IconSizeToPath | Path>;
+
+{
+  ...
+  "icon_variants": IconVariants;
+  "action": {
+    ...
+    "icon_variants": IconVariants
+  },
 };
 ```
 
-action.setIcon() IDL
+action.setIcon()
 ```
 // ImageData is an interface representing canvas element pixels.
+const IconSizeToImageData: map<Size, Path>;
+const IconVariantsWithImageData:
+  map<Mode, IconSizeToPath | IconSizeToImageData | ImageData | Path>;
+const ImageDataDictionary: map<Size, ImageData>;
 
-dictionary ImageDataDictionary {
-  DOMString? <size> => ImageData;
-};
-
-interface Functions {
-  static void setIcon(
-    ...
-    IconVariantsKey icon_variants?,
-  );
-};
+action.setIcon(
+  ...
+  icon_variants?: IconVariantsWithImageData,
+);
 ```
 
 ### Examples
@@ -184,18 +184,22 @@ icon_variants -> icons
 ### FAQ
 * What happens if you specify icon_variants.dark but not icon_variants.light,
 and also icons?
+
 If either is provided, both are expected.
 
 * Do we use the dark mode icon from icon_variants for light as well, or fallback
 to icons?
+
 Both are expected if either "light" or "dark" are supplied.
 
 * What happens if you specify icon_variants.dark but not icon_variants.light, and
 you don't have icons?
+
 This could be a warning and a silent fallback to "icons", as the goal is to try
 to reduce errors as much as possible.
 
 * Do we use the dark mode icon from icon_variants or show an auto-generated icon?
+
 The dark mode icon from variants will be shown if supplied and the user is
 currently in dark mode.
 
