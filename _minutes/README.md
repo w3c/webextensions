@@ -10,11 +10,12 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2024-04-11 at 8 AM PDT = https://everytimezone.com/?t=66172800,384
 - 2024-04-25 at 8 AM PDT = https://everytimezone.com/?t=66299d00,384
+- 2024-05-09 at 8 AM PDT = https://everytimezone.com/?t=663c1200,384
 
 ## Past meetings
 
+* 2024-04-11 ([minutes](2024-04-11-wecg.md))
 * 2024-03-28 ([minutes](2024-03-28-wecg.md))
 * 2024-03-14 ([minutes](2024-03-14-wecg.md))
 * 2024-02-29 ([minutes](2024-02-29-wecg.md))
@@ -28,6 +29,7 @@ After the end of each meeting, meeting notes are published here.
 
 **2024**
 
+* 2024-04-11 ([minutes](2024-04-11-wecg.md))
 * 2024-03-28 ([minutes](2024-03-28-wecg.md))
 * 2024-03-14 ([minutes](2024-03-14-wecg.md))
 * 2024-02-29 ([minutes](2024-02-29-wecg.md))
