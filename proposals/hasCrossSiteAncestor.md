@@ -6,11 +6,11 @@ Allow extensions to utilize a hasCrossSiteAncestor boolean value when interactin
 
 #### Background information: Description of Cross-site Ancestor Chain Bit in partitioned cookies
 
-A cross-site ancestor chain bit is a value that is set by the browser when a partitioned cookie is created. The value is used as part of the key in the partition key to determine access to a partitioned cookie. If the bit indicates true, it means the cookie has been set in a third party context.
+The cross-site ancestor chain bit is a component of the cookie partition key that is set by the browser when keys are created. If the bit indicates true, it means the cookie has been set in a third-party context.
 
-A third party context occurs when any parent frame, in the frame tree, is cross-site with the frame or subresource the cookie is being set on. If one site of the frame tree is third party, then all children frames of that frame are also third party and have a cross site ancestor. 
+A third-party context occurs when any parent frame, in the frame tree, is cross-site with the frame or subresource the cookie is being set on. If one site of the frame tree is third-party, then all children frames of that frame are also third-party and have a cross site ancestor. Third-party contexts also occur when the top-level frame makes a third-party subresource request and when a first-party request is redirected to a thrid-party URL (even if it is subsequently redirected back to a first-party request after, that subsequent first-party request is now considered an ABA request).
 
-Note: In the table below, sites A1, A2 and A3 are all first party to each other.
+Note: In the table below, sites A1, A2 and A3 are all first-party to each other.
 | Site frame tree |Site cookie is set on| hasCrossSiteAncestor value of cookie|
 |---|---|--|
 | A1         |A1| false         | 
@@ -23,11 +23,11 @@ Note: In the table below, sites A1, A2 and A3 are all first party to each other.
 
 **Document Metadata**
 
-**Author:** aselya 
+**Author:** [aselya](https://github.com/aselya) 
 
 **Sponsoring Browser:** Chrome
 
-**Contributors:** DCtheTall
+**Contributors:** [DCtheTall](https://github.com/Dcthetall)
 
 **Created:** 2024-04-01
 
@@ -85,7 +85,7 @@ Security: The hasCrossSiteAncestor boolean value does not impact security.
 No sensitive data is associated with the cross-site ancestor chain bit.
 
 ### Abuse Mitigations
-A cookie may only have no cross-site ancestor when the topLevelSite in the partitionKey and the URL with which the cookie is associated with are first party to each other. To prevent the creation of cookies that violate this, the set method will return an error if the URL and the topLevelSite are not first party for cookies that are set with no-cross site ancestor.
+A cookie may only have no cross-site ancestor when the topLevelSite in the partitionKey and the URL with which the cookie is associated with are first-party to each other. To prevent the creation of cookies that violate this, the set method will return an error if the URL and the topLevelSite are not first-party for cookies that are set with no-cross site ancestor.
 
 ### Additional Security Considerations
 None
@@ -109,7 +109,7 @@ If there is a partitionKey present and it has a value for topLevelSite but no va
 If no value is set for hasCrossSiteAncestor cookies with both true and false values for hasCrossSiteAncestor will be returned. Otherwise, cookies will be returned that match the topLevelSite and the passed value for hasCrossSiteAncestor.
 
 - `cookies.set()`: 
-As described the Abuse Mitigations section, this method will not allow a hasCrossSiteAncestor value of false, if the URL associated with the cookie and the topLevelSite in the partitionKey are not first party. If this is attempted, an error will be returned. If no topLevelSite is provided and a hasCrossSiteAncestor value is provided, the cookie will not be set and an error will be returned.
+As described the Abuse Mitigations section, this method will not allow a hasCrossSiteAncestor value of false, if the URL associated with the cookie and the topLevelSite in the partitionKey are not first-party. If this is attempted, an error will be returned. If no topLevelSite is provided and a hasCrossSiteAncestor value is provided, the cookie will not be set and an error will be returned.
 
 - `cookies.remove()`:
 If no value is set for hasCrossSiteAncestor, cookies.remove() will not consider the hasCrossSiteAncestor value when determing the cookie to remove. If no topLevelSite value is included in the partitionKey object and a value is set for hasCrossSiteAncestor, no cookie will be removed and an error will be returned.
