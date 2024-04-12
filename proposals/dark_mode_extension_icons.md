@@ -47,50 +47,29 @@ The Chromium bug has a significant amount of developer interest.
 
 ### Schema
 
-Common
+// TODO: Obtain consensus on any of the following options before merging.
+
+Incumbent action.setIcon(), for reference.
 ```
-// `Mode` is dark or light (if either is used, both are expected).
-const Modes: string[] = ["dark", "light];
-const Mode = Modes[Math.floor(Math.random() * Modes.length())];
-
-// Primitive type declaration.
-type Size = string;
-type Path = string;
-
-// Map icon size to path.
-const IconSizeToPath: map<Size, Path>;
+action.setIcon({
+  path,
+  tabId
+  imageData,
+});
 ```
 
-manifest.json
-```
-// Map mode to a string path or a dictionary mapping icon size to a string path.
-const IconVariants: map<Mode, IconSizeToPath | Path>;
+---
 
-{
-  ...
-  "icon_variants": IconVariants;
-  "action": {
-    ...
-    "icon_variants": IconVariants
-  },
-};
-```
+#### Option (donut option)
 
-action.setIcon()
-```
-// ImageData is an interface representing canvas element pixels.
-const IconSizeToImageData: map<Size, Path>;
-const IconVariantsWithImageData:
-  map<Mode, IconSizeToPath | IconSizeToImageData | ImageData | Path>;
-const ImageDataDictionary: map<Size, ImageData>;
+Don't implement setIcon() for dark mode, as it's used for dynamic icons anyway.
 
-action.setIcon(
-  ...
-  icon_variants?: IconVariantsWithImageData,
-);
-```
+* Pros: Easy to implement.
+* Cons: Developers would need to find their own ways of detecting dark mode.
 
-### Examples
+---
+
+#### Option (combined option)
 
 manifest.json
 ```
@@ -119,7 +98,7 @@ manifest.json
 }
 ```
 
-Action
+action.setIcon()
 ```
 action.setIcon({
   variants: {
@@ -127,11 +106,134 @@ action.setIcon({
       "128": "128_action_dark.png"
     },
     "light": {
-      "128": "128_action_light.png"
+      "128": LightImageData
     }
   },
 });
 ```
+
+Schema
+
+manifest.json
+```
+// `Mode` is dark or light (if either is used, both are expected).
+const Modes: string[] = ["dark", "light];
+const Mode = Modes[Math.floor(Math.random() * Modes.length())];
+
+// Primitive type declaration.
+type Size = string;
+type Path = string;
+
+// Map icon size to path.
+const IconSizeToPath: map<Size, Path>;
+
+// Map mode to a string path or a dictionary mapping icon size to a string path.
+const IconVariants: map<Mode, IconSizeToPath | Path>;
+
+{
+  ...
+  "icon_variants": IconVariants;
+  "action": {
+    ...
+    "icon_variants": IconVariants
+  },
+};
+```
+
+action.setIcon()
+```
+// ImageData is an interface representing canvas element pixels.
+const IconSizeToImageData: map<Size, Path>;
+const IconVariantsWithImageData:
+  map<Mode, IconSizeToPath | IconSizeToImageData | ImageData | Path>;
+const ImageDataDictionary: map<Size, ImageData>;
+
+action.setIcon(
+  ...
+  icon_variants?: IconVariantsWithImageData,
+);
+```
+
+* Pros: Easy for developers to use.
+* Cons: Complex to define and implement.
+
+
+---
+
+#### Option (flat option)
+
+manifest.json
+```
+"icon_variants": [{
+  "16": "16.png",
+  "32": "32.png",
+}, {
+  "16": "dark16.png",
+  "32": "dark32.png",
+  "color_scheme": "dark",
+}, {
+  "16": "light16.png",
+  "32": "light32.png",
+  "color_scheme": "light"
+}]
+```
+
+action.setIcon()
+```
+action.setIcon({
+  variants: [
+    {
+      "16": "16.png",
+      "32": "32.png"
+    }, {
+      "16": darkImageData16,
+      "32": darkImageData32,
+      "color_scheme": "dark"
+    }, {
+      "16": lightImageData16,
+      "32": lightImageData32,
+      "color_scheme": "light"
+    }
+  ]
+});
+```
+
+* Pros: Future resistant allowing for more keys such as density (e.g. 2dppx),
+purpose (e.g. monochrome), and etc.
+* Cons: New paradigm for icon definition, and unclear how to handle color_schemes.
+* Questions: Should `color_scheme` be used instead of `mode`?
+---
+
+#### Option (pathVariant option)
+manifest.json from the combined option.
+
+action.setIcon()
+```
+action.setIcon({
+  pathVariants,
+  imageDataVariants,
+});
+
+// for example
+action.setIcon({
+  pathVariants: {
+    light: { 32: 'light-32.png' },
+    dark: { 32: 'dark-32.png' },
+  }
+});
+
+action.setIcon({
+  imageDataVariants: {
+    light: { 32: lightImageData },
+    dark: { 32: darkImageData },
+  }
+});
+```
+
+* Pros: Encapsules multiple ideas from this pull request's review comments.
+* Cons: Two new keys on setIcon() isn't necessarily better than one new key.
+
+---
 
 ### Behavior
 
