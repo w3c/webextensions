@@ -62,6 +62,13 @@ for these APIs (e.g. to do internal review, address UI elements, etc).  The
 WECG proposal should serve as a productive supplement to those discussions,
 ideally reducing or eliminating duplicate work.
 
+**Provide an opportunity and venue for extension developers to give feedback.**
+There are many extension developers that are actively involved in the WECG and
+have invaluable feedback. By engaging with developers early and allowing
+developers to provide feedback on in-progress proposals, the resulting APIs and
+changes are much more likely to satisfy developer needs and less likely to
+cause unforeseen issues.
+
 ## Non-Goals
 
 **Replace issue reporting for suggested features or changes.**  The API
@@ -233,6 +240,21 @@ Reviewers may approve a proposal "with nits" if they trust the author to update
 the proposal before (or shortly after) it's merged. As an example, a typo or
 slight rephrasing need not block a proposal from being merged.
 
+### Developer Feedback
+
+Extension developers are encouraged to provide thoughtful, constructive feedback
+on APIs throughout the proposal process. They have significant practical
+experience in the platform, often providing a different perspective from those
+of browser vendors.
+
+Developer feedback is non-blocking and browser vendors may not always be able to
+accommodate all feedback (since it has to be balanced with other constraints,
+such as security, privacy, user experience, and platform engineering
+complexity). However, any developer feedback should be considered and addressed,
+and browser vendors should strive to address and incorporate feedback from
+developers whenever feasible. This helps ensure the resulting APIs address
+real-world use cases and don't cause undue developer burden.
+
 ### Merge Managers
 
 A proposal should be merged only when no reviewers have requested additional
@@ -241,3 +263,7 @@ mean it should be merged.
 
 When all reviewers have approved (or abstained by not leaving any comments),
 a proposal should be merged.
+
+Merge managers (and reviewers) should ensure developer feedback has been
+appropriately addressed. This does not require all feedback to be
+_incorporated_, but comments should be carefully and sufficiently considered.
