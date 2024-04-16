@@ -192,6 +192,9 @@ Web Extensions Community Group. This ensures browsers have the opportunity to
 align on shared functionality when desirable and helps prevent drift between the
 API surfaces. As such, it is critical to ensure timely reviews.
 
+As always, all communication should follow our
+[code of conduct](https://www.w3.org/policies/code-of-conduct/).
+
 ### Authors
 
 Authors should request a review from at least one representative from each
