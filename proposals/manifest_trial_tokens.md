@@ -2,7 +2,7 @@
 
 **Summary**
 
-The manifest key to include origin and teprecation trial tokens.
+The manifest key to include origin and deprecation trial tokens.
 
 **Document Metadata**
 
@@ -173,7 +173,3 @@ the said document.
 ## Implementation Notes
 
 Please see "Manifest parsing algorithm" section.
-
-## Future Work
-
-Highlight any planned or prospective future work.
