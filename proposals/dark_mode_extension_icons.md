@@ -6,11 +6,11 @@ Feature to enable developers to enhance extension icon visibility in dark mode.
 
 **Document Metadata**
 
-**Author:** &lt;solomonkinard>
+**Author:** solomonkinard
 
-**Sponsoring Browser:** Chromium.
+**Sponsoring Browser:** Chromium, Safari, Firefox
 
-**Contributors:** &lt;oliverdunk>
+**Contributors:** oliverdunk, xeenon, carlosjeurissen
 
 **Created:** 2024-04-05
 
@@ -47,121 +47,6 @@ The Chromium bug has a significant amount of developer interest.
 
 ### Schema
 
-// TODO: Obtain consensus on any of the following options before merging.
-
-Incumbent action.setIcon(), for reference.
-```
-action.setIcon({
-  path,
-  tabId
-  imageData,
-});
-```
-
----
-
-#### Option (donut option)
-
-Don't implement setIcon() for dark mode, as it's used for dynamic icons anyway.
-
-* Pros: Easy to implement.
-* Cons: Developers would need to find their own ways of detecting dark mode.
-
----
-
-#### Option (combined option)
-
-manifest.json
-```
-{
-  "icon_variants": {
-    "dark": {
-      "128": "128_dark.png"
-    },
-    "light": {
-      "128": "128_light.png"
-    }
-  },
-  "action": {
-    "default_icon": {
-      "128": "128_action.png"
-    },
-    "icon_variants": {
-      "dark": {
-        "128": "128_action_dark.png"
-      },
-      "light": {
-        "128": "128_action_light.png"
-      }
-    }
-  }
-}
-```
-
-action.setIcon()
-```
-action.setIcon({
-  variants: {
-    "dark": {
-      "128": "128_action_dark.png"
-    },
-    "light": {
-      "128": LightImageData
-    }
-  },
-});
-```
-
-Schema
-
-manifest.json
-```
-// `Mode` is dark or light (if either is used, both are expected).
-const Modes: string[] = ["dark", "light];
-const Mode = Modes[Math.floor(Math.random() * Modes.length())];
-
-// Primitive type declaration.
-type Size = string;
-type Path = string;
-
-// Map icon size to path.
-const IconSizeToPath: map<Size, Path>;
-
-// Map mode to a string path or a dictionary mapping icon size to a string path.
-const IconVariants: map<Mode, IconSizeToPath | Path>;
-
-{
-  ...
-  "icon_variants": IconVariants;
-  "action": {
-    ...
-    "icon_variants": IconVariants
-  },
-};
-```
-
-action.setIcon()
-```
-// ImageData is an interface representing canvas element pixels.
-const IconSizeToImageData: map<Size, Path>;
-const IconVariantsWithImageData:
-  map<Mode, IconSizeToPath | IconSizeToImageData | ImageData | Path>;
-const ImageDataDictionary: map<Size, ImageData>;
-
-action.setIcon(
-  ...
-  icon_variants?: IconVariantsWithImageData,
-);
-```
-
-* Pros: Easy for developers to use.
-* Cons: Complex to define and implement.
-
-
----
-
-#### Option (flat option)
-
 manifest.json
 ```
 "icon_variants": [{
@@ -178,62 +63,60 @@ manifest.json
 }]
 ```
 
-action.setIcon()
+Set icon_variants dynamically.
 ```
-action.setIcon({
-  variants: [
-    {
-      "16": "16.png",
-      "32": "32.png"
-    }, {
-      "16": darkImageData16,
-      "32": darkImageData32,
-      "color_scheme": "dark"
-    }, {
-      "16": lightImageData16,
-      "32": lightImageData32,
-      "color_scheme": "light"
-    }
-  ]
-});
-```
-
-* Pros: Future resistant allowing for more keys such as density (e.g. 2dppx),
-purpose (e.g. monochrome), and etc.
-* Cons: New paradigm for icon definition, and unclear how to handle color_schemes.
-* Questions: Should `color_scheme` be used instead of `mode`?
----
-
-#### Option (pathVariant option)
-manifest.json from the combined option.
-
-action.setIcon()
-```
-action.setIcon({
-  pathVariants,
-  imageDataVariants,
-});
-
-// for example
-action.setIcon({
-  pathVariants: {
-    light: { 32: 'light-32.png' },
-    dark: { 32: 'dark-32.png' },
+const exampleProperties: {string: string | ImageData}[] = [
+  {
+    "any": "any.svg",
+  },
+  {
+    "16": "16.png",
+    "32": "32.png"
+  }, {
+    "16": darkImageData16,
+    "32": darkImageData32,
+    "color_scheme": "dark"
+  }, {
+    "16": lightImageData16,
+    "32": lightImageData32,
+    "color_scheme": "light"
   }
-});
+];
 
+// action.setIcon().
+const actionProperties = {variants: exampleProperties};
+action.setIcon(createProperties);
+
+// menus.*(), for supporting browsers.
+const menusProperties = {icon_variants: exampleProperties}
+menus.create(menusProperties);
+menus.update(menusProperties);
+```
+
+
+A benefit of this new structure is that it's more resiliant to future changes, thus allowing for more keys such as density (e.g. 2dppx), purpose (e.g.
+monochrome), and etc.
+
+## setIcon()
+Incumbent action.setIcon(), for reference.
+```
 action.setIcon({
-  imageDataVariants: {
-    light: { 32: lightImageData },
-    dark: { 32: darkImageData },
-  }
+  path,
+  tabId
+  imageData,
 });
 ```
 
-* Pros: Encapsules multiple ideas from this pull request's review comments.
-* Cons: Two new keys on setIcon() isn't necessarily better than one new key.
-
----
+### TODO: Notes to synthesize somewhere.
+CL: New feature flag.
+CL: Actually read the value from the manifest.
+CL: Add a simple test verifying expected parts.
+Create CL that honors the comments of this proposal.
+“icon_variants” are optional.
+If “icon_variants” are provided, ignore “icons”.
+The flat structure won’t require that “light” be provided.
+Respond to comments in depth by addressing each of their comments.
+Remove the options that seem to not be getting any traction.
 
 ### Behavior
 
@@ -264,52 +147,20 @@ N/A.
 
 ### Manifest File Changes
 
-#### Optional or required?
-`icon_variants` is an optional key of the top level manifest dictionary.
-`icon_variants` is also an optional sub-key in the action key dictionary.
-
-#### Fallback
-* `icon_variants` will be used if they're supplied. Otherwise `default_icon`
-will be used if it's supplied. If neither are supplied, then `icons` will be
+1. If icon_variants are supplied, icons can be ignored.
+1. If icon_variants contain an icon object duplicate, the first match will be
 used.
-
-* icon_variants or variants in action.setIcon() must provide both dark and light
-icon, if they occur.
-
-* Order of precedence for action:
-<api>.action.setIcon() -> action.icon_variants -> action.default_icon ->
-icon_variants -> icons
-
-* Order of precedence for non-action:
-icon_variants -> icons
-
-### FAQ
-* What happens if you specify icon_variants.dark but not icon_variants.light,
-and also icons?
-
-If either is provided, both are expected.
-
-* Do we use the dark mode icon from icon_variants for light as well, or fallback
-to icons?
-
-Both are expected if either "light" or "dark" are supplied.
-
-* What happens if you specify icon_variants.dark but not icon_variants.light, and
-you don't have icons?
-
-This could be a warning and a silent fallback to "icons", as the goal is to try
-to reduce errors as much as possible. Another option could be to fall back to
-the dark mode icon if in light mode and no light mode icon is supplied.
-
-* Do we use the dark mode icon from icon_variants or show an auto-generated icon?
-
-The dark mode icon from variants will be shown if supplied and the user is
-currently in dark mode.
-
-#### Warning or error?
-The new `icon_variants` key (or sub-key) will not cause an error in the event
-that it is invalid. Instead, either ignore it altogether, or emit a warning.
-Warnings are preferred over errors as they're future-resilient.
+1. Any icon object that does not contain a "color_scheme" key will apply to both
+light and dark.
+1. If only one icon object is supplied, it will be used for both light and dark.
+1. icon_variants will not cause an error in the event that it is invalid
+Instead, it can be ignored altogether or just emit a warning. Warnings are
+preferred over errors because they're more adaptable to changes in the future.
+1. Neither "dark" nor "light" color_scheme's are required.
+1. Icon objects missing the color_scheme property will apply to light and dark
+mode. It could also be explicity set using {"color_scheme": ["dark", "light"]}.
+1. If icon_variants are provided, the top level icons key and
+action.default_icon will be ignored. There is no fallback.
 
 ## Security and Privacy
 
