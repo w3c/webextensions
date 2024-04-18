@@ -49,18 +49,25 @@ The Chromium bug has a significant amount of developer interest.
 
 manifest.json
 ```
-"icon_variants": [{
-  "16": "16.png",
-  "32": "32.png",
-}, {
-  "16": "dark16.png",
-  "32": "dark32.png",
-  "color_scheme": "dark",
-}, {
-  "16": "light16.png",
-  "32": "light32.png",
-  "color_scheme": "light"
-}]
+"icon_variants": [
+  {
+    "any": "any.svg",
+  },
+  {
+    "16": "16.png",
+    "32": "32.png",
+  },
+  {
+    "16": "dark16.png",
+    "32": "dark32.png",
+    "color_scheme": "dark",
+  },
+  {
+    "16": "light16.png",
+    "32": "light32.png",
+    "color_scheme": "light"
+  }
+]
 ```
 
 Set icon_variants dynamically.
@@ -92,7 +99,6 @@ const menusProperties = {icon_variants: exampleProperties}
 menus.create(menusProperties);
 menus.update(menusProperties);
 ```
-
 
 A benefit of this new structure is that it's more resiliant to future changes, thus allowing for more keys such as density (e.g. 2dppx), purpose (e.g.
 monochrome), and etc.
