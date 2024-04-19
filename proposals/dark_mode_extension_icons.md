@@ -10,7 +10,7 @@ Feature to enable developers to enhance extension icon visibility in dark mode.
 
 **Sponsoring Browser:** Chromium, Safari, Firefox
 
-**Contributors:** oliverdunk, xeenon, carlosjeurissen
+**Contributors:** oliverdunk, xeenon, carlosjeurissen, hanguokai
 
 **Created:** 2024-04-05
 
@@ -24,9 +24,7 @@ Feature to enable developers to enhance extension icon visibility in dark mode.
 
 Extension developers will be able to supply and define a set of icons to be used
 in the event that user has expressed the preference for a page that has a dark
-theme. The set of dark mode icons can and will be made automatically visible
-once the system setting is in dark mode, thereby enhancing the overall browser
-experience.
+theme.
 
 #### Use Cases
 
@@ -158,6 +156,9 @@ preferred over errors because they're more adaptable to changes in the future.
 mode. It could also be explicity set using {"color_scheme": ["dark", "light"]}.
 1. If icon_variants are provided, the top level icons key and
 action.default_icon will be ignored. There is no fallback.
+1. 16 is a size in `{"16": "icon.png"}` and any number as a size can be
+used, as per browser specifications. The word `"any"` could also be used in
+place of a number to represent a path to an icon with any supported format.
 
 ## Security and Privacy
 
