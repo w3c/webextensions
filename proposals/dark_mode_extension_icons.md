@@ -31,7 +31,7 @@ experience.
 #### Use Cases
 
 1. Improved icon visibility in the extension toolbar.
-1. Improved icon visibility on management the management and shortcuts pages.
+1. Improved icon visibility on the management and shortcuts pages.
 1. Dark mode icon declarations made possible through the extension manifest.
 1. setIcon() will allow setting of dark and/or light mode specific icons.
 1. Improved icon visibility on context menu (Chrome and Safari reply on default
