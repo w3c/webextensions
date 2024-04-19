@@ -2,7 +2,7 @@
 
 **Summary**
 
-Allow to get the language of your operating system as an [BCP47 language tag](https://www.w3.org/International/core/langtags/rfc3066bis.html).
+Allows getting the language/locale of your operating system as a [BCP47 language tag](https://www.rfc-editor.org/bcp/bcp47.html)
 
 **Document Metadata**
 
