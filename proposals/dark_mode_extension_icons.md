@@ -145,7 +145,7 @@ N/A.
 ### Manifest File Changes
 
 1. If icon_variants are supplied, icons can be ignored.
-1. If icon_variants contain an icon object duplicate, the first match will be
+1. If icon_variants contain an icon object with duplicate conditions, the first match will be
 used.
 1. Any icon object that does not contain a "color_scheme" key will apply to both
 light and dark.
