@@ -93,7 +93,7 @@ const exampleProperties: {string: string | ImageData}[] = [
 ];
 
 // action.setIcon().
-const actionProperties = {variants: exampleProperties};
+const createProperties = {variants: exampleProperties};
 action.setIcon(createProperties);
 
 // menus.*(), for supporting browsers.
