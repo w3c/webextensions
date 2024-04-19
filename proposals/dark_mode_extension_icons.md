@@ -97,7 +97,7 @@ const createProperties = {variants: exampleProperties};
 action.setIcon(createProperties);
 
 // menus.*(), for supporting browsers.
-const menusProperties = {icon_variants: exampleProperties}
+const menusProperties = {icon_variants: exampleProperties};
 menus.create(menusProperties);
 menus.update(menusProperties);
 ```
