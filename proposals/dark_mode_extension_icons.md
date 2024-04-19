@@ -115,17 +115,6 @@ action.setIcon({
 });
 ```
 
-### TODO: Notes to synthesize somewhere.
-CL: New feature flag.
-CL: Actually read the value from the manifest.
-CL: Add a simple test verifying expected parts.
-Create CL that honors the comments of this proposal.
-“icon_variants” are optional.
-If “icon_variants” are provided, ignore “icons”.
-The flat structure won’t require that “light” be provided.
-Respond to comments in depth by addressing each of their comments.
-Remove the options that seem to not be getting any traction.
-
 ### Behavior
 
 Existing manifest key. The behavior of the icons manifest key will remain unchanged.
