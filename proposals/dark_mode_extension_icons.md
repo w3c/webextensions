@@ -65,7 +65,7 @@ manifest.json
   {
     "16": "light16.png",
     "32": "light32.png",
-    "color_scheme": "light"
+    "color_scheme": ["dark", "light"]
   }
 ]
 ```
@@ -79,11 +79,13 @@ const exampleProperties: {string: string | ImageData}[] = [
   {
     "16": "16.png",
     "32": "32.png"
-  }, {
+  },
+  {
     "16": darkImageData16,
     "32": darkImageData32,
     "color_scheme": "dark"
-  }, {
+  },
+  {
     "16": lightImageData16,
     "32": lightImageData32,
     "color_scheme": "light"
