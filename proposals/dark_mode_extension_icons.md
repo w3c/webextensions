@@ -36,7 +36,7 @@ experience.
 1. setIcon() will allow setting of dark and/or light mode specific icons.
 1. Improved icon visibility on context menu (Chrome and Safari rely on default
 icons, only Firefox can specify icons).
-1. Improved icon visibility on side panel (Chrome replies on default icons,
+1. Improved icon visibility on side panel (Chrome relies on default icons,
 Firefox can specify icons).
 
 ### Known Consumers
