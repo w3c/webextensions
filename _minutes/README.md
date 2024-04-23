@@ -16,6 +16,9 @@ After the end of each meeting, meeting notes are published here.
 ## Past meetings
 
 * 2024-03-28 ([minutes](2024-03-28-wecg.md))
+* 2024-03-20 meetup at San Diego ([minutes](2024-03-20-san-diego-meetup.md))
+* 2024-03-19 meetup at San Diego ([minutes](2024-03-19-san-diego-meetup.md))
+* 2024-03-18 meetup at San Diego ([minutes](2024-03-18-san-diego-meetup.md))
 * 2024-03-14 ([minutes](2024-03-14-wecg.md))
 * 2024-02-29 ([minutes](2024-02-29-wecg.md))
 * 2024-02-15 ([minutes](2024-02-15-wecg.md))
@@ -29,6 +32,9 @@ After the end of each meeting, meeting notes are published here.
 **2024**
 
 * 2024-03-28 ([minutes](2024-03-28-wecg.md))
+* 2024-03-20 meetup at San Diego ([minutes](2024-03-20-san-diego-meetup.md))
+* 2024-03-19 meetup at San Diego ([minutes](2024-03-19-san-diego-meetup.md))
+* 2024-03-18 meetup at San Diego ([minutes](2024-03-18-san-diego-meetup.md))
 * 2024-03-14 ([minutes](2024-03-14-wecg.md))
 * 2024-02-29 ([minutes](2024-02-29-wecg.md))
 * 2024-02-15 ([minutes](2024-02-15-wecg.md))
