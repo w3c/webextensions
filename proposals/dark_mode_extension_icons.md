@@ -161,7 +161,10 @@ Any programmatically set icons using `action.setIcon` would override the declara
 1. 16 is a size in `{"16": "icon.png"}` and any number as a size can be
 used, as per browser specifications. The word `"any"` could also be used in
 place of a number to represent a path to an icon with any supported format.
-
+The icon size used by the browser will be determined as follows:
+For raster images. The requested size will be used as defined in icon_variants. If the requested icon size by the browser is not present in the manifest file, a size higher than the requested icon size will be used if present.
+For vector images. The size lookup will be density independent.
+Example: the browser wants to use an icon with size 16 with a density 1.5. For raster images, it will search for an icon with size 24. While for vector images it will search for an icon with size 16.
 ## Security and Privacy
 
 ### Exposed Sensitive Data
