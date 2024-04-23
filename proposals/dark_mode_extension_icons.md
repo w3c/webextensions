@@ -100,7 +100,8 @@ menus.create(menusProperties);
 menus.update(menusProperties);
 ```
 
-A benefit of this new structure is that it's more resiliant to future changes, thus allowing for more keys such as density (e.g. 2dppx), purpose (e.g.
+A benefit of this new structure is that it's more resiliant to future changes,
+thus allowing for more keys such as density (e.g. 2dppx), purpose (e.g.
 monochrome), and etc.
 
 ## setIcon()
@@ -115,7 +116,8 @@ action.setIcon({
 
 ### Behavior
 
-Existing manifest key. The behavior of the icons manifest key will remain unchanged.
+Existing manifest key. The behavior of the icons manifest key will remain
+unchanged.
 ```
 {
   "icons": {
@@ -132,7 +134,10 @@ Existing manifest key. The behavior of the icons manifest key will remain unchan
 Order of precedence. The new `icon_variants` keys and subkeys will take
 precedent, followed by the incumbent `icons` key.
 
-The `dark` icon variant can be used by browsers to improve readability of the icon. Often this will be when the os/browser color scheme is dark (often referred to as "dark mode") but also when the browser uses a darker shade theme which has a background on which the dark icon variant would be more readable.
+The `dark` icon variant can be used by browsers to improve readability of the
+icon. Often this will be when the os/browser color scheme is dark (often
+referred to as "dark mode") but also when the browser uses a darker shade theme
+which has a background on which the dark icon variant would be more readable.
 The `light` icon variant is used otherwise.
 
 ### New Permissions
@@ -142,8 +147,8 @@ N/A.
 ### Manifest File Changes
 
 1. If icon_variants are supplied, icons can be ignored.
-1. If icon_variants contain an icon object with duplicate conditions, the first match will be
-used.
+1. If icon_variants contain an icon object with duplicate conditions, the first
+match will be used.
 1. Any icon object that does not contain a "color_scheme" key will apply to both
 light and dark.
 1. If only one icon object is supplied, it will be used for both light and dark.
@@ -153,18 +158,23 @@ preferred over errors because they're more adaptable to changes in the future.
 1. Neither "dark" nor "light" color_scheme's are required.
 1. Icon objects missing the color_scheme property will apply to light and dark
 mode. It could also be explicity set using {"color_scheme": ["dark", "light"]}.
-1. If icon_variants are provided, the top level icons key and
-If the top level icon_variants key is provided, the top level icons key will be ignored.
-For action icons follows a strict order of precedence:
-action.icon_variants > action.theme_icons > action.default_icon > icon_variants > icons
-Any programmatically set icons using `action.setIcon` would override the declaratively defined icons mentioned above.
+1. If the top level `icon_variants` key is provided, the top level `icons` key
+will be ignored.
+   1. `action` icons follow a strict order of precedence:\
+   action.icon_variants > action.theme_icons > action.default_icon > icon_variants > icons.
+   1. Any programmatically set icons using `action.setIcon` would override the declaratively defined icons mentioned above.
 1. 16 is a size in `{"16": "icon.png"}` and any number as a size can be
 used, as per browser specifications. The word `"any"` could also be used in
 place of a number to represent a path to an icon with any supported format.
 The icon size used by the browser will be determined as follows:
-For raster images. The requested size will be used as defined in icon_variants. If the requested icon size by the browser is not present in the manifest file, a size higher than the requested icon size will be used if present.
-For vector images. The size lookup will be density independent.
-Example: the browser wants to use an icon with size 16 with a density 1.5. For raster images, it will search for an icon with size 24. While for vector images it will search for an icon with size 16.
+   1. For raster images. The requested size will be used as defined in icon_variants.
+If the requested icon size by the browser is not present in the manifest file,
+a size higher than the requested icon size will be used if present.
+   1. For vector images. The size lookup will be density independent.
+Example: the browser wants to use an icon with size 16 with a density 1.5. For
+raster images, it will search for an icon with size 24. While for vector images
+it will search for an icon with size 16.
+
 ## Security and Privacy
 
 ### Exposed Sensitive Data
@@ -191,7 +201,8 @@ true: `window.matchMedia('(prefers-color-scheme: dark)')`.
 
 ### Open Web API
 
-As stated in the workarounds section, the following is already an option to consider: `window.matchMedia('(prefers-color-scheme: dark)')`. However, that
+As stated in the workarounds section, the following is already an option to
+consider: `window.matchMedia('(prefers-color-scheme: dark)')`. However, that
 wouldn't automatically set icons dynamically, as it would require subsequent
 calls to action.setIcon(). It also wouldn't update the icon on the management
 pages.
