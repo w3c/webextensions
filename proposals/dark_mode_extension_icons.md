@@ -154,7 +154,10 @@ preferred over errors because they're more adaptable to changes in the future.
 1. Icon objects missing the color_scheme property will apply to light and dark
 mode. It could also be explicity set using {"color_scheme": ["dark", "light"]}.
 1. If icon_variants are provided, the top level icons key and
-action.default_icon will be ignored. There is no fallback.
+If the top level icon_variants key is provided, the top level icons key will be ignored.
+For action icons follows a strict order of precedence:
+action.icon_variants > action.theme_icons > action.default_icon > icon_variants > icons
+Any programmatically set icons using `action.setIcon` would override the declaratively defined icons mentioned above.
 1. 16 is a size in `{"16": "icon.png"}` and any number as a size can be
 used, as per browser specifications. The word `"any"` could also be used in
 place of a number to represent a path to an icon with any supported format.
