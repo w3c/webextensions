@@ -153,11 +153,10 @@ match will be used.
 light and dark.
 1. If only one icon object is supplied, it will be used for both light and dark.
 1. icon_variants will not cause an error in the event that it is invalid
-Instead, it can be ignored altogether or just emit a warning. Warnings are
-preferred over errors because they're more adaptable to changes in the future.
+Instead, only the fauly icon object(s) will be ignored, with an optional
+warning. Warnings are preferred over errors because they're more adaptable to
+changes in the future.
 1. Neither "dark" nor "light" color_scheme's are required.
-1. Icon objects missing the color_scheme property will apply to light and dark
-mode. It could also be explicity set using {"color_scheme": ["dark", "light"]}.
 1. If the top level `icon_variants` key is provided, the top level `icons` key
 will be ignored.
    1. `action` icons follow a strict order of precedence:\
