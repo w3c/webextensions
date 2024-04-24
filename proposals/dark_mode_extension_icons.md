@@ -139,7 +139,7 @@ Order of precedence. The new `icon_variants` keys and subkeys will take
 precedent, followed by the incumbent `icons` key.
 
 The `dark` icon variant can be used by browsers to improve readability of the
-icon. Often this will be when the os/browser color scheme is dark (often
+icon. Often this will be when the OS or browser color scheme is dark (often
 referred to as "dark mode") but also when the browser uses a darker shade theme
 which has a background on which the dark icon variant would be more readable.
 The `light` icon variant is used otherwise.
