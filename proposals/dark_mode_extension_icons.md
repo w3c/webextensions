@@ -153,8 +153,9 @@ N/A.
 1. Any icon group that does not contain a "color_scheme" key will apply to all
 available options, e.g. both "light" and "dark".
 
-1. If icon_variants contain an icon object with matching conditions, the first
-match will be used.
+1. If "icon_variants" contains an icon group with matching conditions, the icon(s)
+specified in the first matching icon group based on insertion order will be used.
+The other icon groups after that match will be ignored.
    * "\<size\>" will be used used instead of "any" in case in case there are
    matching conditions.
    * If there is more than one matching icon object, any without `color_scheme` will be applied to every possible color scheme. Therefore, a subsequent matching icon object with a color_scheme will not be used.
