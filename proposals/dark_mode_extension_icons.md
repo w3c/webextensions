@@ -146,11 +146,21 @@ N/A.
 
 ### Manifest File Changes
 
-1. If icon_variants are supplied, icons can be ignored.
-1. If icon_variants contain an icon object with duplicate conditions, the first
+1. Any icon object that does not contain a "color_scheme" key will apply to all
+available options, e.g. both "light" and "dark".
+
+1. If icon_variants contain an icon object with matching conditions, the first
 match will be used.
-1. Any icon object that does not contain a "color_scheme" key will apply to both
-light and dark.
+   * "\<size\>" will be used used instead of "any" in case in case there are
+   matching conditions.
+   * If there is more than one matching icon object, any without `color_scheme` will be applied to every possible color scheme. Therefore, a subsequent matching icon object with a color_scheme will not be used.
+   * Non-exact size matches will return an icon nearest the requested size, or the smallest in case of a tie.
+   * Incorrectly typed `color-scheme`'s in manifest.json lead to undefined
+   behavior.
+   * If e.g. only one icon object is defined with a specific color scheme, that
+   icon object will be applied to all color schemes. It will be treated as the
+   default.
+
 1. If only one icon object is supplied, it will be used for both light and dark.
 1. icon_variants will not cause an error in the event that it is invalid
 Instead, only the fauly icon object(s) will be ignored, with an optional
