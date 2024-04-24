@@ -150,7 +150,7 @@ N/A.
 
 ### Manifest File Changes
 
-1. Any icon object that does not contain a "color_scheme" key will apply to all
+1. Any icon group that does not contain a "color_scheme" key will apply to all
 available options, e.g. both "light" and "dark".
 
 1. If icon_variants contain an icon object with matching conditions, the first
