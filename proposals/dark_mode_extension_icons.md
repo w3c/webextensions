@@ -156,38 +156,35 @@ available options, e.g. both "light" and "dark".
 1. If "icon_variants" contains an icon group with matching conditions, the icon(s)
 specified in the first matching icon group based on insertion order will be used.
 The other icon groups after that match will be ignored.
-   * "\<size\>" will be used used instead of "any" in case in case there are
+   * "\<size\>" will be used used instead of `"any"` in case in case there are
    matching conditions.
-   * If there is more than one matching icon object, any without `color_scheme` will be applied to every possible color scheme. Therefore, a subsequent matching icon object with a color_scheme will not be used.
+   * If there is more than one matching icon object, any without `color_scheme` will be applied to every possible color scheme. Therefore, a subsequent matching icon object with a `color_scheme` will not be used.
    * Non-exact size matches will return an icon nearest the requested size, or the smallest in case of a tie.
-   * Incorrectly typed `color-scheme`'s in manifest.json lead to undefined
-   behavior.
+   * Incorrectly typed `color-scheme` will be ignored, with an optional warning.
    * If e.g. only one icon object is defined with a specific color scheme, that
    icon object will be applied to all color schemes. It will be treated as the
    default.
 
-1. If only one icon object is supplied, it will be used for both light and dark.
+1. If only one icon group is supplied, all matching conditions will be ignored.
 1. icon_variants will not cause an error in the event that it is invalid
-Instead, only the fauly icon object(s) will be ignored, with an optional
+Instead, only the faulty icon group(s) will be ignored, with an optional
 warning. Warnings are preferred over errors because they're more adaptable to
 changes in the future.
-1. Neither "dark" nor "light" color_scheme's are required.
-1. If the top level `icon_variants` key is provided, the top level `icons` key
+1. Neither `"dark"` nor `"light"` color schemes are required.
+1. If the top-level `icon_variants` key is provided, the top level `icons` key
 will be ignored.
-   1. `action` icons follow a strict order of precedence:\
-   action.icon_variants > action.theme_icons > action.default_icon > icon_variants > icons.
-   1. Any programmatically set icons using `action.setIcon` would override the declaratively defined icons mentioned above.
-1. 16 is a size in `{"16": "icon.png"}` and any number as a size can be
-used, as per browser specifications. The word `"any"` could also be used in
-place of a number to represent a path to an icon with any supported format.
-The icon size used by the browser will be determined as follows:
-   1. For raster images. The requested size will be used as defined in icon_variants.
-If the requested icon size by the browser is not present in the manifest file,
-a size higher than the requested icon size will be used if present.
-   1. For vector images. The size lookup will be density independent.
-Example: the browser wants to use an icon with size 16 with a density 1.5. For
-raster images, it will search for an icon with size 24. While for vector images
-it will search for an icon with size 16.
+   1. For `action` icons, the browser first checks for `icon_variants` in the `action`. If not specified, it falls back to `default_icon`, then to the top-level `icon_variants` or `icons`.
+   1. Any programmatically set icons using `action.setIcon()` would override the declaratively defined icons mentioned above.
+1. The `"16"` is a size in `{"16": "icon.png"}` and any number can be used as a size, per
+the browser’s icon requirements. The word `"any"` can also be used in place of a number
+to represent an icon that can be shown at any size (usually vector images). The icon size
+used by the browser will be determined as follows:
+   1. **Raster images:** Sizes are in pixels. For high-density devices (2x, 3x, etc.), the
+browser looks for double or triple the desired point size (e.g., 32 or 48 pixels for a 16
+point request). If the exact pixel size is unavailable, the next largest pixel size or `"any"`
+will be used.
+   1. **Vector images:** Sizes are in points, ensuring device independence. If the exact
+point size is unavailable, an integer multiple (e.g. 32, 48, etc.) or `"any"` will be used.
 
 ## Security and Privacy
 
@@ -208,7 +205,7 @@ N/A.
 ### Existing Workarounds
 
 1. A developer could ask the user to specify what mode they're in and then
-dynamically set the icon to a dark mode icon using action.setIcon(). That
+dynamically set the icon to a dark mode icon using `action.setIcon()`. That
 wouldn't change the management page icon.
 2. A developer could change icons dynamically to dark mode icons if this is
 true: `window.matchMedia('(prefers-color-scheme: dark)')`.
@@ -218,7 +215,7 @@ true: `window.matchMedia('(prefers-color-scheme: dark)')`.
 As stated in the workarounds section, the following is already an option to
 consider: `window.matchMedia('(prefers-color-scheme: dark)')`. However, that
 wouldn't automatically set icons dynamically, as it would require subsequent
-calls to action.setIcon(). It also wouldn't update the icon on the management
+calls to `action.setIcon()`. It also wouldn't update the icon on the management
 pages.
 
 ## Implementation Notes
