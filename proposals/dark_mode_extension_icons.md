@@ -162,7 +162,7 @@ The other icon groups after that match will be ignored.
    * If there is more than one matching icon object, any without `color_scheme` will
 be applied to every possible color scheme. Therefore, a subsequent matching icon
 object with a `color_scheme` will not be used.
-   * Incorrectly typed `color-scheme` will be ignored, with an optional warning.
+   * Incorrectly typed `color_scheme` values will be ignored, with an optional warning. For example, `color_scheme: ["unknown"]` will be treated as an empty array.
    * If only one icon object is defined with a specific color scheme, that
    icon object will be applied to all color schemes. It will be the icon used.
 
