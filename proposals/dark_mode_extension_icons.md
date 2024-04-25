@@ -8,7 +8,7 @@ Feature to enable developers to enhance extension icon visibility in dark mode.
 
 **Author:** solomonkinard
 
-**Sponsoring Browser:** Chromium, Safari, Firefox
+**Sponsoring Browser:** Chromium
 
 **Contributors:** oliverdunk, xeenon, carlosjeurissen, hanguokai
 
@@ -69,9 +69,9 @@ manifest.json
 ```
   `icon_variants` requires an array with a set of icon groups objects. Each icon
 group consists of a set of icon paths and icon group matching criteria.
-  
+
   The icon paths are set using the size as key and/or the keyword `"any"`.
-  
+
   Optionally the `color_scheme` matching criterium which can either be an string or
 array of color schemes.
 
