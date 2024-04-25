@@ -67,12 +67,15 @@ manifest.json
   }
 ]
 ```
-  `icon_variants` requires an array with a set of icon groups objects. Each icon group consists of a set of icon paths and icon group matching criteria.
+  `icon_variants` requires an array with a set of icon groups objects. Each icon
+group consists of a set of icon paths and icon group matching criteria.
   
-  The icon paths are set using the size as key and/or the keyword "any".
+  The icon paths are set using the size as key and/or the keyword `"any"`.
   
-  Optionally the `color_scheme` matching criterium which can either be an string or array of color schemes.
-Set icon_variants dynamically.
+  Optionally the `color_scheme` matching criterium which can either be an string or
+array of color schemes.
+
+Setting `icon_variants` dynamically:
 ```
 const exampleProperties: {string: string | ImageData}[] = [
   {
@@ -153,17 +156,15 @@ N/A.
 1. Any icon group that does not contain a "color_scheme" key will apply to all
 available options, e.g. both "light" and "dark".
 
-1. If "icon_variants" contains an icon group with matching conditions, the icon(s)
+1. If `icon_variants` contains an icon group with matching conditions, the icon(s)
 specified in the first matching icon group based on insertion order will be used.
 The other icon groups after that match will be ignored.
-   * "\<size\>" will be used used instead of `"any"` in case in case there are
-   matching conditions.
-   * If there is more than one matching icon object, any without `color_scheme` will be applied to every possible color scheme. Therefore, a subsequent matching icon object with a `color_scheme` will not be used.
-   * Non-exact size matches will return an icon nearest the requested size, or the smallest in case of a tie.
+   * If there is more than one matching icon object, any without `color_scheme` will
+be applied to every possible color scheme. Therefore, a subsequent matching icon
+object with a `color_scheme` will not be used.
    * Incorrectly typed `color-scheme` will be ignored, with an optional warning.
-   * If e.g. only one icon object is defined with a specific color scheme, that
-   icon object will be applied to all color schemes. It will be treated as the
-   default.
+   * If only one icon object is defined with a specific color scheme, that
+   icon object will be applied to all color schemes. It will be the icon used.
 
 1. If only one icon group is supplied, all matching conditions will be ignored.
 1. icon_variants will not cause an error in the event that it is invalid
@@ -173,8 +174,11 @@ changes in the future.
 1. Neither `"dark"` nor `"light"` color schemes are required.
 1. If the top-level `icon_variants` key is provided, the top level `icons` key
 will be ignored.
-   1. For `action` icons, the browser first checks for `icon_variants` in the `action`. If not specified, it falls back to `default_icon`, then to the top-level `icon_variants` or `icons`.
-   1. Any programmatically set icons using `action.setIcon()` would override the declaratively defined icons mentioned above.
+   1. For `action` icons, the browser first checks for `icon_variants` in the `action`.
+If not specified, it falls back to `default_icon`, then to the top-level `icon_variants`
+or `icons`.
+   1. Any programmatically set icons using `action.setIcon()` would override the
+declaratively defined icons mentioned above.
 1. The `"16"` is a size in `{"16": "icon.png"}` and any number can be used as a size, per
 the browser’s icon requirements. The word `"any"` can also be used in place of a number
 to represent an icon that can be shown at any size (usually vector images). The icon size
