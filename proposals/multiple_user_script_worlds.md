@@ -264,7 +264,7 @@ security boundary today).
 
 Today, user script managers go to various lengths to try to isolate behavior
 between user scripts (for more information, see conversation in
-[issue 279](https://github.com/w3c/webextensions/issues/279). This includes
+[issue 279](https://github.com/w3c/webextensions/issues/279)). This includes
 having various frozen types, making heavy use of function closures, ensuring
 injection before untrusted code, and more.
 
