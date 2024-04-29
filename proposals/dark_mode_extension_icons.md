@@ -190,7 +190,7 @@ point request). If the exact pixel size is unavailable, the next largest pixel s
 will be used.
    1. **Vector images:** Sizes are in points, ensuring device independence. If the exact
 point size is unavailable, an integer multiple (e.g. 32, 48, etc.) or `"any"` will be used.
-
+If none of the specified icon groups have matching criteria, browsers should drop matching criterium in a specified order until it finds a group which results in a match. It will start by dropping any matching criterium which are unsupported/unknown. If still no match could be made, it will drop known matching criteria in a future agreed upon order.
 ## Security and Privacy
 
 ### Exposed Sensitive Data
