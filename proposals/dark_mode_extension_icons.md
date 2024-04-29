@@ -153,6 +153,8 @@ N/A.
 
 ### Manifest File Changes [And API]
 
+**Summary**
+
 `icon_variants` is offered as a replacement for `icons`. `icon_variants` aims
 to be more flexible than pre-existing keys, allowing for unexpected declarations
 without causing errors that prevents extension installation. Absent
