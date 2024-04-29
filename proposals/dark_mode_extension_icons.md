@@ -72,7 +72,7 @@ group consists of a set of icon paths and icon group matching criteria.
 
   The icon paths are set using the size as key and/or the keyword `"any"`.
 
-  Optionally the `color_scheme` matching criterium which can either be an string or
+  Optionally the `color_scheme` matching criterium which can either be a string or
 array of color schemes.
 
 Setting `icon_variants` dynamically:
