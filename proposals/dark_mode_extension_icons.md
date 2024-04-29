@@ -164,6 +164,7 @@ be applied to every possible color scheme. Therefore, a subsequent matching icon
 object with a `color_scheme` will not be used.
    * Incorrectly typed `color_scheme` values will be ignored, with an optional warning.
    For example, `color_scheme: ["unknown"]` will be treated as an empty array.
+   An empty arrays means the browser should mark the icon group as invalid and ignore it.
    * If only one icon object is defined with a specific color scheme, that
    icon object will be applied to all color schemes. It will be the icon used.
 
