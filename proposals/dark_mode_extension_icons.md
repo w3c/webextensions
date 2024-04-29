@@ -151,7 +151,7 @@ The `light` icon variant is used otherwise.
 
 N/A.
 
-### Manifest File Changes
+### Manifest File Changes [And API]
 
 1. Color scheme. Any icon group that does not contain a "color_scheme" key will apply to all available options, e.g. both "light" and "dark".
 1. Matching. If `icon_variants` contains an icon group with matching conditions,
