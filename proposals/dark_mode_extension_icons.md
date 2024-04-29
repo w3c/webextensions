@@ -112,7 +112,7 @@ thus allowing for more keys such as density (e.g. 2dppx), purpose (e.g.
 monochrome), and etc.
 
 ## setIcon()
-Incumbent action.setIcon(), for reference.
+Incumbent `action.setIcon()`, for reference.
 ```
 action.setIcon({
   path,
