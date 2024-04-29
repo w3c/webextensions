@@ -104,7 +104,7 @@ action.setIcon(createProperties);
 // menus.*(), for supporting browsers.
 const menusProperties = {icon_variants: exampleProperties};
 menus.create(menusProperties);
-menus.update(menusProperties);
+menus.update(id, menusProperties);
 ```
 
 A benefit of this new structure is that it's more resiliant to future changes,
