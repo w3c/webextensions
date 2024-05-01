@@ -10,7 +10,7 @@ Feature to enable developers to enhance extension icon visibility in dark mode.
 
 **Sponsoring Browser:** Chromium
 
-**Contributors:** oliverdunk, xeenon, carlosjeurissen, hanguokai
+**Contributors:** oliverdunk, xeenon, carlosjeurissen, hanguokai, dotproto
 
 **Created:** 2024-04-05
 
@@ -47,6 +47,44 @@ The Chromium bug has a significant amount of developer interest.
 
 manifest.json
 ```
+type ImagePath = string;
+type ColorScheme = "light" | "dark";
+
+interface IconVariantsBase {
+  color_scheme?: ColorScheme | ColorScheme[];
+}
+
+interface IconVariantsManifest extends IconVariantsBase {
+  any?: ImagePath;
+  [index: number]: ImagePath;
+}
+
+interface ManifestAction {
+  [icon_variants: string]: IconVariantsManifest;
+}
+
+interface ExtensionManifest {
+  icon_variants: IconVariantsManifest[];
+  action: Action;
+}
+```
+
+action.setIcon
+```
+interface SetIconVariantsApiDetails extends IconVariantsBase {
+  any?: ImagePath | ImageData;
+  [index: number]: ImagePath | ImageData;
+}
+
+interface SetIconVariantsApi {
+  [variants: string]: ActionIconVariants;
+}
+```
+
+### Examples
+
+manifest.json
+```
 "icon_variants": [
   {
     "any": "any.svg",
@@ -65,7 +103,10 @@ manifest.json
     "32": "light32.png",
     "color_scheme": ["dark", "light"]
   }
-]
+],
+"action": {
+  "icon_variants": [...]
+}
 ```
   `icon_variants` requires an array with a set of icon groups objects. Each icon
 group consists of a set of icon paths and icon group matching criteria.
@@ -185,7 +226,9 @@ warning. For example, `color_scheme: ["unknown"]` will be treated as an empty
 array. An empty array means the browser should mark the icon group as invalid
 and ignore it.
 1. If only one icon object is defined with a specific color scheme, that icon
-object will be applied to all color schemes. It will be the icon used.
+object will be applied to all color schemes.
+1. **Fuzzy matching** Inexact size matches will return the icon closest in size,
+starting with smaller sizes if available, retreating to the nearest larger size.
 
 **Size**
 1. The `"16"` is a size in `{"16": "icon.png"}` and any number can be used as a
@@ -199,7 +242,7 @@ the next largest pixel size or `"any"` will be used.
 1. **Vector images**: Sizes are in points, ensuring device independence. If the
 exact point size is unavailable, an integer multiple (e.g. 32, 48, etc.) or
 `"any"` will be used.
-* If none of the specified icon groups have matching criteria, browsers should
+1.  If none of the specified icon groups have matching criteria, browsers should
 drop matching criteria in a specified order until it finds a group which results
 in a match. It will start by dropping any matching criteria which are
 unsupported/unknown. If still no match could be made, it will drop known
@@ -213,7 +256,7 @@ action. If not specified, it falls back to default_icon, then to the top-level
 `icon_variants` or icons.
 1. `action.setIcon({variants})` will not throw when giving it icon groups with
 properties it does not understand. Those icon groups will simply be ignored for
-making matches. If however none of the icon groups are supported, an exception
+making matches. If however, none of the icon groups are supported, an exception
 will be thrown allowing both feature detection and specifying fallbacks without
 requiring feature detection.
 
