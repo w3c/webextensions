@@ -23,8 +23,8 @@ Feature to enable developers to enhance extension icon visibility in dark mode.
 ### Objective
 
 Extension developers will be able to supply and define a set of icons to be used
-in the event that user has expressed the preference for a page that has a dark
-theme.
+in the event that the user has expressed the preference for a page that has a
+dark theme.
 
 #### Use Cases
 
