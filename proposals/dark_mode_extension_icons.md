@@ -43,44 +43,6 @@ The Chromium bug has a significant amount of developer interest.
 
 ## Specification
 
-### Schema
-
-manifest.json
-```
-type ImagePath = string;
-type ColorScheme = "light" | "dark";
-
-interface IconVariantsBase {
-  color_scheme?: ColorScheme | ColorScheme[];
-}
-
-interface IconVariantsManifest extends IconVariantsBase {
-  any?: ImagePath;
-  [index: number]: ImagePath;
-}
-
-interface ManifestAction {
-  [icon_variants: string]: IconVariantsManifest;
-}
-
-interface ExtensionManifest {
-  icon_variants: IconVariantsManifest[];
-  action: ManifestAction;
-}
-```
-
-action.setIcon
-```
-interface SetIconVariantsApiDetails extends IconVariantsBase {
-  any?: ImagePath | ImageData;
-  [index: number]: ImagePath | ImageData;
-}
-
-interface SetIconVariantsApi {
-  [variants: string]: ActionIconVariants;
-}
-```
-
 ### Examples
 
 manifest.json
