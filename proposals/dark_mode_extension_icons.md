@@ -175,6 +175,9 @@ changes in the future.
 will apply to all available options, e.g. both "light" and "dark".
 1. **Group**. If only one icon group is supplied, it will be used as the
 default, i.e. any of its matching conditions will be ignored.
+   * In any icon group (aka in any icon variant), all types must be the same.
+   For example, if one .png is supplied in a group, all other images in that
+   group must also be .png.
 
 **Matching**
 1. If `icon_variants` contains an icon group with matching conditions, the icon
