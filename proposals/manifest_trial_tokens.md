@@ -117,8 +117,9 @@ Upon manifest parsing, browser should parse `trial_tokens` like so:
    3.5. (optionally) attempt to parse the token and validate it. If validation
         fails, skip the token and (optionally) log a benign warning.
         Note: browsers may disregard token expiration errors, if they are not
-        sure about the corrctness of system timestamp at the time of token
-        validation
+        sure about the correctness of system timestamp at the time of token
+        validation. Browsers may validate tokens asynchroneously, if their
+        implementation requires this.
    3.6. append token to the collection of accepted tokens
  4. if at least one token is accepted in step 3, save the token collection in
     parsed manifest under `trial_tokens` key
@@ -151,12 +152,16 @@ Trial tokens system already incorporate some degree of abuse mitigations:
 
 ### Additional Security Considerations
 
-This new manifest key contains values which will be inserted into headers of
-local HTTP-like responses. Browsers must ensure that the provided tokens can
-not escape header serealization. Browsers also must ensure that tokens do not
-cause headers to exceed implementation-specific limits so that response is
-processed in  different way (e.g., adding a large number of tokens must not
-cuase removal of security headers like CSP).
+This new manifest key contains values which will be consumed by the browser's
+experimental API trial system. Browsers may need to take special care to ensure
+that provided tokens do not violate the expectations of these systems.
+
+For example, Chromium's trial system exposes tokens in headers of local
+HTTP-like responses. As a result, it must ensure that the provided tokens can
+not escape header serealization. it also must ensure that tokens do not cause
+headers to exceed implementation-specific limits so that response is processed
+in  different way (e.g., adding a large number of tokens must not cuase removal
+of security headers like CSP).
 
 ## Alternatives
 
