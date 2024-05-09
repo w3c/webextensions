@@ -65,7 +65,7 @@ interface ManifestAction {
 
 interface ExtensionManifest {
   icon_variants: IconVariantsManifest[];
-  action: Action;
+  action: ManifestAction;
 }
 ```
 
