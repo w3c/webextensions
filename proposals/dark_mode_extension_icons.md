@@ -177,7 +177,9 @@ will apply to all available options, e.g. both "light" and "dark".
 default, i.e. any of its matching conditions will be ignored.
    * In any icon group (aka in any icon variant), all types must be the same.
    For example, if one .png is supplied in a group, all other images in that
-   group must also be .png.
+   group must also be .png. If more than one type is present in an icon group,
+   the group can be ignored, marked as invalid and optionally show a warning
+   during installation.
 
 **Matching**
 1. If `icon_variants` contains an icon group with matching conditions, the icon
