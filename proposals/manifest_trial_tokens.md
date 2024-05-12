@@ -29,7 +29,7 @@ into all contexts with the extension's origin.
 
 #### Use Cases
 
-Greater availability and beter ergonomics of Origin and Deprecation tokens.
+Greater availability and better ergonomics of Origin and Deprecation tokens.
 
 ##### Participation in Origin and Deprecation Trials for Open Web APIs
 
@@ -43,11 +43,11 @@ legacy behaviors and deprecated APIs.
 As of writing, WebExtension system does not have a convenient way of shipping
 changes to WebExtension APIs. In leu of Origin Trials framework browsers resort
 to workarounds (or their combination):
- - make the change backwards-compatiable, if possible, with perpetually
+ - make the change backwards-compatible, if possible, with perpetually
    deprecated legacy behavior. This keeps around deprecated code paths and
-   behaviors indefinitelly. This could be resolved via deprecation trials.
- - launch an enirely different API under a new name, keeping around the old
-   code paths and behaviors indefinitelly.
+   behaviors indefinitely. This could be resolved via deprecation trials.
+ - launch an entirely different API under a new name, keeping around the old
+   code paths and behaviors indefinitely.
  - launch a change to pre-release Canary/Nightly and Beta channels and
    and ask for developer feedback prior to launch to Stable. Some issues slip
    through this testing and get fossilized in the final API. This could be
@@ -95,8 +95,8 @@ Upon manifest parsing, browser should parse `trial_tokens` like so:
  - browsers can limit the length of each token
  - browsers can limit the the total length of all parsed and/or accepted tokens
  - browsers can validate token structure, content, and signature at parse time;
-   in particular, tokens should not contain conrol characters like new lines
-   and charaxter returns which could affect HTTP header serealization and
+   in particular, tokens should not contain control characters like new lines
+   and character returns which could affect HTTP header serialization and
    parsing
 
 #### Manifest parsing algorithm
@@ -118,7 +118,7 @@ Upon manifest parsing, browser should parse `trial_tokens` like so:
         fails, skip the token and (optionally) log a benign warning.
         Note: browsers may disregard token expiration errors, if they are not
         sure about the correctness of system timestamp at the time of token
-        validation. Browsers may validate tokens asynchroneously, if their
+        validation. Browsers may validate tokens asynchronously, if their
         implementation requires this.
    3.6. append token to the collection of accepted tokens
  4. if at least one token is accepted in step 3, save the token collection in
@@ -158,9 +158,9 @@ that provided tokens do not violate the expectations of these systems.
 
 For example, Chromium's trial system exposes tokens in headers of local
 HTTP-like responses. As a result, it must ensure that the provided tokens can
-not escape header serealization. it also must ensure that tokens do not cause
+not escape header serialization. it also must ensure that tokens do not cause
 headers to exceed implementation-specific limits so that response is processed
-in  different way (e.g., adding a large number of tokens must not cuase removal
+in  different way (e.g., adding a large number of tokens must not cause removal
 of security headers like CSP).
 
 ## Alternatives
