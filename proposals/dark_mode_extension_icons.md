@@ -58,12 +58,12 @@ manifest.json
   {
     "16": "dark16.png",
     "32": "dark32.png",
-    "color_scheme": "dark",
+    "color_schemes": ["dark"],
   },
   {
     "16": "light16.png",
     "32": "light32.png",
-    "color_scheme": ["dark", "light"]
+    "color_schemes": ["dark", "light"]
   }
 ],
 "action": {
@@ -75,8 +75,7 @@ group consists of a set of icon paths and icon group matching criteria.
 
   The icon paths are set using the size as key and/or the keyword `"any"`.
 
-  Optionally the `color_scheme` matching criterium which can either be a string or
-array of color schemes.
+  Optionally, `color_schemes` matching is an array of string color schemes.
 
 Setting `icon_variants` dynamically:
 ```
@@ -91,12 +90,12 @@ const exampleProperties: {string: string | ImageData}[] = [
   {
     "16": darkImageData16,
     "32": darkImageData32,
-    "color_scheme": "dark"
+    "color_schemes": ["dark"]
   },
   {
     "16": lightImageData16,
     "32": lightImageData32,
-    "color_scheme": "light"
+    "color_schemes": ["light"]
   }
 ];
 
@@ -161,8 +160,8 @@ N/A.
 `icon_variants` is offered as a replacement for `icons`. `icon_variants` aims
 to be more flexible than pre-existing keys, allowing for unexpected declarations
 without causing errors that prevents extension installation. Absent
-`color_scheme` declaration, any matching individual `icon_variants` group will
-effectively have a wild-card `color_scheme`.
+`color_schemes` declaration, any matching individual `icon_variants` group will
+effectively have a wild-card for `color_schemes`. For example, `["*"]` is valid.
 
 **Misc**
 1. If the top-level `icon_variants` key is provided, the top level `icons` key
@@ -171,7 +170,7 @@ will be ignored.
 Instead, only the faulty icon group(s) will be ignored, with an optional
 warning. Warnings are preferred over errors because they're more adaptable to
 changes in the future.
-1. `color-scheme`. Any icon group that does not contain a `color_scheme` key
+1. `color-schemes`. Any icon group that does not contain a `color_schemes` key
 will apply to all available options, e.g. both "light" and "dark".
 1. **Group**. If only one icon group is supplied, it will be used as the
 default, i.e. any of its matching conditions will be ignored.
@@ -185,11 +184,11 @@ default, i.e. any of its matching conditions will be ignored.
 1. If `icon_variants` contains an icon group with matching conditions, the icon
 (s) specified in the first matching icon group based on insertion order will be
 used. The other icon groups after that match will be ignored.
-1. If there is more than one matching icon object, any without `color_scheme`
+1. If there is more than one matching icon object, any without `color_schemes`
 will be applied to every possible color scheme. Therefore, a subsequent matching
-icon object with a `color_scheme` will not be used.
-1. Incorrectly typed `color_scheme` values will be ignored, with an optional
-warning. For example, `color_scheme: ["unknown"]` will be treated as an empty
+icon object with a `color_schemes` will not be used.
+1. Incorrectly typed `color_schemes` values will be ignored, with an optional
+warning. For example, `color_schemes: ["unknown"]` will be treated as an empty
 array. An empty array means the browser should mark the icon group as invalid
 and ignore it.
 1. If only one icon object is defined with a specific color scheme, that icon
