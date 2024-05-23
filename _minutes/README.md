@@ -10,12 +10,12 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2024-05-09 at 8 AM PDT = https://everytimezone.com/?t=663c1200,384
-- 2024-05-23 at 8 AM PDT = https://everytimezone.com/?t=664e8700,384
-
+- 2024-06-06 at 8 AM PDT = https://everytimezone.com/?t=6660fc00,384
+- 2024-06-20 at 8 AM PDT = https://everytimezone.com/?t=66737100,384
 
 ## Past meetings
 
+* 2024-05-23 ([minutes](2024-05-23-wecg.md))
 * 2024-05-09 ([minutes](2024-05-09-wecg.md))
 * 2024-04-25 ([minutes](2024-04-25-wecg.md))
 * 2024-04-11 ([minutes](2024-04-11-wecg.md))
@@ -23,13 +23,13 @@ After the end of each meeting, meeting notes are published here.
 * 2024-03-20 meetup at San Diego ([minutes](2024-03-20-san-diego-meetup.md))
 * 2024-03-19 meetup at San Diego ([minutes](2024-03-19-san-diego-meetup.md))
 * 2024-03-18 meetup at San Diego ([minutes](2024-03-18-san-diego-meetup.md))
-* 2024-03-14 ([minutes](2024-03-14-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2024**
 
+* 2024-05-23 ([minutes](2024-05-23-wecg.md))
 * 2024-05-09 ([minutes](2024-05-09-wecg.md))
 * 2024-04-25 ([minutes](2024-04-25-wecg.md))
 * 2024-04-11 ([minutes](2024-04-11-wecg.md))
