@@ -49,16 +49,16 @@ manifest.json
 ```
 "icon_variants": [
   {
-    "any": "any.svg",
+    "any": "any.svg"
   },
   {
     "16": "16.png",
-    "32": "32.png",
+    "32": "32.png"
   },
   {
     "16": "dark16.png",
     "32": "dark32.png",
-    "color_scheme": "dark",
+    "color_scheme": "dark"
   },
   {
     "16": "light16.png",
@@ -171,7 +171,7 @@ will be ignored.
 Instead, only the faulty icon group(s) will be ignored, with an optional
 warning. Warnings are preferred over errors because they're more adaptable to
 changes in the future.
-1. `color-scheme`. Any icon group that does not contain a `color_scheme` key
+1. `color_scheme`. Any icon group that does not contain a `color_scheme` key
 will apply to all available options, e.g. both "light" and "dark".
 1. **Group**. If only one icon group is supplied, it will be used as the
 default, i.e. any of its matching conditions will be ignored.
