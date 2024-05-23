@@ -49,11 +49,11 @@ manifest.json
 ```
 "icon_variants": [
   {
-    "any": "any.svg",
+    "any": "any.svg"
   },
   {
     "16": "16.png",
-    "32": "32.png",
+    "32": "32.png"
   },
   {
     "16": "dark16.png",
