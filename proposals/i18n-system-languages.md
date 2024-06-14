@@ -20,17 +20,17 @@ https://bugzilla.mozilla.org/show_bug.cgi?id=1888486
 
 ### Objective
 
-Allow extensions to display UI in the user's system language(s), even when this is distinct from the browser's UI language (which is restricted to languages supported by the browser).
+Allow extensions to display UI in the user's system locale(s), even when this is distinct from the browser's UI locale (which is restricted to locales supported by the browser).
 
 #### Use Cases
 
 Extension authors might want to obtain the locale used by the user agent's host environment in order to format values (such as numbers, dates, and so forth) or do other locale-affected operations (such as list sorting) according to expectations of the user. For example, formatting the date `2024-06-15` varies between `en-US` (6/15/2024) and `en-GB` (15/6/2024), whereas `i18n.getUILanguage` might return only `en` (English).
 
-Extension authors might want to obtain the locale used by the user agent's host environment to better match the runtime environment's localization. For example, the operating system might be running in `ff-NG` (Fulani as used in Nigeria), but the user agent might not be localized into this language and return `en` (English) for `i18n.getUILanguage`.
+Extension authors might want to obtain the locale used by the user agent's host environment to better match the runtime environment's localization. For example, the operating system might be running in `ff-NG` (Fulani as used in Nigeria), but the user agent might not be localized for this locale and return `en` (English) for `i18n.getUILanguage`.
 
 ### Known Consumers
 
-Language-related extensions and extensions wanting to match the language of the operating system more closely independent of the language of the browser.
+Language-related extensions and extensions wanting to match the locale of the operating system more closely independent of the locale of the browser.
 
 ## Specification
 
@@ -86,13 +86,13 @@ No new manifest fields
 
 ### Exposed Sensitive Data
 
-The language(s) of the system will be purposely exposed.
+The locale(s) of the system will be purposely exposed.
 
 ## Alternatives
 
 ### Existing Workarounds
 
-Currently, if an extension wants to offer languages outside of what the current browser language uses, it must do so by presenting a user-facing options page. However, currently there is no way to reasonably detect a language code outside of the browser's UI language with existing APIs.
+Currently, if an extension wants to offer locales outside not localised for by the browser, it must do so by presenting a user-facing options page. However, currently there is no way to reasonably detect a language code outside of the browser's UI language with existing APIs.
 
 ### Open Web API
 
