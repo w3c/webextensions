@@ -28,7 +28,7 @@ Having the original system language(s) is useful for language-related extensions
 
 ### Known Consumers
 
-Language-related extensions and extensions wanting to match the language of the operating system more closely independent of the langauge of the browser.
+Language-related extensions and extensions wanting to match the language of the operating system more closely independent of the language of the browser.
 
 ## Specification
 
