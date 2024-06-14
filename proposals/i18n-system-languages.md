@@ -28,6 +28,8 @@ Extension authors might want to obtain the locale used by the user agent's host 
 
 Extension authors might want to obtain the locale used by the user agent's host environment to better match the runtime environment's localization. For example, the operating system might be running in `ff-NG` (Fulani as used in Nigeria), but the user agent might not be localized for this locale and return `en` (English) for `i18n.getUILanguage`.
 
+Extension authors might want to obtain the locale used by the user agent's host environment in order to get the locales in it's purest form. For example, the operating system might be running in `es-AR` and a browser's closest equivalent is `es-419`. Having access to `es-AR` allows extension authors to provide better translations for all users.
+
 ### Known Consumers
 
 Language-related extensions and extensions wanting to match the locale of the operating system more closely independent of the locale of the browser.
