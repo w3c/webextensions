@@ -24,7 +24,9 @@ Allow extensions to display UI in the user's system language(s), even when this 
 
 #### Use Cases
 
-Having the original system language(s) is useful for language-related extensions and for extensions who want to provide translations more true to the system language. For example, to adapt to a specific sub-language, like Belgium-Dutch (nl-BE). While i18n.getUILanguage would return 'nl'.
+Extension authors might want to obtain the locale used by the user agent's host environment in order to format values (such as numbers, dates, and so forth) or do other locale-affected operations (such as list sorting) according to expectations of the user. For example, formatting the date `2024-06-15` varies between `en-US` (6/15/2024) and `en-GB` (15/6/2024), whereas `i18n.getUILanguage` might return only `en` (English).
+
+Extension authors might want to obtain the locale used by the user agent's host environment to better match the runtime environment's localization. For example, the operating system might be running in `ff-NG` (Fulani as used in Nigeria), but the user agent might not be localized into this language and return `en` (English) for `i18n.getUILanguage`.
 
 ### Known Consumers
 
