@@ -36,7 +36,7 @@ Language-related extensions and extensions wanting to match the language of the 
 
 ### Schema
 
-`i18n.getPreferredSystemLanguages()` would asynchronously return a list of [BCP47 language tag](https://www.rfc-editor.org/bcp/bcp47.html) like `i18n.getAcceptLanguages()` does right now.
+`i18n.getPreferredSystemLanguages()` would asynchronously return a language priority list (ordered list of [BCP47 language tag](https://www.rfc-editor.org/bcp/bcp47.html) like `i18n.getAcceptLanguages()` does right now.
 
 ```json
 {
