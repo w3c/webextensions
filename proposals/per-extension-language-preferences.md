@@ -85,8 +85,8 @@ This method return the language that the extension is displayed in.
 
 - If the extension doesn't use `browser.i18n` (there is no "_locales" directory), return `undefined`.
 - If the preferred language is not set by `i18n.setCurrentLanguage()`, returns the current language used by `i18n.getMessage()`, assuming that all languages support all possible keys.
-- If the preferred language is set by `i18n.setCurrentLanguage()`, and the extension supports this language, then return this language.
-- If the preferred language is set by `i18n.setCurrentLanguage()`, but the extension doesn't support this language (no message file for this language), then treat as if the preferred language is not set. This is an edge case, for example, the language was removed when the extension was upgraded.
+- If the preferred language has been set by `i18n.setCurrentLanguage()`, and the extension supports this language, then return this language.
+- If the preferred language has been set by `i18n.setCurrentLanguage()`, but the extension doesn't support this language (no message file for this language), then treat as if the preferred language is not set. This is an edge case, for example, the language was removed when the extension was upgraded.
 
 ##### Use Case 1: use the extension displayed language with other locale-related APIs.
 
