@@ -107,7 +107,7 @@ When no value has been provided for `hasCrossSiteAncestor`, if the `domain` asso
 ### APIs affected by the change and the behavior assoicated with the change:
 
 - `cookies.get()`:
-If no `hasCrossSieAncestor` value is provided it will be populated using the algorithim described above. If a `hasCrossSiteAncestor` value is provided without a corresponding `topLevelSite` value, an error will be returned.
+If no `hasCrossSiteAncestor` value is provided it will be populated using the algorithim described above. If a `hasCrossSiteAncestor` value is provided without a corresponding `topLevelSite` value, an error will be returned.
 
 - `cookies.getAll()`: 
 If no value is set for hasCrossSiteAncestor cookies with both true and false values for hasCrossSiteAncestor will be returned. Otherwise, cookies will be returned that match the topLevelSite and the passed value for hasCrossSiteAncestor.
