@@ -8,7 +8,8 @@ Allow extensions to utilize a hasCrossSiteAncestor boolean value when interactin
 
 The cross-site ancestor chain bit is a component of the cookie partition key that is set by the browser when keys are created. If the bit indicates true, it means the cookie has been set in a third-party context.
 
-A third-party context occurs when any parent frame, in the frame tree, is cross-site with the frame or subresource the cookie is being set on. If one site of the frame tree is third-party, then all children frames of that frame are also third-party and have a cross site ancestor. Third-party contexts also occur when the top-level frame makes a third-party subresource request and when a first-party request is redirected to a thrid-party URL (even if it is subsequently redirected back to a first-party request after, that subsequent first-party request is now considered an ABA request).
+A third-party context occurs when the subresource the cookie is being set on has a cross-site frame ancestor, opener or redirect entry.
+Once a frame is considered to be in a third-party context, all requests within that frame and its child frames are also third-party and have a cross site ancestor. Similarly, once a request redirects to a cross-site URL, it is considered third-party (even if it is subsequently redirected back to a first-party request after, that subsequent first-party request is now considered an ABA request).
 
 Note: In the table below, sites A1, A2 and A3 are all first-party to each other.
 | Site frame tree |Site cookie is set on| hasCrossSiteAncestor value of cookie| Nodes that can't access the cookie|
