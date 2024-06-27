@@ -116,7 +116,9 @@ This method sets the user preferred language for this extension.
   1. trigger `i18n.onLanguageChanged` event.
 
 In addition, when `i18n.setCurrentLanguage(code)` success:
-- the browser should update related browser UI and extension UI, because some values in manifest.json may be changed, like `name`, `short_name`, `description` and `action.default_title`.
+- Because some values in manifest.json may be changed, like `name`, `short_name`, `description` and `action.default_title`:
+  - The browser should update related extension UI, e.g. `action.default_title`.
+  - The browser might update related browser UI, but this part is up to the browser to decide.
 - Text from `i18n.getMessage()` and css files don't update. These are handled by developers.
 
 ##### Persistence of `i18n.setCurrentLanguage(code)`
