@@ -152,16 +152,6 @@ When this proposal is implemented, the behavior of these existing functions will
 - If the preferred language is set by `i18n.setCurrentLanguage()`, and the extension supports this language, then prioritize using that language.
 - If the preferred language is set by `i18n.setCurrentLanguage()`, but the extension doesn't support this language, then treat as if the preferred language is not set. This is an edge case, for example, the language was removed when the extension was upgraded.
 
-### Browser built-in language selection menu
-
-Based on the capabilities provided by this proposal, browsers could provide a unified built-in language selection menu for extensions, like Android and iOS.
-Whether to provide the built-in language selection menu and how to implement it is up to the browser to decide. This is just a suggestion.
-
-The built-in language selection menu has the following benefits:
-- Easy for developers: Developers do not need to implement it themselves, they only need to adapt to this proposal.
-- Easy for users: A unified UI makes it easier for users to use, otherwise each extension might be set up differently.
-- It is convenient for developers to develop and test i18n functions by switching the extension language.
-
 ### Integrate other i18n implementations (frameworks) with browser.i18n
 
 This proposal can also be integrated with third-party i18n frameworks, as these frameworks typically allow developers to specify the language to be used.
@@ -179,14 +169,7 @@ N/A
 
 ### Manifest File Changes
 
-If the browser would like to support the built-in language selection menu for extensions, the manifest file should add a new key for developers to opt-in this feature, like the following:
-```
-{
-  "name": "__MSG_extName__",
-  "default_locale": "en",
-  "builtin_languages_menu": true | false(default)
-}
-```
+N/A
 
 ## Security and Privacy
 
@@ -231,4 +214,21 @@ When the extension is upgraded, if the new version removes the language that was
 
 ## Future Work
 
-N/A
+### Browser built-in language selection menu
+
+Based on the capabilities provided by this proposal, browsers could provide a unified built-in language selection menu for extensions, like Android and iOS.
+Whether to provide the built-in language selection menu and how to implement it is up to the browser to decide.
+
+The built-in language selection menu has the following benefits:
+- Easy for developers: Developers do not need to implement it themselves, they only need to adapt to this proposal.
+- Easy for users: A unified UI makes it easier for users to use, otherwise each extension might be set up differently.
+- It is convenient for developers to develop and test i18n functions by switching the extension language.
+
+If the browser would like to support the built-in language selection menu for extensions, the manifest file should add a new key for developers to opt-in this feature, like the following:
+```
+{
+  "name": "__MSG_extName__",
+  "default_locale": "en",
+  "builtin_languages_menu": true | false(default)
+}
+```
