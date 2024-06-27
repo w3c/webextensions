@@ -107,7 +107,6 @@ const today_date = new Date().toLocaleString(); // format date string in 'en-US'
 
 This method sets the user preferred language for this extension.
 
-- If the extension doesn't use `browser.i18n` (there is no "_locales" directory), return a rejected Promise.
 - If the code is an invalid language tag or an unsupported language by this extension, return a rejected Promise.
 - If the code is null, revert to the unset state.
 - else do the following:
