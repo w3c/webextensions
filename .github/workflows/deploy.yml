@@ -28,8 +28,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - source: ./specification/index.bs
-          - source: ./specification/window.browser.bs
+          - name: specification
+            source: ./specification/index.bs
+          - name: window-browser
+            source: ./specification/window.browser.bs
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -45,3 +47,4 @@ jobs:
           # Deployment will be available at: https://w3c.github.io/webextensions/specification
           SOURCE: ${{ matrix.source }}
           TOOLCHAIN: 'bikeshed'
+          ARTIFACT_NAME: ${{ matrix.name }}
