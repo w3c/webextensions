@@ -62,7 +62,7 @@ clear and less verbose.
 
 ### Behavior
 
-This API will throw / populate browser.runtime.lastError in the case of
+This API will reject with an Error / populate browser.runtime.lastError in the case of
 failure, for example if access to the storage area is not allowed in the
 given context.
 
