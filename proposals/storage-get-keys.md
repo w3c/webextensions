@@ -49,7 +49,7 @@ represent significant engineering effort.
 ## Specification
 
 ### Schema
-
+This proposal expands the existing [StorageArea type](https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/storage/StorageArea) with a new `getKeys` method:
 ```ts
 interface StorageArea {
     getKeys(): Promise<string[]>;
