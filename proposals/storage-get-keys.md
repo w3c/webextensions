@@ -111,5 +111,5 @@ N/A
 ## Future Work
 
 It may be desirable to add a parameter to allow filtering of the keys that are
-returned. This is not an optimization we think is neccessary in an initial
+returned. This is not an optimization we think is necessary in an initial
 implementation.
