@@ -103,7 +103,7 @@ extension.ContextType = {
   BACKGROUND: 'BACKGROUND',
   // Offscreen documents for the extension.
   OFFSCREEN_DOCUMENT: 'OFFSCREEN_DOCUMENT',
-  // A side panel context.
+  // A side panel or sidebar context.
   SIDE_PANEL: 'SIDE_PANEL',
 };
 ```
