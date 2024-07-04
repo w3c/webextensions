@@ -4,7 +4,7 @@ Shortname: webextensions
 Level: 1
 Status: w3c/CG-DRAFT
 Group: WECG
-URL: https://w3c.github.io/webextensions
+URL: https://w3c.github.io/webextensions/specification/index.html
 Editor: Mukul Purohit, Microsoft Corporation https://www.microsoft.com, mpurohit@microsoft.com
 Editor: Tomislav Jovanovic, Mozilla https://www.mozilla.org/, tjovanovic@mozilla.com
 Abstract: [Placeholder] Abstract.
