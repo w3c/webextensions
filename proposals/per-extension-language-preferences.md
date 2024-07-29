@@ -79,6 +79,17 @@ i18n.onLanguageChanged.addListener(callback)
 
 ### Behavior
 
+#### Content Scripts Availability
+
+In history, all `browser.i18n` APIs were available in content scripts. But some of methods in this proposal should not be available in content scripts because of their purpose.
+
+| Method  | Content Scripts Availability |
+| ------------- | ------------- |
+| `getCurrentLanguage()` | Yes |
+| `setCurrentLanguage()` | No |
+| `getAllLanguages()` | No |
+| `onLanguageChanged()` | Yes |
+
 #### Behavior of `i18n.getCurrentLanguage()`
 
 This method return the language that the extension is displayed in.
