@@ -90,6 +90,11 @@ In history, all `browser.i18n` APIs were available in content scripts. But some 
 | `getAllLanguages()` | No |
 | `onLanguageChanged()` | Yes |
 
+#### A New Predefined Message `@@current_locale`
+There is an exsiting predefined message `@@ui_locale`, that reflects the value of `i18n.getUILanguage()`, but the value uses underscore (e.g. "en_US") as separator in Chrome and hyphen (e.g. "en-US") in Firefox.
+
+Relative to `@@ui_locale`, a new predefined message, ``@@current_locale``, should be added, which reflects the value of `i18n.getCurrentLanguage()`.
+
 #### Behavior of `i18n.getCurrentLanguage()`
 
 This method return the language that the extension is displayed in.
