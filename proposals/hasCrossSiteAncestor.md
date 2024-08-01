@@ -88,6 +88,8 @@ No sensitive data is associated with the cross-site ancestor chain bit.
 ### Abuse Mitigations
 A cookie may only have no cross-site ancestor when the topLevelSite in the partitionKey and the URL with which the cookie is associated with are first-party to each other. To prevent the creation of cookies that violate this, the set method will return an error if the URL and the topLevelSite are not first-party for cookies that are set with no-cross site ancestor.
 
+There are situations that can occur (such as an update to the public suffix list) which can change the if the topLevelSite and the URL are first-party to each other. To accomidate this possibility, the value for `hasCrossSiteAncestor` for the get(), getAll() and remove() methods will not be restricted. This will allow for web extensions to migrate or remove cookies that have become invalid after they have been set.
+
 ### Additional Security Considerations
 None
 
