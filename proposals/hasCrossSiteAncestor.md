@@ -18,8 +18,6 @@ Note: In the table below, sites A1, A2 and A3 are all first-party to each other.
 | A1->A2      |A2 | false          | 
 | A1->A2->A3   |A3   | false          |  
 | A1->B       |B| true          | B|
-| A1->B->A2    |A1   | false        | B and A2
-| A1->B->A2 |B    | true          | A1 and A2 |
 | A1->B->A2 |A2   | true          | A1 and B
 
 **Document Metadata**
