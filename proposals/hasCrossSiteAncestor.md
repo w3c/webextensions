@@ -76,9 +76,9 @@ No new permissions are required.
 No new manifest fields are required.
 
 ## Security and Privacy
-Privacy: The hasCrossSiteAncestor boolean value does not reveal private information.
+Privacy: The existing `cookies` API can result in partitioned cookies being associated with a different partition than the original setter of the cookie intended. This risk is not mitigated by this change.
 
-Security: The hasCrossSiteAncestor boolean value does not impact security.
+Security: The `hasCrossSiteAncestor` boolean value does not impact security.
 
 ### Exposed Sensitive Data
 No sensitive data is associated with the cross-site ancestor chain bit.
