@@ -11,6 +11,8 @@ The cross-site ancestor chain bit is a component of the cookie partition key tha
 A third-party context occurs when the subresource the cookie is being set on has a cross-site frame ancestor.
 Once a frame is considered to be in a third-party context, all requests within that frame and its child frames are also third-party and have a cross site ancestor. Similarly, once a request redirects to a cross-site URL, it is considered third-party (even if it is subsequently redirected back to a first-party request after, that subsequent first-party request is now considered an ABA request).
 
+Unpartitioned cookies, which are indicated by a cookie not containing a `partitionKey`, the key not containing a `topLevelSite` or an empty `topLevelSite`, always have a `hasCrossSiteAncestor` value of `false`. Top-level documents may have partitioned cookies (topLevelSite non-empty, i.e. set to the site of the top-level document), but hasCrossSiteAncestor is always false for top-level contexts by [design](https://github.com/explainers-by-googlers/CHIPS-spec/blob/main/draft-cutler-httpbis-partitioned-cookies.md).
+
 Note: In the table below, sites A1, A2 and A3 are all first-party to each other.
 | Site frame tree |Site cookie is set on| hasCrossSiteAncestor value of cookie| Nodes that can't access the cookie|
 |---|---|--|--|
