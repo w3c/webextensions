@@ -196,7 +196,7 @@ N/A
 
 ### Abuse Mitigations
 
-A case of abuse is changing the extension name/description dynamically by `i18n.setCurrentLanguage()`. This is not a security threat because all metadata published in the extension store is audited. And for the extension management page (e.g. chrome://extensions/), the extension name should be displayed in the same language as the management page (i.e. the Browser UI language), so it is not affected by `i18n.setCurrentLanguage()`.
+A case of abuse is changing the extension name/description dynamically by `i18n.setCurrentLanguage()` in an attempt to confuse the user and hinder their ability to identify the extension. A mitigation to this issue is to ignore changes from `setCurrentLanguage` in the extension management parts of the browser UI, and always use the browser's configured UI language instead. This includes extension management pages (e.g. `chrome://extensions` in Chrome and `about:addons` in Firefox) and permission dialogs.
 
 ### Additional Security Considerations
 
