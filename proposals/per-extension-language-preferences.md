@@ -81,14 +81,14 @@ i18n.onLanguageChanged.addListener(callback)
 
 #### Content Scripts Availability
 
-In history, all `browser.i18n` APIs were available in content scripts. But some of methods in this proposal should not be available in content scripts because of their purpose.
+Unlike other APIs, all `browser.i18n` APIs are historically available to content scripts. To counter abuse, some of the features in this proposal should not be available in content scripts.
 
-| Method  | Content Scripts Availability |
+| API  | Content Scripts Availability |
 | ------------- | ------------- |
 | `getCurrentLanguage()` | Yes |
 | `setCurrentLanguage()` | No |
 | `getAllLanguages()` | No |
-| `onLanguageChanged()` | Yes |
+| `onLanguageChanged` | Yes |
 
 #### A New Predefined Message `@@current_locale`
 There is an exsiting predefined message `@@ui_locale`, that reflects the value of `i18n.getUILanguage()`, but the value uses underscore (e.g. "en_US") as separator in Chrome and hyphen (e.g. "en-US") in Firefox.
