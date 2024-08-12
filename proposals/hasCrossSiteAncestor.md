@@ -2,7 +2,7 @@
 
 **Summary**
 
-Allow extensions to utilize a hasCrossSiteAncestor boolean value when interacting with partitioned cookies that include a cross-site ancestor chain bit in their partiton key.
+Allow extensions to utilize a `hasCrossSiteAncestor` boolean value when interacting with partitioned cookies that include a cross-site ancestor chain bit in their partiton key.
 
 #### Background information: Description of Cross-site Ancestor Chain Bit in partitioned cookies
 
@@ -11,7 +11,7 @@ The cross-site ancestor chain bit is a component of the cookie partition key tha
 A third-party context occurs when the subresource the cookie is being set on has a cross-site frame ancestor.
 Once a frame is considered to be in a third-party context, all requests within that frame and its child frames are also third-party and have a cross site ancestor. Similarly, once a request redirects to a cross-site URL, it is considered third-party (even if it is subsequently redirected back to a first-party request after, that subsequent first-party request is now considered an ABA request).
 
-Unpartitioned cookies, which are indicated by a cookie not containing a `partitionKey`, the key not containing a `topLevelSite` or an empty `topLevelSite`, always have a `hasCrossSiteAncestor` value of `false`. Top-level documents may have partitioned cookies (topLevelSite non-empty, i.e. set to the site of the top-level document), but hasCrossSiteAncestor is always false for top-level contexts by [design](https://github.com/explainers-by-googlers/CHIPS-spec/blob/main/draft-cutler-httpbis-partitioned-cookies.md).
+Unpartitioned cookies, which are indicated by a cookie not containing a `partitionKey`, the key not containing a `topLevelSite` or an empty `topLevelSite`, always have a `hasCrossSiteAncestor` value of `false`. Top-level documents may have partitioned cookies (topLevelSite non-empty, i.e. set to the site of the top-level document), but `hasCrossSiteAncestor` is always false for top-level contexts by [design](https://github.com/explainers-by-googlers/CHIPS-spec/blob/main/draft-cutler-httpbis-partitioned-cookies.md).
 
 Note: In the table below, sites A1, A2 and A3 are all first-party to each other.
 | Site frame tree |Site cookie is set on| hasCrossSiteAncestor value of cookie| Nodes that can't access the cookie|
@@ -38,7 +38,7 @@ Note: In the table below, sites A1, A2 and A3 are all first-party to each other.
 https://github.com/privacycg/CHIPS/issues/40 is adding a cross-site ancestor bit value to partitioned cookies.
 
 ### Objective
-To interact with partitioned cookies containing a cross-site ancestor chain bit correctly, extensions will need to have the ability to to specify a value (hasCrossSiteAncestor) that corresponds to the value of the cross-site ancestor chain bit in partitioned cookies.
+To interact with partitioned cookies containing a cross-site ancestor chain bit correctly, extensions will need to have the ability to to specify a value (`hasCrossSiteAncestor`) that corresponds to the value of the cross-site ancestor chain bit in partitioned cookies.
 
 #### Use Cases
 
@@ -48,7 +48,7 @@ Let's say a cookie manager extension (with host permissions) is used by users to
 #### Password Manager:
 Let’s say a password manager extension (with host permissions) is used by users to access their login information by setting a cookie that stores their usernames and passwords in an encrypted partitioned cookie. To protect their users against clickjacking, the extension adds a setting that prevents their cookies from being accessed, by default, in embeds that have cross site ancestors without triggering a user prompt. If permission is given through the prompt, the extension sets a cookie with a `hasCrossSiteAncestor` value of true. Upon subsequent visits, the extension checks the cookie store for the presence of a cookie with a `hasCrossSiteAncestor` value of true to determine whether the prompt needs to be rendered.
 
-To allow for this protection and UX flow to work, the extension would need to have the ability to set/get cookies with specific hasCrossSiteAncestor values. 
+To allow for this protection and UX flow to work, the extension would need to have the ability to set/get cookies with specific `hasCrossSiteAncestor` values. 
 
 ### Known Consumers
 All extensions that access and/or modify cookies with awareness of partitioned cookies, through the use of the `partitionKey` property in the `cookies` extension API.
@@ -70,7 +70,28 @@ Adds a new optional boolean property `hasCrossSiteAncestor` to the `partitionKey
   }
 }
 ```
+#### Cookies.GetPartitionKey()
+Adds a new API, `cookies.getPartitionKey()` which retrives a valid `partitionKey` for the indicated frame.
 
+This is an asyncronus function that returns a promise.
+
+##### Syntax
+```
+let key = cookies.getPartitionKey(
+    details // object
+)
+```
+##### Parameters
+`details` object. Information about the frame to retrive information about.
+>  `tabId`
+integer. The ID of the tab in which the frame is.
+
+> `frameId`
+integer. The ID of the frame in the given tab.
+
+##### Return value
+A Promise that will be fulfilled with a `Cookie.partitionKey` object that matches the properties given in the details parameter and contains the `hasCrossSiteAncestor` value associated with the current cross-site status of the frame.
+  
 ### New Permissions
 No new permissions are required.
 
@@ -86,7 +107,7 @@ Security: The `hasCrossSiteAncestor` boolean value does not impact security.
 No sensitive data is associated with the cross-site ancestor chain bit.
 
 ### Abuse Mitigations
-A cookie may only have no cross-site ancestor when the topLevelSite in the partitionKey and the URL with which the cookie is associated with are first-party to each other. To prevent the creation of cookies that violate this, the set method will return an error if the URL and the topLevelSite are not first-party for cookies that are set with no-cross site ancestor.
+A cookie may only have no cross-site ancestor when the `topLevelSite` in the `partitionKey` and the URL with which the cookie is associated with are first-party to each other. To prevent the creation of cookies that violate this, the set method will return an error if the URL and the `topLevelSite` are not first-party for cookies that are set with no-cross site ancestor.
 
 There are situations that can occur (such as an update to the public suffix list) which can change the if the topLevelSite and the URL are first-party to each other. To accomidate this possibility, the value for `hasCrossSiteAncestor` for the get(), getAll() and remove() methods will not be restricted. This will allow for web extensions to migrate or remove cookies that have become invalid after they have been set.
 
@@ -94,13 +115,13 @@ There are situations that can occur (such as an update to the public suffix list
 None
 
 ## Alternatives
-The hasCrossSiteAncestor value could be a value that is not exposed to extensions at all. Browsers that choose to include a cross-site ancestor chain bit in their partitioned cookies, could calculate the expected value of the cross-site ancestor chain bit from the URL associated with the cookie and the topLevelSite in the partitionKey. However, this could cause extensions to be unable to correctly set or get cookies (in an A1->B->A2 situation) as the browser may calculate the incorrect value for hasCrossSiteAncestor since it would not be explicitly provided by the extension.
+The `hasCrossSiteAncestor` value could be a value that is not exposed to extensions at all. Browsers that choose to include a cross-site ancestor chain bit in their partitioned cookies, could calculate the expected value of the cross-site ancestor chain bit from the URL associated with the cookie and the `topLevelSite` in the `partitionKey`. However, this could cause extensions to be unable to correctly set or get cookies (in an A1->B->A2 situation) as the browser may calculate the incorrect value for `hasCrossSiteAncestor` since it would not be explicitly provided by the extension.
 
 ### Existing Workarounds
 To access cookies with the same `topLevelSite` but different `hasCrossSiteAncestor` values (A1->B->A2 context), developers can remove the `Partitioned` attribute from the cookie and use the Storage Access API in the context of web pages.
 
 ### Open Web API
-The APIs being expanded to include the hasCrossSiteAncestor boolean are specific to extensions.
+The APIs being expanded to include the `hasCrossSiteAncestor` boolean are specific to extensions.
 
 ## Implementation Notes
 
@@ -113,10 +134,10 @@ When no value has been provided for `hasCrossSiteAncestor`, if the `domain` asso
 If no `hasCrossSiteAncestor` value is provided it will be populated using the algorithim described above. If a `hasCrossSiteAncestor` value is provided without a corresponding `topLevelSite` value, an error will be returned.
 
 - `cookies.getAll()`: 
-If no value is set for hasCrossSiteAncestor cookies with both true and false values for hasCrossSiteAncestor will be returned. Otherwise, cookies will be returned that match the topLevelSite and the passed value for hasCrossSiteAncestor. When the `partitionKey` property is not specified, only unpartitioned cookies are returned. These cookies always have a `false` value for `hasCrossSiteAncestor`.
+If no value is set for hasCrossSiteAncestor cookies with both true and false values for `hasCrossSiteAncestor` will be returned. Otherwise, cookies will be returned that match the `topLevelSite` and the passed value for `hasCrossSiteAncestor`. When the `partitionKey` property is not specified, only unpartitioned cookies are returned. These cookies always have a `false` value for `hasCrossSiteAncestor`.
 
 - `cookies.set()`: 
-As described the Abuse Mitigations section, this method will not allow a hasCrossSiteAncestor value of false, if the URL associated with the cookie and the topLevelSite in the partitionKey are not first-party. If this is attempted, an error will be returned. If a `hasCrossSiteAncestor` value is provided without a corresponding `topLevelSite` value, an error will be returned. Additionally, if no `hasCrossSiteAncestor` value is provided it will be populated using the algorithm described above.
+As described the Abuse Mitigations section, this method will not allow a `hasCrossSiteAncestor` value of false, if the URL associated with the cookie and the `topLevelSite` in the `partitionKey` are not first-party. If this is attempted, an error will be returned. If a `hasCrossSiteAncestor` value is provided without a corresponding `topLevelSite` value, an error will be returned. Additionally, if no `hasCrossSiteAncestor` value is provided it will be populated using the algorithm described above.
 
 - `cookies.remove()`:
 If no `hasCrossSiteAncestor` value is provided it will be populated using the algorithm described above when determing the cookie to remove. If a `hasCrossSiteAncestor` value is provided without a corresponding `topLevelSite` value, an error will be returned. If `topLevelSite` and `hasCrossSiteAncestor` values are provided, they will be used by the method even if the combination of the values would be invalid.
