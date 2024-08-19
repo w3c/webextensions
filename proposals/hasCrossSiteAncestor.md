@@ -9,13 +9,20 @@ Allow extensions to utilize a `hasCrossSiteAncestor` boolean value when interact
 The cross-site ancestor chain bit is a component of the cookie partition key that is set by the browser when keys are created. If the bit indicates true, it means the cookie has been set in a third-party context.
 
 A third-party context occurs when the subresource the cookie is being set on has a cross-site frame ancestor.
-Once a frame is considered to be in a third-party context, all requests within that frame and its child frames are also third-party and have a cross site ancestor. Similarly, once a request redirects to a cross-site URL, it is considered third-party (even if it is subsequently redirected back to a first-party request after, that subsequent first-party request is now considered an ABA request).
+Once a frame is considered to be in a third-party context, all requests within that frame and its child frames are also third-party and have a cross site ancestor. Similarly, once a request redirects to a cross-site URL, it is considered third-party (even if it is subsequently redirected back to a first-party request after, that subsequent first-party request is now considered an ABA request), unless the request causes a navigation of the top-level site. Since top-level documents may have partitioned cookies (topLevelSite non-empty, i.e. set to the site of the top-level document), but `hasCrossSiteAncestor` is always false for top-level contexts by [design](https://github.com/explainers-by-googlers/CHIPS-spec/blob/main/draft-cutler-httpbis-partitioned-cookies.md). 
 
-Unpartitioned cookies, indicated by a cookie not containing a `partitionKey` or an empty `topLevelSite`, always have a `hasCrossSiteAncestor` value of `false`. An unpartitioned cookie can also be indicated with an empty `partitionKey` which will not have a value for `hasCrossSiteAncestor`.
+Unpartitioned cookies, indicated by a cookie not containing a `partitionKey` or an empty `topLevelSite`, always have a `hasCrossSiteAncestor` value of `false`. An unpartitioned cookie can also be indicated with an empty `partitionKey` which will not have a value for `hasCrossSiteAncestor` or `topLevelSite`.
 
 A `hasCrossSiteAncestor` value can only be validated if the `partitionKey` has a `topLevelSite`. Any `partitionKey` with no `topLevelSite` and a value for `hasCrossSiteAncestor` is considered invalid and will result in an error being thrown by the API.
 
-Top-level documents may have partitioned cookies (topLevelSite non-empty, i.e. set to the site of the top-level document), but `hasCrossSiteAncestor` is always false for top-level contexts by [design](https://github.com/explainers-by-googlers/CHIPS-spec/blob/main/draft-cutler-httpbis-partitioned-cookies.md). 
+| Valid PartitionKeys | Description |
+|---|---|
+|`{topLevelSite : "https://example.com", hasCrossSiteAncestor: false}`| Partitioned cookie, set in a same-site context|
+|`{topLevelSite : "https://example.com", hasCrossSiteAncestor: true}`| Partitioned cookie, set in a cross-site context|
+|`{topLevelSite : "https://example.com"}`| Partitioned cookie, `hasCrossSiteAncestor` will be calculated by the browser|
+|`{topLevelSite : "",  hasCrossSiteAncestor: false}`| Unpartitioned cookie|
+|`{topLevelSite : ""}`| Unpartitioned cookie, `hasCrossSiteAncestor` will default to false|
+|`{}`| Unpartitioned cookie, when passed to `cookies.GetAll()` will return unpartitioned and partitioned cookies|
 
 Note: In the table below, sites A1, A2 and A3 are all first-party to each other.
 | Site frame tree |Site cookie is set on| hasCrossSiteAncestor value of cookie| Nodes that can't access the cookie|
