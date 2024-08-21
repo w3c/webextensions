@@ -136,7 +136,7 @@ The APIs being expanded to include the `hasCrossSiteAncestor` boolean are specif
 ## Implementation Notes
 
 ### Populating hasCrossSiteAncestor when not provided:
-When no value has been provided for `hasCrossSiteAncestor`, if the `domain` associated with the `cookie` is same-site to the value of the `topLevelSite`, the `hasCrossSiteAncestor` value will be set to false otherwise the value will be set to true.
+When no value has been provided for `hasCrossSiteAncestor`, if the `domain` of the cookie's `url` is same-site to the value of the `topLevelSite`, the `hasCrossSiteAncestor` value will be set to false otherwise the value will be set to true.
 
 ### Empty PartitionKey: `{}`
 In `cookies.getAll()` an empty key `partitionKey = {}` will return both unpartitioned and partitioned cookies and `cookies.remove()` will remove both unpartitioned and partitioned cookies. For `cookies.get()` and `cookies.set()` an empty partitionKey will result in an error. 
