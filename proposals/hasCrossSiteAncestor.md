@@ -17,11 +17,12 @@ A `hasCrossSiteAncestor` value can only be validated if the `partitionKey` has a
 
 | Valid PartitionKeys | Description |
 |---|---|
-|`{topLevelSite : "https://example.com", hasCrossSiteAncestor: false}`| Partitioned cookie, set in a same-site context|
-|`{topLevelSite : "https://example.com", hasCrossSiteAncestor: true}`| Partitioned cookie, set in a cross-site context|
-|`{topLevelSite : "https://example.com"}`| Partitioned cookie, `hasCrossSiteAncestor` will be calculated by the browser|
-|`{topLevelSite : "",  hasCrossSiteAncestor: false}`| Unpartitioned cookie|
-|`{topLevelSite : ""}`| Unpartitioned cookie, `hasCrossSiteAncestor` will default to false|
+|`{topLevelSite : "https://example.com", hasCrossSiteAncestor: false}`| Partitioned cookie, set in a same-site context.|
+|`{topLevelSite : "https://example.com", hasCrossSiteAncestor: true}`| Partitioned cookie, set in a cross-site context.|
+|`{topLevelSite : "https://example.com"}`| Partitioned cookie, `hasCrossSiteAncestor` will be calculated by the browser.|
+|`{topLevelSite : "",  hasCrossSiteAncestor: false}`| Unpartitioned cookie.|
+|`{topLevelSite : ""}`| Unpartitioned cookie, `hasCrossSiteAncestor` will default to false.|
+| `{}`| Unpartitioned cookie,  `hasCrossSiteAncestor` will default to false. Except in `cookies.getAll()` where will result in both partitioned and unpartitioned cookies being returned.| 
 
 Note: In the table below, sites A1, A2 and A3 are all first-party to each other.
 | Site frame tree |Site cookie is set on| hasCrossSiteAncestor value of cookie| Nodes that can't access the cookie|
@@ -136,10 +137,7 @@ The APIs being expanded to include the `hasCrossSiteAncestor` boolean are specif
 ## Implementation Notes
 
 ### Populating hasCrossSiteAncestor when not provided:
-When no value has been provided for `hasCrossSiteAncestor`, if the `domain` of the cookie's `url` is same-site to the value of the `topLevelSite`, the `hasCrossSiteAncestor` value will be set to false otherwise the value will be set to true.
-
-### Empty PartitionKey: `{}`
-In `cookies.getAll()` an empty key `partitionKey = {}` will return both unpartitioned and partitioned cookies and `cookies.remove()` will remove both unpartitioned and partitioned cookies. For `cookies.get()` and `cookies.set()` an empty partitionKey will result in an error. 
+When no value has been provided for `hasCrossSiteAncestor`, if the `domain` of the cookie's `url` is same-site to the value of the `topLevelSite`, the `hasCrossSiteAncestor` value will be set to false otherwise the value will be set to true. 
 
 ### APIs affected by the change and the behavior assoicated with the change:
 
