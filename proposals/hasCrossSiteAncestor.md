@@ -82,9 +82,8 @@ Adds a new optional boolean property `hasCrossSiteAncestor` to the `partitionKey
 }
 ```
 #### Cookies.GetPartitionKey()
-Adds a new API, `cookies.getPartitionKey()` which retrives a valid `partitionKey` for the indicated frame.
+Adds a new API, `cookies.getPartitionKey()` which retrieves a valid `partitionKey` for the indicated frame.
 This is an asynchronous function that returns a promise.
-This is an asyncronus function that returns a promise.
 
 ##### Syntax
 ```
@@ -93,7 +92,7 @@ let key = cookies.getPartitionKey(
 )
 ```
 ##### Parameters
-`details` object. Information about the frame to retrive information about.
+`details` object. Information about the frame to retrieve information about.
 >  `tabId`
 integer. The ID of the tab in which the frame is.
 
@@ -151,4 +150,4 @@ If no value is set for hasCrossSiteAncestor cookies with both true and false val
 As described the Abuse Mitigations section, this method will not allow a `hasCrossSiteAncestor` value of false if the URL associated with the cookie and the `topLevelSite` in the `partitionKey` are not first-party. If this is attempted, an error will be returned. If a `hasCrossSiteAncestor` value is provided without a corresponding `topLevelSite` value, an error will be returned. Additionally, if no `hasCrossSiteAncestor` value is provided it will be populated using the algorithm described above.
 
 - `cookies.remove()`:
-If no `hasCrossSiteAncestor` value is provided it will be populated using the algorithm described above when determing the cookie to remove. If a `hasCrossSiteAncestor` value is provided without a corresponding `topLevelSite` value, an error will be returned. If `topLevelSite` and `hasCrossSiteAncestor` values are provided, they will be used by the method even if the combination of the values would be invalid.
+If no `hasCrossSiteAncestor` value is provided it will be populated using the algorithm described above when determing the cookie to remove. If a `hasCrossSiteAncestor` value is provided without a corresponding `topLevelSite` value, an error will be urned. If `topLevelSite` and `hasCrossSiteAncestor` values are provided, they will be used by the method even if the combination of the values would be invalid.
