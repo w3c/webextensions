@@ -87,7 +87,7 @@ This is an asynchronous function that returns a promise.
 
 ##### Syntax
 ```
-let key = cookies.getPartitionKey(
+let key = await browser.cookies.getPartitionKey(
     details // object
 )
 ```
