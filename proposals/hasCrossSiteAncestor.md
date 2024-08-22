@@ -83,7 +83,7 @@ Adds a new optional boolean property `hasCrossSiteAncestor` to the `partitionKey
 ```
 #### Cookies.GetPartitionKey()
 Adds a new API, `cookies.getPartitionKey()` which retrives a valid `partitionKey` for the indicated frame.
-
+This is an asynchronous function that returns a promise.
 This is an asyncronus function that returns a promise.
 
 ##### Syntax
