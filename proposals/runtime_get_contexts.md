@@ -242,8 +242,8 @@ for newly-introduced fields, we use the more intuitive `undefined` state.
 ### Developer Tools Contexts
 
 Extensions can use the
-[Dev Tools API](https://developer.chrome.com/docs/extensions/mv3/devtools/) to
-extend the browser's developer tools. When doing so, these extensions can run
+[Dev Tools API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/devtools)
+to extend the browser's developer tools. When doing so, these extensions can run
 different types of contexts (page, panel, sidebar). `runtime.getContexts()`
 returns these contexts with the `DEVELOPER_TOOLS` context type.
 
