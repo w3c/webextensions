@@ -247,8 +247,8 @@ to extend the browser's developer tools. When doing so, these extensions can run
 different types of contexts (page, panel, sidebar). `runtime.getContexts()`
 returns these contexts with the `DEVELOPER_TOOLS` context type.
 
-- These contexts have a `tabId` of -1 as these contexts are not hosted inside
-a tab.
+- These contexts have `tabId` and `frameId` as -1 as these contexts are not
+hosted inside a tab.
 - If developer tools are docked to a tab, the `windowId` will be the ID of the
 window containing the tab.
 - If developer tools are undocked, the `windowId` will the ID of the developer
