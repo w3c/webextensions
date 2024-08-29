@@ -10,8 +10,9 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2024-08-29 at 8 AM PDT = https://everytimezone.com/?t=66cfba00,384
 - 2024-09-12 at 8 AM PDT = https://everytimezone.com/?t=66e22f00,384
+- 2024-09-23 until 2024-09-27 = TPAC 2024 ([issue 659](https://github.com/w3c/webextensions/issues/659)) ([TPAC 2024 Coordination](https://github.com/w3c/webextensions/wiki/TPAC-2024-Coordination))
+- 2024-09-26 at 8 AM PDT = https://everytimezone.com/?t=66f4a400,384
 
 ## Past meetings
 
