@@ -254,6 +254,9 @@ window containing the tab.
 - If developer tools are undocked, the `windowId` will the ID of the developer
 tools window.
 
+Other fields (`contextId`, `documentId`, `documentUrl`, `documentOrigin`,
+`incognito`) are populated as expected. No special handling is done for them.
+
 ## Future Work
 
 ### Messaging APIs Support `ContextId`s as Target
