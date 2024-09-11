@@ -39,7 +39,7 @@ Note: In the table below, sites A1, A2 and A3 are all first-party to each other.
 
 **Sponsoring Browser:** Chrome
 
-**Contributors:** [DCtheTall](https://github.com/Dcthetall)
+**Contributors:** [DCtheTall](https://github.com/DCtheTall), [Rob--W](https://github.com/Rob--W)
 
 **Created:** 2024-04-01
 
