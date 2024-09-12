@@ -95,10 +95,10 @@ let key = await browser.cookies.getPartitionKey(
 `details` object. Information about the frame to retrieve information about.
 >  `tabId` optional
 integer. The ID of the tab in which the frame is.
-
+>
 > `frameId` optional
 integer. The ID of the frame in the given tab.
-
+>
 >  `documentId` optional
 string. A UUID of the document.
 
@@ -111,7 +111,11 @@ string. A UUID of the document.
 
 ##### Return value
 A Promise that will be fulfilled with a `Cookie.partitionKey` object that matches the properties given in the details parameter and contains the `hasCrossSiteAncestor` value associated with the current cross-site status of the frame.
-  
+
+##### Error conditions
+- If host permissions are not granted for the document whose partitionkey is getting queried an error will be returned.
+- When the parameters passed do not correspond to an existing frame, an error will be returned.
+
 ### New Permissions
 No new permissions are required.
 
