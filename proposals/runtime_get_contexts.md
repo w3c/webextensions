@@ -103,8 +103,10 @@ extension.ContextType = {
   BACKGROUND: 'BACKGROUND',
   // Offscreen documents for the extension.
   OFFSCREEN_DOCUMENT: 'OFFSCREEN_DOCUMENT',
-  // A side panel context. Currently under development in Chromium.
-  SIDE_PANEL,
+  // A side panel or sidebar context.
+  SIDE_PANEL: 'SIDE_PANEL',
+  // A developer tools context.
+  DEVELOPER_TOOLS: 'DEVELOPER_TOOLS',
 };
 ```
 
@@ -236,6 +238,25 @@ This is an artifact of existing APIs and precedence. Since many existing APIs
 use the constant integer values, we want to be consistent with those. However,
 for newly-introduced fields, we use the more intuitive `undefined` state.
 
+
+### Developer Tools Contexts
+
+Extensions can use the
+[Dev Tools API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/devtools)
+to extend the browser's developer tools. When doing so, these extensions can run
+different types of contexts (page, panel, sidebar). `runtime.getContexts()`
+returns these contexts with the `DEVELOPER_TOOLS` context type.
+
+- These contexts have `tabId` and `frameId` as -1 as these contexts are not
+hosted inside a tab.
+- If developer tools are docked to a tab, the `windowId` will be the ID of the
+window containing the tab.
+- If developer tools are undocked, the `windowId` will the ID of the developer
+tools window.
+
+Other fields (`contextId`, `documentId`, `documentUrl`, `documentOrigin`,
+`incognito`) are populated as expected. No special handling is done for them.
+
 ## Future Work
 
 ### Messaging APIs Support `ContextId`s as Target
@@ -277,17 +298,6 @@ like to add these contexts in the future.
 
 With the content script additions, we may add new fields to `ExtensionContext`,
 such as `scriptUrl` (to indicate the content script's source).
-
-### Dev Tools Contexts
-
-Extensions can use the
-[Dev Tools API](https://developer.chrome.com/docs/extensions/mv3/devtools/] to
-extend the browser's developer tools. When doing so, these extensions can have
-a panel (an extension view) within the developer tools console. These views
-are a little different than others, though -- in Chromium, they commit to a
-different origin (one with a devtools:-scheme). These are also not currently
-returned from `chrome.extension.getViews()`. In the future, we will expand
-`runtime.getContexts()` with devtools context types to accommodate these.
 
 ## Footnotes
 
