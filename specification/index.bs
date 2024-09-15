@@ -28,7 +28,7 @@ An optional directory containing strings as defined in <a href="#localization">l
 
 ## Other files
 
-An extension may also contain other files, such as those referenced in the [[#key-content_scripts]] and [[#key-background]] part of the [=manifest=].
+An extension may also contain other files, such as those referenced in the [[#key-content_scripts]] and [[#key-background]] parts of the [=manifest=].
 
 # Manifest
 
@@ -175,7 +175,7 @@ Issue(62): Specify localization handling.
 
 # Match patterns
 
-A <dfn>match pattern</dfn> is a pattern used to match URLs.
+A <dfn>match pattern</dfn> is a pattern used to match URLs. They are case-insensitive.
 
 # Globs
 
@@ -199,11 +199,11 @@ A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards 
 
 ## Content scripts
 
-<dfn>Content scripts</dfn> represent a set of JS and CSS files that should be injected into pages loaded by the user agent.
+<dfn>Content scripts</dfn> represent a set of JS and CSS files that should be injected into matching pages loaded by the user agent. They are injected using the steps in [[#inject-a-content-script]].
 
 ### Key `matches`
 
-A [=list=] of [=match patterns=] that are used to decide where the content script runs. This key is required.
+A [=list=] of [=match patterns=] that are used to decide which pages the user agent injects the content script into. This key is required.
 
 ### Key `exclude_matches`
 
@@ -211,27 +211,29 @@ A [=list=] of [=match patterns=] that should be used to exclude URLs from where 
 
 ### Key `js`
 
-A [=list=] of file paths that should be injected as scripts.
+A [=list=] of file paths, relative to the extension's package, that should be injected as scripts.
 
 ### Key `css`
 
-A [=list=] of file paths that should be injected as stylesheets.
+A [=list=] of file paths, relative to the extension's package, that should be injected as stylesheets.
 
 ### Key `all_frames`
 
-If `all_frames` is true, the content script must be injected into subframes. Defaults to false.
+If `all_frames` is true, the content script must be injected into any subframes that match the other matching criteria for the content script. If false, content scripts will only be injected into top-level documents. See Defaults to false.
 
 ### Key `match_about_blank`
 
-If this is `true`, the content script will also be injected into an additional user agent specified set of pages used to represent empty frames. This will only happen if the content script matches the page that embedded the frame. Defaults to `false`.
+If this is true, use the URL of the parent frame when matching a child frame whose document URL has the `about` [=scheme=]. See also [[#determine-the-url-for-content-script-matching]]. Defaults to `false`.
+
+Note: In Firefox, setting `match_about_blank` to `true` also allows injection into top-level `about:blank` pages.
 
 ### Key `match_origin_as_fallback`
 
-Used to match frames with an opaque or otherwise missing origin. The origin to match against is determined in the following order of priority:
+If this is true, use fallbacks as described in [[#determine-the-url-for-content-script-matching]].
 
-1. If the frame has an [=opaque origin=], such as with a [=blob URLs=], use the non-opaque origin.
-1. If available, use the origin of the parent frame.
-1. Otherwise, no origin is found and this frame can never be matched.
+No path is available when the URL to match against falls back to an origin. Therefore, when set, the user agent must not allow [[#key-matches]] to contain entries with a path other than `/*`.
+
+Defaults to `false`.
 
 ### Key `run_at`
 
@@ -239,7 +241,7 @@ Specifies when the content script should be injected. Valid values are `document
 
 ### Key `include_globs`
 
-A list of [=globs=] that a page should match in addition to matches.
+A list of [=globs=] that a page should match. A page matches if the URL matches both the [[#key-matches]] field and the [[#key-include_globs]] field.
 
 ### Key `exclude_globs`
 
@@ -248,21 +250,6 @@ A list of [=globs=] that should be used to exclude URLs from where the content s
 ### Key `world`
 
 The [=world=] any JavaScript scripts should be injected into. Defaults to `ISOLATED`. Valid values are `MAIN` and `ISOLATED`.
-
-### Injecting a content script
-
-Issue: If the same extension specifies the same script twice, what should happen? ([bug](https://crbug.com/324096753))
-
-Issue: The below algorithm needs to be updated to include `match_about_blank` and `match_origin_as_fallback`.
-
-To determine if a content script should be injected in a frame:
-
-1. If the extension does not have access to the origin, return.
-1. If the origin is not included in `matches`, return.
-1. If `include_globs` is present and the origin is not matched, return.
-1. If the origin matches an entry in `exclude_matches` or `exclude_globs`, return.
-1. If this is a frame, and `all_frames` is not `true`, return.
-1. Otherwise, inject the content script. This should be done based on the `run_at` setting.
 
 ## Extension pages
 
@@ -275,3 +262,33 @@ To determine if a content script should be injected in a frame:
 ## Current behavior of cookie partitioning
 
 # Version number handling
+
+# Algorithms
+
+## Determine the URL for content script matching
+
+To determine the URL to use for a document when injecting a content script:
+
+1. Let |url| be the document's URL.
+1. If the document is within a child frame:
+    1. If the [=scheme=] of the document's URL is `about`, and `match_about_blank` or `match_origin_as_fallback` is set to true:
+        1. Set |url| to a URL based on the origin of the parent frame.
+    1. If the [=scheme=] of the document's URL is `data` and `match_origin_as_fallback` is set to true:
+        1. Set |url| to be a URL based on the origin of the parent frame.
+    1. If the [=scheme=] of the document's URL is `filesystem` or `blob` and `match_origin_as_fallback` is set to true:
+        1. Set |url| to be a URL based on the origin of the frame which created the URL.
+1. Return |url|.
+
+## Inject a content script
+
+Issue: If the same extension specifies the same script twice, what should happen? ([bug](https://crbug.com/324096753))
+
+To determine if a content script should be injected in a frame:
+
+1. Let |url| be the result of running [[#determine-the-url-for-content-script-matching]].
+1. If the extension does not have access to the origin, return.
+1. If |url| is not matched by a match pattern in `matches`, return.
+1. If `include_globs` is present and |url| is not matched by any pattern, return.
+1. If |url| matches an entry in `exclude_matches` or `exclude_globs`, return.
+1. If this is a child frame, and `all_frames` is not `true`, return.
+1. Otherwise, inject the content script. This should be done based on the `run_at` setting.
