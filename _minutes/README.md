@@ -10,23 +10,41 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2024-03-14 at 8 AM PDT = https://everytimezone.com/?t=65f23e00,384
-- 2024-03-18 until 2024-03-21, in-person meeting ([issue 525](https://github.com/w3c/webextensions/issues/525))
-- 2024-03-28 at 8 AM PDT = https://everytimezone.com/?t=6604b300,384
+- 2024-09-23 until 2024-09-27 = TPAC 2024 ([issue 659](https://github.com/w3c/webextensions/issues/659)) ([TPAC 2024 Coordination](https://github.com/w3c/webextensions/wiki/TPAC-2024-Coordination))
+- 2024-09-26 at 8 AM PDT = https://everytimezone.com/?t=66f4a400,384
+- 2024-10-10 at 8 AM PDT = https://everytimezone.com/?t=67071900,384
 
 ## Past meetings
 
-* 2024-02-29 ([minutes](2024-02-29-wecg.md))
-* 2024-02-15 ([minutes](2024-02-15-wecg.md))
-* 2024-02-01 ([minutes](2024-02-01-wecg.md))
-* 2024-01-18 ([minutes](2024-01-18-wecg.md))
-* 2024-01-04 ([minutes](2024-01-04-wecg.md))
+* 2024-09-12 ([minutes](2024-09-12-wecg.md))
+* 2024-08-29 ([minutes](2024-08-29-wecg.md))
+* 2024-08-15 ([minutes](2024-08-15-wecg.md))
+* 2024-08-01 ([minutes](2024-08-01-wecg.md))
+* 2024-07-18 ([minutes](2024-07-18-wecg.md))
+* 2024-07-04 ([minutes](2024-07-04-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2024**
 
+* 2024-09-12 ([minutes](2024-09-12-wecg.md))
+* 2024-08-29 ([minutes](2024-08-29-wecg.md))
+* 2024-08-15 ([minutes](2024-08-15-wecg.md))
+* 2024-08-01 ([minutes](2024-08-01-wecg.md))
+* 2024-07-18 ([minutes](2024-07-18-wecg.md))
+* 2024-07-04 ([minutes](2024-07-04-wecg.md))
+* 2024-06-20 ([minutes](2024-06-20-wecg.md))
+* 2024-06-06 ([minutes](2024-06-06-wecg.md))
+* 2024-05-23 ([minutes](2024-05-23-wecg.md))
+* 2024-05-09 ([minutes](2024-05-09-wecg.md))
+* 2024-04-25 ([minutes](2024-04-25-wecg.md))
+* 2024-04-11 ([minutes](2024-04-11-wecg.md))
+* 2024-03-28 ([minutes](2024-03-28-wecg.md))
+* 2024-03-20 meetup at San Diego ([minutes](2024-03-20-san-diego-meetup.md))
+* 2024-03-19 meetup at San Diego ([minutes](2024-03-19-san-diego-meetup.md))
+* 2024-03-18 meetup at San Diego ([minutes](2024-03-18-san-diego-meetup.md))
+* 2024-03-14 ([minutes](2024-03-14-wecg.md))
 * 2024-02-29 ([minutes](2024-02-29-wecg.md))
 * 2024-02-15 ([minutes](2024-02-15-wecg.md))
 * 2024-02-01 ([minutes](2024-02-01-wecg.md))

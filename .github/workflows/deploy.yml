@@ -28,13 +28,15 @@ jobs:
     strategy:
       matrix:
         include:
-          - source: ./specification/index.bs
-          - source: ./specification/window.browser.bs
+          - name: specification
+            source: ./specification/index.bs
+          - name: window-browser
+            source: ./specification/window.browser.bs
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       # Runs a set of commands using the spec-prod (https://w3c.github.io/spec-prod/)
       # the document is built and validated as a check in the pull request.
@@ -45,3 +47,4 @@ jobs:
           # Deployment will be available at: https://w3c.github.io/webextensions/specification
           SOURCE: ${{ matrix.source }}
           TOOLCHAIN: 'bikeshed'
+          ARTIFACT_NAME: ${{ matrix.name }}

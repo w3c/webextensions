@@ -62,6 +62,13 @@ for these APIs (e.g. to do internal review, address UI elements, etc).  The
 WECG proposal should serve as a productive supplement to those discussions,
 ideally reducing or eliminating duplicate work.
 
+**Provide an opportunity and venue for extension developers to give feedback.**
+There are many extension developers that are actively involved in the WECG and
+have invaluable feedback. By engaging with developers early and allowing
+developers to provide feedback on in-progress proposals, the resulting APIs and
+changes are much more likely to satisfy developer needs and less likely to
+cause unforeseen issues.
+
 ## Non-Goals
 
 **Replace issue reporting for suggested features or changes.**  The API
@@ -184,3 +191,82 @@ sponsored by a browser vendor) and a reviewing browser vendor are unable to
 reach consensus (with regard to either the API's concept or an individual
 aspect of it).  In this scenario, the reviewing vendor must choose a stance
 (which will very likely be "Opposed") to allow the API to move forward.
+
+## Review Process
+
+Reviewing new proposals is one of the most important and impactful roles of the
+Web Extensions Community Group. This ensures browsers have the opportunity to
+align on shared functionality when desirable and helps prevent drift between the
+API surfaces. As such, it is critical to ensure timely reviews.
+
+As always, all communication should follow our
+[code of conduct](https://www.w3.org/policies/code-of-conduct/).
+
+### Authors
+
+Authors should request a review from at least one representative from each
+browser engine.
+
+When responding to feedback from reviewers, authors should resolve conversations
+if they feel they have been fully addressed. This makes it easy to see if there
+are outstanding comments. Authors can (and should) leave comments open if they
+would like further input from reviewers (e.g., "Is this what you were looking
+for").
+
+If reviewers haven't responded within a few business days, authors should ping
+the relevant reviewers.
+
+### Reviewers
+
+Reviewers should strive to respond to a review within one or two business days.
+This is a target, not strict SLO; we understand that this may not always be
+possible (e.g. if multiple reviewers are at a summit).
+
+Reviewers should resolve any comment threads they began if they feel the comment
+has been sufficiently addressed. This makes it easy to see if there are
+outstanding comments.
+
+Reviewers should indicate they, individually, are happy with a proposal and
+think it is in good shape to merge by approving it. (See
+[Browser Vendor Support](#browser-vendor-support) for details on indicating
+support or opposition.)
+
+Reviewers should *not* block on other reviewers in most cases. A reviewer's
+approval is only indicative of their own approval, not of the readiness of a
+proposal to merge. This prevents a deadlock where reviewer A waits on reviewer
+B and reviewer B waits on reviewer A.
+
+Reviewers should be clear whether they have blocking requests by indicating
+they "Request changes" on the review.
+
+Reviewers may approve a proposal "with nits" if they trust the author to update
+the proposal before (or shortly after) it's merged. As an example, a typo or
+slight rephrasing need not block a proposal from being merged.
+
+### Developer Feedback
+
+Extension developers are encouraged to provide thoughtful, constructive feedback
+on APIs throughout the proposal process. They have significant practical
+experience in the platform, often providing a different perspective from those
+of browser vendors.
+
+Developer feedback is non-blocking and browser vendors may not always be able to
+accommodate all feedback (since it has to be balanced with other constraints,
+such as security, privacy, user experience, and platform engineering
+complexity). However, any developer feedback should be considered and addressed,
+and browser vendors should strive to address and incorporate feedback from
+developers whenever feasible. This helps ensure the resulting APIs address
+real-world use cases and don't cause undue developer burden.
+
+### Merge Managers
+
+A proposal should be merged only when no reviewers have requested additional
+changes. Just because a single reviewer has approved a proposal does *not*
+mean it should be merged.
+
+When all reviewers have approved (or abstained by not leaving any comments),
+a proposal should be merged.
+
+Merge managers (and reviewers) should ensure developer feedback has been
+appropriately addressed. This does not require all feedback to be
+_incorporated_, but comments should be carefully and sufficiently considered.

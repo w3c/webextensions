@@ -28,7 +28,7 @@ If developers want to keep states persistent across B, C or D, but the default p
 | ------------- | ------------- | ------------- | ------------- |
 | action.set* (e.g. setBadgeText)| A: in MV3 <br> B + D: in MV2 | A | A |
 | [alarms](https://developer.chrome.com/docs/extensions/reference/alarms)  | B + C + D (except [a bug](https://crbug.com/1285798)) | A | A |
-| [contextMenus](https://developer.chrome.com/docs/extensions/reference/contextMenus) | B + D | B + D | A |
+| [contextMenus](https://developer.chrome.com/docs/extensions/reference/contextMenus) | B + D: in MV3 or MV2 "persistent": false <br> A: in MV2 "persistent": true | B: in MV3 or MV2 "persistent": false (Firefox >= 106) <br> A: in MV2 "persistent": true | A |
 | [commands](https://developer.chrome.com/docs/extensions/reference/commands) | B + C + D (can't set by api) | | |
 | [downloads.setUiOptions()](https://developer.chrome.com/docs/extensions/reference/downloads/#method-setUiOptions) | A | | |
 | "declarative_net_request" in manifest | B + D | | |
