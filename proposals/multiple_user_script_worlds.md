@@ -175,8 +175,9 @@ Relevant methods and types:
  }
 ```
 
-Note that the signatures of the related functions, including `configureWorld()`,
-`register()`, and others are left unchanged.
+Note that save for the introduction of `worldId` on these interfaces,
+the signatures of the related functions - `configureWorld()`,
+`register()`, and others – are left unchanged.
 
 When the developer specifies a `RegisteredUserScript`, the browser will use a
 separate user script world when injecting the scripts into a document. If
