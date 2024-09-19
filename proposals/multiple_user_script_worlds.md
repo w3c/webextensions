@@ -149,6 +149,16 @@ Relevant methods and types:
 
    ...
 
+   export function configureWorld(config: WorldProperties): Promise<void>;
+
+   export function getScripts(filter?: UserScriptFilter[]): Promise<RegisteredUserScript[]>;
+
+   export function register(scripts: RegisteredUserScript): Promise<void>;
+
+   export function unregister(filter?: UserScriptFilter[]): Promise<void>;
+
+   export function update(scripts: RegisteredUserScript[]): Promise<void>;
+
 +   /**
 +    * Resets the configuration for a given world. Any scripts that inject into
 +    * the world with the specified ID will use the default world configuration.
