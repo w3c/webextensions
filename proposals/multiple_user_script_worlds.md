@@ -140,8 +140,8 @@ Relevant methods and types:
 
 +    /**
 +     * If specified, specifies a specific user script world ID to execute in.
-+     * Only valid if `world` is omitted or is `USER_SCRIPT`. If omitted, the
-+     * script will execute in the default user script world.
++     * Only valid if `world` is omitted or is `USER_SCRIPT`. If `worldId` is
++     * omitted, the script will execute in the default user script world.
 +     * Values with leading underscores (`_`) are reserved.
 +     */
 +    worldId?: string;
