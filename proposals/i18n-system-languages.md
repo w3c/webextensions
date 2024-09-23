@@ -8,7 +8,7 @@ Allows getting the language(s)/locale(s) of your operating system as a [BCP47 la
 
 **Author:** [carlosjeurissen](https://github.com/carlosjeurissen)
 
-**Sponsoring Browser:** TBD
+**Sponsoring Browser:** Safari
 
 **Created:** 2024-03-18
 
