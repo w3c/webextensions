@@ -48,9 +48,12 @@ Language-related extensions and extensions wanting to match the locale of the op
   "parameters": [],
   "returns_async": {
     "name": "callback",
-    "parameters": [
-      {"name": "languages", "type": "array", "items": {"$ref": "LanguageCode"}, "description": "Array of LanguageCode"}
-    ]
+    "parameters": [{
+      "name": "languages",
+      "type": "array",
+      "items": {"$ref": "LanguageCode"},
+      "description": "Array of LanguageCode"
+    }]
   }
 }
 
