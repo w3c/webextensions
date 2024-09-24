@@ -69,9 +69,12 @@ It would follow the following signature for [i18n.json](https://chromium.googles
   "nocompile": true,
   "description": "Gets the current UI locale of the Operating System. This is different from $(ref:i18n.getUILanguage) which returns the UI locale of the web browser. This locale could include additional information like preferred datetime format and number system if supported by the OS.",
   "parameters": [],
-  "returns": {
-    "type": "string",
-    "description": "A BCP47 language tag such as en-US or pt-BR."
+  "returns_async": {
+    "name": "callback",
+    "parameters": [{
+      "type": "string",
+      "description": "A BCP47 language tag such as en-US or pt-BR."
+    }]
   }
 }
 ```
