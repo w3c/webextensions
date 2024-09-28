@@ -10,13 +10,16 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2024-09-23 until 2024-09-27 = TPAC 2024 ([issue 659](https://github.com/w3c/webextensions/issues/659)) ([TPAC 2024 Coordination](https://github.com/w3c/webextensions/wiki/TPAC-2024-Coordination))
 - 2024-10-10 at 8 AM PDT = https://everytimezone.com/?t=67071900,384
 - 2024-10-24 at 8 AM PDT = https://everytimezone.com/?t=67198e00,384
 
 ## Past meetings
 
+* 2024-09-27 at TPAC ([minutes](2024-09-27-wecg-tpac.md))
+* 2024-09-26 at TPAC ([minutes](2024-09-26-wecg-tpac.md))
 * 2024-09-26 ([minutes](2024-09-26-wecg.md))
+* 2024-09-24 at TPAC ([minutes](2024-09-24-wecg-tpac.md))
+* 2024-09-23 at TPAC ([minutes](2024-09-23-wecg-tpac.md))
 * 2024-09-12 ([minutes](2024-09-12-wecg.md))
 * 2024-08-29 ([minutes](2024-08-29-wecg.md))
 * 2024-08-15 ([minutes](2024-08-15-wecg.md))
@@ -28,7 +31,11 @@ After the end of each meeting, meeting notes are published here.
 
 **2024**
 
+* 2024-09-27 at TPAC ([minutes](2024-09-27-wecg-tpac.md))
+* 2024-09-26 at TPAC ([minutes](2024-09-26-wecg-tpac.md))
 * 2024-09-26 ([minutes](2024-09-26-wecg.md))
+* 2024-09-24 at TPAC ([minutes](2024-09-24-wecg-tpac.md))
+* 2024-09-23 at TPAC ([minutes](2024-09-23-wecg-tpac.md))
 * 2024-09-12 ([minutes](2024-09-12-wecg.md))
 * 2024-08-29 ([minutes](2024-08-29-wecg.md))
 * 2024-08-15 ([minutes](2024-08-15-wecg.md))
