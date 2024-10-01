@@ -12,11 +12,14 @@ Adds a new API `cookies.removeAll()` to allow for the removal of multiple cookie
 
 **Created:**  2024-09-18
 
-**Related Issues:**  [PrivacyCG/CHIPS issue 6 - How do Partitioned cookies interact with browser extensions?](https://github.com/privacycg/CHIPS/issues/6)
+**Related Issues:**  
+- [PrivacyCG/CHIPS issue 6 - How do Partitioned cookies interact with browser extensions?](https://github.com/privacycg/CHIPS/issues/6)
+- [browser.cookies.remove removes only one cookie, not all](https://bugzilla.mozilla.org/show_bug.cgi?id=1387957)
+- [chrome.cookies.remove does not account for paths and host-only cookies](https://issues.chromium.org/issues/40572551)
 
 ## Motivation
 
-Prior to the introduction of [partitioned cookies](https://github.com/privacycg/CHIPS), the required parameters (`url` and `name`) used by the existing `cookies.remove()` api would be unique to a single cookie. The inclusion of an optional `partitionKey` means that there can be more than one cookie that matches the currently required parameters for `cookies.remove()`. Because of this, handling partitioned cookies with `cookies.remove()` requires additional steps which can be simplified by the inclusion of this new API.
+The introduction of additional cookie attributes since the creation of the `cookies.remove()` api was created has resulted in the required parameters (`url` and `name`) to no longer be unique to a single cookie. Because of this, handling cookies with `cookies.remove()` requires additional steps which can be simplified by the inclusion of this new API.
 
 ### Objective
 
