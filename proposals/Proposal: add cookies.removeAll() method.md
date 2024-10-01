@@ -23,9 +23,9 @@ The introduction of additional cookie attributes since the creation of the `cook
 
 ### Objective
 
-This new API addresses two workflows for developers:
-##### Removal of cookies with the same url and name combination but different partitionKey values:
-Since the introduction of partitioned cookies, to remove all the cookies with the same `url` and `name` a developer must first call `cookies.getAll()` to get all of the partitioned and unpartitioned cookies associated with the values. Then use the results of that call to make individual calls to `cookies.remove()` to delete each cookie. 
+This new API addresses two workflows which require developers to take additional steps to ensure that cookies are deleted correctly because the required parameters for `cookies.remove()` can indiate multiple cookies:
+##### Removal of cookies with the same url and name combination but different partitionKey, path or host-only values:
+To remove all the cookies with the same `url` and `name` a developer must first call `cookies.getAll()` to get all of the cookies associated with the values. Then use the results of that call to make individual calls to `cookies.remove()` to delete each cookie. 
 
 ##### Removal of cookies associated with a topLevelSite:
 To remove all the cookies associated with a `topLevelSite`, a developer must first call `cookies.getAll({})` to retrieve all partitioned and unpartitioned cookies. Then filter the results to identify  cookies that have a value for `topLevelSite` of their `partitionKey` match the desired `topLevelSite`. Finally the developer will need to make individual calls to `cookies.remove()` to delete each cookie. 
