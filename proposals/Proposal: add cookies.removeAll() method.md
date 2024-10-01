@@ -50,7 +50,7 @@ details // object
 )
 ```
 ##### Parameters
-An `object` containing information to identify the cookie(s) to remove. It contains the following properties:
+An `object` containing information to identify the cookie(s) to remove. It contains the following properties, based on the properties recognized by `cookies.remove`:
 
 >[`name`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/cookies/remove#name) optional:
 >
