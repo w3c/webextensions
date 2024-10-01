@@ -19,7 +19,7 @@ Adds a new API `cookies.removeAll()` to allow for the removal of multiple cookie
 
 ## Motivation
 
-The introduction of additional cookie attributes since the creation of the `cookies.remove()` api was created has resulted in the required parameters (`url` and `name`) to no longer be unique to a single cookie. Because of this, handling cookies with `cookies.remove()` requires additional steps which can be simplified by the inclusion of this new API.
+The introduction of additional cookie attributes since the creation of the `cookies.remove()` api, has resulted in the required parameters (`url` and `name`) to no longer be unique to a single [cookie](https://issues.chromium.org/issues/40572551). Because of this, handling cookies with `cookies.remove()` requires additional steps which can be simplified by the inclusion of this new API.
 
 ### Objective
 
