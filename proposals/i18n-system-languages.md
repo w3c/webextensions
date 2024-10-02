@@ -38,7 +38,7 @@ Language-related extensions and extensions wanting to match the locale of the op
 
 ### Schema
 
-`i18n.getPreferredSystemLanguages()` would asynchronously return a language priority list (ordered list of [BCP47 language tag](https://www.rfc-editor.org/bcp/bcp47.html) like `i18n.getAcceptLanguages()` does right now.
+`i18n.getPreferredSystemLanguages()` would asynchronously return a language priority list (ordered list of [BCP47 language tag](https://www.rfc-editor.org/bcp/bcp47.html). This is similar to `i18n.getAcceptLanguages()`, with the difference that the priority list is configured by the user in the OS and the method would not add less specific language tags in place.
 
 ```json
 {
