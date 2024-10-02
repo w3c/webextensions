@@ -75,6 +75,13 @@ An `object` containing information to identify the cookie(s) to remove. It conta
 >
 >A  `string`  representing the URL associated with the cookie.
 
+##### Return
+
+> `Promise<Cookie[]>`:
+> 
+> All the cookies that were removed. If list is empty then no cookies were removed.
+
+
 ### Behavior
 
 The API will remove all cookies that match the `details` object parameter with the exception of the cases outlined in the implementation details.
