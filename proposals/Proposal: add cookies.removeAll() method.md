@@ -23,7 +23,7 @@ The introduction of additional cookie attributes since the creation of the `cook
 
 ### Objective
 
-This new API addresses two workflows which require developers to take additional steps to ensure that cookies are deleted correctly because the required parameters for `cookies.remove()` can indiate multiple cookies:
+This new API addresses two workflows which require developers to take additional steps to ensure that cookies are deleted correctly because the required parameters for `cookies.remove()` can match multiple cookies but will only delete one cookie:
 ##### Removal of cookies with the same url and name combination but different partitionKey, path or host-only values:
 To remove all the cookies with the same `url` and `name` a developer must first call `cookies.getAll()` to get all of the cookies associated with the values. Then use the results of that call to make individual calls to `cookies.remove()` to delete each cookie. 
 
