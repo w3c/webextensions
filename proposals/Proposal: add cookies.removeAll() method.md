@@ -120,7 +120,7 @@ Host permissions are required for this API.
 #### Special cases:
 ```cookies.removeAll({})```
 
->An empty details object will result in all cookies being removed. 
+>An empty details object will result in an error. 
 
 ```
 cookies.removeAll({
