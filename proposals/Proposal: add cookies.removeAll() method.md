@@ -74,6 +74,8 @@ An `object` containing information to identify the cookie(s) to remove. It conta
 >[`url`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/cookies/remove#url) optional:
 >
 >A  `string`  representing the URL associated with the cookie.
+>
+>A details object must contain a `url` and/or a `topLevelSite`.
 
 ##### Return
 
@@ -134,14 +136,6 @@ cookies.removeAll({
     name: “example”,
     url: “https://example.com”,
     partitionKey:{}
-})
-```
-
->An empty `partitionKey` object with other values populated, will result in both unpartitioned and partitioned cookies that also match the other values provided will be removed.
-
-```
-cookies.removeAll({
-    topLevelSite: “https://example.com”
 })
 ```
 
