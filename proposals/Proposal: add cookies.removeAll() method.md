@@ -127,7 +127,7 @@ cookies.removeAll({
     partitionKey:{}})
 ```
 
->An empty `partitionKey` object as the only value in the details object, will result in all partitioned cookies being removed.
+>An empty `partitionKey` object in the details object, will result in both partitioned and unpartitioned cookies being removed, that also match any other values in the details object.
 
 ```
 cookies.removeAll({
