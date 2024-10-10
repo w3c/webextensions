@@ -22,7 +22,8 @@ body {
 }
 #extraInfoOutput {
   white-space: pre-wrap;
-  height: 7em;
+  height: 8em;
+  overflow-y: auto;
 }
 #input, #output {
   flex: 1;
@@ -75,6 +76,10 @@ List of issues/PRs in order of appearance in the input:
 - Issues: ${serializeIssues(issues)}
 - PRs: ${serializeIssues(prs)}
 - Mentioned issues without link to issue: ${serializeIssues(mentionedWithoutLink)}`;
+  if (markdownText.includes("```")) {
+    extraInfoOutput.textContent += `
+WARNING: ${markdownText.match(/```/g).length / 2} code blocks (\`\`\`) found. You should verify the rendered output!`;
+  }
 };
 
 /**
@@ -86,7 +91,7 @@ List of issues/PRs in order of appearance in the input:
 - Replace boldfaced with **xx**
 - Replace italic with _xx_
 - Replace links with [text](anchor)
-- Replace h1, h2, h3 with #, ## and ###
+- Replace h1, h2, h3, h4 with #, ##, ### and ####
 - Format h1 header for consistency.
 - Replace ol,ul and li with correctly indented list items.
 - Fixup whitespace.
@@ -95,12 +100,9 @@ function convertToMarkdown(elemRootInput) {
   let root = elemRootInput.cloneNode(true);
 
   // Apply code formatting first, before escaping characters.
-  for (let c of root.querySelectorAll(`span[style*="font-family:'Courier New'"]`)) {
-      c.prepend("`");
-      c.append("`");
-      // replaceAllInTextNodes skips ` only if they are in the same text node.
-      c.normalize();
-  }
+  // To avoid interference by transformations below, the code is replaced
+  // with placeholders, which we should restore in the end.
+  const { finalRestoreCodeBlocks } = replaceAllCodeBlocks(root);
 
   // Escape < to avoid rendering as HTML.
   replaceAllInTextNodes(root, "<", "&lt;");
@@ -148,6 +150,9 @@ function convertToMarkdown(elemRootInput) {
   for (let h of root.querySelectorAll("h3")) {
     h.prepend(`\n### `);
   }
+  for (let h of root.querySelectorAll("h4")) {
+    h.prepend(`\n#### `);
+  }
 
   for (let li of root.querySelectorAll("li")) {
     let level = 0;
@@ -190,7 +195,7 @@ function convertToMarkdown(elemRootInput) {
     elem.after("\n");
   }
   // Blank line after every header.
-  for (let elem of root.querySelectorAll("h1,h2,h3")) {
+  for (let elem of root.querySelectorAll("h1,h2,h3,h4")) {
     elem.after("\n\n");
   }
 
@@ -217,6 +222,8 @@ function convertToMarkdown(elemRootInput) {
 
   // Trim leading whitespace.
   textContent = textContent.trim();
+
+  textContent = finalRestoreCodeBlocks(textContent);
 
   return textContent;
 }
@@ -247,6 +254,92 @@ function replaceAllInTextNodes(root, pattern, replacement) {
   for (let [node, proposed] of updatesNodes) {
     node.parentNode.replaceChild(document.createTextNode(proposed), node);
   }
+}
+
+// Replaces code elements in |root| with.
+function replaceAllCodeBlocks(root, getPlaceholder) {
+  // To prevent code blocks from being affected by text-based transformations
+  // in the end, replace the text with placeholders.
+  const codeTexts = new Map();
+  let nextCodeId = 1000;
+  function getPlaceholder(txt) {
+    // Assuming that minutes will never contain MINUTE_PLACEHOLDER_.
+    let placeholder = `^^^MINUTE_PLACEHOLDER_${nextCodeId++}===`;
+    codeTexts.set(placeholder, txt);
+    return placeholder;
+  }
+  function restorePlaceholders(txt) {
+    return txt.replace(
+      /\^\^\^MINUTE_PLACEHOLDER_\d+===/g,
+      placeholder => codeTexts.get(placeholder)
+    );
+  }
+
+  // First pass: Detect code lines (possibly multiline code) and inline code.
+  for (let c of root.querySelectorAll(`span[style*="font-family"][style*="monospace"]`)) {
+    if (c.style.fontFamily.includes("monospace")) {
+      if (c.closest("[this_is_really_a_code_block]")) {
+        // Already processed (determined that parent is code block).
+        continue;
+      }
+      if (
+        c.parentNode.tagName === "P" &&
+        !c.parentNode.querySelector(`span[style*="font-family"]:not([style*="monospace"])`)
+      ) {
+        // Part of code block.
+        c.parentNode.setAttribute("this_is_really_a_code_block", "");
+      } else {
+        // Has siblings that is not code.
+        c.setAttribute("this_is_really_a_code_block", "");
+      }
+    }
+  }
+  // Second pass: Collapse multiline code with ```, use ` otherwise.
+  for (let c of root.querySelectorAll("[this_is_really_a_code_block]")) {
+    if (!root.contains(c)) {
+      // Already processed and remove()d below.
+      continue;
+    }
+    let codeNodes = [];
+    for (
+      let nod = c;
+      nod?.matches?.("[this_is_really_a_code_block],br");
+      nod = nod.nextSibling
+    ) {
+      codeNodes.push(nod);
+    }
+    let codeText = "";
+    for (let nod of codeNodes) {
+      // br can be top-level, sole child of p, or wrapped in span.
+      for (let br of nod.querySelectorAll("br")) {
+        br.replaceWith("\n");
+      }
+      codeText += nod.textContent;
+      if (nod.tagName === "P" || nod.tagName === "BR") {
+        codeText += "\n";
+      }
+    }
+    codeText = codeText.replace(/\n+$/, "");
+
+    // Replace actual content with placeholder to prevent other logic such as
+    // the link wrapping / text replacement logic from mangling the code block.
+    c.textContent = getPlaceholder(codeText);
+
+    if (codeText.trim().includes("\n")) {
+      c.textContent = "```\n" + codeText + "\n```";
+    } else {
+      c.textContent = "`" + codeText + "`";
+    }
+    // codeNodes[0] === c; remove all except c.
+    codeNodes.slice(1).forEach(nod => nod.remove());
+  }
+
+  function finalRestoreCodeBlocks(textContent) {
+    textContent = restorePlaceholders(textContent);
+    return textContent;
+  }
+
+  return { finalRestoreCodeBlocks };
 }
 </script>
 </body>
