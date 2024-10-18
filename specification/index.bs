@@ -231,7 +231,7 @@ Note: In Firefox, setting `match_about_blank` to `true` also allows injection in
 
 If this is true, use fallbacks as described in [[#determine-the-url-for-content-script-matching]].
 
-No path is available when the URL to match against falls back to an origin. Therefore, when set, the user agent must not allow [[#key-matches]] to contain entries with a path other than `/*`.
+No path is available when the URL to match against falls back to an origin. Therefore, when set, the user agent may treat a [[#key-matches]] with a path other than `/*` as an error.
 
 Defaults to `false`.
 
