@@ -283,7 +283,7 @@ To determine the URL to use for a document when injecting a content script:
 
 Issue: If the same extension specifies the same script twice, what should happen? ([bug](https://crbug.com/324096753))
 
-To determine if a content script should be injected in a frame:
+To determine if a content script should be injected in a document:
 
 1. Let |url| be the result of running [[#determine-the-url-for-content-script-matching]].
 1. If the extension does not have access to the origin, return.
