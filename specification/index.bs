@@ -219,7 +219,7 @@ A [=list=] of file paths, relative to the extension's package, that should be in
 
 ### Key `all_frames`
 
-If `all_frames` is true, the content script must be injected into any subframes that match the other matching criteria for the content script. If false, content scripts will only be injected into top-level documents. See Defaults to false.
+If `all_frames` is true, the content script must be injected into any subframes that match the other matching criteria for the content script. If false, content scripts will only be injected into top-level documents. Defaults to false.
 
 ### Key `match_about_blank`
 
