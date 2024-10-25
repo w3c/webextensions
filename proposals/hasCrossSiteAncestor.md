@@ -104,7 +104,6 @@ string. A UUID of the document.
 
 | Required Combinations | Notes |
 |---|---|
-|frameId | frameId must be a non-zero value|
 |tabId + frameId |frameId can be 0|
 |tabId | will use the top-level frame (frameId 0)|
 |documentId| tabId/frameId are not required but permitted|
@@ -115,6 +114,7 @@ A Promise that will be fulfilled with a `Cookie.partitionKey` object that matche
 ##### Error conditions
 - If host permissions are not granted for the document whose partitionkey is getting queried an error will be returned.
 - When the parameters passed do not correspond to an existing frame, an error will be returned.
+- If the partitionKey that would be associated with the frame can not be serialized an error will be returned. This can happen when the origin associated with the topLevelSite is opaque. 
 
 ### New Permissions
 No new permissions are required.
