@@ -111,10 +111,14 @@ string. A UUID of the document.
 ##### Return value
 A Promise that will be fulfilled with a `Cookie.partitionKey` object that matches the properties given in the details parameter and contains the `hasCrossSiteAncestor` value associated with the current cross-site status of the frame.
 
+##### Permissions required to use Cookies.getPartitionKey()
+- `host`
+- `webNavigation`
+  
 ##### Error conditions
 - If host permissions are not granted for the document whose partitionkey is getting queried an error will be returned.
 - When the parameters passed do not correspond to an existing frame, an error will be returned.
-- If the partitionKey that would be associated with the frame can not be serialized an error will be returned. This can happen when the origin associated with the topLevelSite is opaque or if the underlying key associated with the frame has a nonce. 
+- If the partitionKey that would be associated with the frame can not be serialized an error will be returned. This can happen when the origin associated with the topLevelSite is opaque or if the underlying key associated with the frame has a nonce.
 
 ### New Permissions
 No new permissions are required.
