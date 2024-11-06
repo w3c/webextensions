@@ -140,14 +140,24 @@ Relevant methods and types:
 
 +    /**
 +     * If specified, specifies a specific user script world ID to execute in.
-+     * Only valid if `world` is omitted or is `USER_SCRIPT`. If omitted, the
-+     * script will execute in the default user script world.
++     * Only valid if `world` is omitted or is `USER_SCRIPT`. If `worldId` is
++     * omitted, the script will execute in the default user script world.
 +     * Values with leading underscores (`_`) are reserved.
 +     */
 +    worldId?: string;
    }
 
    ...
+
+   export function configureWorld(config: WorldProperties): Promise<void>;
+
+   export function getScripts(filter?: UserScriptFilter[]): Promise<RegisteredUserScript[]>;
+
+   export function register(scripts: RegisteredUserScript): Promise<void>;
+
+   export function unregister(filter?: UserScriptFilter[]): Promise<void>;
+
+   export function update(scripts: RegisteredUserScript[]): Promise<void>;
 
 +   /**
 +    * Resets the configuration for a given world. Any scripts that inject into
@@ -165,8 +175,9 @@ Relevant methods and types:
  }
 ```
 
-Note that the signatures of the related functions, including `configureWorld()`,
-`register()`, and others are left unchanged.
+Note that save for the introduction of `worldId` on these interfaces,
+the signatures of the related functions - `configureWorld()`,
+`register()`, and others – are left unchanged.
 
 When the developer specifies a `RegisteredUserScript`, the browser will use a
 separate user script world when injecting the scripts into a document. If
