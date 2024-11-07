@@ -70,7 +70,9 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
         // modifying one top level values will not change the other
 
         globalThis.browser.FAKE = true
-        console.log(globalThis.chrome.FAKE); //undefined
+        console.log(globalThis.chrome.FAKE);
+        // ^ undefined when chrome and browser are not direct aliases.
+        // ^ may be true if browser === chrome.
 
         // Individual properties are aliased, so updating a known property
         // directly changes the matching property on the other
