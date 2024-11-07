@@ -112,7 +112,7 @@ string. A UUID of the document.
 A Promise that will be fulfilled with a `Cookie.partitionKey` object that matches the properties given in the details parameter and contains the `hasCrossSiteAncestor` value associated with the current cross-site status of the frame.
 
 ##### Permissions required to use Cookies.getPartitionKey()
-- `host`
+- Host permissions for the frame's document.
 - `webNavigation`
   
 ##### Error conditions
