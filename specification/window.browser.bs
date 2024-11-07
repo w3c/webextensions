@@ -52,6 +52,40 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
     it MUST be used only for WebExtension related functionality.
   </section>
 
+  <section>
+    For backwards compatibility with older versions of WebExtensions that used
+    <code>chrome</code> as a global identifier for WebExtension related methods,
+    a UA MAY define a global <code>chrome</code> object that includes all
+    properties of {{browser}}.
+    {{browser}} and <code>chrome</code> MAY be direct aliases of each other.
+    When {{browser}} and <code>chrome</code> are distinct objects, each initial
+    property of {{browser}} SHOULD be defined on the <code>chrome</code> object,
+    and each property descriptor on the <code>chrome</code> object SHOULD return
+    the same value as the corresponding property on the {{browser}} object.
+
+    <div class="example" id="example-1">
+      Here's an example of the expected alias behavior
+      <pre><code class="lang-js">
+        // When `chrome` and `browser` are not direct aliases,
+        // modifying one top level values will not change the other:
+
+        globalThis.browser.FAKE = true
+        console.log(globalThis.chrome.FAKE);
+        // ^ undefined when chrome and browser are not direct aliases.
+        // ^ may be true if browser === chrome.
+
+        // Individual properties are aliased, so updating a known property
+        // directly changes the matching property on the other
+        globalThis.browser.runtime.FAKE = 123
+
+        console.log(globalThis.chrome.runtime.FAKE);
+        // 123
+      </code></pre>
+
+    </div>
+
+
+  </section>
 
 <pre class="idl">
   partial interface Window {
