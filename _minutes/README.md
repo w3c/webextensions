@@ -10,11 +10,13 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2024-10-24 at 8 AM PDT = https://everytimezone.com/?t=67198e00,384
-- 2024-11-07 at 8 AM PST = https://everytimezone.com/?t=672c0300,3c0
+- 2024-11-21 at 8 AM PST = https://everytimezone.com/?t=673e7800,384
+- 2024-12-05 at 8 AM PST = https://everytimezone.com/?t=6750ed00,384
 
 ## Past meetings
 
+* 2024-11-07 ([minutes](2024-11-07-wecg.md))
+* 2024-10-24 ([minutes](2024-10-24-wecg.md))
 * 2024-10-10 ([minutes](2024-10-10-wecg.md))
 * 2024-09-27 at TPAC ([minutes](2024-09-27-wecg-tpac.md))
 * 2024-09-26 at TPAC ([minutes](2024-09-26-wecg-tpac.md))
@@ -23,14 +25,14 @@ After the end of each meeting, meeting notes are published here.
 * 2024-09-23 at TPAC ([minutes](2024-09-23-wecg-tpac.md))
 * 2024-09-12 ([minutes](2024-09-12-wecg.md))
 * 2024-08-29 ([minutes](2024-08-29-wecg.md))
-* 2024-08-15 ([minutes](2024-08-15-wecg.md))
-* 2024-08-01 ([minutes](2024-08-01-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2024**
 
+* 2024-11-07 ([minutes](2024-11-07-wecg.md))
+* 2024-10-24 ([minutes](2024-10-24-wecg.md))
 * 2024-10-10 ([minutes](2024-10-10-wecg.md))
 * 2024-09-27 at TPAC ([minutes](2024-09-27-wecg-tpac.md))
 * 2024-09-26 at TPAC ([minutes](2024-09-26-wecg-tpac.md))
