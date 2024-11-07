@@ -113,7 +113,6 @@ A Promise that will be fulfilled with a `Cookie.partitionKey` object that matche
 
 ##### Permissions required to use Cookies.getPartitionKey()
 - Host permissions for the frame's document.
-- `webNavigation`
   
 ##### Error conditions
 - If host permissions are not granted for the document whose partitionkey is getting queried an error will be returned.
