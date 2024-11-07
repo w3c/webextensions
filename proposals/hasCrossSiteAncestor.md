@@ -106,6 +106,7 @@ string. A UUID of the document.
 |---|---|
 |tabId + frameId |frameId can be 0|
 |tabId | will use the top-level frame (frameId 0)|
+|frameId| value must not be 0|
 |documentId| tabId/frameId are not required but permitted|
 
 ##### Return value
