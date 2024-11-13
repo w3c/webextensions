@@ -104,17 +104,21 @@ string. A UUID of the document.
 
 | Required Combinations | Notes |
 |---|---|
-|frameId | frameId must be a non-zero value|
 |tabId + frameId |frameId can be 0|
 |tabId | will use the top-level frame (frameId 0)|
+|frameId| frameId must not be 0, when specified without tabId|
 |documentId| tabId/frameId are not required but permitted|
 
 ##### Return value
 A Promise that will be fulfilled with a `Cookie.partitionKey` object that matches the properties given in the details parameter and contains the `hasCrossSiteAncestor` value associated with the current cross-site status of the frame.
 
+##### Permissions required to use Cookies.getPartitionKey()
+- Host permissions for the frame's document.
+  
 ##### Error conditions
 - If host permissions are not granted for the document whose partitionkey is getting queried an error will be returned.
 - When the parameters passed do not correspond to an existing frame, an error will be returned.
+- If the partitionKey that would be associated with the frame can not be serialized an error will be returned. This can happen when the origin associated with the topLevelSite is opaque or if the underlying key associated with the frame has a nonce. This is comparable to situations where `document.cookie` would throw.
 
 ### New Permissions
 No new permissions are required.
