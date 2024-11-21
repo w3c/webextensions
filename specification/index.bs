@@ -237,11 +237,11 @@ Defaults to `false`.
 
 ### Key `run_at`
 
-Specifies when the content script should be injected. Valid values are `document_start`, `document_end` and `document_idle`.
+Specifies when the content script should be injected. Valid values are defined by the {{RunAt}} enum.
 
 ### Key `include_globs`
 
-A list of [=globs=] that a page should match. A page matches if the URL matches both the [[#key-matches]] field and the [[#key-include_globs]] field.
+A list of [=globs=] that a document should match. A document matches if the URL matches both the [[#key-matches]] field and the [[#key-include_globs]] field.
 
 ### Key `exclude_globs`
 
@@ -249,7 +249,30 @@ A list of [=globs=] that should be used to exclude URLs from where the content s
 
 ### Key `world`
 
-The [=world=] any JavaScript scripts should be injected into. Defaults to `ISOLATED`. Valid values are `MAIN` and `ISOLATED`.
+The [=world=] any JavaScript scripts should be injected into. Defaults to `ISOLATED`. Valid values are defined by the {{ExecutionWorld}} enum.
+
+### <dfn>RunAt</dfn> enum
+
+<pre class="idl">
+enum RunAt {
+    "document_start",
+    "document_end",
+    "document_idle"
+};
+</pre>
+
+The {{RunAt}} enum represents when a content script should be injected.
+
+### <dfn>ExecutionWorld</dfn> enum
+
+<pre class="idl">
+enum ExecutionWorld {
+    "ISOLATED",
+    "MAIN"
+};
+</pre>
+
+The {{ExecutionWorld}} enum represents a JavaScript [=world=].
 
 ## Extension pages
 
@@ -288,7 +311,7 @@ To determine if a content script should be injected in a document:
 1. Let |url| be the result of running [[#determine-the-url-for-content-script-matching]].
 1. If the extension does not have access to the origin, return.
 1. If |url| is not matched by a match pattern in `matches`, return.
-1. If `include_globs` is present and |url| is not matched by any pattern, return.
+1. If `include_globs` is present and |url| is not matched by any glob pattern, return.
 1. If |url| matches an entry in `exclude_matches` or `exclude_globs`, return.
 1. If this is a child frame, and `all_frames` is not `true`, return.
 1. Otherwise, inject the content script. This should be done based on the `run_at` setting.
