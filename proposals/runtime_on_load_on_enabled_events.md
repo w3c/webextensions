@@ -87,7 +87,23 @@ namespace runtime {
 #### `chrome.runtime.onExtensionLoaded`
 ```typescript
 namespace runtime {
-  export type OnLoadedReason = 'enabled' | 'installed' | 'updated' | 'profileStart';
+  // The reason for which the event is being dispatched.
+  //
+  // 'enabled': The extension was re-enabled from a disabled state.
+  //
+  // 'installed': The extension was newly installed.
+  //
+  // 'updated': The extension was reloaded after an update.
+  //
+  // 'profileStart': The extension is being loaded during a profile startup.
+  //
+  // 'reload': The extension was reloaded (e.g. via `chrome.runtime.reload() or`
+  // the user manually reloaded the extension).
+  export type OnLoadedReason = 'enabled' | 
+                               'installed' |
+                               'updated' |
+                               'profileStart' |
+                               'reload';
 
   export interface ExtensionLoadDetails {
     // The reason that this event is being dispatched.
