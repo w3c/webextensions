@@ -95,19 +95,19 @@ namespace runtime {
   //
   // 'updated': The extension was reloaded after an update.
   //
-  // 'profileStart': The extension is being loaded during a profile startup.
+  // 'started': The extension is being loaded during browser startup.
   //
   // 'reload': The extension was reloaded (e.g. via `chrome.runtime.reload() or`
   // the user manually reloaded the extension).
-  export type OnLoadedReason = 'enabled' | 
+  export type OnLoadedReason = 'enabled' |
                                'installed' |
                                'updated' |
-                               'profileStart' |
+                               'started' |
                                'reload';
 
   export interface ExtensionLoadDetails {
     // The reason that this event is being dispatched.
-    onLoadReason: OnLoadedReason;
+    reason: OnLoadedReason;
 
     // Indicates the previous version of the extension, which has just been
     // updated. This is present only if 'reason' is 'updated' or ‘enabled’.
