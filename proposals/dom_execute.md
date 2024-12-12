@@ -10,7 +10,7 @@ its injected in.
 
 **Author:** rdcronin
 
-**Sponsoring Browser:** Chromee
+**Sponsoring Browser:** Chrome
 
 **Contributors:** Rob--W, ...
 
@@ -38,9 +38,11 @@ Today, extensions can execute script in the main world by:
 
 The former is heavily asynchronous or requires knowledge of whether to inject
 beforehand (to register a script).  The latter is very visible to the site and
-has more potential side effects.  While there's no way to fully "hide" a script
-from a site, it is desirable to avoid adding DOM elements (which could
-interfere with sites with certain properties).
+has more potential side effects, and is also asynchronous since inline scripts
+are forbidden by the CSP applied in MV3 (to restrict remotely-hosted code
+injection).  While there's no way to fully "hide" a script from a site, it is
+desirable to avoid adding DOM elements (which could interfere with sites with
+certain properties).
 
 ### Known Consumers
 
@@ -96,15 +98,24 @@ key.
 Like arguments, the return value of the execution is serialized and
 deserialized using the Structured Cloning algorithm.
 
+##### Errors
+
+Thrown errors are also serialized using the Structured Cloning algorithm.  When
+an input parameter or return value cannot be serialized, an error is thrown
+synchronously.  Notably, `Promise` instances such as returned by `async
+function` cannot be serialized.
+
 ##### Injected script privileges
 
-The injected script has the same privileges has other script in the main world.
+The injected script has the same privileges as other scripts in the main world.
 This goes for API access, Content Security Policy, origin access, and more.
 
 ##### CSP Application
 
 The injected script is not considered inline and does not have a corresponding
-source; as such, CSP restrictions on script-src (and similar) do not apply.
+source; as such, CSP restrictions on script-src (including `script-src 'none'`)
+and similar directives do not apply.
+
 However, since the script executes in the main world, other CSP restrictions
 (including connect-src and which sources may be added to the document, among
 many others) *may* apply to the injected script.
@@ -123,6 +134,11 @@ scripting.executeScript() method.
 There are no necessary manifest changes.
 
 ## Security and Privacy
+
+### Availability
+
+`dom.execute()` will only be available in isolated worlds (content script worlds
+and user script worlds).
 
 ### Exposed Sensitive Data
 
@@ -172,3 +188,16 @@ For now, this API is intended to let scripts running in content or user script
 worlds inject in the main world.  In the future, we will expand this to allow a
 script to inject in additional other worlds, such as a content script injecting
 in a user script world.
+
+### Transferables
+
+It would be nice to consider supporting [transferables](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects)
+in the future. However, this has significant cost associated with it (and some
+potential other considerations), and is left out of the initial version of the
+API.
+
+### Promise support
+
+An injected function may evaluate to a promise. These cannot be serialized,
+which would (with the current proposed behavior) throw an error. We could
+instead add handling to wait for the promise to settle and return the result.
