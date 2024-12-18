@@ -95,14 +95,14 @@ namespace runtime {
   //
   // 'updated': The extension was reloaded after an update.
   //
-  // 'started': The extension is being loaded during browser startup.
+  // 'startup': The extension is being loaded during browser startup.
   //
   // 'reload': The extension was reloaded (e.g. via `chrome.runtime.reload() or`
   // the user manually reloaded the extension).
   export type OnLoadedReason = 'enabled' |
                                'installed' |
                                'updated' |
-                               'started' |
+                               'startup' |
                                'reload';
 
   export interface ExtensionLoadDetails {
