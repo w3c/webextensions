@@ -3,34 +3,31 @@
 The [WebExtensions Community group](https://www.w3.org/community/webextensions/) meets virtually every other week, for one hour.
 The instructions to join the meeting and agenda are available at https://www.w3.org/groups/cg/webextensions/calendar.
 
-* Thursday 8 AM PDT (3 PM UTC)
+* Thursday 8 AM PST (3 PM UTC)
 * To convert to your local time zone, see https://everytimezone.com/
 
 After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2024-12-19 at 8 AM PST = https://everytimezone.com/?t=67636200,384
 - 2025-01-16 at 8 AM PST = https://everytimezone.com/?t=67884c00,384
+- 2025-01-30 at 8 AM PST = https://everytimezone.com/?t=679ac100,384
 
 ## Past meetings
 
+* 2024-12-19 ([minutes](2024-12-19-wecg.md))
 * 2024-12-05 ([minutes](2024-12-05-wecg.md))
 * 2024-11-21 ([minutes](2024-11-21-wecg.md))
 * 2024-11-07 ([minutes](2024-11-07-wecg.md))
 * 2024-10-24 ([minutes](2024-10-24-wecg.md))
 * 2024-10-10 ([minutes](2024-10-10-wecg.md))
-* 2024-09-27 at TPAC ([minutes](2024-09-27-wecg-tpac.md))
-* 2024-09-26 at TPAC ([minutes](2024-09-26-wecg-tpac.md))
-* 2024-09-26 ([minutes](2024-09-26-wecg.md))
-* 2024-09-24 at TPAC ([minutes](2024-09-24-wecg-tpac.md))
-* 2024-09-23 at TPAC ([minutes](2024-09-23-wecg-tpac.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2024**
 
+* 2024-12-19 ([minutes](2024-12-19-wecg.md))
 * 2024-12-05 ([minutes](2024-12-05-wecg.md))
 * 2024-11-21 ([minutes](2024-11-21-wecg.md))
 * 2024-11-07 ([minutes](2024-11-07-wecg.md))
