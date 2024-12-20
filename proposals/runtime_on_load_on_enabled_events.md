@@ -119,6 +119,7 @@ namespace runtime {
   // to a new version, and enabled after being disabled.
   export interface onExtensionLoaded {
     addListener(callback: (details: ExtensionLoadDetails) => void): void;
+    hasListener(callback: (details: ExtensionLoadDetails) => void): boolean;
     removeListener(callback: (details: ExtensionLoadDetails) => void): void;
   }
 }
