@@ -52,6 +52,10 @@ dictionary UserScriptInjection {
   target: InjectionTarget,
   // The JavaScript "world" to run the script in. The default is `USER_SCRIPT`.
   world?: ExecutionWorld,
+  // A specific user script world ID to execute in. Only valid if `world` is
+  // omitted or is `USER_SCRIPT`. If `worldId` is omitted, the default value is
+  // an empty string ("") and the script will execute in the default world.
+  worldId?: string,
 }
 
 dictionary InjectionTarget {

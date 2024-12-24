@@ -52,9 +52,12 @@ User scripting related features will be exposed in a new API namespace, tentativ
 #### Types
 
 ```
+// See RegisteredUserScript validation section, below.
 dictionary RegisteredUserScript {
   boolean? allFrames;
-  ScriptSource[] js;
+  // js is required in userScripts.register(), optional in userScripts.update().
+  // When specified, must be a non-empty array.
+  ScriptSource[]? js;
   string[]? excludeMatches;
   string id;
   string[]? matches;
@@ -133,6 +136,8 @@ where
 
 In the future, if we allow multiple user script worlds (see section in Future Work below), this method can be expanded to allow for a user script world identifier to customize a single user script world.
 
+The proposal at [multiple_user_script_worlds.md](multiple_user_script_worlds.md) expands the behavior of `userScripts.configureWorld`.
+
 ##### Messaging
 
 User scripts can send messages to the extension using extension messaging APIs: `browser.runtime.sendMessage()` and `browser.runtime.connect()`. We leverage the runtime API (instead of introducing new userScripts.onMessage- and userScripts.sendMessage-style values) in order to keep extension messaging in the same API.  There is precedent in this (using the same API namespace to send messages from a different (and less trusted) context, as `chrome.runtime` is also the API used to send messages from web pages.
@@ -157,10 +162,55 @@ As mentioned in requirement A, the user script world can communicate with differ
   - Scripts registered via [`scripting.registerContentScripts()`](https://developer.chrome.com/docs/extensions/reference/scripting/#method-registerContentScripts), following the order they were registered in. Updating a content script doesn't change its registration order.
   - Scripts registered via `userScripts.register()`, following the order they were registered in. Updating a user script doesn’t change its registration order.
 - User scripts are always persisted across sessions, since the opposite behavior would be uncommon. (We may explore providing an option to customize this in the future.)
+- Unlike regular content scripts, `matches` is allowed to be optional when `includeGlobs` is specified. A user script matches a document when its URL matches either `matches` or `includeGlobs`.
+
+### RegisteredUserScript validation
+
+The `RegisteredUserScript` type is shared by `userScripts.register()` and
+`userScripts.update()`. All fields except `id` are declared as optional, to
+allow `userScripts.update()` to update individual properties.
+
+#### Requirements per method
+
+`userScripts.register()`:
+
+- `js` must be present and a non-empty array.
+- At least one of `matches` or `includeGlobs` must be a non-empty array.
+
+`userScripts.update()`:
+
+- Individual properties may be `null` or omitted to leave the value unchanged.
+- To clear an array, an empty array can be passed.
+- The resulting script must be validated to make sure that the updated
+  script remains a valid script before it replaces a previous script.
+
+#### Example
+
+```javascript
+// Valid registration:
+await browser.userScripts.register([
+  {
+    worldId: "myScriptId",
+    js: [{ code: "console.log('Hello world!');" }],
+    matches: ["*://example.com/*"],
+  },
+]);
+
+// Invalid! Would result in script without matches or includeGlobs!
+await browser.userScripts.update([{ matches: [] }]);
+
+// Valid: replaces matches with includeGlobs.
+await browser.userScripts.update([{
+  matches: [],
+  includeGlobs: ["*example*"],
+}]);
+```
 
 ### Browser level restrictions
 
 From here, each browser vendor should be able to implement their own restrictions.  Chrome is exploring limiting the access to this API when the user has enabled developer mode (bug), but permission grants are outside of the scope of this API proposal.
+
+Firefox restricts the permission to `optional_permissions` only, which means that the permission is not granted at install time, and has to be requested separately through browser UI or the `permissions.request()` API ([Firefox bug 1917000](https://bugzilla.mozilla.org/show_bug.cgi?id=1917000)).
 
 ## (Potential) Future Enhancements
 
@@ -172,9 +222,13 @@ In the future, we may want to provide a more straightforward path for communicat
 
 In addition to specifying the execution world of `USER_SCRIPT`, we could allow extensions to inject in unique worlds by providing an identifier.  Scripts injected with the same identifier would inject in the same world, while scripts with different world identifiers inject in different worlds.  This would allow for greater isolation between user scripts (if, for instance, the user had multiple unrelated user scripts injecting on the same page).
 
+This proposal is at [multiple_user_script_worlds.md](multiple_user_script_worlds.md).
+
 ### Execute user scripts one time
 
 Currently, user scripts are registered and executed every time it matches the origin in a persistent way.  We may explore a way to execute a user script only one time to provide a new capability to user scripts (e.g `browser.userScripts.execute()`).
+
+This proposal is at [user-scripts-execute-api.md](user-scripts-execute-api.md).
 
 ### Establish common behaviors for the CSP of scripts injected into the main world by an extension
 
