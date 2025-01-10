@@ -223,9 +223,7 @@ If `all_frames` is true, the content script must be injected into any subframes 
 
 ### Key `match_about_blank`
 
-If this is true, use the URL of the parent frame when matching a child frame whose document URL has the `about` [=scheme=]. See also [[#determine-the-url-for-content-script-matching]]. Defaults to `false`.
-
-Note: In Firefox, setting `match_about_blank` to `true` also allows injection into top-level `about:blank` pages.
+If this is true, use the URL of the parent frame when matching a child frame whose document URL is `about:blank` or `about:srcdoc`. See also [[#determine-the-url-for-content-script-matching]]. Defaults to `false`.
 
 ### Key `match_origin_as_fallback`
 
@@ -294,7 +292,7 @@ To determine the URL to use for a document when injecting a content script:
 
 1. Let |url| be the document's URL.
 1. If the document is within a child frame:
-    1. If the [=scheme=] of the document's URL is `about`, and `match_about_blank` or `match_origin_as_fallback` is set to true:
+    1. If the document's URL is `about:blank` or `about:srcdoc`, and `match_about_blank` or `match_origin_as_fallback` is set to true:
         1. Set |url| to a URL based on the origin of the parent frame.
     1. If the [=scheme=] of the document's URL is `data` and `match_origin_as_fallback` is set to true:
         1. Set |url| to be a URL based on the origin of the parent frame.
