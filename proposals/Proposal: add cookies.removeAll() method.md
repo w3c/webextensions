@@ -87,7 +87,10 @@ An `object` containing information to identify the cookie(s) to remove. It conta
 ### Behavior
 
 The API will remove all cookies that match the `details` object parameter with the exception of the cases outlined in the implementation details.
-If the extension does not have  [host permissions](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#host_permissions)  for this URL, the API call will fail.
+
+- The extension must have [host permissions](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#host_permissions) needed to access the cookie.
+
+- If the extension does not have [host permissions](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#host_permissions) for the URL in the details object, the API call will fail.
 
 ### New Permissions
 No  new  permissions  are  required.
