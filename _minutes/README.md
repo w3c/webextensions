@@ -10,20 +10,24 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2025-01-16 at 8 AM PST = https://everytimezone.com/?t=67884c00,384
 - 2025-01-30 at 8 AM PST = https://everytimezone.com/?t=679ac100,384
+- 2025-02-13 at 8 AM PST = https://everytimezone.com/?t=67ad3600,384
 
 ## Past meetings
 
+* 2025-01-16 ([minutes](2025-01-16-wecg.md))
 * 2024-12-19 ([minutes](2024-12-19-wecg.md))
 * 2024-12-05 ([minutes](2024-12-05-wecg.md))
 * 2024-11-21 ([minutes](2024-11-21-wecg.md))
 * 2024-11-07 ([minutes](2024-11-07-wecg.md))
 * 2024-10-24 ([minutes](2024-10-24-wecg.md))
-* 2024-10-10 ([minutes](2024-10-10-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
+
+**2025**
+
+* 2025-01-16 ([minutes](2025-01-16-wecg.md))
 
 **2024**
 
