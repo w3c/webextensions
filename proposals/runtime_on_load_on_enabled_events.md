@@ -51,8 +51,7 @@ More use cases can be found [here](https://github.com/w3c/webextensions/issues/3
 #### Use Cases `chrome.runtime.onExtensionLoaded`
 An extension automatically does initial bootstrapping, such as creating an
 initial state used throughout the browser session, creating a WebSocket
-connection, checking for things you've missed while the browser was closed, and
-putting something in chrome.storage.session. 
+connection, checking for things you've missed while the browser was closed etc.
 
 Before this API the developer would have to create multiple listeners for
 `chrome.runtime.onInstalled()`, `onStartup()`, and (above) `onEnabled()`.
@@ -60,6 +59,10 @@ Before this API the developer would have to create multiple listeners for
 With this new API method the developer could write one method that performs the
 same action for all three, potentially with small differences based on the
 loaded cause.
+
+Some browsers (e.g. Chromium) support running a separate instance of the background
+script in incognito mode, by setting `incognito: "split"` in the extension manifest.
+This event will be fired for such instances separately.
 
 More use cases can be found [here](https://github.com/w3c/webextensions/issues/353#issuecomment-1582536300).
 
