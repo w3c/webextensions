@@ -291,13 +291,12 @@ The {{ExecutionWorld}} enum represents a JavaScript [=world=].
 To determine the URL to use for a document when injecting a content script:
 
 1. Let |url| be the document's URL.
-1. If the document is within a child frame:
-    1. If the document's URL is `about:blank` or `about:srcdoc`, and `match_about_blank` or `match_origin_as_fallback` is set to true:
-        1. Set |url| to a URL based on the origin of the parent frame.
-    1. If the [=scheme=] of the document's URL is `data` and `match_origin_as_fallback` is set to true:
-        1. Set |url| to be a URL based on the origin of the parent frame.
-    1. If the [=scheme=] of the document's URL is `filesystem` or `blob` and `match_origin_as_fallback` is set to true:
-        1. Set |url| to be a URL based on the origin of the frame which created the URL.
+1. If |url| is `about:blank` or `about:srcdoc`, and `match_about_blank` or `match_origin_as_fallback` is set to true:
+    1. Set |url| to a URL based on the precursor origin.
+1. If the [=scheme=] of |url| is `data` and `match_origin_as_fallback` is set to true:
+    1. Set |url| to be a URL based on the precursor origin.
+1. If the [=scheme=] of |url| is `filesystem` or `blob` and `match_origin_as_fallback` is set to true:
+    1. Set |url| to be a URL based on the precursor origin.
 1. Return |url|.
 
 ## Inject a content script
