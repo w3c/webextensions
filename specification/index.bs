@@ -179,7 +179,7 @@ A <dfn>match pattern</dfn> is a pattern used to match URLs. They are case-insens
 
 # Globs
 
-A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards where * can match zero or more characters and ? matches exactly one character.
+A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards where `*` can match zero or more characters and `?` matches exactly one character.
 
 # Concepts
 
@@ -207,7 +207,7 @@ A [=list=] of [=match patterns=] that are used to decide which pages the user ag
 
 ### Key `exclude_matches`
 
-A [=list=] of [=match patterns=] that should be used to exclude URLs from where the content script runs.
+A [=list=] of [=match patterns=] that can be used to exclude URLs from where the content script runs.
 
 ### Key `js`
 
@@ -219,15 +219,15 @@ A [=list=] of file paths, relative to the extension's package, that should be in
 
 ### Key `all_frames`
 
-If `all_frames` is true, the content script must be injected into any subframes that match the other matching criteria for the content script. If false, content scripts will only be injected into top-level documents. Defaults to false.
+If `all_frames` is `true`, the content script must be injected into any subframes that match the other matching criteria for the content script. If `false`, content scripts will only be injected into top-level documents. Defaults to `false`.
 
 ### Key `match_about_blank`
 
-If this is true, use the URL of the parent frame when matching a child frame whose document URL is `about:blank` or `about:srcdoc`. See also [[#determine-the-url-for-content-script-matching]]. Defaults to `false`.
+If this is `true`, use the URL of the parent frame when matching a child frame whose document URL is `about:blank` or `about:srcdoc`. See also [[#determine-the-url-for-content-script-matching]]. Defaults to `false`.
 
 ### Key `match_origin_as_fallback`
 
-If this is true, use fallbacks as described in [[#determine-the-url-for-content-script-matching]].
+If this is `true`, use fallbacks as described in [[#determine-the-url-for-content-script-matching]].
 
 No path is available when the URL to match against falls back to an origin. Therefore, when set, the user agent may treat a [[#key-matches]] with a path other than `/*` as an error.
 
@@ -243,7 +243,7 @@ A list of [=globs=] that a document should match. A document matches if the URL 
 
 ### Key `exclude_globs`
 
-A list of [=globs=] that should be used to exclude URLs from where the content script runs.
+A list of [=globs=] that can be used to exclude URLs from where the content script runs.
 
 ### Key `world`
 
@@ -291,11 +291,11 @@ The {{ExecutionWorld}} enum represents a JavaScript [=world=].
 To determine the URL to use for a document when injecting a content script:
 
 1. Let |url| be the document's URL.
-1. If |url| is `about:blank` or `about:srcdoc`, and `match_about_blank` or `match_origin_as_fallback` is set to true:
+1. If |url| is `about:blank` or `about:srcdoc`, and `match_about_blank` or `match_origin_as_fallback` is set to `true`:
     1. Set |url| to a URL based on the precursor origin.
-1. If the [=scheme=] of |url| is `data` and `match_origin_as_fallback` is set to true:
+1. If the [=scheme=] of |url| is `data` and `match_origin_as_fallback` is set to `true`:
     1. Set |url| to be a URL based on the precursor origin.
-1. If the [=scheme=] of |url| is `filesystem` or `blob` and `match_origin_as_fallback` is set to true:
+1. If the [=scheme=] of |url| is `filesystem` or `blob` and `match_origin_as_fallback` is set to `true`:
     1. Set |url| to be a URL based on the precursor origin.
 1. Return |url|.
 
