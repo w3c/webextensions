@@ -62,7 +62,10 @@ loaded cause.
 
 Some browsers (e.g. Chromium) support running a separate instance of the background
 script in incognito mode, by setting `incognito: "split"` in the extension manifest.
-This event will be fired for such instances separately.
+This event will be fired for such instances separately. The event may fire
+repeatedly during the same browser session if the incognito session ends and
+(re)starts, for example by closing the last incognito window and opening a new
+incognito window.
 
 More use cases can be found [here](https://github.com/w3c/webextensions/issues/353#issuecomment-1582536300).
 
