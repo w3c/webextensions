@@ -1,0 +1,210 @@
+<pre class="metadata">
+Title: webdriver-classic
+Shortname: wecg-webdriver-classic
+Level: 1
+Group: wecg
+Status: w3c/CG-DRAFT
+URL: https://w3c.github.io/webextensions/specification/webdriver-classic.html
+Editor: Kiara Rose, Apple, kiara_rose@apple.com
+Abstract: This specification defines how web extensions should be loaded and unloaded in WebDriver Classic.
+Repository: w3c/webextensions
+</pre>
+
+  <section class="non-normative">
+    ## Introduction
+      <em>This section is non-normative.</em>
+
+      This specification is non-normative.The intention of this spec is to
+      document how extensions should be loaded/unloaded in WebDriver Classic,
+      for browser vendors who choose to implement it.
+  </section>
+  <section>
+    <h3> Endpoints</h3>
+
+    <table class=simple>
+     <tr>
+      <td>POST</td>
+      <td>/session/{<var>session id</var>}/webextension</td>
+      <td>Load WebExtension</td>
+     </tr>
+
+     <tr>
+      <td>DELETE</td>
+      <td>/session/{<var>session id</var>}/webextension/{<var>extension id</var>}</td>
+      <td>Unload WebExtension</td>
+     </tr>
+    </table>
+  </section>
+
+  <section>
+    <h3>Errors</h3>
+    <table class=simple>
+     <tr>
+      <th>Error Code
+      <th>HTTP Status
+      <th>JSON Error Code
+      <th>Description
+     </tr>
+
+     <tr>
+      <td>no such web extension
+      <td>404
+      <td><code>no such web extension</code>
+      <td>No web extension matching the given extension id was found
+          amongst the <var>session</var>&apos;s loaded extensions.
+     </tr>
+
+      <tr>
+       <td>unable to load extension
+       <td>500
+       <td><code>unable to load extension</code>
+       <td>A command to load an extension could not be satisfied.
+     </tr>
+
+     <tr>
+       <td>unable to unload extension
+       <td>500
+       <td><code>unable to unload extension</code>
+       <td>A command to unload an extension could not be satisfied.
+     </tr>
+    </table>
+  </section>
+
+  <section>
+    <h3>Commands</h3>
+    <section>
+      <h2>WebExtensions</h2>
+      <p>The WebExtensions API provides an interface that allows
+      extensions to modify and enhance the capability of the browser.
+      This section describes the interaction with WebExtensions.
+
+      <section>
+        <h3>Load WebExtension</h3>
+        <table class="simple jsoncommand">
+         <tr>
+          <th>HTTP Method</th>
+          <th>URI Template</th>
+         </tr>
+         <tr>
+          <td>POST</td>
+          <td>/session/{<var>session id</var>}/webextension</td>
+         </tr>
+        </table>
+
+        <p>Based on the
+        <a href="https://www.w3.org/TR/webdriver-bidi/#command-webExtension-install">
+        BiDi implementation</a>, the remote end steps, given <var>session</var>,
+        <var>URL variables</var> and <var>parameters</var> are:
+
+        <ol>
+         <li><p>If <var>session</var>&apos;s current browsing context
+          is no longer open, return
+          <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with
+          <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a>
+          no such window.
+
+          <li><p>If loading web extensions isn't supported, return
+          <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
+          with <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a>
+           unsupported operation.
+          <li><p>Let <var>type hint</var> be the result of getting the
+          property "<code>type</code>" from <var>parameters</var>.
+            <ol>
+              <li type='a'><p> If <var>type hint</var> does not have the value of
+                      "path", "archivePath", or "base64", return
+                      <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
+                      with <a href="https://w3c.github.io/webdriver/#dfn-error">
+                      error code</a> invalid argument.
+              <li type='a'><p>If the implementation does not support loading web
+                      extensions using <var>type hint</var>, return
+                      <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
+                      with <a href="https://w3c.github.io/webdriver/#dfn-error">
+                      error code</a> unsupported operation.
+              <li type='a'><p>Let <var>value</var> be the result of
+                      getting the property"<code>value</code>" from
+                      <var>parameters</var>. If <var>value</var> is
+                      <code>null</code>, return
+                      <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
+                      with <a href="https://w3c.github.io/webdriver/#dfn-error">
+                      error code</a> invalid argument.
+              <li type='a'><p>If <var>type hint</var> has the value "path" and the
+                      implementation supports loading a web extension given a
+                      path to it's resources, the implementation should load the
+                      extension located at the path stored in "<code>value</code>".
+              <li type='a'><p>If <var>type hint</var> has the value "archivePath"
+                      and the implementation supports loading a web extension
+                      given a path to a ZIP of it's resources, the implementation
+                      should extract the ZIP and load the extension located at
+                      the path stored in "<code>value</code>". If this extraction
+                      fails, return <a href="https://w3c.github.io/webdriver/#dfn-error">
+                      error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error">
+                      error code</a> unable to load extension.
+              <li type='a'><p>If <var>type hint</var> has the value "base64" and the
+                      implementation supports loading a web extension given a
+                      Base64 encoded string of the ZIP representation of the
+                      extension's resources, the implementation should extract
+                      the archive from the encoded string stored in
+                      "<code>value</code>". If this extraction fails, return
+                      error with <a href="https://w3c.github.io/webdriver/#dfn-error">
+                      error code</a> unable to load extension.
+            </ol>
+          <li><p>If the extension fails to load, return
+          <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with
+              <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a>
+              unable to load extension.
+          <li><p>Let <var>result</var> be the identifier of the loaded extension.
+
+         <li><p>Return success with <var>result</var>.
+        </ol>
+
+      </section> <!-- /Load WebExtension -->
+
+      <section>
+        <h3>Unload WebExtension</h3>
+        <table class="simple jsoncommand">
+         <tr>
+          <th>HTTP Method</th>
+          <th>URI Template</th>
+         </tr>
+         <tr>
+          <td>DELETE</td>
+          <td>/session/{<var>session id</var>}/webextension/{<var>extension id</var>}</td>
+         </tr>
+        </table>
+
+        <p>Based on the
+        <a href="https://www.w3.org/TR/webdriver-bidi/#command-webExtension-uninstall">
+        BiDi implementation</a>, the remote end steps, given <var>session</var>,
+        <var>URL variables</var> and <var>parameters</var> are:
+
+        <ol>
+         <li><p>If <var>session</var>&apos;s current browsing context  is no
+         longer open, return
+         <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with
+         <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a>
+         no such window.
+
+         <li><p>If unloading web extensions isn't supported, return
+         <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
+              with <a href="https://w3c.github.io/webdriver/#dfn-error">
+              error code</a> unsupported operation.
+
+         <li><p>Let <var>extension id</var> be <var>URL variables</var>
+              ["<code>extension id</code>"].
+
+         <li><p>If the browser has no web extension loaded with an id equal to
+              <var>extension id</var>, return
+              <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> code
+              no such web extension.
+
+         <li><p>Perform any implementation defined steps to unload the extension.
+              If these steps failed, return
+              <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
+              with <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a>
+              unable to unload extension.
+
+         <li><p>Return success with data <code>null</code>.
+        </ol>
+      </section> <!-- /Unload WebExtension -->
+    </section> <!-- /WebExtensions -->
+  </section> <!-- /Commands -->
