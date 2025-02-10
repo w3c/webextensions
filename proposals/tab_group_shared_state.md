@@ -24,7 +24,7 @@ When provided the tab groups query will filter based on the shared states of the
 [chrome.tabGroups.onUpdated](https://developer.chrome.com/docs/extensions/reference/api/tabGroups#event-onUpdated)
 a method that is currently fired when a group is udated, will also fire when the group's shared state changes.
 ### Behavior
-New restrictions may be placed on shared groups for security and privacy purposes. This is not limited to the tabGroups API and could extend to chrome.tabs and other related API surfaces. The restriction would result in an error that "the action can not be performed due to the object being in a shared state." or a similar error message.
+Browsers may place browser-specific restrictions on shared groups for security and privacy purposes. This is not limited to the tabGroups API and could extend to chrome.tabs and other related API surfaces. The restriction would result in an error that "the action can not be performed due to the object being in a shared state." or a similar error message.
 ### New Permissions
 This functionality would be gated behind the existing `tabGroups` permission. The new functionality is in line with the existing API and does not need to be guarded separately (see below).
 ### Manifest File Changes
