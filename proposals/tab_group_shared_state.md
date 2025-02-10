@@ -1,5 +1,7 @@
 # Proposal: Add tabGroups.tabGroup.shared
+
 **Summary**
+
 Chromium is adding the concept of a shared group. Shared groups allow users of the browser to share a collection of tabs in their tabstrip with other users.
 On Chrome this feature will update tabs in realtime across multiple logged in users and across all clients for these users.
 In its current state we only plan for extensions to access information about whether the group is shared or not.
