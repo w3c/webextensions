@@ -286,18 +286,34 @@ The {{ExecutionWorld}} enum represents a JavaScript [=world=].
 
 # Algorithms
 
-## Determine the URL for content script matching
+## Determine the URL for matching a document
 
-To determine the URL to use for a document when injecting a content script:
+To determine the URL to use for matching a document, given the document, `match_origin_as_fallback` and `match_about_blank`:
 
 1. Let |url| be the document's URL.
-1. If |url| is `about:blank` or `about:srcdoc`, and `match_about_blank` or `match_origin_as_fallback` is set to `true`:
-    1. Set |url| to a URL based on the precursor origin.
-1. If the [=scheme=] of |url| is `data` and `match_origin_as_fallback` is set to `true`:
-    1. Set |url| to be a URL based on the precursor origin.
-1. If the [=scheme=] of |url| is `filesystem` or `blob` and `match_origin_as_fallback` is set to `true`:
-    1. Set |url| to be a URL based on the precursor origin.
-1. Return |url|.
+1. If the [=scheme=] of |url| is `http`, `https` or `file`:
+    1. Return |url|.
+1. If the [=scheme=] of |url| is `blob`, `data` or `filesystem`, or if |url| is `about:blank` or `about:srcdoc`:
+    1. If `match_origin_as_fallback` is set to `true`:
+        1. If the document's origin is a [=tuple origin=]:
+            1. Let |document-origin| be the serialization of the document's origin.
+            1. If the [=scheme=] of |document-origin| is `http`, `https` or `file`:
+                1. Return |document-origin|.
+            1. Else, return null.
+        *. NOTE: If not a [=tuple origin=], the document’s origin is an [=opaque origin=].
+        1. Let |precursor-origin| be the serialization of the document’s precursor origin, if any.
+            1. If the [=scheme=] of |precursor-origin| is `http`, `https` or `file`:
+                1. Return |precursor-origin|.
+            1. Else, return null.
+    1. Else, if `match_about_blank` is set to `true`:
+        1. If |url| is `about:blank` or `about:srcdoc`:
+            1. Let |opener| be the active document of document’s [=opener browsing context=].
+            1. If all of the following conditions are true:
+                - |opener| is not null
+                - |opener|’s origin is still the same as the document’s [=opener origin at creation=]
+                - The algorithm has not been repeated for |opener| yet.
+                1. Then repeat the algorithm for |opener|.
+1. Return null.
 
 ## Inject a content script
 
@@ -305,8 +321,8 @@ Issue: If the same extension specifies the same script twice, what should happen
 
 To determine if a content script should be injected in a document:
 
-1. Let |url| be the result of running [[#determine-the-url-for-content-script-matching]].
-1. If the extension does not have access to the origin, return.
+1. Let |url| be the result of running [[#determine-the-url-for-matching-a-document]].
+1. If the extension does not have access to |url|, return.
 1. If |url| is not matched by a match pattern in `matches`, return.
 1. If `include_globs` is present and |url| is not matched by any glob pattern, return.
 1. If |url| matches an entry in `exclude_matches` or `exclude_globs`, return.
