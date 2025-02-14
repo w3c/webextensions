@@ -23,7 +23,7 @@ jobs:
   main:
     name: Build, Validate, and Deploy
     # The type of runner that the job will run on
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:

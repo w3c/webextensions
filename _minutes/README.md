@@ -3,31 +3,46 @@
 The [WebExtensions Community group](https://www.w3.org/community/webextensions/) meets virtually every other week, for one hour.
 The instructions to join the meeting and agenda are available at https://www.w3.org/groups/cg/webextensions/calendar.
 
-* Thursday 8 AM PDT (3 PM UTC)
+* Thursday 8 AM PST (3 PM UTC)
 * To convert to your local time zone, see https://everytimezone.com/
 
 After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2024-09-23 until 2024-09-27 = TPAC 2024 ([issue 659](https://github.com/w3c/webextensions/issues/659)) ([TPAC 2024 Coordination](https://github.com/w3c/webextensions/wiki/TPAC-2024-Coordination))
-- 2024-09-26 at 8 AM PDT = https://everytimezone.com/?t=66f4a400,384
-- 2024-10-10 at 8 AM PDT = https://everytimezone.com/?t=67071900,384
+- 2025-02-13 at 8 AM PST = https://everytimezone.com/?t=67ad3600,384
+- 2025-02-27 at 8 AM PST = https://everytimezone.com/?t=67bfab00,384
 
 ## Past meetings
 
-* 2024-09-12 ([minutes](2024-09-12-wecg.md))
-* 2024-08-29 ([minutes](2024-08-29-wecg.md))
-* 2024-08-15 ([minutes](2024-08-15-wecg.md))
-* 2024-08-01 ([minutes](2024-08-01-wecg.md))
-* 2024-07-18 ([minutes](2024-07-18-wecg.md))
-* 2024-07-04 ([minutes](2024-07-04-wecg.md))
+* 2025-01-30 ([minutes](2025-01-30-wecg.md))
+* 2025-01-16 ([minutes](2025-01-16-wecg.md))
+* 2024-12-19 ([minutes](2024-12-19-wecg.md))
+* 2024-12-05 ([minutes](2024-12-05-wecg.md))
+* 2024-11-21 ([minutes](2024-11-21-wecg.md))
+* 2024-11-07 ([minutes](2024-11-07-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
+**2025**
+
+* 2025-01-30 ([minutes](2025-01-30-wecg.md))
+* 2025-01-16 ([minutes](2025-01-16-wecg.md))
+
 **2024**
 
+* 2024-12-19 ([minutes](2024-12-19-wecg.md))
+* 2024-12-05 ([minutes](2024-12-05-wecg.md))
+* 2024-11-21 ([minutes](2024-11-21-wecg.md))
+* 2024-11-07 ([minutes](2024-11-07-wecg.md))
+* 2024-10-24 ([minutes](2024-10-24-wecg.md))
+* 2024-10-10 ([minutes](2024-10-10-wecg.md))
+* 2024-09-27 at TPAC ([minutes](2024-09-27-wecg-tpac.md))
+* 2024-09-26 at TPAC ([minutes](2024-09-26-wecg-tpac.md))
+* 2024-09-26 ([minutes](2024-09-26-wecg.md))
+* 2024-09-24 at TPAC ([minutes](2024-09-24-wecg-tpac.md))
+* 2024-09-23 at TPAC ([minutes](2024-09-23-wecg-tpac.md))
 * 2024-09-12 ([minutes](2024-09-12-wecg.md))
 * 2024-08-29 ([minutes](2024-08-29-wecg.md))
 * 2024-08-15 ([minutes](2024-08-15-wecg.md))

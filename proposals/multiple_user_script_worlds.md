@@ -11,7 +11,7 @@ Allow developers to configure and use multiple user script worlds in the
 
 **Sponsoring Browser:** Google Chrome
 
-**Contributors:** N/A
+**Contributors:** [Rob--W](https://github.com/Rob--W)
 
 **Created:** 2024-03-07
 
@@ -58,19 +58,24 @@ Relevant methods and types:
    export interface WorldProperties {
 +    /**
 +     * Specifies the ID of the specific user script world to update.
-+     * If not provided, updates the properties of the default user script
-+     * world.
++     * If not provided, defaults to the empty string (""), which
++     * updates the properties of the default user script world.
 +     * Values with leading underscores (`_`) are reserved.
 +     */
 +    worldId?: string;
 
      /**
-      * Specifies the world's CSP. The default is the `ISOLATED` world CSP.
+-     * Specifies the world's CSP. The default is the `ISOLATED` world CSP.
++     * Specifies the world's CSP. When not specified, falls back to the
++     * default world's `csp`. The default CSP of the default world is the
++     * `ISOLATED` world's CSP, i.e. `script-src 'self'`.
       */
      csp?: string;
 
      /**
-      * Specifies whether messaging APIs are exposed. The default is `false`.
+-     * Specifies whether messaging APIs are exposed. When not specified, falls
++     * back to the default world's `messaging`. The default is `false` for the
++     * default world.
       */
      messaging?: boolean;
    }
@@ -115,9 +120,10 @@ Relevant methods and types:
 
      /**
       * The list of ScriptSource objects defining sources of scripts to be
-      * injected into matching pages.
+      * injected into matching pages. This property must be specified for
+      * ${ref:register}
       */
-     js: ScriptSource[];
+     js?: ScriptSource[];
 
      /**
       * Specifies which pages this user script will be injected into. See
@@ -140,8 +146,9 @@ Relevant methods and types:
 
 +    /**
 +     * If specified, specifies a specific user script world ID to execute in.
-+     * Only valid if `world` is omitted or is `USER_SCRIPT`. If omitted, the
-+     * script will execute in the default user script world.
++     * Only valid if `world` is omitted or is `USER_SCRIPT`. If `worldId` is
++     * omitted, the default value is an empty string ("") and the script will
++     * execute in the default user script world.
 +     * Values with leading underscores (`_`) are reserved.
 +     */
 +    worldId?: string;
@@ -149,13 +156,25 @@ Relevant methods and types:
 
    ...
 
+   export function configureWorld(config: WorldProperties): Promise<void>;
+
+   export function getScripts(filter?: UserScriptFilter[]): Promise<RegisteredUserScript[]>;
+
+   export function register(scripts: RegisteredUserScript): Promise<void>;
+
+   export function unregister(filter?: UserScriptFilter[]): Promise<void>;
+
+   export function update(scripts: RegisteredUserScript[]): Promise<void>;
+
 +   /**
 +    * Resets the configuration for a given world. Any scripts that inject into
 +    * the world with the specified ID will use the default world configuration.
 +    * Does nothing (but does not throw an error) if provided a `worldId` that
 +    * does not correspond to a current configuration.
++    * If omitted or the empty string ("") is used, it clears the configuration
++    * of the default world and all worlds without a separate configuration.
 +    */
-+   export function resetWorldConfiguration(worldId: string): Promise<void>;
++   export function resetWorldConfiguration(worldId?: string): Promise<void>;
 +
 +   /**
 +    * Returns a promise that resolves to an array of the the configurations
@@ -165,8 +184,9 @@ Relevant methods and types:
  }
 ```
 
-Note that the signatures of the related functions, including `configureWorld()`,
-`register()`, and others are left unchanged.
+Note that save for the introduction of `worldId` on these interfaces,
+the signatures of the related functions - `configureWorld()`,
+`register()`, and others – are left unchanged.
 
 When the developer specifies a `RegisteredUserScript`, the browser will use a
 separate user script world when injecting the scripts into a document. If
@@ -176,15 +196,9 @@ Worlds may be configured via `userScripts.configureWorld()` by indicating the
 given `worldId`. User scripts injected into a world with the given `worldId`
 will have the associated properties from the world configuration. If a world
 does not have a corresponding configuration, it uses the default user script
-world properties. Any existing worlds are not directly affected by
-`userScripts.configureWorld()` calls; however, the browser may revoke
-certain privileges (for instance, message calls from existing user script worlds
-may beging to fail if the extension sets `messaging` to false). This is in line
-with behavior extensions encounter when e.g. the extension is unloaded and the
-content script continues running.
-
-World configurations can be removed via the new
-`userScripts.resetWorldConfiguration()` method.
+world properties. World configurations can be removed via the new
+`userScripts.resetWorldConfiguration()` method. For additional behavioral
+notes, see the [World Configurations](#world-configurations) section.
 
 Additionally, `runtime.Port` and `runtime.MessageSender` will each be extended
 with a new, optional `userScriptWorldId` property that will be populated in the
@@ -218,9 +232,35 @@ If an extension tries to inject more scripts into a single document than the
 per-document limit, all additional scripts will be injected into the default
 world.
 
+### World Configurations
+
+The `userScripts.configureWorld()` method can customize the behavior of
+individual worlds as described by `WorldProperties`. Most fields are optional,
+and default to the default world when not specified.
+
+When `worldId` is omitted or the empty string, `userScripts.configureWorld()`
+updates the default world's properties. This does not only affect the default
+world, but also worlds without separate configuration. When properties are
+omitted from an update to the default world configuration, the API defaults
+as specified in `WorldProperties` are used instead.
+
+The `userScripts.resetWorldConfiguration()` method can clear properties of
+individual worlds. When the default world's properties are cleared, this
+also applies to worlds without a separate configuration.
+
+Changes to world configurations are only guaranteed to apply to new instances
+of the world: if a world is already initialized in a document due to the
+execution of a user script, then that document must be reloaded for changes
+to apply.
+
+The browser may revoke certain privileges (for instance, message calls from
+existing user script worlds may begin to fail if the extension sets `messaging`
+to false). This is in line with behavior extensions encounter when e.g. the
+extension is unloaded and the content script continues running.
+
 ### New Permissions
 
-No new permissions are necessary. This is inline with the `userScripts` API's
+No new permissions are necessary. This is in line with the `userScripts` API's
 current functionality and purpose.
 
 ### Manifest File Changes
