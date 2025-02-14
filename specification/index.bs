@@ -223,11 +223,11 @@ If `all_frames` is `true`, the content script must be injected into any subframe
 
 ### Key `match_about_blank`
 
-If this is `true`, use the URL of the parent frame when matching a child frame whose document URL is `about:blank` or `about:srcdoc`. See also [[#determine-the-url-for-content-script-matching]]. Defaults to `false`.
+If this is `true`, use the URL of the parent frame when matching a child frame whose document URL is `about:blank` or `about:srcdoc`. See also [[#determine-the-url-for-matching-a-document]]. Defaults to `false`.
 
 ### Key `match_origin_as_fallback`
 
-If this is `true`, use fallbacks as described in [[#determine-the-url-for-content-script-matching]].
+If this is `true`, use fallbacks as described in [[#determine-the-url-for-matching-a-document]].
 
 No path is available when the URL to match against falls back to an origin. Therefore, when set, the user agent may treat a [[#key-matches]] with a path other than `/*` as an error.
 
@@ -300,8 +300,8 @@ To determine the URL to use for matching a document, given the document, `match_
             1. If the [=scheme=] of |document-origin| is `http`, `https` or `file`:
                 1. Return |document-origin|.
             1. Else, return null.
-        *. NOTE: If not a [=tuple origin=], the document’s origin is an [=opaque origin=].
-        1. Let |precursor-origin| be the serialization of the document’s precursor origin, if any.
+        1. TODO: If not a [=tuple origin=], the document’s origin is an [=opaque origin=].
+            Let |precursor-origin| be the serialization of the document’s precursor origin, if any.
             1. If the [=scheme=] of |precursor-origin| is `http`, `https` or `file`:
                 1. Return |precursor-origin|.
             1. Else, return null.
@@ -312,7 +312,7 @@ To determine the URL to use for matching a document, given the document, `match_
                 - |opener| is not null
                 - |opener|’s origin is still the same as the document’s [=opener origin at creation=]
                 - The algorithm has not been repeated for |opener| yet.
-                1. Then repeat the algorithm for |opener|.
+                    1. Then repeat the algorithm for |opener|.
 1. Return null.
 
 ## Inject a content script
