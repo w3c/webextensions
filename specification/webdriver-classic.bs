@@ -109,29 +109,29 @@ Repository: w3c/webextensions
            unsupported operation.
           <li><p>Let <var>type hint</var> be the result of getting the
           property "<code>type</code>" from <var>parameters</var>.
-            <ol>
-              <li type='a'><p> If <var>type hint</var> does not have the value of
+            <ol style="list-style-type: lower-latin">
+              <li><p> If <var>type hint</var> does not have the value of
                       "path", "archivePath", or "base64", return
                       <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
                       with <a href="https://w3c.github.io/webdriver/#dfn-error">
                       error code</a> invalid argument.
-              <li type='a'><p>If the implementation does not support loading web
+              <li><p>If the implementation does not support loading web
                       extensions using <var>type hint</var>, return
                       <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
                       with <a href="https://w3c.github.io/webdriver/#dfn-error">
                       error code</a> unsupported operation.
-              <li type='a'><p>Let <var>value</var> be the result of
+              <li><p>Let <var>value</var> be the result of
                       getting the property"<code>value</code>" from
                       <var>parameters</var>. If <var>value</var> is
                       <code>null</code>, return
                       <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
                       with <a href="https://w3c.github.io/webdriver/#dfn-error">
                       error code</a> invalid argument.
-              <li type='a'><p>If <var>type hint</var> has the value "path" and the
+              <li><p>If <var>type hint</var> has the value "path" and the
                       implementation supports loading a web extension given a
                       path to it's resources, the implementation should load the
                       extension located at the path stored in "<code>value</code>".
-              <li type='a'><p>If <var>type hint</var> has the value "archivePath"
+              <li><p>If <var>type hint</var> has the value "archivePath"
                       and the implementation supports loading a web extension
                       given a path to a ZIP of it's resources, the implementation
                       should extract the ZIP and load the extension located at
@@ -139,7 +139,7 @@ Repository: w3c/webextensions
                       fails, return <a href="https://w3c.github.io/webdriver/#dfn-error">
                       error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error">
                       error code</a> unable to load extension.
-              <li type='a'><p>If <var>type hint</var> has the value "base64" and the
+              <li><p>If <var>type hint</var> has the value "base64" and the
                       implementation supports loading a web extension given a
                       Base64 encoded string of the ZIP representation of the
                       extension's resources, the implementation should extract
