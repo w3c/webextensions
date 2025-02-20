@@ -9,6 +9,8 @@ Adds a new API `cookies.removeAll()` to allow for the removal of multiple cookie
 **Sponsoring Browser:**  Chrome
 
 **Contributors:**  
+- [oliverdunk](https://github.com/oliverdunk)
+- [Rob--W](https://github.com/Rob--W)
 
 **Created:**  2024-09-18
 
@@ -63,15 +65,11 @@ An `object` containing information to identify the cookie(s) to remove. It conta
 >
 >An object representing the storage partition containing the cookie.
 >
->[`topLevelSite`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/cookies/remove#toplevelsite)  optional:
->
->A  `string`  representing the first-party URL of the top-level site storage partition containing the cookie.
->
 >[`storeId`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/cookies/remove#storeid)  optional:
 >
 >A  `string`  representing the ID of the cookie store to find the cookie in. If unspecified, the cookie is looked for by default in the current execution context's cookie store.
 >
->[`url`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/cookies/remove#url) optional:
+>[`url`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/cookies/remove#url)
 >
 >A  `string`  representing the URL associated with the cookie.
 >
@@ -123,12 +121,16 @@ The cookies API is specific to extensions
 
 Host permissions are required for this API.
 #### Special cases:
-```cookies.removeAll({})```
 
->An empty details object will result in an error. 
+```
+cookies.removeAll({})
+```
+
+>An empty details object will result in an error.
 
 ```
 cookies.removeAll({
+    url: "https://example.com",
     partitionKey:{}})
 ```
 
@@ -136,19 +138,18 @@ cookies.removeAll({
 
 ```
 cookies.removeAll({
-    name: “example”,
-    url: “https://example.com”,
-    partitionKey:{}
-})
+    url: "https://example.com",
+    partitionKey:{hasCrossSiteAncestor : true}})
 ```
 
->If `topLevelSite` is the only argument, it will result in all cookies that have that value as the `topLevelSite` in their `partitionKey` being removed.
+>A `partitionKey` object in the details object, that does not have a `topLevelSite` and has a value for `hasCrossSiteAncestor` will result in an error.
 
 ```
 cookies.removeAll({
-    topLevelSite: “https://example.com”,
-    partitionKey:{topLevelSite: “https://foo.com”}
+    name: “example”,
+    url: “https://example.com”,
+    partitionKey:{topLevelSite: “https://example.com”}
 })
 ```
+>A `partitionKey` object in the details object, with no `hasCrossSiteAncestor` will result in cookies with both `true` and `false` values for `hasCrossSiteAncestor` being removed, that also match any other values in the details object.
 
->If the `topLevelSite` differs from the `topLevelSite`, if present, in the `partitionKey` an error will be returned.
