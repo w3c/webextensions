@@ -46,8 +46,8 @@ dictionary UserScriptInjection {
   // prior to page load, as the page may have already loaded by the time the
   // script reaches the target.
   injectImmediately?: boolean,
-  // The script source to inject into the target.
-  js: ScriptSource,
+  // The script sources to inject into the target.
+  js[]: ScriptSource,
   // Details specifying the target into which to inject the script.
   target: InjectionTarget,
   // The JavaScript "world" to run the script in. The default is `USER_SCRIPT`.
