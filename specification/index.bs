@@ -155,7 +155,7 @@ Filenames beginning with an underscore (`_`) are reserved for use by user agent.
 
 # Isolated worlds
 
-<dfn>Worlds</dfn> are isolated JavaScript contexts with access to the same underlying DOM tree but their own set of wrappers around those DOM objects.
+<dfn>Worlds</dfn> are isolated JavaScript contexts with access to the same underlying DOM tree but their own set of wrappers around those DOM objects. Declarations in the global scope are also isolated.
 
 # Unavailable APIs
 
@@ -207,7 +207,7 @@ A [=list=] of [=match patterns=] that are used to decide which pages the user ag
 
 ### Key `exclude_matches`
 
-A [=list=] of [=match patterns=] that can be used to exclude URLs from where the content script runs.
+A [=list=] of [=match patterns=] that can be used to specify URLs where the content script should not run, even if the URL matches entries in [[#key-matches]] and (if specified) [[#key-include_globs]].
 
 ### Key `js`
 
@@ -243,7 +243,7 @@ A list of [=globs=] that a document should match. A document matches if the URL 
 
 ### Key `exclude_globs`
 
-A list of [=globs=] that can be used to exclude URLs from where the content script runs.
+A [=list=] of [=globs=] that can be used to specify URLs where the content script should not run, even if the URL matches entries in [[#key-matches]] and (if specified) [[#key-include_globs]].
 
 ### Key `world`
 
