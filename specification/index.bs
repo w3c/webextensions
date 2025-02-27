@@ -7,6 +7,7 @@ Group: WECG
 URL: https://w3c.github.io/webextensions/specification/index.html
 Editor: Mukul Purohit, Microsoft Corporation https://www.microsoft.com, mpurohit@microsoft.com
 Editor: Tomislav Jovanovic, Mozilla https://www.mozilla.org/, tjovanovic@mozilla.com
+Editor: Oliver Dunk, Google https://www.google.com, oliverdunk@chromium.org
 Abstract: [Placeholder] Abstract.
 Markup Shorthands: markdown yes
 </pre>
@@ -27,11 +28,11 @@ An optional directory containing strings as defined in <a href="#localization">l
 
 ## Other files
 
-An extension may also contain other files, such as those referenced in the <a href="#key-content_scripts">content_scripts</a> and <a href="#key-background">background</a> part of the <a href="#manifest">Manifest</a>.
+An extension may also contain other files, such as those referenced in the [[#key-content_scripts]] and [[#key-background]] parts of the [=manifest=].
 
 # Manifest
 
-A WebExtension must have a manifest file at its root directory.
+A WebExtension must have a <dfn>manifest</dfn> file at its root directory.
 
 ## Manifest file
 
@@ -112,7 +113,7 @@ This key may be present.
 
 ### Key `content_scripts`
 
-This key may be present.
+The <a href="#key-content_scripts">`content_scripts`</a> key is a [=list=] of items representing [=content scripts=] that should be registered.
 
 ### Key `content_security_policy`
 
@@ -154,6 +155,8 @@ Filenames beginning with an underscore (`_`) are reserved for use by user agent.
 
 # Isolated worlds
 
+<dfn>Worlds</dfn> are isolated JavaScript contexts with access to the same underlying DOM tree but their own set of wrappers around those DOM objects. Declarations in the global scope are also isolated.
+
 # Unavailable APIs
 
 # The `browser` global
@@ -171,6 +174,12 @@ Issue(62): Specify localization handling.
 ## Cross-origin fetch
 
 # Match patterns
+
+A <dfn>match pattern</dfn> is a pattern used to match URLs. They are case-insensitive.
+
+# Globs
+
+A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards where `*` can match zero or more characters and `?` matches exactly one character.
 
 # Concepts
 
@@ -190,7 +199,78 @@ Issue(62): Specify localization handling.
 
 ## Content scripts
 
-### Isolated worlds
+<dfn>Content scripts</dfn> represent a set of JS and CSS files that should be injected into matching pages loaded by the user agent. They are injected using the steps in [[#inject-a-content-script]].
+
+### Key `matches`
+
+A [=list=] of [=match patterns=] that are used to decide which pages the user agent injects the content script into. This key is required.
+
+### Key `exclude_matches`
+
+A [=list=] of [=match patterns=] that can be used to specify URLs where the content script should not run, even if the URL matches entries in [[#key-matches]] and (if specified) [[#key-include_globs]].
+
+### Key `js`
+
+A [=list=] of file paths, relative to the extension's package, that should be injected as scripts.
+
+### Key `css`
+
+A [=list=] of file paths, relative to the extension's package, that should be injected as stylesheets.
+
+### Key `all_frames`
+
+If `all_frames` is `true`, the content script must be injected into any subframes that match the other matching criteria for the content script. If `false`, content scripts will only be injected into top-level documents. Defaults to `false`.
+
+### Key `match_about_blank`
+
+If this is `true`, use the URL of the parent frame when matching a child frame whose document URL is `about:blank` or `about:srcdoc`. See also [[#determine-the-url-for-matching-a-document]]. Defaults to `false`.
+
+### Key `match_origin_as_fallback`
+
+If this is `true`, use fallbacks as described in [[#determine-the-url-for-matching-a-document]].
+
+No path is available when the URL to match against falls back to an origin. Therefore, when set, the user agent may treat a [[#key-matches]] with a path other than `/*` as an error.
+
+Defaults to `false`.
+
+### Key `run_at`
+
+Specifies when the content script should be injected. Valid values are defined by the {{RunAt}} enum.
+
+### Key `include_globs`
+
+A list of [=globs=] that a document should match. A document matches if the URL matches both the [[#key-matches]] field and the [[#key-include_globs]] field.
+
+### Key `exclude_globs`
+
+A [=list=] of [=globs=] that can be used to specify URLs where the content script should not run, even if the URL matches entries in [[#key-matches]] and (if specified) [[#key-include_globs]].
+
+### Key `world`
+
+The [=world=] any JavaScript scripts should be injected into. Defaults to `ISOLATED`. Valid values are defined by the {{ExecutionWorld}} enum.
+
+### <dfn>RunAt</dfn> enum
+
+<pre class="idl">
+enum RunAt {
+    "document_start",
+    "document_end",
+    "document_idle"
+};
+</pre>
+
+The {{RunAt}} enum represents when a content script should be injected.
+
+### <dfn>ExecutionWorld</dfn> enum
+
+<pre class="idl">
+enum ExecutionWorld {
+    "ISOLATED",
+    "MAIN"
+};
+</pre>
+
+The {{ExecutionWorld}} enum represents a JavaScript [=world=].
 
 ## Extension pages
 
@@ -203,3 +283,51 @@ Issue(62): Specify localization handling.
 ## Current behavior of cookie partitioning
 
 # Version number handling
+
+# Algorithms
+
+## Determine the URL for matching a document
+
+To determine the URL to use for matching a document, given the document, `match_origin_as_fallback` and `match_about_blank`:
+
+1. Let |url| be the document's URL.
+1. If the [=scheme=] of |url| is `http`, `https` or `file`:
+    1. Return |url|.
+1. If the [=scheme=] of |url| is `blob`, `data` or `filesystem`, or if |url| is `about:blank` or `about:srcdoc`:
+    1. If `match_origin_as_fallback` is set to `true`:
+        1. If the document's origin is a [=tuple origin=]:
+            1. Let |document-origin| be the <a href="https://html.spec.whatwg.org/#ascii-serialisation-of-an-origin">serialization</a> of the document's origin.
+            1. If the [=scheme=] of |document-origin| is `http`, `https` or `file`:
+                1. Return |document-origin|.
+            1. Else, return null.
+        1.  Note: If not a [=tuple origin=], the document’s origin is an [=opaque origin=].
+            1. Let |precursor-origin| be the <a href="https://html.spec.whatwg.org/#ascii-serialisation-of-an-origin">serialization</a> of the document’s precursor origin, if any.
+                
+                Issue: "precursor origin" concept needs to be specified. It is not in the HTML spec at the moment. At least Chrome and Firefox recognize the concept, see e.g. <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1715167">https://bugzilla.mozilla.org/show_bug.cgi?id=1715167</a>.
+            1. If the [=scheme=] of |precursor-origin| is `http`, `https` or `file`:
+                1. Return |precursor-origin|.
+            1. Else, return null.
+    1. Else, if `match_about_blank` is set to `true`:
+        1. If |url| is `about:blank` or `about:srcdoc`:
+            1. Let |opener| be the active document of document’s [=opener browsing context=].
+            1. If all of the following conditions are true:
+                - |opener| is not null
+                - |opener|’s origin is still the same as the document’s [=opener origin at creation=]
+                - The algorithm has not been repeated for |opener| yet.
+                 
+                 Then repeat the algorithm for |opener|.
+1. Return null.
+
+## Inject a content script
+
+Issue: If the same extension specifies the same script twice, what should happen? ([bug](https://crbug.com/324096753))
+
+To determine if a content script should be injected in a document:
+
+1. Let |url| be the result of running [[#determine-the-url-for-matching-a-document]].
+1. If the extension does not have access to |url|, return.
+1. If |url| is not matched by a match pattern in `matches`, return.
+1. If `include_globs` is present and |url| is not matched by any glob pattern, return.
+1. If |url| matches an entry in `exclude_matches` or `exclude_globs`, return.
+1. If this is a child frame, and `all_frames` is not `true`, return.
+1. Otherwise, inject the content script. This should be done based on the `run_at` setting.
