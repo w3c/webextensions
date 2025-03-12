@@ -25,10 +25,7 @@ Create new lifecycle events for the chrome.sidePanel API.
 - `chrome.sidePanel.onOpened`
 - `chrome.sidePanel.onClosed`
 
-These events aim to provide developers with better control and management of the side panel's lifecycle, enabling more efficient resource allocation and improved user experience. By implementing these events, developers can:
-- **Monitor Side Panel Activity**: Track when the side panel is opened or closed to optimize performance and resource usage.
-- **Enhance User Interactions**: Create more responsive and dynamic extensions that react to the side panel's state changes.
-- **Improve Extension Functionality**: Allow extensions to perform specific actions when the side panel is opened or closed, such as saving state or cleaning up resources.
+These events aim to provide developers with better control and management of the side panel's lifecycle.
 
 #### Use Cases
 
@@ -76,7 +73,7 @@ namespace sidePanel {
 
   // An object that represents the side panel close info. This is used for 
   // passing the information of the side panel context to the event listeners.
-  dictionary PanelClosInfo {
+  dictionary PanelCloseInfo {
     // The window associated with the side panel.
     long windowId;
 
@@ -91,16 +88,16 @@ namespace sidePanel {
   interface Events {
     // Fired when a sidePanel hosted by an extension is triggered to open.
     static void onOpened(
-      addListener(callback: (options: PanelInfo) => void): void;
-      hasListener(callback: (options: PanelInfo) => void): void;
-      removeListener(callback: (options: PanelInfo) => void): void;
+      addListener(callback: (info: PanelOpenInfo) => void): void;
+      hasListener(callback: (info: PanelOpenInfo) => void): void;
+      removeListener(callback: (info: PanelOpenInfo) => void): void;
     );
   
     // Fired when a sidePanel hosted by an extension is triggered to close.
     static void onClosed(
-      addListener(callback: (options: PanelInfo) => void): void;
-      hasListener(callback: (options: PanelInfo) => void): void;
-      removeListener(callback: (options: PanelInfo) => void): void;
+      addListener(callback: (info: PanelCloseInfo) => void): void;
+      hasListener(callback: (info: PanelCloseInfo) => void): void;
+      removeListener(callback: (info: PanelCloseInfo) => void): void;
     );
   };
 ```
@@ -108,6 +105,7 @@ namespace sidePanel {
 ### Behavior
 
 Described as code comments in schema.
+Additionally, for spanning mode extensions in Incognito, these events will be
 
 ### New Permissions
 
@@ -148,7 +146,7 @@ Not applicable to the open web.
 ## Implementation Notes
 
 ### Open for discussions:
-- Should we also have trigger reasons for the onClosed and onOpened events?
+- Should we also have trigger reasons for the onClosed and onOpened events? An sample schema for the reasons is given below.
    ```typescript
    namespace sidePanel {
      // Reason for the side panel open trigger.
@@ -168,5 +166,5 @@ Not applicable to the open web.
 - Would adding onHidden, onShown or onVisibilityChanged events for side panel extensions make sense too?
 
 ## Future Work
-- Providing granualar controls for attaching listeners for tab specific or path specific side panels.
+- Providing granualar controls for attaching listeners for tab-specific or path-specific side panels.
 
