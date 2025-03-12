@@ -1,8 +1,8 @@
-# Proposal: New OnClosed and OnOpened events for the sidePanel API
+# Proposal: New onClosed and onOpened events for the sidePanel API
 
 **Summary**
 
-Proposal to introduce two new sidePanel lifecycle events that will help developers manage the lifecycle of their extensions
+Proposal to introduce two new lifecycle events that will help developers manage the lifecycle of the side panel of their extensions
 
 **Document Metadata**
 
@@ -14,13 +14,13 @@ Proposal to introduce two new sidePanel lifecycle events that will help develope
 
 **Created:** 2025-03-11
 
-**Related Issues:** [#752](https://github.com/w3c/webextensions/issues/752)
+**Related Issues:** [#752](https://github.com/w3c/webextensions/issues/752), [#517](https://github.com/w3c/webextensions/issues/517)
 
 ## Motivation
 
 ### Objective
 
-Create new lifecycle events for the chrome.sidPanel API.
+Create new lifecycle events for the chrome.sidePanel API.
 
 - `chrome.sidePanel.onOpened`
 - `chrome.sidePanel.onClosed`
@@ -32,10 +32,6 @@ These events aim to provide developers with better control and management of the
 
 #### Use Cases
 
-- Resource Management:
-   - Objective: Optimize resource usage by loading heavy resources only when the side panel is opened.
-   - Example: An extension that displays real-time data can start fetching data only when the side panel is opened and stop when it is closed, reducing unnecessary network and CPU usage.
-
 - User Experience Enhancement:
    - Objective: Improve user interactions by providing context-specific content or actions.
    - Example: An extension that offers contextual help can display relevant tips or tutorials when the side panel is opened, enhancing the user's experience based on their current activity.
@@ -43,14 +39,6 @@ These events aim to provide developers with better control and management of the
 - State Preservation:
    - Objective: Save the state of the side panel to maintain continuity between sessions.
    - Example: An extension that allows users to take notes can save the current note when the side panel is closed and restore it when reopened, ensuring no data is lost.
-
-- Dynamic Content Updates:
-   - Objective: Update content dynamically based on the side panel's visibility.
-   - Example: An extension that shows notifications can refresh the list of notifications each time the side panel is opened, ensuring the user always sees the most recent updates.
-
-- Security and Privacy:
-   - Objective: Enhance security by clearing sensitive information when the side panel is closed.
-   - Example: An extension that handles sensitive data, such as passwords or personal information, can clear this data from the side panel when it is closed to prevent unauthorized access.
 
 - Custom Analytics:
    - Objective: Collect usage data to understand how users interact with the side panel.
@@ -69,33 +57,38 @@ A few of them are listed below:
 
 ### Schema
 
-```Typescript
+```typescript
 namespace sidePanel {
-  // Reason for the side panel open trigger.
-  enum onOpenedReason {
-      USER_ACTION,
-      PROGRAMMATIC
-  }
-  // Reason for the side panel close trigger.
-  enum onClosedReason {
-      USER_ACTION,
-      PROGRAMMATIC,
-      NEW_SIDE_PANEL_OPENED
-  }
+
+  // An object that represents the side panel info. This is used for passing
+  // the information of the side panel context to the event listeners.
+  dictionary PanelInfo {
+    // The window associated with the side panel.
+    long? windowId;
+
+    // The tab associated with the side panel. This is only set if there is a
+    // tab-specific panel.
+    long? tabId;
+
+    // The path to the side panel HTML file in use.
+    DOMString? path;
+  };
 
   interface Events {
     // Fired when a sidePanel hosted by an extension is triggered to open.
     static void onOpened(
-      addListener(callback: (reason: onOpenedReason) => void): void;
-      removeListener(callback: (reason: onOpenedReason) => void): void;
-    )
+      addListener(callback: (options: PanelInfo) => void): void;
+      hasListener(callback: (options: PanelInfo) => void): void;
+      removeListener(callback: (options: PanelInfo) => void): void;
+    );
   
     // Fired when a sidePanel hosted by an extension is triggered to close.
     static void onClosed(
-      addListener(callback: (reason: onClosedReason) => void): void;
-      removeListener(callback: (reason: onClosedReason) => void): void;
-    )
-  }
+      addListener(callback: (options: PanelInfo) => void): void;
+      hasListener(callback: (options: PanelInfo) => void): void;
+      removeListener(callback: (options: PanelInfo) => void): void;
+    );
+  };
 ```
 
 ### Behavior
@@ -129,6 +122,9 @@ None.
 ## Alternatives
 
 ### Existing Workarounds
+
+Developers are using the runtime.connect() method to create a long lived channed from the side panel script and listening to the onDisconnect event from the service worker.
+References:
 - https://groups.google.com/a/chromium.org/g/chromium-extensions/c/o1_-Su6DkCI
 - https://medium.com/@latzikatz/chrome-side-panel-simulate-close-event-c76081f53b97
 ### Open Web API
@@ -137,8 +133,24 @@ Not applicable to the open web.
 
 ## Implementation Notes
 
-N/A
+### Open for discussions:
+- Should we also add onClosedReasons which can be something 
+   ```typescript
+   namespace sidePanel {
+     // Reason for the side panel open trigger.
+     enum onOpenedReason {
+         USER_ACTION,
+         PROGRAMMATIC
+     }
+     // Reason for the side panel close trigger.
+     enum onClosedReason {
+         USER_ACTION,
+         PROGRAMMATIC,
+         NEW_SIDE_PANEL_OPENED
+     }
+   }
+   ```
+- Would adding onHidden, onShown or onVisibilityChanged events for side panel extensions make sense too?
 
 ## Future Work
 
-N/A
