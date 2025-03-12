@@ -71,11 +71,12 @@ A few of them are listed below:
 
 ```Typescript
 namespace sidePanel {
-  // Reason for the side panel open trigger
+  // Reason for the side panel open trigger.
   enum onOpenedReason {
       USER_ACTION,
       PROGRAMMATIC
   }
+  // Reason for the side panel close trigger.
   enum onClosedReason {
       USER_ACTION,
       PROGRAMMATIC,
