@@ -163,7 +163,7 @@ Not applicable to the open web.
    }
    ```
 - Would adding onHidden, onShown or onVisibilityChanged events for side panel extensions make sense too?
-- Should we providing granular controls for attaching listeners for tab-specific or path-specific side panels.
+- Should we provide granular controls for attaching listeners for tab-specific or path-specific side panels.
 
 ## Future Work
 
