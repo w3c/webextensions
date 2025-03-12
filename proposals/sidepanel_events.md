@@ -123,7 +123,7 @@ None.
 
 ### Existing Workarounds
 
-Developers are using the runtime.connect() method to create a long lived channed from the side panel script and listening to the onDisconnect event from the service worker.
+Developers are using the `runtime.connect()` method to create a long lived channed from the side panel script and listening to the `onDisconnect` event from the service worker.
 References:
 - https://groups.google.com/a/chromium.org/g/chromium-extensions/c/o1_-Su6DkCI
 - https://medium.com/@latzikatz/chrome-side-panel-simulate-close-event-c76081f53b97
