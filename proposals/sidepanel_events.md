@@ -31,11 +31,7 @@ These events aim to provide developers with better control and management of the
 
 - User Experience Enhancement:
    - Objective: Improve user interactions by providing context-specific content or actions.
-   - Example: An extension that offers contextual help can display relevant tips or tutorials when the side panel is opened, enhancing the user's experience based on their current activity.
-
-- State Preservation:
-   - Objective: Save the state of the side panel to maintain continuity between sessions.
-   - Example: An extension that allows users to take notes can save the current note when the side panel is closed and restore it when reopened, ensuring no data is lost.
+   - Example: An extension that offers contextual help can display relevant tips or tutorials when the side panel is opened, enhancing the user's experience based on their current activity. Although this can be achived in other ways, but having a dedicated event will make using it simpler.
 
 - Custom Analytics:
    - Objective: Collect usage data to understand how users interact with the side panel.
