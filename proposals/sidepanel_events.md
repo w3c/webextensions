@@ -135,7 +135,7 @@ None.
 
 ### Existing Workarounds
 
-Developers are using the `runtime.connect()` method to create a long lived channed from the side panel script and listening to the `onDisconnect` event from the service worker.
+Developers are using the `runtime.connect()` method to create a long lived channel from the side panel script and listening to the `onDisconnect` event from the service worker.
 References:
 - https://groups.google.com/a/chromium.org/g/chromium-extensions/c/o1_-Su6DkCI
 - https://medium.com/@latzikatz/chrome-side-panel-simulate-close-event-c76081f53b97
@@ -146,7 +146,7 @@ Not applicable to the open web.
 ## Implementation Notes
 
 ### Open for discussions:
-- Should we also have trigger reasons for the onClosed and onOpened events? An sample schema for the reasons is given below.
+- Should we also have trigger reasons for the onClosed and onOpened events? A sample schema for the reasons is given below.
    ```typescript
    namespace sidePanel {
      // Reason for the side panel open trigger.
@@ -166,5 +166,5 @@ Not applicable to the open web.
 - Would adding onHidden, onShown or onVisibilityChanged events for side panel extensions make sense too?
 
 ## Future Work
-- Providing granualar controls for attaching listeners for tab-specific or path-specific side panels.
+- Providing granular controls for attaching listeners for tab-specific or path-specific side panels.
 
