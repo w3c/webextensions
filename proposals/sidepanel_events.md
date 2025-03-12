@@ -105,7 +105,6 @@ namespace sidePanel {
 ### Behavior
 
 Described as code comments in schema.
-Additionally, for spanning mode extensions in Incognito, these events will be
 
 ### New Permissions
 
@@ -164,7 +163,7 @@ Not applicable to the open web.
    }
    ```
 - Would adding onHidden, onShown or onVisibilityChanged events for side panel extensions make sense too?
+- Should we providing granular controls for attaching listeners for tab-specific or path-specific side panels.
 
 ## Future Work
-- Providing granular controls for attaching listeners for tab-specific or path-specific side panels.
 
