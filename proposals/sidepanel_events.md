@@ -60,18 +60,32 @@ A few of them are listed below:
 ```typescript
 namespace sidePanel {
 
-  // An object that represents the side panel info. This is used for passing
-  // the information of the side panel context to the event listeners.
-  dictionary PanelInfo {
+  // An object that represents the side panel open info. This is used for 
+  // passing the information of the side panel context to the event listeners.
+  dictionary PanelOpenInfo {
     // The window associated with the side panel.
-    long? windowId;
+    long windowId;
 
     // The tab associated with the side panel. This is only set if there is a
     // tab-specific panel.
     long? tabId;
 
     // The path to the side panel HTML file in use.
-    DOMString? path;
+    DOMString path;
+  };
+
+  // An object that represents the side panel close info. This is used for 
+  // passing the information of the side panel context to the event listeners.
+  dictionary PanelClosInfo {
+    // The window associated with the side panel.
+    long windowId;
+
+    // The tab associated with the side panel. This is only set if there is a
+    // tab-specific panel.
+    long? tabId;
+
+    // The path to the side panel HTML file in use.
+    DOMString path;
   };
 
   interface Events {
@@ -134,23 +148,25 @@ Not applicable to the open web.
 ## Implementation Notes
 
 ### Open for discussions:
-- Should we also add onClosedReasons which can be something 
+- Should we also have trigger reasons for the onClosed and onOpened events?
    ```typescript
    namespace sidePanel {
      // Reason for the side panel open trigger.
      enum onOpenedReason {
          USER_ACTION,
-         PROGRAMMATIC
+         PROGRAMMATIC,
      }
      // Reason for the side panel close trigger.
      enum onClosedReason {
          USER_ACTION,
          PROGRAMMATIC,
-         NEW_SIDE_PANEL_OPENED
+         NEW_SIDE_PANEL_OPENED,
+         TAB_CLOSED
      }
    }
    ```
 - Would adding onHidden, onShown or onVisibilityChanged events for side panel extensions make sense too?
 
 ## Future Work
+- Providing granualar controls for attaching listeners for tab specific or path specific side panels.
 
