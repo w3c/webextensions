@@ -3,30 +3,31 @@
 The [WebExtensions Community group](https://www.w3.org/community/webextensions/) meets virtually every other week, for one hour.
 The instructions to join the meeting and agenda are available at https://www.w3.org/groups/cg/webextensions/calendar.
 
-* Thursday 8 AM PST (3 PM UTC)
+* Thursday 8 AM PDT (3 PM UTC)
 * To convert to your local time zone, see https://everytimezone.com/
 
 After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2025-02-27 at 8 AM PST = https://everytimezone.com/?t=67bfab00,384
-- 2025-03-13 at 8 AM PST = https://everytimezone.com/?t=67d22000,384
+- 2025-03-13 at 8 AM PDT = https://everytimezone.com/?t=67d22000,384
+- 2025-03-27 at 8 AM PDT = https://everytimezone.com/?t=67e49500,384
 
 ## Past meetings
 
+* 2025-02-27 ([minutes](2025-02-27-wecg.md))
 * 2025-02-13 ([minutes](2025-02-13-wecg.md))
 * 2025-01-30 ([minutes](2025-01-30-wecg.md))
 * 2025-01-16 ([minutes](2025-01-16-wecg.md))
 * 2024-12-19 ([minutes](2024-12-19-wecg.md))
 * 2024-12-05 ([minutes](2024-12-05-wecg.md))
-* 2024-11-21 ([minutes](2024-11-21-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2025**
 
+* 2025-02-27 ([minutes](2025-02-27-wecg.md))
 * 2025-02-13 ([minutes](2025-02-13-wecg.md))
 * 2025-01-30 ([minutes](2025-01-30-wecg.md))
 * 2025-01-16 ([minutes](2025-01-16-wecg.md))
