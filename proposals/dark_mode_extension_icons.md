@@ -109,7 +109,7 @@ menus.create(menusProperties);
 menus.update(id, menusProperties);
 ```
 
-A benefit of this new structure is that it's more resiliant to future changes,
+A benefit of this new structure is that it's more resilient to future changes,
 thus allowing for more keys such as density (e.g. 2dppx), purpose (e.g.
 monochrome), and etc.
 
@@ -166,10 +166,10 @@ effectively have a wild-card for `color_schemes`. For example, `["*"]` is valid.
 **Misc**
 1. If the top-level `icon_variants` key is provided, the top level `icons` key
 will be ignored.
-1. `icon_variants` will not cause an error in the event that it is invalid.
+1. `icon_variants` will not cause an error if it's invalid.
 Instead, only the faulty icon group(s) will be ignored, with an optional
 warning. Warnings are preferred over errors because they're more adaptable to
-changes in the future.
+changes in the future. If none of the icon groups are valid, should this error?
 1. `color-schemes`. Any icon group that does not contain a `color_schemes` key
 will apply to all available options, e.g. both "light" and "dark".
 1. **Group**. If only one icon group is supplied, it will be used as the
@@ -200,7 +200,8 @@ starting with smaller sizes if available, retreating to the nearest larger size.
 1. The `"16"` is a size in `{"16": "icon.png"}` and any number can be used as a
 size, per the browser’s icon requirements. The word `"any"` can also be used in
 place of a number to represent an icon that can be shown at any size (usually
-vector images). The icon size used by the browser will be determined as follows:
+vector images). Does that mean that "any" will only have an svg and not a png?
+The icon size used by the browser will be determined as follows:
 1. **Raster images**: Sizes are in pixels. For high-density devices (2x, 3x,
 etc.), the browser looks for double or triple the desired point size (e.g., 32
 or 48 pixels for a 16 point request). If the exact pixel size is unavailable,
