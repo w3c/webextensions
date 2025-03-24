@@ -2,7 +2,7 @@
 
 ** Proposal Summary**
 
-Introduce a concept of “hybrid_permissions” which will offer existing extensions a simplified new-install experience by prompting users with both (1) required and (2) optional permissions and maintain current behavior for “optional_permissions” for users who already have the extension installed.
+Introduce a concept of “hybrid_permissions” which will offer existing extensions a simplified new-install experience by prompting users with both (1) install-time (required) and (2) optional permissions and maintain current behavior for “optional_permissions” for users who already have the extension installed.
 
 Extension manifest file example:
 
@@ -23,7 +23,7 @@ Extension manifest file example:
 
 **Contributors:** N/A
 
-**Created:** 2025-02-23
+**Created:** 2025-02-24
 
 **Related Issues:** N/A
 
@@ -31,17 +31,17 @@ Extension manifest file example:
 
 ### Objective
 
-Today, developers are forced to choose between the following 2 options:
+Today, developers have two options for adding new permissions that trigger warnings:
 
-1. Add a new permission as 'required' which will (1) disable the extension for 100% of current users until they take manual steps to grant the new permission. This is not a viable option for extension with large user install bases, as [The UI for reapproval of such permission is very unclear](https://developer.chrome.com/docs/extensions/develop/concepts/permission-warnings), and in most cases, it means a loss of most active users.
+1. Add a new permission as install-time permission which will (1) disable the extension for 100% of current users until they take manual steps to grant the new permission. This is not a viable option for extension with large user install bases, as [The UI for reapproval of such permission is very unclear](https://developer.chrome.com/docs/extensions/develop/concepts/permission-warnings), and in most cases, it means a loss of most active users.
 
 On the manifest-files level, it's a "permissions" property that represents a list of permissions the user agreed upon installation.
 
-2. Add new permissions as 'optional,' which will limit access to new features until the user grants access to the new permission.  <—  This is not optimal as it creates a confusing experience for new users who reviewed and accepted permissions a few seconds earlier while installing the extension.
+2. Add new permissions as 'optional,' (2) which will limit access to new features until the user grants access to the new permission.  <—  This is not optimal as it creates a confusing experience for new users who reviewed and accepted permissions a few seconds earlier while installing the extension.
 
 On the manifest-files level, it's an "optional_permissions" property that represents a list of permissions that the extension may request at any point, and the user agrees or declines them.
 
-We are proposing a third option: Hybrid Permission to improve the user experience for new users.
+**We are proposing a third option: Hybrid Permission to improve the user experience for new users.**
 
 **For New Installations**: We would like to offer a single permission prompt containing all required and hybrid permission requests.
 
@@ -51,7 +51,7 @@ We are proposing a third option: Hybrid Permission to improve the user experienc
 
 Additionally, there is a list of permissions that cannot be optional: debugger, declarativeNetRequest, dev tools, geolocation, DNS, proxy, tts, ttsEngine, and wallpaper.
 
-There is no way to request such permissions during runtime to avoid permission warnings triggered by install time permissions. In most cases, this means that the developer cannot add them to an already published extension without disabling it for all users.
+There is no way to request such permissions during runtime to avoid permission warnings triggered by install-time permissions. In most cases, this means that the developer cannot add them to an already published extension without disabling it for all users.
 
 #### User Benefits
 
@@ -79,14 +79,14 @@ Support for Hybrid Permissions will enable well-established extensions (includin
 
 ### Schema
 
-[Existing “chrome.permissions” behavior](https://developer.chrome.com/docs/extensions/reference/api/permissions#step_3_request_optional_permissions) is completely compatible with “hybrid” permissions. 
+[Existing web “permissions” behavior](https://developer.chrome.com/docs/extensions/reference/api/permissions#step_3_request_optional_permissions) is completely compatible with “hybrid” permissions. 
 
 However, there are two differences:
 
-1. Hybrid permissions should behave like permanent permissions and cannot be removed. This means that “Chrome.permissions.remove” should return “false” and print an exception.
+1. Hybrid permissions should behave like permanent permissions and cannot be removed. This means that “permissions.remove” should return “false” and print an exception.
 
 ```js
-chrome.permissions.remove({
+permissions.remove({
   permissions: ['tabs'],
   origins: ['https://www.google.com/']
 }, (removed) => {
@@ -94,11 +94,11 @@ chrome.permissions.remove({
 });
 ```
 
-1. It should be possible to request permission that cannot be optional (like “devtools”). The request should be [performed from inside a user gesture](https://developer.chrome.com/docs/extensions/reference/api/permissions#:~:text=Permissions%20must%20be%20requested%20from%20inside%20a%20user%20gesture). See the official example - https://developer.chrome.com/docs/extensions/reference/api/permissions 
+2. It should be possible to request permission that cannot be optional (like “devtools”). The request should be [performed from inside a user gesture](https://developer.chrome.com/docs/extensions/reference/api/permissions#:~:text=Permissions%20must%20be%20requested%20from%20inside%20a%20user%20gesture). See the example from an official documentation - https://developer.chrome.com/docs/extensions/reference/api/permissions 
 
 ### Behavior
 
-Hybrid permissions should be requested alongside install time “permissions” with the same UI for new installs.
+Hybrid permissions should be requested alongside install-time “permissions” with the same UI for new installs.
 
 For existing installs (extension update flow), nothing should be requested. However, the extension should be able check and request new permission on runtime.
 
