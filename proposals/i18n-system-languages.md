@@ -104,4 +104,4 @@ Currently, if an extension wants to offer locales outside not localised for by t
 
 ### Open Web API
 
-To combat fingerprinting, this should not be an Open Web API, like browser.i18n.getUILanguage is not.
+To combat fingerprinting, this should not be an Open Web API, like `browser.i18n.getUILanguage` is not.
