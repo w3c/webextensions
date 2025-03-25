@@ -44,7 +44,7 @@ Language-related extensions and extensions wanting to match the locale of the op
 {
   "name": "getPreferredSystemLanguages",
   "type": "function",
-  "description": "Gets the preferred languages of the operating system. This is different from the languages set in the browser; to get those, use $(ref:i18n.getAcceptLanguages).",
+  "description": "Gets the preferred locales of the operating system. This is different from the locales set in the browser; to get those, use $(ref:i18n.getAcceptLanguages).",
   "parameters": [],
   "returns_async": {
     "name": "callback",
@@ -59,7 +59,7 @@ Language-related extensions and extensions wanting to match the locale of the op
 
 ```
 
-`i18n.getSystemUILanguage()` would synchronously return a [BCP47 language tag](https://www.rfc-editor.org/bcp/bcp47.html) like `i18n.getUILanguage()` does right now.
+`i18n.getSystemUILanguage()` would asynchronously return a [BCP47 language tag](https://www.rfc-editor.org/bcp/bcp47.html) like `i18n.getUILanguage()` does right now.
 
 The returned language tag can be different from the first entry returned by getPreferredSystemLanguages as the operating system could not support all languages specified by the user for its user interface.
 
