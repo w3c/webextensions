@@ -25,7 +25,9 @@ Extension manifest file example:
 
 **Created:** 2025-02-24
 
-**Related Issues:** N/A
+**Related Issues:** 
+- [711](https://github.com/w3c/webextensions/issues/711)
+- [Feature request "Hybrid Permissions for Chrome Extension"](https://issuetracker.google.com/u/0/issues/362675958)
 
 ## Motivation
 
