@@ -69,7 +69,6 @@ It would follow the following signature for [i18n.json](https://chromium.googles
 {
   "name": "getSystemUILanguage",
   "type": "function",
-  "nocompile": true,
   "description": "Gets the current UI locale of the Operating System. This is different from $(ref:i18n.getUILanguage) which returns the UI locale of the web browser.",
   "parameters": [],
   "returns_async": {
