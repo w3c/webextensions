@@ -109,7 +109,7 @@ menus.create(menusProperties);
 menus.update(id, menusProperties);
 ```
 
-A benefit of this new structure is that it's more resiliant to future changes,
+A benefit of this new structure is that it's more resilient to future changes,
 thus allowing for more keys such as density (e.g. 2dppx), purpose (e.g.
 monochrome), and etc.
 
@@ -166,10 +166,14 @@ effectively have a wild-card for `color_schemes`. For example, `["*"]` is valid.
 **Misc**
 1. If the top-level `icon_variants` key is provided, the top level `icons` key
 will be ignored.
-1. `icon_variants` will not cause an error in the event that it is invalid.
+1. `icon_variants` will not cause hard errors if no icon groups are found or
+specific icon groups have unknown properties. It may cause a hard error if icon
+groups are not of type object.
 Instead, only the faulty icon group(s) will be ignored, with an optional
 warning. Warnings are preferred over errors because they're more adaptable to
-changes in the future.
+changes in the future. If none of the icon groups are valid, agents can
+fallback to the `icons` property in `manifest.json`. If `icons` is
+missing, agents are expected not to give a hard error, but can yield a warning.
 1. `color-schemes`. Any icon group that does not contain a `color_schemes` key
 will apply to all available options, e.g. both "light" and "dark".
 1. **Group**. If only one icon group is supplied, it will be used as the
