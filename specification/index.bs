@@ -149,6 +149,10 @@ This key may be present.
 
 This key may be present.
 
+### Key `trial_tokens`
+
+The <a href="#key-trial_tokens">`trial_tokens`</a> key is an optional [=list=] of strings. These may be used by the user agent to enable experimental features for the [[#extension-origin]]. The user agent may ignore or warn about any unrecognised, expired or malformed keys but must only show a warning and must not prevent the extension from loading.
+
 ## Reserved file names
 
 Filenames beginning with an underscore (`_`) are reserved for use by user agent.
