@@ -83,10 +83,10 @@ OnInvalidatedReason:
   "id": "OnInvalidatedReason",
   "type": "string",
   "enum": [
-    {"name": "uninstalled", "description": "Specifies the event reason as an uninstallation."},
+    {"name": "uninstall", "description": "Specifies the event reason as an uninstallation."},
     {"name": "update", "description": "Specifies the event reason as an extension update."},
     {"name": "reload", "description": "Specifies the event reason as an extension reloading."},
-    {"name": "disabled", "description": "Specifies the event reason as an extension disabling."}
+    {"name": "disable", "description": "Specifies the event reason as an extension disabling."}
   ],
   "description": "The reason that this event is being dispatched."
 }
@@ -118,13 +118,13 @@ Currently extensions could try checking if an API gets thrown with an
 invalidated error. This would allow an extension to figure out if the extension
 is invalidated. No new abuse surface is introduced.
 
-As for the returned reason. The uninstalled reason can not be abused more than
+As for the returned reason. The `uninstall` reason can not be abused more than
 currently `browser.runtime.setUninstalledURL`.
 
 As for the `update` reason, this can be figured out by attempting to negotiate
 between the old content script and the new content script.
 
-The `disabled` reason could provide additional information. However this seems
+The `disable` reason could provide additional information. However this seems
 to not be a big abuse surface.
 
 ### Additional Security Considerations
