@@ -1,12 +1,5 @@
 # Proposal: browser.runtime.onInvalidated event
 
-** How to Use This Template **
-
-See [Proposal Process](proposal_process.md) for the detailed process on how to
-propose new APIs and use this template.  Each section includes instructions on
-what to include.  Delete the instructions for a given section once it's filled
-out.  Remove this section once the template is filled out.
-
 **Summary**
 
 `browser.runtime.onInvalidated`
