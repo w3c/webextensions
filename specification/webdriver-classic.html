@@ -5,9 +5,9 @@
   <title>webdriver-classic</title>
   <meta content="CG-DRAFT" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version 60c422380, updated Thu Feb 20 19:11:22 2025 -0800" name="generator">
+  <meta content="Bikeshed version b25686b9f, updated Fri Mar 14 14:15:20 2025 -0700" name="generator">
   <link href="https://w3c.github.io/webextensions/specification/webdriver-classic.html" rel="canonical">
-  <meta content="e393c3faa6f458da2f9506641c568d632e1c0496" name="revision">
+  <meta content="892ba8c0285539c7d939129f6b181bb3dba7cda1" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -412,7 +412,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">webdriver-classic</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2025-02-27">27 February 2025</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2025-03-27">27 March 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -552,8 +552,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
           <p>If the implementation does not support loading web
                       extensions using <var>type hint</var>, return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error"> error code</a> unsupported operation. </p>
          <li>
-          <p>Let <var>value</var> be the result of
-                      getting the property"<code>value</code>" from <var>parameters</var>. If <var>value</var> is <code>null</code>, return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error"> error code</a> invalid argument. </p>
+          <p>If <var>type hint</var> is "base64", let <var>value</var> be the result of getting the property "<code>value</code>" from <var>parameters</var>. If <var>type hint</var> is "path" or "archivePath",
+                      let <var>value</var> be the result of getting the property "<code>path</code>" from <var>parameters</var>. If <var>value</var> is <code>null</code>, return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error"> error code</a> invalid argument. </p>
          <li>
           <p>If <var>type hint</var> has the value "path" and the
                       implementation supports loading a web extension given a
