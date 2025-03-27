@@ -74,7 +74,7 @@ New onInvalidated event:
 }
 ```
 
-Optionally gives a reason of type OnInvalidatedReason
+The event should have a reason of type OnInvalidatedReason
 
 OnInvalidatedReason:
 
