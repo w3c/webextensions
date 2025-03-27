@@ -1,4 +1,4 @@
-# Proposal: browser.runtime.onInvalidated event>
+# Proposal: browser.runtime.onInvalidated event
 
 ** How to Use This Template **
 
@@ -20,7 +20,7 @@ extension context get invalidated.
 
 **Sponsoring Browser:** Chrome
 
-**Contributors:** TBD
+**Contributors:** bershanskiy
 
 **Created:** 2025-03-26
 
