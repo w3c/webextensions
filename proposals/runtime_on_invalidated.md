@@ -94,7 +94,7 @@ OnInvalidatedReason:
 
 ### Behavior
 
-The event would be fired when the extension context get invalidated.
+The event will be fired when the extension context get invalidated.
 The event comes with a reason which specifies why an extension got invalidated.
 
 ### New Permissions
