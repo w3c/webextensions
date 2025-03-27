@@ -120,7 +120,7 @@ Repository: w3c/webextensions
                       <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
                       with <a href="https://w3c.github.io/webdriver/#dfn-error">
                       error code</a> unsupported operation.
-             <li type='a'><p>If <var>type hint</var> is "base64", let <var>value</var>
+              <li><p>If <var>type hint</var> is "base64", let <var>value</var>
                       be the result of getting the property "<code>value</code>" from
                       <var>parameters</var>. If <var>type hint</var> is "path" or "archivePath",
                       let <var>value</var> be the result of getting the property "<code>path</code>" from
