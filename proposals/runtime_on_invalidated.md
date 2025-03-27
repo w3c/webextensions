@@ -11,8 +11,8 @@ out.  Remove this section once the template is filled out.
 
 `browser.runtime.onInvalidated`
 
-This event allows extension frames and content scripts to be notified when
-context get invalidated.
+This event allows extension contexts which stay alive to be notified when the
+extension context get invalidated.
 
 **Document Metadata**
 
@@ -30,15 +30,16 @@ context get invalidated.
 
 ### Objective
 
-This event allows extension frames and content scripts to be notified when
-context get invalidated.
+This event allows extension contexts which stay alive to be notified when the
+extension context get invalidated.
 
 #### Use Cases
 
-When the extension context gets invalidated, this means the content script
-or frame can no longer use the chrome APIs or communicate with the extension.
+When the extension context gets invalidated, this means extension contexts
+which stay alive can no longer use the chrome APIs or communicate with other
+extension contexts.
 
-As content script or frame, knowing when this happens is crucial for moving
+For extension contexts, knowing when this happens is crucial for moving
 forward. Alternatives can be used in this situation, like `window.open` instead
 of `browser.tabs.create`. If moving forward is no option, this event can be
 used for initiating the cleanup of any side effects caused in the frames
