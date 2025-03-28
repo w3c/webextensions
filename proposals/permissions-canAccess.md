@@ -58,8 +58,8 @@ dictionary AccessQuery {
 dictionary AccessResult {
   // The current extension access state of the given host
   canAccess: boolean,
-  // The host permission can only be used once
-  accessOnce: boolean,
+  // Can inject scripts only
+  injectOnly: boolean,
 }
 
 ```
