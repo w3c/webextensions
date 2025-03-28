@@ -2,7 +2,7 @@
 
 ** Proposal Summary**
 
-Add a new boolean property to the manifest that changes the default behavior of added "permissions" during the extension's update. Instead of showing a "warning," permissions shouldn't be granted; they should behave like they are optional until an extension is requested.
+Add a new boolean property to the manifest that changes the default behavior of added "permissions" during the extension's update. Instead of showing a "warning," permissions shouldn't be granted; they should behave like they are optional until an extension is requested. It doesn't change behavior during install time or for permission that doesn't trigger a warning.
 
 Extension manifest file example:
 
