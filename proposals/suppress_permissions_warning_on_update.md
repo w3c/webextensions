@@ -97,7 +97,7 @@ In case "suppress_permissions_warning_on_update" is set to true, then any new pe
 document.querySelector('#my-button').addEventListener('click', (event) => {
   // Permissions must be requested from inside a user gesture, like a button's
   // click handler.
-  chrome.permissions.request({
+  browser.permissions.request({
     permissions: ['tabs'],
     origins: ['https://www.google.com/']
   }, (granted) => {
