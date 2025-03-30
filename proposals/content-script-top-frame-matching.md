@@ -13,6 +13,7 @@ API proposal to allow content script registration (both static and dynamic) to b
 *   **Proposal Champions:** [Kzar](https://github.com/kzar), [Carlosjeurissen](https://github.com/carlosjeurissen), [Polywock](https://github.com/polywock)
 *   **Created:** 2025-03-30 
 *   **Related Issues:**
+    *   [w3c/webextensions#763](https://github.com/w3c/webextensions/issues/763)
     *   [w3c/webextensions#117](https://github.com/w3c/webextensions/issues/117)
     *   [w3c/webextensions#668](https://github.com/w3c/webextensions/issues/668)
     *   [Chromium Issue 40202338](https://issues.chromium.org/issues/40202338)
@@ -30,14 +31,13 @@ This proposal introduces a mechanism to further restrict content script injectio
     *   If a user blocks `https://example.com/*` using `excludeMatches`, the extension's content script *still runs* on `https://example.com/page` if an embedded iframe loads content from a *different*, non-blocked domain (assuming `all_frames: true`).
     *   Conversely, if a user visits `https://anothersite.com/*` which embeds an iframe from the blocked `https://example.com/*`, the extension *is blocked* from running within that embedded `example.com` frame, even though the user likely only intended to block the extension when visiting `example.com` directly as the main page.
 
-2.  **Security:** As highlighted in [#117](https://github.com/w3c/webextensions/issues/117), restricting content scripts based on the top-level frame's origin enhances security. For scripts registered with `all_frames: true`, developers can ensure they only execute when the main page's origin is one they expect, preventing accidental injection into sensitive contexts or reducing the impact of potential vulnerabilities.
+2.  **Security:** Restricting content scripts based on the top-level frame's origin enhances security. For scripts registered with `all_frames: true`, developers can ensure they only execute when the main page's origin is one they expect, preventing accidental injection into sensitive contexts or reducing the impact of potential vulnerabilities.
 
 3.  **Performance:** By preventing script injection at the browser level based on top-frame origin criteria, extensions avoid the performance implications of the [current workaround](#alternatives).
 
 
 ### Known Consumers
-
-Developer interest is evident in the related GitHub and Chromium discussion ([#117](https://github.com/w3c/webextensions/issues/117), [#668](https://github.com/w3c/webextensions/issues/668), [40202338](https://issues.chromium.org/issues/40202338)). This feature addresses a common pattern (site blocking/allowing by origin) that currently requires less secure and efficient workarounds.
+Developer interest is evident in the related GitHub and Chromium discussion ([#763](https://github.com/w3c/webextensions/issues/763), [#117](https://github.com/w3c/webextensions/issues/117), [#668](https://github.com/w3c/webextensions/issues/668), [40202338](https://issues.chromium.org/issues/40202338)). This feature addresses a common pattern (site blocking/allowing by origin) that currently requires less secure and efficient workarounds.
 
 ## Specification
 
