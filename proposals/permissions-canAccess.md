@@ -38,7 +38,7 @@ as without host permissions extension APIs may not expose URLs.
 
 Extensions which currently maintain guess work on what hosts are restricted.
 For example: https://github.com/fregante/webext-content-scripts#isscriptableurlurl
-And extensions which expect permissions.contains to be reliable while it
+And extensions which expect `permissions.contains()` to be reliable while it
 may not be reliable in all situations.
 
 ## Specification
