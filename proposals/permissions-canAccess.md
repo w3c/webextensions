@@ -39,7 +39,7 @@ as without host permissions extension APIs may not expose URLs.
 Extensions which currently maintain guess work on what hosts are restricted.
 For example: https://github.com/fregante/webext-content-scripts#isscriptableurlurl
 And extensions which expect `permissions.contains()` to be reliable while it
-may not be reliable in all situations.
+may not be reliable in all situations. See workarounds.
 
 ## Specification
 
@@ -56,9 +56,9 @@ dictionary AccessQuery {
 }
 
 dictionary AccessResult {
-  // extension context can executeScript on host
-  scriptingAccess: boolean,
-  // extension context has temporary host access allowing fetch requests
+  // extension context can executeScript on host. Not returned when only a url is passed as AccessQuery
+  scriptingAccess?: boolean,
+  // extension context has host access allowing fetch requests
   hostAccess: boolean,
 }
 
@@ -109,10 +109,14 @@ No new attack vectors are created.
 
 ### Existing Workarounds
 
-Currently extensions can call the `browser.permissions.contains()` API. This
+Currently extensions can call the `permissions.contains()` API. This
 would be insufficient to determine access to potential restricted hosts
 as a result of enterprise policies or for security reasons. For example,
-some browsers block access to extension store hosts.
+some browsers block access to extension store hosts. `permissions.contains()`
+in this scenario would give false positives.
+
+In addition, with `activeTab`, `permissions.contains()` might return false while
+the extension context has `hostAccess`.
 
 Another workaround is actually calling APIs which could throw if the extension
 has no access. This is slower and could lead to side-effects. In general it is
