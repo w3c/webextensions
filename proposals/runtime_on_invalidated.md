@@ -4,7 +4,8 @@
 
 `browser.runtime.onInvalidated`
 
-This event notifies extension contexts that remain alive when the extension context gets invalidated.
+This event notifies extension contexts that remain alive when the extension
+context gets invalidated.
 
 **Document Metadata**
 
@@ -22,7 +23,8 @@ This event notifies extension contexts that remain alive when the extension cont
 
 ### Objective
 
-This event notifies extension contexts that remain alive when the extension context gets invalidated.
+This event notifies extension contexts that remain alive when the extension
+context gets invalidated.
 
 #### Use Cases
 
@@ -86,7 +88,10 @@ OnInvalidatedReason:
 
 ### Behavior
 
-The event will be fired when the extension context get invalidated.
+The event will be fired when the extension context get invalidated while the
+underlying document remains valid. The event only fires in extension contexts
+which are not already killed on invalidation.
+
 The event comes with a reason which specifies why an extension got invalidated.
 
 ### New Permissions
@@ -101,8 +106,8 @@ No new manifest fields.
 
 ### Exposed Sensitive Data
 
-Document any sensitive data or personally-identifiable information the API
-exposes to the extension.
+The event gives an invalidation reason. This could be used for gathering figures
+on extension updates and uninstalls.
 
 ### Abuse Mitigations
 
@@ -110,8 +115,10 @@ Currently extensions could try checking if an API gets thrown with an
 invalidated error. This would allow an extension to figure out if the extension
 is invalidated. No new abuse surface is introduced.
 
-As for the returned reason. The `uninstall` reason can not be abused more than
-currently `browser.runtime.setUninstalledURL`.
+As for the returned reason. The `uninstall` reason could potentially be used
+by extensions to modify every page to nag the user about reinstalling the
+extension. However extensions currently can already ask for this once by setting
+`browser.runtime.setUninstalledURL`.
 
 As for the `update` reason, this can be figured out by attempting to negotiate
 between the old content script and the new content script.
