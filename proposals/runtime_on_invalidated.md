@@ -22,8 +22,7 @@ This event notifies extension contexts that remain alive when the extension cont
 
 ### Objective
 
-This event allows extension contexts which stay alive to be notified when the
-extension context get invalidated.
+This event notifies extension contexts that remain alive when the extension context gets invalidated.
 
 #### Use Cases
 
