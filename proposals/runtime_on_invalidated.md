@@ -13,7 +13,7 @@ context gets invalidated.
 
 **Sponsoring Browser:** Chrome
 
-**Contributors:** bershanskiy
+**Contributors:** bershanskiy, xeenon, robwu
 
 **Created:** 2025-03-26
 
