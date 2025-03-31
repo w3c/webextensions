@@ -50,7 +50,7 @@ New onInvalidated event:
 {
   "name": "onInvalidated",
   "type": "function",
-  "description": "Fired when the extension context get invalidated.",
+  "description": "Fired when the extension context get invalidated while the underlying document remains valid.",
   "parameters": [
     {
       "type": "object",
