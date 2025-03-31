@@ -56,10 +56,10 @@ dictionary AccessQuery {
 }
 
 dictionary AccessResult {
-  // The current extension access state of the given host
-  canAccess: boolean,
-  // Can inject scripts only
-  injectOnly: boolean,
+  // extension context can executeScript on host
+  scriptingAccess: boolean,
+  // extension context has temporary host access allowing fetch requests
+  hostAccess: boolean,
 }
 
 ```
@@ -77,8 +77,8 @@ Promise<AccessResult[]> browser.permissions.canAccess(
 
 ### Behavior
 
-The `accessOnce` can be set by browsers which in case of the `activeTab`
-permission grant host access once.
+In the case of `activeTab`, `scriptingAccess` is set true. If the browser
+grants temporary host access with `activeTab`, `hostAccess` is set true as well.
 
 ### New Permissions
 
@@ -92,8 +92,8 @@ No new manifest fields.
 
 ### Exposed Sensitive Data
 
-Document any sensitive data or personally-identifiable information the API
-exposes to the extension.
+No sensitive data is exposed in this API. The information given to extensions
+in this API is only what access the extension has, not granting actual access.
 
 ### Abuse Mitigations
 
