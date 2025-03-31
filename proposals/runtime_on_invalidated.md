@@ -4,8 +4,7 @@
 
 `browser.runtime.onInvalidated`
 
-This event allows extension contexts which stay alive to be notified when the
-extension context get invalidated.
+This event notifies extension contexts that remain alive when the extension context gets invalidated.
 
 **Document Metadata**
 
