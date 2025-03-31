@@ -125,7 +125,7 @@ web thus does not make sense.
 
 ## Implementation Notes
 
-Most browsers currently already have the concept of canAccess internally.
+Most browsers currently already have the concept of `canAccess()` internally.
 This can be leveraged during implementation.
 
 ## Future Work
