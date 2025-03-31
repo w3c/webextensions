@@ -77,7 +77,7 @@ Promise<AccessResult[]> browser.permissions.canAccess(
 
 ### Behavior
 
-The accessOnce can be set by browsers which in case of the `activeTab`
+The `accessOnce` can be set by browsers which in case of the `activeTab`
 permission grant host access once.
 
 ### New Permissions
