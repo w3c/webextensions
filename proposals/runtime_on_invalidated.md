@@ -28,7 +28,7 @@ extension context get invalidated.
 #### Use Cases
 
 When the extension context gets invalidated, this means extension contexts
-which stay alive can no longer use the chrome APIs or communicate with other
+which stay alive can no longer use the extension APIs or communicate with other
 extension contexts.
 
 For extension contexts, knowing when this happens is crucial for moving
