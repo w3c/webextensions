@@ -120,7 +120,7 @@ better to prevent throwing errors when they can be circumvented.
 
 ### Open Web API
 
-Host access generally is unique to webExtensions. Having such API on the open
+Host access generally is unique to extensions. Having such API on the open
 web thus does not make sense.
 
 ## Implementation Notes
