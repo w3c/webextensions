@@ -91,7 +91,7 @@ Changes listed in this proposal will enable well-established extensions to intro
 
 ### Schema
 
-The permissions' granting behavior only changes when "permissions_behavior_on_update" is set to "defer" and only for new permissions that may trigger a warning during the update. It doesn't change the behavior of permissions that don't trigger a warning or all permissions during install time.
+The permissions' granting behavior only changes when `permissions_behavior_on_update` is set to `defer` and only for new permissions that may trigger a warning during the update. It doesn't change the behavior of permissions that don't trigger a warning or all permissions during install time.
 
 When the "permissions_behavior_on_update" is absent from the manifest, the behavior remains the same as it is right now, and new permissions with a warning will turn off the extension during the update or stop updates until the user explicitly approves it (behavior varies across browsers).
 
