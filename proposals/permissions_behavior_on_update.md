@@ -117,7 +117,7 @@ document.querySelector('#my-button').addEventListener('click', (event) => {
 });
 ```
 
-Once permission is granted, it behaves like a regular non-optional "permission" and cannot be removed with "permissions.remove". Once "permissions.remove" is called, then “false” will be returned, and an exception will be printed.
+Once permission is granted, it behaves like a regular non-optional "permission" and cannot be removed with `permissions.remove()`. Once `permissions.remove()` is called, then `false` will be returned, and an exception will be printed.
 
 ```js
 permissions.remove({
