@@ -202,7 +202,7 @@ The proposal doesn't introduce any additional possibilities for abuse. For alrea
 
 ### Additional Security Considerations
 
-N/A
+Without `permissions_behavior_on_update="defer"`, security can be at risk by either keeping extensions on older extension versions or by accidentality removing important security/privacy extensions.
 
 ## Alternatives
 
