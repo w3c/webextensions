@@ -170,7 +170,7 @@ Example:
 
 ### Behavior
 
-When "permissions_behavior_on_update" is set to "defer", then for existing installs (extension update flow), nothing should be requested. However, the extension should be able check and request new permission on runtime. Otherwise, permissions granting behavior remains the same.
+When `permissions_behavior_on_update` is set to `defer`, then for existing installs (extension update flow), nothing should be requested. However, the extension should be able check and request new permission on runtime. Otherwise, permissions granting behavior remains the same.
 
 ### New Permissions
 
