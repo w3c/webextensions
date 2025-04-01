@@ -1,4 +1,4 @@
-# Proposal: Allow to change permissions behavior on extension's update
+# Proposal: Allow to change permissions behavior on extension updates
 
 ** Proposal Summary**
 
