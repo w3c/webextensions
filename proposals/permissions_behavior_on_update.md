@@ -97,7 +97,7 @@ When the "permissions_behavior_on_update" is absent from the manifest, the behav
 
 ### Suppress permissions warning on update
 
-In case "permissions_behavior_on_update" is set to "defer", then any new permission that triggers a "warning" isn't granted but instead should be explicitly requested within a user gesture using "permissions.request"(https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/permissions/request). Expect that user may decline permission.
+In case `permissions_behavior_on_update` is set to `defer`, then any new permission that triggers a "warning" isn't granted but instead should be explicitly requested within a user gesture using "permissions.request"(https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/permissions/request). Expect that user may decline permission.
 
 ```
 document.querySelector('#my-button').addEventListener('click', (event) => {
