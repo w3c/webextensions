@@ -4,7 +4,7 @@
 
 Add a new property, "permissions_behavior_on_update," to the manifest to alter the newly added "permissions" behavior during the extension's update. When set to "defer," newly added permissions on update won't be granted by default; they will behave like optional permissions and must be explicitly requested by the extension. Also, the default browser behavior will NOT be applied (warning, turn off, stop further updates, etc.).
 
-The new behavior isn't applicable during install time or for permission that doesn't trigger a warning.
+The new behavior is not applicable during install time or for permissions that do not trigger a warning.
 
 Extension manifest file example:
 
