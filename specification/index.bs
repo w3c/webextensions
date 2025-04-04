@@ -151,7 +151,7 @@ This key may be present.
 
 ### Key `trial_tokens`
 
-The <a href="#key-trial_tokens">`trial_tokens`</a> key is an optional [=list=] of strings. These may be used by the user agent to enable experimental features for the [[#extension-origin]]. The user agent may ignore or warn about any unrecognized, expired or malformed keys but must only show a warning and must not prevent the extension from loading.
+The <a href="#key-trial_tokens">`trial_tokens`</a> key is an optional [=list=] of strings. These may be used by the user agent to enable experimental features for the [[#extension-origin]]. The user agent may ignore or warn about any unrecognized, expired or malformed keys but any such entries must not prevent the extension from loading.
 
 ## Reserved file names
 
