@@ -10,7 +10,6 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2025-03-25 until 2025-03-28, face-to-face meeting in Berlin ([issue 759](https://github.com/w3c/webextensions/issues/759))
 - 2025-04-10 at 8 AM PDT = https://everytimezone.com/?t=67f70a00,384
 - 2025-04-24 at 8 AM PDT = https://everytimezone.com/?t=68097f00,384
 
@@ -28,7 +27,11 @@ After the end of each meeting, meeting notes are published here.
 
 **2025**
 
+* 2025-03-28 F2F meetup in Berlin ([minutes](2025-03-28-berlin-f2f.md))
 * 2025-03-27 ([minutes](2025-03-27-wecg.md))
+* 2025-03-27 F2F meetup in Berlin ([minutes](2025-03-27-berlin-f2f.md))
+* 2025-03-26 F2F meetup in Berlin ([minutes](2025-03-26-berlin-f2f.md))
+* 2025-03-25 F2F meetup in Berlin ([minutes](2025-03-25-berlin-f2f.md))
 * 2025-03-13 ([minutes](2025-03-13-wecg.md))
 * 2025-02-27 ([minutes](2025-02-27-wecg.md))
 * 2025-02-13 ([minutes](2025-02-13-wecg.md))
