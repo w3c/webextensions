@@ -2,7 +2,7 @@
 
 ** Proposal Summary**
 
-Add a new property, `permissions_behavior_on_update`, to the manifest to specify how browsers should act when extension updates introduce new `permissions`. When set to `defer`, new permissions will behave as if specified in `optional_permissions` for existing. They are not requested or granted on update thus must be explicitly requested by the extension. The default browser behavior will NOT be applied (warning, turn off, stop further updates, etc.).
+Add a new property, `permissions_behavior.updates`, to the manifest to specify how browsers should act when extension updates introduce new `permissions`. When set to `defer`, new permissions will behave as if specified in `optional_permissions` for existing. They are not requested or granted on update thus must be explicitly requested by the extension. The default browser behavior will NOT be applied (warning, turn off, stop further updates, etc.).
 
 The new behavior is not applicable during install time or for permissions that do not trigger a warning.
 
@@ -10,7 +10,27 @@ Extension manifest file example:
 
 ```json
 {
-  "permissions_behavior_on_update": "defer"
+  "permissions_behavior": {
+    "updates": "defer"
+  }
+}
+```
+
+To use the original browser's behavior, use "auto" or omit `"updates"` or `"permissions_behavior"` properties:
+
+```json
+{
+  "permissions_behavior": {
+    "updates": "auto"
+  }
+}
+```
+
+or
+
+```json
+{
+  "permissions_behavior": {}
 }
 ```
 
@@ -65,7 +85,7 @@ The intent is to avoid adding new kinds of permissions as this may lead to ambig
 
 #### User Benefits
 
-By adding "permissions_behavior_on_update", extension developers can offer the best user experience by being open and upfront about the permissions extension will require to function optimally as well as reducing user confusion with a single prompt as opposed to multiple.
+By adding "permissions_behavior.updates", extension developers can offer the best user experience by being open and upfront about the permissions extension will require to function optimally as well as reducing user confusion with a single prompt as opposed to multiple.
 
 Also, by suppressing warnings we will reduce the fear of accidentally "turn off" extensions for the existing user and enable extension developers to actively evolve extensions by adopting new permissions as soon as they make sense.
 
@@ -91,13 +111,17 @@ Changes listed in this proposal will enable well-established extensions to intro
 
 ### Schema
 
-The permissions' granting behavior only changes when `permissions_behavior_on_update` is set to `defer` and only for new permissions that may trigger a warning during the update. It doesn't change the behavior of permissions that don't trigger a warning or all permissions during install time.
+The new `permissions_behavior` namespace has been introduced. It currently contains only the `updates` key; however, it may be used to evolve future permissions. The absence of a new namespace or an empty `permissions_behavior` namespace does not alter any extension's behavior.
 
-When the "permissions_behavior_on_update" is absent from the manifest, the behavior remains the same as it is right now, and new permissions with a warning will turn off the extension during the update or stop updates until the user explicitly approves it (behavior varies across browsers).
+#### New key "updates" to control permission's update behavior
+
+The permissions' granting behavior only changes when `permissions_behavior.updates` is set to `defer` and only for new permissions that may trigger a warning during the update. It doesn't change the behavior of permissions that don't trigger a warning or all permissions during install time.
+
+When the `permissions_behavior.updates` is absent from the manifest or is set to `auto`, the behavior remains the same as it is right now, and new permissions with a warning will turn off the extension during the update or stop updates until the user explicitly approves it (behavior varies across browsers).
 
 ### Suppress permissions warning on update
 
-In case `permissions_behavior_on_update` is set to `defer`, then any new permission that triggers a "warning" isn't granted but instead should be explicitly requested within a user gesture using "permissions.request"(https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/permissions/request). Expect that user may decline permission.
+In case `permissions_behavior.updates` is set to `defer`, then any new permission that triggers a "warning" isn't granted but instead should be explicitly requested within a user gesture using "permissions.request"(https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/permissions/request). Expect that user may decline permission.
 
 ```
 document.querySelector('#my-button').addEventListener('click', (event) => {
@@ -132,13 +156,13 @@ Overall the regular [permissions' API](https://developer.mozilla.org/en-US/docs/
 
 [Existing web “permissions” behavior](https://developer.chrome.com/docs/extensions/reference/api/permissions#step_3_request_optional_permissions) is not changes. 
 
-### What if new version changes removes "permissions_behavior_on_update" after it was set to "defer"
+### What if new version changes removes "permissions_behavior.updates" after it was set to "defer"
 
 In this case, the new behavior will be only applicable for any new permissions that will be added in this or further versions. Any "deferred" permissions with a warning will remain deferred.
 
 Example:
 
-1. Assuming that user is already on 0.0.1 and extension was just updated to 0.0.2 that adds a new "<permission_that_triggers_a_warning>" with `permissions_behavior_on_update` is set to `defer`. In this case, the extension will be successfully updated; however, "permission_that_triggers_a_warning" won't be granted. Also, assuming that the user hasn't interacted with the extension, so permission was never requested.
+1. Assuming that user is already on 0.0.1 and extension was just updated to 0.0.2 that adds a new "<permission_that_triggers_a_warning>" with `permissions_behavior.updates` is set to `defer`. In this case, the extension will be successfully updated; however, "permission_that_triggers_a_warning" won't be granted. Also, assuming that the user hasn't interacted with the extension, so permission was never requested.
 
 ```js
 {
@@ -147,11 +171,11 @@ Example:
   permissions: [
     "<permission_that_triggers_a_warning>"
   ],
-  permissions_behavior_on_update: "defer"
+  permissions_behavior.updates: "defer"
 }
 ```
 
-2. The new version 0.0.3 removes `permissions_behavior_on_update`, but adds a new "permission_without_warning". In this case, the extension will be successfully updated, and "permission_without_warning" will be granted, however, "permission_that_triggers_a_warning" remains suppressed and needs an explicit request to be used.
+2. The new version 0.0.3 removes `permissions_behavior.updates`, but adds a new "permission_without_warning". In this case, the extension will be successfully updated, and "permission_without_warning" will be granted, however, "permission_that_triggers_a_warning" remains suppressed and needs an explicit request to be used.
 
 ```js
 {
@@ -164,13 +188,13 @@ Example:
 }
 ```
 
-### What if extension was already turned off due to the permission "warning", but updates to a new version with "permissions_behavior_on_update" set to "defer"
+### What if extension was already turned off due to the permission "warning", but updates to a new version with "permissions_behavior.updates" set to "defer"
 
 <TODO>
 
 ### Behavior
 
-When `permissions_behavior_on_update` is set to `defer`, then for existing installs (extension update flow), nothing should be requested. However, the extension should be able check and request new permission on runtime. Otherwise, permissions granting behavior remains the same.
+When `permissions_behavior.updates` is set to `defer`, then for existing installs (extension update flow), nothing should be requested. However, the extension should be able check and request new permission on runtime. Otherwise, permissions granting behavior remains the same.
 
 ### New Permissions
 
@@ -178,7 +202,7 @@ The proposal does not introduce any new permissions. However, it does introduce 
 
 ### Manifest File Changes
 
-Add a new property, "permissions_behavior_on_update," to the manifest to alter the newly added "permissions" behavior during the extension's update. When set to `defer`, newly added permissions on update won't be granted by default; they will behave like optional permissions and must be explicitly requested by the extension. Also, the default browser behavior will NOT be applied (warning, turn off, stop further updates, etc.).
+Add a new property, "permissions_behavior.updates," to the manifest to alter the newly added "permissions" behavior during the extension's update. When set to `defer`, newly added permissions on update won't be granted by default; they will behave like optional permissions and must be explicitly requested by the extension. Also, the default browser behavior will NOT be applied (warning, turn off, stop further updates, etc.).
 
 The new behavior isn't applicable during install time or for permission that doesn't trigger a warning.
 
@@ -186,7 +210,7 @@ Extension manifest file example:
 
 ```json
 {
-  "permissions_behavior_on_update": "defer"
+  "permissions_behavior.updates": "defer"
 }
 ```
 
