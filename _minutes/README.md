@@ -10,24 +10,25 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2025-03-25 until 2025-03-28, face-to-face meeting in Berlin ([issue 759](https://github.com/w3c/webextensions/issues/759))
-- 2025-04-10 at 8 AM PDT = https://everytimezone.com/?t=67f70a00,384
 - 2025-04-24 at 8 AM PDT = https://everytimezone.com/?t=68097f00,384
+- 2025-05-08 at 8 AM PDT = https://everytimezone.com/?t=681bf400,384
 
 ## Past meetings
 
+* 2025-04-10 ([minutes](2025-04-10-wecg.md))
+* (minutes for the 2025-03-25 until 2025-03-28 face-to-face meetings will be published later and announced at [issue 759](https://github.com/w3c/webextensions/issues/759))
 * 2025-03-27 ([minutes](2025-03-27-wecg.md))
 * 2025-03-13 ([minutes](2025-03-13-wecg.md))
 * 2025-02-27 ([minutes](2025-02-27-wecg.md))
 * 2025-02-13 ([minutes](2025-02-13-wecg.md))
 * 2025-01-30 ([minutes](2025-01-30-wecg.md))
-* 2025-01-16 ([minutes](2025-01-16-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2025**
 
+* 2025-04-10 ([minutes](2025-04-10-wecg.md))
 * 2025-03-27 ([minutes](2025-03-27-wecg.md))
 * 2025-03-13 ([minutes](2025-03-13-wecg.md))
 * 2025-02-27 ([minutes](2025-02-27-wecg.md))
