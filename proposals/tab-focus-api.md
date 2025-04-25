@@ -210,9 +210,7 @@ N/A
 
 ### Ancillary UI surfaces
 
-THere are other notable UI surfaces that are extensions are not currently able
-to focus such as the user agent’s address bar or bookmarks bar. If so desired,
-`FocusArea` could be expanded to support these surfaces.
+There are other notable UI surfaces that are extensions are not currently able to focus such as the user agent’s address bar or bookmarks bar. If so desired, `FocusArea` could be expanded to support these surfaces.
 
 ### New UI surfaces
 
