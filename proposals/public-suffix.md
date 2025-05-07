@@ -172,7 +172,7 @@ reach the final label without finding any matches in the PSL. At this point, if 
 is allowable to assume that all unknown single-label eTLDs are valid, then
 certain optimisations to the algorithm are possible as follows:
 
-###### 3.3.1 Fewer PSL searches
+###### 3.3.1 Optimisation: fewer PSL searches
 
 The algorithm can avoid doing the final search against the PSL using the final label.
 This may save a few CPU cycles for every candidate domain lookup.
@@ -188,7 +188,7 @@ Example candidate domain: `foo.bar.baz`
 It is unclear how much of a performance benefit such an optimization would give
 in practice.
 
-###### 3.3.2 Smaller browser footprint
+###### 3.3.2 Optimisation: smaller browser footprint
 
 The browser can avoid storing *any* single-label eTLDs on disk or in memory.
 This allows a possible reduction in browser startup time, since it is loading fewer
@@ -201,26 +201,14 @@ proposal; in that case, the full PSL dataset (including all single-label eTLDs)
 is already available and therefore this proposal would not be adding any overhead
 in terms of browser footprint due to storing the entire PSL.
 
-For example, Firefox *does* already need to distinguish known vs unknown eTLDs
-in order to determine whether to issue a search query or whether to try a navigation,
-when a user enters a domain-like string in the navigation bar. In such instances,
-a PSL lookup is made and:
-
-* If the domain has a known eTLD, attempt to navigate.
-* If the domain has an unknown eTLD, use a search engine.
+For example, Firefox *does* already need to distinguish known vs unknown eTLDs,
+when determining whether to search or navigate upon receiving input into the url bar
+(described in the [Use Cases](#use-cases) section).
 
 ##### 3.4 Recommendation
 
-It is recommended that this API should only expose known eTLDs, and leave it up
-to extensions to handle unknown eTLDs because:
-
-* none of the use cases identified later in this proposal are relevant to non-public
-(intranet) hostnames
-* unknown eTLDs due to out-of-date PSL datasets, although possible, are likely to be
-somewhat infrequent and temporary
-* even if it were possible to make certain performance optimisations by assuming
-all single-label eTLDs are valid, any associated performance benefits
-may not be significant
+It is recommended that this API should provide the ability to determine whether
+or not a candidate domain has a known eTLD.
 
 #### 4. IDN
 
@@ -328,6 +316,25 @@ document, then the request is considered third-party.
 | #1   | foo.amazonaws.com           | amazonaws.com               |              |
 | #2   | bar.us-east-1.amazonaws.com | bar.us-east-1.amazonaws.com | Yes          |
 
+#### 4. Search vs Navigate
+
+Firefox makes use of the PSL in order to determine whether to issue a search query
+or whether to try a navigation, when a user enters a domain-like string in the
+url bar. In such instances, a PSL lookup is made and:
+
+* If the domain has a known eTLD, attempt to navigate.
+* If the domain has an unknown eTLD, use a search engine.
+
+#### 5. Site-specific data
+
+Extensions sometimes need to associate data with a hostname's "site", which may be:
+
+* a registrable domain (i.e. with a known eTLD)
+* an IP address
+* an intranet hostname with a non-public (i.e. unknown) eTLD, or without any suffix
+
+Examples of this kind of data include cookies and password autofill.
+
 ### Known Consumers
 
 Mozilla intends to make use of this API in its [multi-account-containers](https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/)
@@ -358,100 +365,82 @@ A new API `publicSuffix` is added as follows:
 
 ```ts
 namespace publicSuffix {
-  //
-  // Determines if all specified domains have the same registrable domain.
-  //
-  // Note: rejects with an error if any domain name has an unknown eTLD
-  // (i.e. not in the PSL).
-  //
-  // Example:
-  //
-  // let result = await browser.publicSuffix.hasSameRegistrableDomain(
-  //   "www.example.co.uk",
-  //   "xyz.example.co.uk",
-  //   "foo.bar.baz.example.co.uk",
-  // );
-  // ==> true
-  //
-  export function hasSameRegistrableDomain(...domains: string[]) : Promise<boolean>;
 
-  //
-  // Gets the longest registrable domain for a specified domain.
-  //
-  // Note: fulfils with null if the input domain name has an unknown eTLD.
-  //
-  // Example:
-  //
-  // let domain = await browser.publicSuffix.getRegistrableDomain("www.example.co.uk");
-  // ==> "example.co.uk"
-  //
+
+  // METHODS
+
+  // Determines if the given hostnames have the same registrable domain.
+  export function hasSameRegistrableDomain(
+    hostname1: string,
+    hostname2: string,
+    options?: RegistrableDomainOptions,
+  ) : Promise<boolean>;
+
+  // Gets the registrable domain of a given hostname.
   export function getRegistrableDomain(
-    // The domain name whose registrable domain we want to find
-    domain: string,
-    // Options that control the behaviour of the lookup algorithm
+    hostname: string,
     options?: RegistrableDomainOptions,
   )
-  // Fulfils with the longest registrable domain of the input domain name.
   : Promise<string | null>;
 
-  //
-  // Gets the longest registrable domain for each domain in a specified
-  // list of domains.
-  //
-  // Note: modelled on `Promise.allSettled()`
-  //
-  // Example:
-  //
-  // let domains = await browser.publicSuffix.getRegistrableDomains([
-  //   "foo.bar.wixsite.com",
-  //   "www.example.net",
-  //   "printer.homenet",
-  //   "a..b",
-  // ]);
-  // ==> [
-  //   { status: "fulfilled",  value: "bar.wixsite.com"     },
-  //   { status: "fulfilled",  value: "www.example.net"     },
-  //   { status: "fulfilled",  value: null                  },
-  //   { status: "rejected",  reason: "Invalid domain name" },
-  // ]
-  //
+  // Gets the registrable domain of each hostname in a given list of hostnames.
   export function getRegistrableDomains(
-    // The domain names whose registrable domains we want to find
-    domains: Iterable<string>,
-    // Options that control the behaviour of the lookup algorithm
+    hostnames: Iterable<string>,
     options?: RegistrableDomainOptions,
   )
-  // Fulfils with a registrable domain result corresponding to each input domain name
   : Promise<Array<RegistrableDomainResult>>;
 
-  //
+  // Determines which one of the following kinds of value applies to each hostname
+  // in a list of hostnames:
+  //   RegistrableDomain
+  //   PublicSuffix
+  //   IPAddress
+  //   Unknown
+  //   Invalid
+  export function parse(
+    hostnames: Iterable<string>,
+  )
+  : Promise<Array<ParseResult>>
+
   // Gets the value of the VERSION metadata field in the PSL dataset if available
-  //
   export function getVersion(): string | null;
 
-  //
-  // Options that may be passed to getRegistrableDomain() and getRegistrableDomains()
-  // to control their behaviour.
-  //
+
+  // INTERFACES
+
+  // Options that may be passed to the API's methods to control their behaviour.
   interface RegistrableDomainOptions {
-    // If true, the returned registrable domain(s) should be encoded as Unicode
+    // If true, each resulting registrable domain should be encoded as Unicode.
+    // Default = false (Punycode)
     unicode?: boolean,
+    // If false, IP addresses and hostnames lacking a known eTLD are
+    // treated as having registrable domains.
+    // Default = true
+    strict?: boolean,
   }
 
-  //
-  // Object containing the result of calculating the registrable domain for one of the
-  // domains in the array passed to getRegistrableDomains().
-  //
-  // Note: modelled on `Promise.allSettled()`
-  //
+  // Object containing the result of calculating the registrable domain of one of
+  // the hostnames in the input list.
   interface RegistrableDomainResult {
     // A string, either "fulfilled" or "rejected", indicating the eventual state of the promise.
     status: string,
-    // Only present if status is "fulfilled". The calculated registrable domain, or null
-    // if the corresponding input domain has an unknown eTLD.
+    // Only present if status is "fulfilled". The resulting registrable domain.
     value?: string | null,
     // Only present if status is "rejected". The reason that the promise was rejected with.
     reason?: string,
+  }
+
+  // Object containing the result of parsing a hostname.
+  interface ParseResult {
+    // The value obtained from the hostname.
+    value: string | null,
+    // The kind of value obtained, which must be one of the following:
+    //   RegistrableDomain
+    //   PublicSuffix
+    //   IPAddress
+    //   Unknown
+    //   Invalid
+    kind: string,
   }
 }
 ```
@@ -504,17 +493,34 @@ in the PSL are given below. These are described in more detail in a possible
 | sub.www.ck               | ck            | !www.ck          | Exception rule | www.ck             |
 | sub.sub.www.ck           | ck            | !www.ck          | Exception rule | www.ck             |
 
-#### 4. Unknown Suffixes
+#### 4. Strict
 
-A `null` registrable domain should be returned for a candidate domain that is otherwise
-valid but has an unknown eTLD (i.e. one that is not found in the PSL).
+By default, if a hostname lacks a known eTLD (i.e. in the PSL), its registrable domain
+is `null`.
 
-##### Example
+The same applies if the hostname is an IP address - IPv4 or IPv6. This avoids any
+possibility of `100.200.30.2` and `100.200.31.2` being interpreted as belonging to the
+same organization (i.e. with eTLD `.2`).
 
-| Domain parameter       | Registrable Domain |
-|------------------------|-------------------:|
-| www.example.com        |        example.com |
-| www.example.foobar     |             `null` |
+In order to support use cases that need to determine a hostname's "site",
+a `strict` option is provided, allowing a more general-purpose interpretation of
+what constitutes a registrable domain that includes IP addresses and unknown eTLDs.
+
+If a hostname lacks a known eTLD, and the option `strict` is set to `false`,
+then the registrable domain is determined by the type of hostname as follows:
+
+| Input hostname     | Registrable domain                                  |
+|--------------------|-----------------------------------------------------|
+| IP address         | the input hostname itself (i.e. an IP address)      |
+| Non IP-address     | the last domain label (i.e. an unknown TLD)         |
+
+##### Examples: Registrable domains
+
+| Input hostname         |  strict = true | strict = false |
+|------------------------|---------------:|---------------:|
+| 1.2.3.4                |           null |        1.2.3.4 |
+| printer.homenet        |           null |        homenet |
+| com                    |           null |            com |
 
 #### 5. IDN
 
@@ -535,15 +541,12 @@ using Unicode encoding.
 | unicode !== true (default) | example.xn--mgbx4cd0ab |
 | unicode === true           |         example.مليسيا |
 
-#### 6. Invalid domain parameter
+#### 6. Invalid hostname
 
-The promises returned by this API's methods should reject with an error if a domain
+The promises returned by this API's methods should reject with an error if a hostname
 passed as an input parameter meets any of the following criteria:
 
 * Contains a character that is invalid in an Internationalized Domain Name (IDN) - e.g. symbols, whitespace
-* Is an IP address - IPv4 or IPv6. (Avoids `100.200.30.2` and `100.200.31.2` being interpreted as belonging to the same organization.)
-* Is an eTLD itself
-* Is a single domain label, regardless of whether or not it exists in the PSL
 * Is an empty string
 * Is equal to `'.'`
 * Contains empty domain labels (i.e. any occurrences of `'..'`)
@@ -551,68 +554,100 @@ passed as an input parameter meets any of the following criteria:
 #### 7. Summary of behaviours
 
 The following table sets out the eventual settled state of the promise returned by
-`getRegistrableDomain()` for different classes of input `domain` parameter:
+`getRegistrableDomain()` for different classes of input `hostname` parameter:
 
-| Domain parameter   | Description                                      | Registrable domain     |
+| Input hostname     | Description                                      | Registrable domain     |
 |:-------------------|:-------------------------------------------------|-----------------------:|
 | example.net        | eTLD+1                                           | example.net            |
 | www.example.net    | eTLD+2                                           | example.net            |
-| net                | is an eTLD itself, single-label                  | Error                  |
-| github.io          | is an eTLD itself, multi-label                   | Error                  |
-| foobar             | no matching eTLD in PSL, single-label            | Error                  |
-| net.foobar         | no matching eTLD in PSL, multi-label             | `null`                 |
+| net                | is an eTLD itself, single-label                  | null                   |
+| net                | as above, with `strict === false`                | net                    |
+| github.io          | is an eTLD itself, multi-label                   | github.io              |
+| foobar             | no matching eTLD in PSL, single-label            | null                   |
+| foobar             | as above, with `strict === false`                | foobar                 |
+| net.foobar         | no matching eTLD in PSL, multi-label             | null                   |
+| net.foobar         | as above, with `strict === false`                | foobar                 |
 | foobar.net         | has an eTLD in the ICANN section                 | foobar.net             |
 | foobar.github.io   | has an eTLD in the Private section               | foobar.github.io       |
-| 127.0.0.1          | IP address, IPv4                                 | Error                  |
-| [::1]              | IPv6 address                                     | Error                  |
+| 127.0.0.1          | IP address, IPv4                                 | null                   |
+| 127.0.0.1          | as above, with `strict === false`                | 127.0.0.1              |
+| [::1]              | IPv6 address                                     | null                   |
+| [::1]              | as above, with `strict === false`                | [::1]                  |
 | EXAMPLE.NET        | uppercase                                        | example.net            |
 | .example.net       | dot in front                                     | example.net            |
 | example.net.       | dot in the end, this is an FQDN                  | example.net.           |
-| *.com              | contains invalid character `'*'`                 | Error                  |
-| مليسيا             | this is an IDN that is also an eTLD              | Error                  |
-| xn--mgbx4cd0ab     | as above, but Punycode                           | Error                  |
+| مليسيا             | this is an IDN that is also an eTLD              | null                   |
+| xn--mgbx4cd0ab     | as above, but Punycode                           | null                   |
 | foo.مليسيا         | this is an IDN                                   | foo.xn--mgbx4cd0ab     |
 | foo.مليسيا         | as above, with `unicode === true`                | foo.مليسيا             |
 | foo.xn--mgbx4cd0ab | this is an IDN, but Punycode                     | foo.xn--mgbx4cd0ab     |
 | foo.xn--mgbx4cd0ab | as above, with `unicode === true`                | foo.مليسيا             |
+| *.com              | contains invalid character `'*'`                 | Error                  |
 |                    | empty string                                     | Error                  |
 | .                  | no domain labels                                 | Error                  |
 | example..com       | contains an empty domain label                   | Error                  |
 
 #### 8. Comparing registrable domains
 
-Method `hasSameRegistrableDomain(domain1, domain2)` is suited in particular to
+Method `hasSameRegistrableDomain(hostname1, hostname2)` is suited in particular to
 [Use Case #3: Detect Third-Party Requests](#3-detect-third-party-requests),
 since it provides a simple way of comparing registrable domains.
 
-This method is *almost but not quite* equivalent to:
+This method should resolve to `true` if and only if the computed registrable domains
+are **equal and nonnull**.
 
-```
-await publicSuffix.getRegistrableDomain(domain1) === publicSuffix.getRegistrableDomain(domain2)
-```
+The calculation of the registrable domains should apply the `strict` option if specified,
+allowing IP addresses and unknown registrable domains to be compared.
 
-The key difference is in the case of domains with unknown eTLDs (i.e. not in the PSL).
-In such cases, `getRegistrableDomain()` returns `null`, which would mean
-`hasSameRegistrableDomain()`, if implemented using the above code, would return `true`
-for all domains with unknown eTLDs. This would likely be a surprising result for users
-of this API.
-
-Therefore if any domain passed to `hasSameRegistrableDomain()` has an unknown eTLD,
-the returned promise should reject with an error.
-
-##### Examples
+##### Examples: Has same registrable domain
 
 Given `homenet` and `mywork` are not eTLDs in the PSL:
 
-| Domain1             | Domain2          | hasSameRegistrableDomain() |
-|---------------------|------------------|---------------------------:|
-| foo.example.com     | bar.example.com  | true                       |
-| foo.example.com     | bar.example2.com | false                      |
-| foo.example.com     | backup.homenet   | Error                      |
-| printer.homenet     | backup.homenet   | Error                      |
-| printer.homenet     | backup.mywork    | Error                      |
+| hostname1           | hostname2        |  strict === true | strict === false |
+|---------------------|------------------|-----------------:|-----------------:|
+| foo.example.com     | bar.example.com  | true             | true             |
+| foo.example.com     | bar.example2.com | false            | false            |
+| printer.homenet     | printer.mywork   | false            | false            |
+| printer.homenet     | printer.homenet  | false            | true             |
+| printer.homenet     | backup.homenet   | false            | true             |
+| 1.2.3.4             | 1.2.3.4          | false            | true             |
+| 1.2.3.4             | 2.2.3.4          | false            | false            |
 
-#### 9. Batching
+#### 9. Parsing
+
+Method `parse(hostnames)` is suited to use cases that need to determine the "site"
+of a hostname. It is the counterpart to calling `getRegistrableDomain()` with the
+`strict = false` option, in that it gets a hostname's registrable domain if possible,
+or otherwise the most appropriate alternative value.
+
+The key difference is that the `parse()` method also returns an indicator of the
+kind of value that was returned, not just the value itself. In addition,
+the `parse()` method does not throw an error if the hostname is invalid.
+
+The `kind` value of the returned object must be one of the following:
+`RegistrableDomain`, `PublicSuffix`, `Unknown`, `IPAddress`, `Invalid`.
+
+##### Examples: parse result
+
+| Input hostname  | Parse: value   | Parse: kind       | Explanation                       |
+|-----------------|----------------|-------------------|-----------------------------------|
+| foo.example.com |    example.com | RegistrableDomain | eTLD+1 with a known eTLD          |
+| com             |    com         | PublicSuffix      | Known eTLD lacking a +1 label     |
+| printer.homenet |    homenet     | Unknown           | Lacking a known eTLD              |
+| 1.2.3.4         |    1.2.3.4     | IPAddress         | An IP address                     |
+| *.com           |    null        | Invalid           | Contains invalid character '*'    |
+
+##### 9.1 Justification for parsing
+
+Some use cases may have need for the more fine-grained functionality offered by `parse()`
+than that of the other API methods in this proposal. For example, if Firefox's
+[Search vs Navigate](#4-search-vs-navigate) functionality was based purely on the return
+value of `getRegistrableDomain()`, i.e. navigate if nonnull or search if null,
+then IP addresses would incorrectly cause a search. However, it would be possible using
+this `parse()` method to group IP addresses and known registrable domains together,
+by checking the `kind` value of each parse result object.
+
+#### 10. Batching
 
 Method `getRegistrableDomains()` is suited in particular to
 [Use Case #2: Group Domains in UI](#2-group-domains-in-ui), since it enables
@@ -636,10 +671,10 @@ input domain, the `status` field of the corresponding `RegistrableDomainResult` 
 and the `value` field is the registrable domain, or `null` if the input domain has an unknown eTLD.
 
 An error during the lookup of any of the domain names does not cause the returned promise
-to be rejected. Instead, the corresponding `RegistrableDomainResult` object has the `status` field
+to be rejected. Instead, the corresponding fulfilment object has the `status` field
 set to `rejected` and the `reason` field holds the error description.
 
-##### 9.1 Justification for batching
+##### 10.1 Justification for batching
 
 As stated, the same information provided by `getRegistrableDomains()` could be obtained
 by simply calling `getRegistrableDomain()` multiple times.
@@ -654,7 +689,7 @@ A quick mockup of the two approaches was built using a simplified implementation
 of this proposal's API in a modified Firefox, and the batching approach was
 about 2-3 times faster for 50 domains.
 
-#### 10. PSL Version
+#### 11. PSL Version
 
 Versioning metadata was introduced into the PSL with [this commit](https://github.com/publicsuffix/list/issues/1808#issuecomment-2455793503).
 
@@ -749,9 +784,6 @@ additional functionality are identified. For example:
 1. Provide method `getPublicSuffix()` to get the eTLD as opposed to the registrable domain.
 2. Provide method `isPublicSuffix()` and/or `isRegistrableDomain()` for possibly improved
 efficiency in certain use cases.
-3. Provide an option to handle domains with unknown eTLDs differently: instead of
-returning a `null` registrable domain in these cases, the API would assume a single-label
-eTLD and calculate the registrable domain accordingly.
 
 ### 2. Registrable Domains of Registrars
 
