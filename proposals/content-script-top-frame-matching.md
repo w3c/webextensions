@@ -11,7 +11,7 @@ API proposal to allow content script registration (both static and dynamic) to b
 *   **Sponsoring Browser:** *(Seeking browser sponsorship)*
 *   **Status:** Draft *(Seeking feedback and browser interest)*
 *   **Proposal Champions:** [Kzar](https://github.com/kzar), [Carlosjeurissen](https://github.com/carlosjeurissen), [Polywock](https://github.com/polywock)
-*   **Created:** 2025-03-30 
+*   **Created:** 2025-03-30
 *   **Related Issues:**
     *   [w3c/webextensions#763](https://github.com/w3c/webextensions/issues/763)
     *   [w3c/webextensions#117](https://github.com/w3c/webextensions/issues/117)
@@ -47,17 +47,22 @@ This proposal expands the definition of content scripts in both the `manifest.js
 
 #### Manifest `content_scripts` Entry
 
-The object definition within the `content_scripts` array in `manifest.json` is expanded to include two new optional properties accepting arrays of match patterns. 
+The object definition within the `content_scripts` array in `manifest.json` is expanded to include two new optional properties accepting arrays of match patterns.
 
 ```json5
 {
-  // If specified: Only inject if the top-level frame's origin matches at least one of these patterns. 
-  "top_frame_matches": ["MatchPattern"], 
+  // ... existing content_script properties like "matches", "exclude_matches", etc.
 
-  // If specified: Only inject if the top-level frame's origin isn't a match for any pattern. 
-  "exclude_top_frame_matches": ["MatchPattern"], 
+  // If specified: Only inject if the top-level frame's origin matches at least one of these patterns.
+  "top_frame_matches": ["MatchPattern"],
+
+  // If specified: Only inject if the top-level frame's origin isn't a match for any pattern.
+  "exclude_top_frame_matches": ["MatchPattern"]
+}
 ```
-*Where `MatchPattern` is a string conforming to the standard [Extension Match Pattern syntax](https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns).*
+
+*Where `MatchPattern` is a string conforming to the standard [Extension Match Pattern syntax](https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns). 
+
 
 #### `scripting.RegisteredContentScript` Type
 
@@ -65,35 +70,51 @@ The `RegisteredContentScript` type used by `scripting.registerContentScripts()` 
 
 ```typescript
 dictionary RegisteredContentScript {
-
-  // If provided, only inject if the top-level frame's origin matches at least one of these patterns. 
+  // ... existing RegisteredContentScript properties like "matches", "excludeMatches", etc.
+  
+  // If provided, only inject if the top-level frame's origin matches at least one of these patterns.
   MatchPattern[]? topFrameMatches;
 
-  // If provided, Only inject if the top-level frame's origin isn't a match for any pattern. 
+  // If provided, Only inject if the top-level frame's origin isn't a match for any pattern.
   MatchPattern[]? excludeTopFrameMatches;
 }
 ```
 
-### Behavior / Implementation 
+### Behavior / Implementation
 
 1.  **Validation:** When processing `content_scripts` from `manifest.json` or a call to `scripting.registerContentScripts` / `scripting.updateContentScripts`:
-    *   The browser must validate all patterns provided in `topFrameMatches` and `excludeTopFrameMatches`.
-    *   If any pattern contains a path component other than the wildcard path `/*` (i.e., it specifies a specific path like `/foo` or `/bar/*`), the browser must treat this as an error. Patterns without an explicit path or those explicitly using `/*` are considered valid.
-        *   For static declarations in `manifest.json`, this should likely result in a manifest parsing error, preventing the extension from loading.
-        *   For dynamic API calls (`registerContentScripts`, `updateContentScripts`), the promise **must** be rejected with an appropriate error (e.g., `Match patterns must not specify a path other than '/*'.`).
+    *   The browser must first validate all patterns provided in `topFrameMatches` and `excludeTopFrameMatches` as they would match patterns provided by `matches` and `excludeMatches`. 
+    *   Additionally, if any pattern contains a path component other than the wildcard path `/*` (i.e., it specifies a specific path like `/foo` or `/bar/*`), the browser must treat this as an error. Patterns without an explicit path or those explicitly using `/*` are considered valid. This restriction ensures these patterns are intended to match origins.
+        *   For static declarations in `manifest.json`, this should result in a manifest parsing error, preventing the extension from loading.
+        *   For dynamic API calls (`registerContentScripts`, `updateContentScripts`), the promise must be rejected with an appropriate error (e.g., `Match patterns for top_frame_matches/exclude_top_frame_matches must not specify a path.`).
 
 2.  **Injection Logic:** Assuming validation passes, a content script will be injected into a frame if and only if *all* the following conditions are met:
-    *   All existing checks based on the frame's own URL and context are satisfied.
-    *   And if `topFrameMatches` was specified, the origin of the top-level frame's URL matches at least one pattern in `topFrameMatches`.
-    *   And if `excludeTopFrameMatches` was specified, the origin of the top-level frame's URL does *not* match any validated pattern in `excludeTopFrameMatches`.
+    *   All existing checks based on the frame's own URL and context are satisfied (e.g., `matches`, `excludeMatches`).
+    *   And if `topFrameMatches` was specified, the **top-level document's origin** matches at least one pattern in `topFrameMatches`.
+    *   And if `excludeTopFrameMatches` was specified, the **top-level document's origin** does *not* match any pattern in `excludeTopFrameMatches`.
 
-**Origin Definition:** The origin consists of the scheme, host, and port (e.g., `https://www.example.com:443`). Match patterns are compared against this origin. The path component of the top-level URL is ignored during matching, as enforced by the validation rule disallowing specific paths in the patterns.
+**Determining the Origin for Top-Level Document Matching**
 
-**Example** An extension that applies a dark theme to all sites and frames is active globally, except for https://www.example.com, where the user has disabled it.
+The **top-level document's origin** is determined as follows:
+
+1.  First, obtain the "URL for matching" for the top-level document by applying the "Determine the URL for matching a document" algorithm, as specified in the W3C WebExtensions specification ([section 18.1](https://w3c.github.io/webextensions/specification/index.html#determine-the-url-for-matching-a-document)). The `match_origin_as_fallback` parameter of this algorithm must be interpreted as `true`.
+
+2.  If the W3C algorithm returns a "URL for matching":
+    *   This URL is then canonicalized to its origin part for the purpose of this matching. This means retaining the scheme and authority (hostname and port, if specified or non-default), while any path, query, or fragment components are discarded.
+    *   The resulting string (e.g., `https://example.com`, `http://localhost:8080`) is the "top-level document's origin" that is compared against the patterns in `top_frame_matches` and `exclude_top_frame_matches`.
+
+
+**Handling Undeterminable Origins for Matching**
+
+If the top-level document's origin cannot be determined, the `topFrameMatches` and `excludeTopFrameMatches` criteria are not applied. The determination of whether to inject the content script will then depend solely on other factors (e.g., the frame's own URL against matches and excludeMatches).
+
+
+
+**Static Usage Example:** An extension that applies a dark theme to all frames except for when the top frame's origin matches `https://www.example.com/*`. 
 
 ```json
 {
-   "matches": ["https://*/*"],
+   "matches": ["<all_urls>>"],
    "exclude_top_frame_matches": ["https://www.example.com/*"],
    "all_frames": true,
    "js": ["force_dark_theme.js"]
@@ -109,7 +130,7 @@ No new permissions are required. The `topFrameMatches` and `excludeTopFrameMatch
 
 ### Exposed Sensitive Data
 
-This API does not expose any new data to the extension. It uses the origin of the top-level frame, which is generally less specific than the full URL and already implicitly available by content scripts within that frame.
+This API does not expose any new data to the extension. It uses the top-level document's origin which is generally less specific than the full URL and already implicitly available to content scripts running within frames of that top-level document.
 
 ### Additional Security Considerations
 
@@ -122,17 +143,17 @@ This feature enhances the principle of least privilege by allowing developers to
 Developers can achieve similar *behavior* (but not with same performance or security) by:
 
 1.  Registering a content script with broad `matches` (e.g., `<all_urls>`).
-2.  Inside the content script, determine the top-level frame's origin `location.ancestorOrigins` or by messaging the background script. 
+2.  Inside the content script, determine the top-level frame's origin `location.ancestorOrigins` or by messaging the background script.
 3.  Asynchronously fetch the user's blocklist/allowlist (likely stored by origin) from `browser.storage`.
 4.  Compare the top-level origin against the list.
-5.  If the origin is blocked (or not allowed), exit early. 
+5.  If the origin is blocked (or not allowed), exit early.
 
 **Limitations of Workarounds:**
 
 1.  **Inefficiency:** The content script still must be injected, potentially across dozens or hundreds of tabs. Even though it exits immediately without further logic, the effect of having these scripts loaded may have significant performance implications.
 3.  **Asynchronous:** Checking `browser.storage` is asynchronous. Scripts needing synchronous initialization (e.g., modifying the DOM early via `run_at: document_start`) cannot reliably block themselves before potentially executing some code.
 4.  **Attack Surface:** The content script still must be injected, potentially in sensitive sites that the user intended to block. Vulnerabilities in the script or its dependencies could theoretically be exploited.
-5.  **Conflicts:** The mere act of injecting a script (especially via the `MAIN` content script world) can cause conflicts with website code, potentially due to polyfills, bundler runtime code, etc. 
+5.  **Conflicts:** The mere act of injecting a script (especially via the MAIN content script world) can cause conflicts with website code that are often hard to diagnose, potentially due to factors outside an extension developer's immediate control like polyfills, bundler runtime code, etc. 
 
 ### Open Web API
 
