@@ -80,10 +80,11 @@ dictionary RegisteredContentScript {
 }
 ```
 
+
 ### Behavior / Implementation
 
 1.  **Validation:** When processing `content_scripts` from `manifest.json` or a call to `scripting.registerContentScripts` / `scripting.updateContentScripts`:
-    *   The browser must first validate all patterns provided in `topFrameMatches` and `excludeTopFrameMatches` as they would match patterns provided by `matches` and `excludeMatches`. 
+    *   The browser must first validate all patterns provided in `topFrameMatches` and `excludeTopFrameMatches` as they would validate patterns provided by `matches` and `excludeMatches`. 
     *   Additionally, if any pattern contains a path component other than the wildcard path `/*` (i.e., it specifies a specific path like `/foo` or `/bar/*`), the browser must treat this as an error. Patterns without an explicit path or those explicitly using `/*` are considered valid. This restriction ensures these patterns are intended to match origins.
         *   For static declarations in `manifest.json`, this should result in a manifest parsing error, preventing the extension from loading.
         *   For dynamic API calls (`registerContentScripts`, `updateContentScripts`), the promise must be rejected with an appropriate error (e.g., `Match patterns for top_frame_matches/exclude_top_frame_matches must not specify a path.`).
@@ -92,6 +93,7 @@ dictionary RegisteredContentScript {
     *   All existing checks based on the frame's own URL and context are satisfied (e.g., `matches`, `excludeMatches`).
     *   And if `topFrameMatches` was specified, the **top-level document's origin** matches at least one pattern in `topFrameMatches`.
     *   And if `excludeTopFrameMatches` was specified, the **top-level document's origin** does *not* match any pattern in `excludeTopFrameMatches`.
+
 
 **Determining the Origin for Top-Level Document Matching**
 
@@ -107,7 +109,6 @@ The **top-level document's origin** is determined as follows:
 **Handling Undeterminable Origins for Matching**
 
 If the top-level document's origin cannot be determined, the `topFrameMatches` and `excludeTopFrameMatches` criteria are not applied. The determination of whether to inject the content script will then depend solely on other factors (e.g., the frame's own URL against matches and excludeMatches).
-
 
 
 **Static Usage Example:** An extension that applies a dark theme to all frames except for when the top frame's origin matches `https://www.example.com/*`. 
