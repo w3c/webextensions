@@ -190,9 +190,11 @@ Example:
 }
 ```
 
-### What if extension was already turned off due to the permission "warning", but updates to a new version with "permissions_behavior.updates" set to "defer"
+### [Optional feature] What if extension was already turned off due to the permission "warning", but updates to a new version with "permissions_behavior.updates" set to "defer"
 
-<TODO>
+We would like to provide a way to rescue an extension blocked by unintended permission updates or the accidental removal of `permissions_behavior.updates`. It should be possible to restore the extension by publishing an updated version of the extension with `permissions_behavior.updates` set to `defer`.
+
+However, we cannot confirm the timeline of such a feature in this proposal. It remains for the browser vendor to decide if it's feasible to implement and when to implement it.
 
 ### Behavior
 
