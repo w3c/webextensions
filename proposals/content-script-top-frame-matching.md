@@ -61,7 +61,7 @@ The object definition within the `content_scripts` array in `manifest.json` is e
 }
 ```
 
-*Where `MatchPattern` is a string conforming to the standard [Extension Match Pattern syntax](https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns). 
+*Where `MatchPattern` is a string containing a single match pattern as specified in [mdn [Match patterns](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Match_patterns). 
 
 
 #### `scripting.RegisteredContentScript` Type
@@ -94,7 +94,9 @@ dictionary RegisteredContentScript {
     *   And if `topFrameMatches` was specified, the **top-level document's origin** matches at least one pattern in `topFrameMatches`.
     *   And if `excludeTopFrameMatches` was specified, the **top-level document's origin** does *not* match any pattern in `excludeTopFrameMatches`.
 
+If any of the match patterns is not supported or understood by the browser, a soft error should be thrown. In `topFrameMatches`, the pattern will be skipped. If `topFrameMatches` is, or thus will end up being empty, no content scripts will be injected.
 
+If `excludeTopFrameMatches` is empty, the property will be ignored and not considered when injecting content scripts.
 **Determining the Origin for Top-Level Document Matching**
 
 The **top-level document's origin** is determined as follows:
