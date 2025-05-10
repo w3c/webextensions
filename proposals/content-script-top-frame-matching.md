@@ -84,29 +84,27 @@ dictionary RegisteredContentScript {
 ### Behavior / Implementation
 
 1.  **Validation:** When processing `content_scripts` from `manifest.json` or a call to `scripting.registerContentScripts` / `scripting.updateContentScripts`:
-    *   The browser must first validate all patterns provided in `topFrameMatches` and `excludeTopFrameMatches` as they would validate patterns provided by `matches` and `excludeMatches`. 
+    *   The browser must first validate all patterns provided in `topFrameMatches` and `excludeTopFrameMatches` as they would validate patterns provided through `matches` and `excludeMatches`. That includes validating that all provided patterns are not malformed. If malformed URL patterns are found, the browser must treat this as an error.
+    *   Empty arrays are valid values for both `topFramesMatches` and `excludeTopFramesMatches`. 
     *   Additionally, if any pattern contains a path component other than the wildcard path `/*` (i.e., it specifies a specific path like `/foo` or `/bar/*`), the browser must treat this as an error. Patterns without an explicit path or those explicitly using `/*` are considered valid. This restriction ensures these patterns are intended to match origins.
-        *   For static declarations in `manifest.json`, this should result in a manifest parsing error, preventing the extension from loading.
-        *   For dynamic API calls (`registerContentScripts`, `updateContentScripts`), the promise must be rejected with an appropriate error (e.g., `Match patterns for top_frame_matches/exclude_top_frame_matches must not specify a path.`).
+    *   Handling validation errors: 
+         * For static declarations in `manifest.json`, validation errors should result in a manifest parsing error, preventing the extension from loading.
+         * For dynamic API calls (`registerContentScripts`, `updateContentScripts`), validation errors results in the promise being rejected with an with an appropriate error (e.g., `Match patterns for top_frame_matches must not specify a path.` or `One of more match patterns in top_frame_matches weren't able to be parsed`). 
 
-2.  **Injection Logic:** Assuming validation passes, a content script will be injected into a frame if and only if *all* the following conditions are met:
+3.  **Injection Logic:** Assuming validation passes, a content script will be injected into a frame if and only if *all* the following conditions are met:
     *   All existing checks based on the frame's own URL and context are satisfied (e.g., `matches`, `excludeMatches`).
-    *   And if `topFrameMatches` was specified, the **top-level document's origin** matches at least one pattern in `topFrameMatches`.
-    *   And if `excludeTopFrameMatches` was specified, the **top-level document's origin** does *not* match any pattern in `excludeTopFrameMatches`.
+    *   And if `topFrameMatches` was specified, the **top-level document's origin** matches at least one pattern in `topFrameMatches`. If `topFrameMatches` is an empty array, the content script will effectively never run.
+    *   And if `excludeTopFrameMatches` was specified, the **top-level document's origin** does *not* match any pattern in `excludeTopFrameMatches`. If `excludeTopFrameMatches` is an empty array, the property will be ignored and not considered when injecting content scripts.
 
-If any of the match patterns is not supported or understood by the browser, a soft error should be thrown. In `topFrameMatches`, the pattern will be skipped. If `topFrameMatches` is, or thus will end up being empty, no content scripts will be injected.
 
-If `excludeTopFrameMatches` is empty, the property will be ignored and not considered when injecting content scripts.
-**Determining the Origin for Top-Level Document Matching**
 
-The **top-level document's origin** is determined as follows:
+The **Top-level document's origin** is determined as follows:
 
 1.  First, obtain the "URL for matching" for the top-level document by applying the "Determine the URL for matching a document" algorithm, as specified in the W3C WebExtensions specification ([section 18.1](https://w3c.github.io/webextensions/specification/index.html#determine-the-url-for-matching-a-document)). The `match_origin_as_fallback` parameter of this algorithm must be interpreted as `true`.
 
 2.  If the W3C algorithm returns a "URL for matching":
     *   This URL is then canonicalized to its origin part for the purpose of this matching. This means retaining the scheme and authority (hostname and port, if specified or non-default), while any path, query, or fragment components are discarded.
     *   The resulting string (e.g., `https://example.com`, `http://localhost:8080`) is the "top-level document's origin" that is compared against the patterns in `top_frame_matches` and `exclude_top_frame_matches`.
-
 
 **Handling Undeterminable Origins for Matching**
 
