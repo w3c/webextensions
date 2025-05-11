@@ -93,8 +93,8 @@ dictionary RegisteredContentScript {
 
 3.  **Injection Logic:** Assuming validation passes, a content script will be injected into a frame if and only if *all* the following conditions are met:
     *   All existing checks based on the frame's own URL and context are satisfied (e.g., `matches`, `excludeMatches`).
-    *   And if `topFrameMatches` was specified, the **top-level document's origin** matches at least one pattern in `topFrameMatches`. If `topFrameMatches` is an empty array, the content script will effectively never run.
-    *   And if `excludeTopFrameMatches` was specified, the **top-level document's origin** does *not* match any pattern in `excludeTopFrameMatches`. If `excludeTopFrameMatches` is an empty array, the property will be ignored and not considered when injecting content scripts.
+    *   And if `topFrameMatches` was specified, the **top-level document's origin** must match at least one pattern in `topFrameMatches`. If `topFrameMatches` is an empty array, the content script will effectively never run.
+    *   And if `excludeTopFrameMatches` was specified, the **top-level document's origin** must *not* match any pattern in `excludeTopFrameMatches`. If `excludeTopFrameMatches` is an empty array, the property will be ignored and not considered when injecting content scripts.
 
 
 
