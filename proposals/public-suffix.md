@@ -179,11 +179,11 @@ This may save a few CPU cycles for every candidate domain lookup.
 
 Example candidate domain: `foo.bar.baz`
 
-| Step | Domain | Search in PSL? |
-|:----:|:------:|:------:|
-| 1 | `foo.bar.baz` | yes |
-| 2 | `bar.baz` | yes |
-| 3 | `baz` | no |
+| Step | Domain        | Search in PSL? |
+|:----:|:-------------:|:--------------:|
+| 1    | `foo.bar.baz` | yes            |
+| 2    | `bar.baz`     | yes            |
+| 3    | `baz`         | no             |
 
 It is unclear how much of a performance benefit such an optimization would give
 in practice.
@@ -378,21 +378,21 @@ namespace publicSuffix {
   // METHODS
 
   // Determines if the given hostname is itself a known eTLD (i.e. in the PSL).
-  export function isKnownPublicSuffix(
+  export function isKnownSuffix(
     hostname: string,
   )
   : boolean;
 
   // Gets the known eTLD, if any, of a given hostname.
-  export function getKnownPublicSuffix(
+  export function getKnownSuffix(
     hostname: string,
   )
   : string | null;
 
   // Gets the registrable domain of a given hostname.
-  export function getRegistrableDomain(
+  export function getDomain(
     hostname: string,
-    options?: RegistrableDomainOptions,
+    options?: DomainOptions,
   )
   : string | null;
 
@@ -403,17 +403,17 @@ namespace publicSuffix {
   // INTERFACES
 
   // Options that may be passed to the API method to control its behaviour.
-  interface RegistrableDomainOptions {
-    // If true, the resulting registrable domain should be encoded as Unicode.
+  interface DomainOptions {
+    // If true, the returned domain should be encoded as Unicode.
     // Default = false (Punycode)
     unicode?: boolean,
-    // If true, an IP address is a registrable domain.
+    // If true, the returned domain may be an IP address.
     // Default = false
     allowIP?: boolean,
-    // If true, a known eTLD is a registrable domain.
+    // If true, the returned domain may be a known eTLD.
     // Default = false
     allowPlainSuffix?: boolean,
-    // If true, a hostname that lacks a known eTLD is a registrable domain.
+    // If true, the returned domain may lack a known eTLD.
     // Default = false
     allowUnknownSuffix?: boolean,
   }
@@ -489,13 +489,13 @@ whose effects are demonstrated using the following examples.
 
 #### 2. API Methods
 
-##### 2.1 Public Suffix
+##### 2.1 Known Suffix
 
-Method `getKnownPublicSuffix()` returns the input hostname's known eTLD (i.e. in the PSL)
+Method `getKnownSuffix()` returns the input hostname's known eTLD (i.e. in the PSL)
 if it has one, otherwise `null`.
 
-Method `isKnownPublicSuffix()` returns `true` if and only if the input hostname is itself
-a known eTLD. In other words, this method returns `true` if calling `getKnownPublicSuffix()`
+Method `isKnownSuffix()` returns `true` if and only if the input hostname is itself
+a known eTLD. In other words, this method returns `true` if calling `getKnownSuffix()`
 with the input hostname returns the input hostname itself.
 
 These methods are included in the API because the PSL algorithm returns the longest eTLD,
@@ -506,7 +506,7 @@ whose public suffix is 'io'.
 
 ###### Examples
 
-| Input hostname | Public Suffix |
+| Input hostname |  Known Suffix |
 |----------------|--------------:|
 |      github.io |     github.io |
 |  foo.github.io |     github.io |
@@ -514,9 +514,9 @@ whose public suffix is 'io'.
 |    192.168.2.1 |          null |
 |   green.banana |          null |
 
-##### 2.2 Registrable Domain
+##### 2.2 Domain
 
-Method `getRegistrableDomain()` returns the input hostname's registrable domain,
+Method `getDomain()` returns the input hostname's registrable domain,
 as determined by running the PSL algorithm, otherwise `null`.
 
 By default, this method returns `null` if the input hostname:
@@ -525,35 +525,42 @@ By default, this method returns `null` if the input hostname:
 * is itself a known eTLD
 * is an IP address - IPv4 or IPv6
 
-##### 2.2.1 Options: Registrable Domain
+##### 2.2.1 Options: Domain
 
 In order to support different use cases including those that need to determine
 a hostname's "site", additional options are provided, allowing a more
-general-purpose interpretation of what constitutes a registrable domain
-that includes IP addresses and unknown eTLDs.
+general-purpose interpretation of a domain to include not only registrable domains
+but also IP addresses and domains with unknown (non-registrable) eTLDs.
 
 Options `allowIP`, `allowPlainSuffix` and `allowUnknownSuffix` each target
 a specific kind of input hostname lacking a registrable domain
 in the strictest sense (i.e. having a known eTLD as stipulated by
 the PSL algorithm), as follows:
 
-| Option             | Kind of Input Hostname Targetted |
+| Option             | Kind of Input Hostname Targeted  |
 |--------------------|---------------------------------:|
 | allowIP            | IP Address (IPv4 of IPv6)        |
 | allowPlainSuffix   | is itself a known eTLD           |
 | allowUnknownSuffix | lacks a known eTLD               |
 
 The effect of each option when applied to an input hostname of the
-kind targetted by the option is to change the registrable domain
-from being `null` to being instead *the full input hostname itself*.
+kind targeted by the option is to change the returned domain
+from being `null` to being the following:
+
+| Option             | Returned Domain                                  | Returned Domain Kind |
+|--------------------|:------------------------------------------------:|:--------------------:|
+| allowIP            | input hostname                                   | IP address           |
+| allowPlainSuffix   | input hostname                                   | eTLD                 |
+| allowUnknownSuffix | last 2 labels, or input hostname if single label | eTLD+1 or eTLD       |
 
 ###### Examples
 
-| Input hostname    | Option = true      | Registrable domain |
+| Input hostname    | Option = true      |    Returned domain |
 |-------------------|--------------------|-------------------:|
 | 192.168.2.1       | allowIP            |        192.168.2.1 |
 | github.io         | allowPlainSuffix   |          github.io |
-| apple.pear.banana | allowUnknownSuffix |  apple.pear.banana |
+| apple.pear.banana | allowUnknownSuffix |        pear.banana |
+| banana            | allowUnknownSuffix |             banana |
 
 ##### 2.2.2 Options: Justification
 
@@ -562,7 +569,7 @@ not only domains on the internet having known eTLDs, but also
 intranet hostnames having non-public (i.e. unknown) suffixes, or no suffix.
 
 Reviewers of this proposal note that if it were the case that non-domains
-were included by default, `getRegistrableDomain()` would effectively
+were included by default, `getDomain()` would effectively
 return a string for almost every input.
 
 As a result of the inclusion of unknown suffixes, the API implementation must
@@ -577,7 +584,7 @@ which may be an IP address or a domain name.
 An example of such a use case is Firefox's [Search vs Navigate](#4-search-vs-navigate),
 which involves determining if an entry in the URL bar is a navigable site,
 or a search term. If this functionality was based purely on the return value
-of `getRegistrableDomain()`, i.e. navigate if nonnull or search if null,
+of `getDomain()`, i.e. navigate if nonnull or search if null,
 then IP addresses would incorrectly cause a search. By using the `allowIP` option,
 the return value for an input IP address would be the IP address itself instead of null,
 thereby causing the desired result of navigating instead of searching.
@@ -585,31 +592,6 @@ thereby causing the desired result of navigating instead of searching.
 Option `allowPlainSuffix` only exists because there are domains that do not have
 a registrable domain, due to themselves being PSL eTLDs, but can still be
 navigated to, such as github.io and blogspot.com.
-
-##### 2.2.3 Options: Discussion
-
-The effect of the options is that `getRegistrableDomain()` may return values
-that are not registrable domains in the strictest sense, e.g. they may
-be IP addresses.
-
-The author of this proposal is of the view that:
-
-1. Any method named `getXYZ()` should return a value of type `XYZ`. Therefore
-`getRegistrableDomain()` may not be the most suitable name, since it does
-not always return true registrable domains. Reviewers of this proposal
-feel this is not a significant enough issue to warrant alternative naming.
-
-2. This API should provide a way not just to get a hostname's
-registrable-domain-like value, but also to know what kind of value that is,
-be it an IP address, a domain name, or an intranet hostname lacking a known eTLD.
-Reviewers of this proposal are of the view that no compelling use case has been
-identified to support the need for such additional functionality. However,
-reviewers have conceded that IP addresses have to be special-cased, because for
-most domain inputs, one could split at dots to try and get a different domain level,
-but that logic does not make sense for IP addresses. By not providing a way of
-knowing whether the return value of `getRegistrableDomain()` is an IP address
-or a domain name, it is more difficult for users of this API to implement
-the special-casing that the reviewers have identified.
 
 #### 3. IDN
 
@@ -625,15 +607,15 @@ using Unicode encoding.
 
 `domain` = foo.bar.example.مليسيا
 
-| Option                     |     Registrable Domain |
+| Option                     |        Returned Domain |
 |----------------------------|-----------------------:|
 | unicode == false (default) | example.xn--mgbx4cd0ab |
 | unicode == true            |         example.مليسيا |
 
 #### 4. Invalid hostname
 
-The promises returned by this API's methods should reject with an error if a hostname
-passed as an input parameter meets any of the following criteria:
+This API's methods should throw an error if a hostname passed as an input parameter
+meets any of the following criteria:
 
 * Contains a character that is invalid in an Internationalized Domain Name (IDN) - e.g. symbols, whitespace
 * Is an empty string
@@ -642,10 +624,10 @@ passed as an input parameter meets any of the following criteria:
 
 #### 5. Summary of behaviours
 
-The following table sets out the eventual settled state of the promise returned by
-`getRegistrableDomain()` for different classes of input `hostname` parameter:
+The following table sets out the value returned by `getDomain()` for different
+classes of input `hostname` parameter:
 
-| Input hostname     | Description                                      | Registrable domain     |
+| Input hostname     | Description                                      | Returned domain        |
 |:-------------------|:-------------------------------------------------|-----------------------:|
 | example.net        | eTLD+1                                           | example.net            |
 | www.example.net    | eTLD+2                                           | example.net            |
@@ -656,7 +638,7 @@ The following table sets out the eventual settled state of the promise returned 
 | foobar             | no matching eTLD in PSL, single-label            | null                   |
 | foobar             | as above, with `allowUnknownSuffix = true`       | foobar                 |
 | my.net.foobar      | no matching eTLD in PSL, multi-label             | null                   |
-| my.net.foobar      | as above, with `allowUnknownSuffix = true`       | my.net.foobar          |
+| my.net.foobar      | as above, with `allowUnknownSuffix = true`       | net.foobar             |
 | foobar.net         | has an eTLD in the ICANN section                 | foobar.net             |
 | foobar.github.io   | has an eTLD in the Private section               | foobar.github.io       |
 | 127.0.0.1          | IP address, IPv4                                 | null                   |
@@ -680,21 +662,21 @@ The following table sets out the eventual settled state of the promise returned 
 #### 6. Sync vs Async
 
 Browser extension APIs are most commonly async, with API methods returning Promises.
-Earlier versions of this proposal set out an async API, with `getRegistrableDomain()`
-returning a `Promise<String>`. However, some use cases require getting lists of
+Earlier versions of this proposal set out an async API, with `getDomain()`
+returning a `Promise<string>`. However, some use cases require getting lists of
 registrable domains all in one go. In theory, this could be achieved by simply calling
-`getRegistrableDomain()` multiple times.
+`getDomain()` multiple times.
 
 The problem with this approach is that there is overhead associated with an extension
 calling an async function on the parent browser. For example, obtaining the registrable domains
-of a list of 50 domains would involve making 50 async calls to the parent browser.
+of a list of 50 hostnames would involve making 50 async calls to the parent browser.
 A batching method would allow the same result to be obtained with a single async call.
 
-For this reason, batching method `getRegistrableDomains()` was added to this API.
+For this reason, batching method `getDomains()` was added to this API.
 The method accepted an array of hostnames as input and returning a promise resolving to
 an array of registrable domains. A quick mockup of the two approaches was built using
 a simplified implementation of this proposal's API in a modified Firefox, and the
-batching approach was about 2-3 times faster for 50 domains.
+batching approach was about 2-3 times faster for 50 hostnames.
 
 Unfortunately, while this offered a solution to the performance problem,
 it added additional complexity to the API. To resolve this issue, the API
@@ -763,14 +745,17 @@ done by the host browser.
 
 ### Open Web API
 
-The purpose of this API is to eliminate the potential for inconsistency between
-the host browser and its hosted extensions. The simplest way of achieving this
-is for extensions to access this functionality via the host browser itself rather
-than via some external source, such as an Open Web API.
+Implementing this proposal as an open web API is not realistic at this time because:
 
-It is then a determination for the host browser itself as to whether
-the functionality (used by both the host browser and its extensions)
-should ultimately be obtained by means of an Open Web API.
+* Compared to web extension APIs, there is a higher bar for introducing web APIs,
+and in the past there has not been sufficient interest in moving forward a proposal
+like this one. Therefore the preferred approach is to start with extensions,
+and it will always be possible to propose a web API later if this work proves
+useful and there is appetite.
+
+* The PSL is not appropriate for use in all circumstances. Extensions have a
+very compelling set of use cases that match browser use cases, but there
+is not a universal agreement this is the case more generally.
 
 ## Implementation Notes
 
@@ -818,3 +803,22 @@ is released, however this may not always be the case.
 It may be useful to implement a notification mechanism so that extensions can take
 appropriate action when the host browser's PSL dataset changes, to avoid having to
 poll the `getVersion()` function provided by this API.
+
+### 3. Get Domain and Kind
+
+While API method `getDomain()` by default returns registrable domains,
+with additional options this method may return other types of domain:
+IP addresses, intranet hostnames lacking known suffixes, and public suffixes themselves.
+There is currently no straightfoward way for the method caller to determine
+which of these kinds of value was returned from an invocation such as:
+`getDomain(hostname, { allowIP, allowUnknownSuffix, allowPlainSuffix })`.
+
+It may be beneficial to provide an additional API method that would
+return not only the domain value as returned by `getDomain()`,
+but also a designation of the kind of value returned:
+`RegistrableDomain`, `UnknownDomain`, `KnownSuffix`, `IPAddress`.
+
+An example use case would be if extension developers wanted to prepend
+additional labels to the domain returned by `getDomain()`. This would
+not make sense for returned IP addresses, so developers would need a
+way of separating returned IP addresses from returned domain names.
