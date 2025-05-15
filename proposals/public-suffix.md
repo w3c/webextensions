@@ -404,16 +404,23 @@ namespace publicSuffix {
 
   // Options that may be passed to the API method to control its behaviour.
   interface DomainOptions {
+
     // If true, the returned domain should be encoded as Unicode.
     // Default = false (Punycode)
     unicode?: boolean,
-    // If true, the returned domain may be an IP address.
+
+    // If true, and the input hostname is an IP address, then this is returned as-is.
     // Default = false
     allowIP?: boolean,
-    // If true, the returned domain may be a known eTLD.
+
+    // If true, and the input hostname is itself a known eTLD (without a preceding label)
+    // then this is returned as-is.
     // Default = false
     allowPlainSuffix?: boolean,
-    // If true, the returned domain may lack a known eTLD.
+
+    // If true, and the input hostname lacks a known eTLD, and is neither itself
+    // a known eTLD nor an IP address, then the returned domain consists of
+    // the penultimate two domain labels of the input.
     // Default = false
     allowUnknownSuffix?: boolean,
   }
@@ -614,10 +621,15 @@ using Unicode encoding.
 
 #### 4. Invalid hostname
 
-This API's methods should throw an error if a hostname passed as an input parameter
-meets any of the following criteria:
+For each method in this API that takes a hostname as an input parameter,
+the hostname may be an IP address or a domain name. Unless the hostname
+is a correctly-formatted IP address (IPv4 or IPv6), then the hostname
+should be validated as an Internationalized Domain Name (IDN), and
+an error should be thrown if such validation fails.
 
-* Contains a character that is invalid in an Internationalized Domain Name (IDN) - e.g. symbols, whitespace
+For example, an error should be thrown if the hostname is not an IP address and it:
+
+* Contains a character that is invalid in an IDN - e.g. symbols, whitespace
 * Is an empty string
 * Is equal to `'.'`
 * Contains empty domain labels (i.e. any occurrences of `'..'`)
