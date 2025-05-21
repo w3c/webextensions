@@ -84,7 +84,7 @@ An `object` containing information to identify the cookie(s) to remove. It conta
 
 ### Behavior
 
-The API will remove all cookies that match the `details` object parameter with the exception of the cases outlined in the implementation details.
+The API will remove all cookies that would als be able to be returned by `cookies.getAll` using the information in the `details` object parameter with the exception of the cases outlined in the implementation details.
 
 - The extension must have [host permissions](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#host_permissions) needed to access the cookie.
 
