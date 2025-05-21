@@ -73,7 +73,7 @@ An `object` containing information to identify the cookie(s) to remove. It conta
 >
 >A  `string`  representing the URL associated with the cookie.
 >
->A details object must contain a `url` and/or a `topLevelSite`.
+>A details object must contain at least a `url` a `partitionKey` with a valid `topLevelSite`.
 
 ##### Return
 
