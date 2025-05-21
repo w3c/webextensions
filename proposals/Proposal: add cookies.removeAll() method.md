@@ -69,7 +69,7 @@ An `object` containing information to identify the cookie(s) to remove. It conta
 >
 >A  `string`  representing the ID of the cookie store to find the cookie in. If unspecified, the cookie is looked for by default in the current execution context's cookie store.
 >
->[`url`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/cookies/remove#url)
+>[`url`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/cookies/remove#url) optional
 >
 >A  `string`  representing the URL associated with the cookie.
 >
