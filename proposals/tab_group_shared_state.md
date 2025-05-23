@@ -32,16 +32,16 @@ Extensions that provide heavy interaction/mutation on tab groups may want to exc
 
 ### Schema
 
-[chrome.tabGroups.tabGroup](https://developer.chrome.com/docs/extensions/reference/api/tabGroups#type-TabGroup)`.shared`
+[browser.tabGroups.TabGroup](https://developer.chrome.com/docs/extensions/reference/api/tabGroups#type-TabGroup)`.shared`
 a boolean field which will denote whether the group is in a shared state or not.
-[chrome.tabGroups.query](https://developer.chrome.com/docs/extensions/reference/api/tabGroups#method-query)
-the `queryInfo` parameter will accept a new field`shared bool optional` 
+[browser.tabGroups.query](https://developer.chrome.com/docs/extensions/reference/api/tabGroups#method-query)
+the `queryInfo` parameter will accept a new field `shared bool optional` 
 When provided the tab groups query will filter based on the shared states of the group.
-[chrome.tabGroups.onUpdated](https://developer.chrome.com/docs/extensions/reference/api/tabGroups#event-onUpdated)
+[browser.tabGroups.onUpdated](https://developer.chrome.com/docs/extensions/reference/api/tabGroups#event-onUpdated)
 a method that is currently fired when a group is udated, will also fire when the group's shared state changes.
 ### Behavior
 
-Browsers may place browser-specific restrictions on shared groups for security and privacy purposes. This is not limited to the tabGroups API and could extend to chrome.tabs and other related API surfaces. The restriction would result in an error that "the action can not be performed due to the object being in a shared state." or a similar error message.
+Browsers may place browser-specific restrictions on shared groups for security and privacy purposes. This is not limited to the `tabGroups` API and could extend to `browser.tabs` and other related API surfaces. The restriction would result in an error that "the action can not be performed due to the object being in a shared state." or a similar error message.
 ### New Permissions
 
 This functionality would be gated behind the existing `tabGroups` permission. The new functionality is in line with the existing API and does not need to be guarded separately (see below).
