@@ -2,7 +2,7 @@
 
 **Summary**
 
-Currently, extensions cannot track when users disable or uninstall them without requesting the broad "management" permission. This proposal suggests modifying the behavior of `chrome.management.onDisabled` and `chrome.management.onUninstalled` events to allow extensions to track their own state changes without requiring the "management" permission.
+Currently, extensions cannot track when users disable or uninstall them without requesting the broad "management" permission. This proposal suggests modifying the behavior of `browser.management.onDisabled` and `browser.management.onUninstalled` events to allow extensions to track their own state changes without requiring the "management" permission.
 
 **Document Metadata**
 
@@ -47,7 +47,7 @@ To enable extensions to track their own disable/uninstall events without requiri
 
 ### Schema
 ### Current Behavior
-- `chrome.management.onDisabled` and `chrome.management.onUninstalled` require "management" permission
+- `browser.management.onDisabled` and `browser.management.onUninstalled` require "management" permission
 - This permission is meant for managing other extensions
 - Extensions cannot track their own state changes without this broad permission
 
@@ -63,34 +63,34 @@ Two implementation approaches are proposed:
 Example:
 ```javascript
 // Without permission - only triggers for self
-chrome.management.onDisabled.addListener((info) => {
-  if (info.id === chrome.runtime.id) {
+browser.management.onDisabled.addListener((info) => {
+  if (info.id === browser.runtime.id) {
     // Handle self disable and this will get called without permission
   }
 });
 
 // With permission - triggers for all extensions
-chrome.management.onDisabled.addListener((info) => {
+browser.management.onDisabled.addListener((info) => {
   // Handle any extension disable if anything generic needs to be done but that needs permision
 });
 ```
 
 #### Option 2: Separate API Methods
 - Add new methods specifically for self-events:
-  - `chrome.management.onSelfDisabled`
-  - `chrome.management.onSelfUninstalled`
+  - `browser.management.onSelfDisabled`
+  - `browser.management.onSelfUninstalled`
 - Keep existing methods for all-extension events (requiring permission)
 - Clearer API separation
 
 Example:
 ```javascript
 // New methods for self-events (no permission needed)
-chrome.management.onSelfDisabled.addListener(() => {
+browser.management.onSelfDisabled.addListener(() => {
   // Handle self disable
 });
 
 // Existing methods (requires permission)
-chrome.management.onDisabled.addListener((info) => {
+browser.management.onDisabled.addListener((info) => {
   // Handle any extension disable
 });
 ```
@@ -104,8 +104,8 @@ chrome.management.onDisabled.addListener((info) => {
 ### Current Usage
 ```javascript
 // Requires "management" permission
-chrome.management.onDisabled.addListener((info) => {
-  if (info.id === chrome.runtime.id) {
+browser.management.onDisabled.addListener((info) => {
+  if (info.id === browser.runtime.id) {
     // Handle self disable
   }
 });
@@ -114,8 +114,8 @@ chrome.management.onDisabled.addListener((info) => {
 ### Proposed Usage (Option 1)
 ```javascript
 // No permission needed for self-events
-chrome.management.onDisabled.addListener((info) => {
-  if (info.id === chrome.runtime.id) {
+browser.management.onDisabled.addListener((info) => {
+  if (info.id === browser.runtime.id) {
     // Handle self disable
   }
 });
@@ -124,7 +124,7 @@ chrome.management.onDisabled.addListener((info) => {
 ### Proposed Usage (Option 2)
 ```javascript
 // New dedicated method for self-events
-chrome.management.onSelfDisabled.addListener(() => {
+browser.management.onSelfDisabled.addListener(() => {
   // Handle self disable
 });
 ```
