@@ -8,7 +8,7 @@ Currently, extensions cannot track when users disable or uninstall them without 
 
 **Author:** [sameerjaiswal](https://github.com/jaissam10)
 
-**Sponsoring Browser:** Chrome
+**Sponsoring Browser:** TBD
 
 **Contributors:** 
 
