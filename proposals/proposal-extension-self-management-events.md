@@ -1,8 +1,12 @@
-# Proposal: Allow extensions to track their own disable/uninstall events without "management" permission
+# Proposal: Allow extensions to track their own disable/uninstall events
 
 **Summary**
 
-Currently, extensions cannot track when users disable or uninstall them without requesting the broad "management" permission. This proposal suggests modifying the behavior of `browser.management.onDisabled` and `browser.management.onUninstalled` events to allow extensions to track their own state changes without requiring the "management" permission.
+Currently, the only mechanism available for tracking or collecting feedback on uninstall events is `setUninstallURL`, which allows registering a page to collect user feedback or send analytics to internal servers. While useful in some scenarios, this approach lacks consistency and flexibility. Notably, there is no direct way to track or receive feedback when users disable the extension.
+
+Additionally, the `management.onDisabled` and `management.onUninstalled` events require the "management" permission, which grants broad access and is intended for managing all other extensions except self. There is no way to track an extension's own disable/uninstall events.
+
+**A dedicated self-tracking API would enable developers to log disable and uninstall events for analytics and better understand user behavior to improve their extensions. This should be implemented as a synchronous pre-execution handler that triggers before the uninstall process begins, ideally supporting the Beacon API to ensure reliable logging even during shutdown.**
 
 **Document Metadata**
 
@@ -10,159 +14,137 @@ Currently, extensions cannot track when users disable or uninstall them without 
 
 **Sponsoring Browser:** TBD
 
-**Contributors:** 
+**Contributors:**
 
 **Created:** 2025-05-16
 
 **Related Issues:** https://issues.chromium.org/issues/417868528
 
 ## Motivation
-Extensions need to track when users disable or uninstall them for legitimate purposes like:
+
+Extensions often need to track when they are disabled or uninstalled for legitimate purposes such as:
 - Analytics and user behavior tracking
 - Understanding user retention
-- Improving extension quality based on user behavior
+- Improving extension quality based on feedback and engagement trends
 
-Currently, this requires the broad "management" permission, which is inconsistent with other self-reference methods like `management.getSelf()` that don't require permissions.
+The current `setUninstallURL` method only partially addresses this need:
+- It works only during direct uninstall events
+- Cannot silently log analytics without opening a page
+- It does not support disable events
+- It is not ideal for enterprise/admin-installed extensions, where showing a feedback page can feel intrusive or confusing
+
+Furthermore, existing APIs like `management.onDisabled` and `management.onUninstalled` are not for the self extension and is called after extension uninstall.
+
+These limitations leave important gaps:
+1. When the extension is **disabled** (but not uninstalled)
+2. When it is **uninstalled after being disabled**
+3. When installed by administrators — opening a feedback page during uninstall may be disruptive
+4. Cannot silently log analytics without opening a page
+
+**A dedicated self-tracking API would enable developers to log disable and uninstall events for analytics and better understand user behavior to improve their extensions. This should be implemented as a synchronous pre-execution handler that triggers before the uninstall process begins, ideally supporting the Beacon API to ensure reliable logging even during shutdown.**
+
 ### Objective
-To enable extensions to track their own disable/uninstall events without requiring the broad "management" permission, while maintaining the existing permission model for tracking other extensions' events.
+To allow extensions to detect and handle their own disable/uninstall events without any permission.
 
 ### Use Cases
 1. **Analytics Tracking**
-   - Track when users disable/uninstall the extension
-   - Understand user retention patterns
-   - Measure impact of updates on user behavior
+   - Detect when users disable or uninstall the extension
+   - Monitor retention and engagement
+   - Evaluate the impact of product changes or updates
+
 2. **User Feedback**
-   - Trigger feedback surveys when users disable/uninstall
-   - Collect reasons and improve extension based on user feedback
-3. **State Management**
-   - Clean up extension data when disabled/uninstalled
-   - Handle graceful shutdown of extension services
-   - Manage user preferences and settings
+   - Trigger surveys or logs during disable/uninstall events
+   - Gather reasons and pain points directly from users
+
+3. **State Tracking**
+   - We can store _state_ as _disabled_ and after enabling we can track if user enables it by checking its last state.
 
 ### Known Consumers
 - Adobe Acrobat Extension
-- Other extensions that need to track user behavior and retention
+- Other privacy-sensitive or enterprise extensions tracking engagement
 
 ## Specification
 
 ### Schema
+
 ### Current Behavior
-- `browser.management.onDisabled` and `browser.management.onUninstalled` require "management" permission
-- This permission is meant for managing other extensions
-- Extensions cannot track their own state changes without this broad permission
+- `browser.runtime.setUninstallURL()` can register a page to be opened when the extension is uninstalled.
 
 ### Proposed Changes
-Two implementation approaches are proposed:
 
-#### Option 1: Single API with Permission-based Behavior
-- Keep existing `onDisabled` and `onUninstalled` events
-- If "management" permission is present: trigger for all extensions
-- If no permission: only trigger for the calling extension
-- Maintains backward compatibility
+#### Option: New API Methods
+Introduce dedicated self-tracking event listeners:
+- `browser.management.onSelfDisabled`
+- `browser.management.onSelfUninstalled`
 
-Example:
+These APIs would:
+- Be available **without** any permission
+- Only apply to the **calling extension**
+- Preserve privacy and avoid misuse
+
+**Example:**
 ```javascript
-// Without permission - only triggers for self
-browser.management.onDisabled.addListener((info) => {
-  if (info.id === browser.runtime.id) {
-    // Handle self disable and this will get called without permission
-  }
-});
-
-// With permission - triggers for all extensions
-browser.management.onDisabled.addListener((info) => {
-  // Handle any extension disable if anything generic needs to be done but that needs permision
-});
-```
-
-#### Option 2: Separate API Methods
-- Add new methods specifically for self-events:
-  - `browser.management.onSelfDisabled`
-  - `browser.management.onSelfUninstalled`
-- Keep existing methods for all-extension events (requiring permission)
-- Clearer API separation
-
-Example:
-```javascript
-// New methods for self-events (no permission needed)
+// New self-tracking methods (no permissions needed)
 browser.management.onSelfDisabled.addListener(() => {
   // Handle self disable
 });
 
-// Existing methods (requires permission)
-browser.management.onDisabled.addListener((info) => {
-  // Handle any extension disable
+browser.management.onSelfUninstalled.addListener(() => {
+  // Handle self uninstall
 });
-```
 
 
 ### Backward Compatibility
-- Option 1 maintains full backward compatibility
-- Option 2 requires new API methods but doesn't break existing code
+- Existing APIs remain unchanged
 
 ## Examples
-### Current Usage
-```javascript
-// Requires "management" permission
-browser.management.onDisabled.addListener((info) => {
-  if (info.id === browser.runtime.id) {
-    // Handle self disable
-  }
-});
-```
 
-### Proposed Usage (Option 1)
+### Proposed Usage
 ```javascript
-// No permission needed for self-events
-browser.management.onDisabled.addListener((info) => {
-  if (info.id === browser.runtime.id) {
-    // Handle self disable
-  }
-});
-```
-
-### Proposed Usage (Option 2)
-```javascript
-// New dedicated method for self-events
+// No "management" permission needed
 browser.management.onSelfDisabled.addListener(() => {
-  // Handle self disable
+  // Handle own disable
 });
 ```
 
 ### New Permissions
-No new permissions are required.
+- No new permissions required
 
 ### Manifest File Changes
-No new manifest fields are required.
+- No changes needed
 
 ## Security and Privacy
+
 ### Exposed Sensitive Data
-- No sensitive data is exposed
-- Only the extension's own state changes are tracked
-- No access to other extensions' information without permission
+- No sensitive or cross-extension data exposed
+- Only the extension's own lifecycle events are accessible
 
 ### Abuse Mitigations
 - Self-events only trigger for the calling extension
-- No ability to track other extensions without permission
-- Consistent with existing security model
-
+- Cannot be used to monitor other extensions
+- Aligns with existing permission models and event scoping
 
 ### Additional Security Considerations
-
+- These events must be implemented carefully to avoid timing leaks or bypasses
 
 ## Alternatives
+
 ### Existing Workarounds
+- Use `setUninstallURL`, which only applies to uninstall (not disable)
 
 ### Open Web API
-No equivalent functionality exists in the Open Web API.
+`browser.runtime.setUninstallURL()` exists and helps track uninstall via a landing page, but has limitations:
+1. Does not support disable events
+2. Cannot silently log analytics without opening a page
+3. Fails if uninstall occurs after a prior disable
+4. Not suitable for admin-installed extensions, where mass page loads can be disruptive
 
 ## Implementation Notes
-
-- No changes to existing permission model
-- Clear documentation needed for behavior differences
-- Implementation should be consistent across browsers
+- No changes to the permission model
+- Requires clear documentation of new API behaviors
+- Should aim for cross-browser consistency
 
 ## Future Work
-1. Consider adding reason codes for disable/uninstall events
-2. Explore adding similar functionality for other self-reference events
-
+1. Add standardized reason codes for disable/uninstall events (e.g., user feedback, inactivity, forced policy)
+2. Explore unified `browser.runtime.onLifecycleEvent` API for extensibility
+   
