@@ -9,36 +9,37 @@ Proposal to introduce a programmatic close method for the side panel API.
 
 **Sponsoring Browser:** Chromium
 
-**Contributors:** [hharshas](https://github.com/hharshas) ([Summer Of Code](https://summerofcode.withgoogle.com/)), mentor: oliverdunk, solomonkinard
+**Contributors:** [hharshas](https://github.com/hharshas) (
+  [Summer Of Code](https://summerofcode.withgoogle.com/)), mentor: oliverdunk, solomonkinard
 
 **Created:** 2025-05-27
 
-**Related Issues:** [#521](https://github.com/w3c/webextensions/issues/521), [#chromium](https://issues.chromium.org/issues/403765214)
+**Related Issues:** [#521](https://github.com/w3c/webextensions/issues/521),
+ [#chromium](https://issues.chromium.org/issues/403765214)
 
 ## Motivation
 
 ### Objective
 
 What does this API enable?
-- sidePanel.close() method will allow programmatically close the sidebar.
+- sidePanel.close() method will allow the sidebar to close programmatically.
 
 Why do we need it?
 - Currently, extensions cannot directly close their own sidebar from the background script, 
 developers have to:
-  1. Send a message
-  2. Call window.close()
+  1. Send a message from a background script to the side panel.
+  2. Call window.close() from the side panel window on message delivery.
 
 This event aims to give developers an easier control.
 
 #### Use Cases
 
 Programmatic Control: 
-- An extension could automatically close the panel after completing an action or when certain conditions are met.
-    1. Eg. Closing the sidePanel after longer inactivity.
+- An extension could automatically close the panel after completing an action or when certain conditions are met. e.g. Closing the sidePanel after longer inactivity.
 
 ### Known Consumers
 
-The Chromium bug has a significant amount of developer interest and the disscussions on the issue shows the same.
+[The Chromium bug](https://issues.chromium.org/issues/403765214) has a significant amount of developer interest and the disscussions on the issue shows the same.
 
 ## Specification
 
@@ -59,8 +60,8 @@ namespace sidePanel {
 
   interface Functions {
     // Closes the extension's side panel.
-    // |options|: Specifies the context in which to close the side panel.
-    // |callback|: Called when the side panel has been closed.
+    // `options`: Specifies the context in which to close the side panel.
+    // `callback`: Called when the side panel has been closed.
     static void close(
         CloseOptions options,
         optional VoidCallback callback);
@@ -75,16 +76,11 @@ namespace sidePanel {
 - Resolves when the panel has been closed. If the panel is already closed, still resolves successfully.
 
 ### Behavior
-    - The operation will only close side panels that belong to the calling extension (extension ID must match).
-
-    - If the panel is already closed or does not exist in the given context, the method does nothing.
-
-    - If neither windowId nor tabId is provided, rejects with an error 
-
-    - If windowId or tabId is invalid, rejects with an error.
-
-    - If both windowId and tabId are provided, the method will verify that the tab belongs to the specified window. If not, it rejects with an error.
-
+- The operation will only close side panels that belong to the calling extension (extension ID must match).
+- If the panel is already closed or does not exist in the given context, the method does nothing.
+- If neither windowId nor tabId is provided, rejects with an error 
+- If windowId or tabId is invalid, rejects with an error.
+- If both windowId and tabId are provided, the method will verify that the tab belongs to the specified window. If not, it rejects with an error.
 ### New Permissions
 N/A.
 
@@ -109,9 +105,8 @@ N/A
 
 ### Existing Workarounds
 
-    - Message passing between background and panel contexts.
-
-    - Calling window.close() from the panel context.
+* Message passing between background and panel contexts.
+* Calling window.close() from the panel context.
 
 ### Open Web API
 
