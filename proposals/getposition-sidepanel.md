@@ -117,8 +117,6 @@ N/A.
 ## Future Work
 
 * Additional Settings: Expand getSettings() with more panel configuration options.
-* Position Change Events: Add event listener for
- position changes (again open for discussion).
 
 ## Basic uses
 
