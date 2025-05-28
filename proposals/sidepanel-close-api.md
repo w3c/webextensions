@@ -47,13 +47,14 @@ The Chromium bug has a significant amount of developer interest and the disscuss
 ```typescript
 namespace sidePanel {
   dictionary CloseOptions {
-    // The window in which to close the side panel. If omitted,
-    // operates on the current window.
+    // The window in which to close the side panel.
     long? windowId;
 
     // The tab for which to close the side panel. If specified,
     // only closes tab-specific side panels.
     long? tabId;
+
+    // At least one of these must be provided, otherwise rejects with an error
   };
 
   interface Functions {
@@ -76,9 +77,9 @@ namespace sidePanel {
 ### Behavior
     - The operation will only close side panels that belong to the calling extension (extension ID must match).
 
-    - If called with no options, closes the panel in the current window.
-
     - If the panel is already closed or does not exist in the given context, the method does nothing.
+
+    - If neither windowId nor tabId is provided, rejects with an error 
 
     - If windowId or tabId is invalid, rejects with an error.
 
