@@ -9,7 +9,8 @@ Proposal to introduce a programmatic way to query the Side panel position.
 
 **Sponsoring Browser:** Chromium
 
-**Contributors:** [hharshas](https://github.com/hharshas) ([Summer Of Code](https://summerofcode.withgoogle.com/)), mentor: oliverdunk, solomonkinard
+**Contributors:** [hharshas](https://github.com/hharshas) 
+([Summer Of Code](https://summerofcode.withgoogle.com/)), mentor: oliverdunk, solomonkinard
 
 **Created:** 2025-05-27
 
@@ -19,8 +20,11 @@ Proposal to introduce a programmatic way to query the Side panel position.
 
 ### Objective
 
-- At chrome://settings, it is possible to change the "Side panel position" which affects which side of the browser the side panel UI opens on. This can include panels registered by the developer using the sidePanel API.
-- We should add a way to query this so the developer can adjust their UI based on the position.
+* At chrome://settings, it is possible to change the "Side panel position"
+ which affects which side of the browser the side panel UI opens on.
+  This can include panels registered by the developer using the sidePanel API.
+* We should add a way to query this so the developer can adjust their UI 
+based on the position.
 
 #### Use Cases
 
@@ -29,7 +33,8 @@ Programmatic Control:
 
 ### Known Consumers
 
-The Chromium bug has some amount of developer interest. This item is under consideration by Chrome among work items for Summer of Code.
+The Chromium bug has some amount of developer interest. This item is under 
+consideration by Chrome among work items for Summer of Code.
 
 ## Specification
 
@@ -49,7 +54,6 @@ namespace sidePanel {
     // Returns: Promise that resolves with the current position
     static Promise<PanelPosition> getPosition();
     
-    ////
     // Alternative approach for future extensibility (open for discussion)
     dictionary PanelSettings {
       PanelPosition position;
@@ -68,8 +72,8 @@ namespace sidePanel {
 - Resolves when it returns the panel position.
 
 ### Behavior
-    - Returns the current position as set in browser settings. 
-    - No context option is needed as the setting is same for all the context.
+- Returns the current position as set in browser settings. 
+- No context option is needed as the setting is same for all the context.
 
 ### New Permissions
 N/A.
@@ -95,11 +99,16 @@ N/A
 
 ### Existing Workarounds
 
-  - So far, nothing works. The DOM of the side panel and the content script are separate, so even if we detect the resize event when the side panel is opened, we can't determine the panel's position. It will be interesting to see others' approaches in the comments of this PR.
+So far, nothing works. The DOM of the side panel and the
+ content script are separate, so even if we detect the resize 
+ event when the side panel is opened, we can't determine the
+ panel's position. It will be interesting to see other's
+ approaches in the comments of this PR.
 
 ### Open Web API
 
-This API is intended to support panels registered by the developer using the Side Panel API, so it does not belong on the open web.
+This API is intended to support panels registered by
+ the developer using the Side Panel API, so it does not belong on the open web.
 
 ## Implementation Notes
 
@@ -107,8 +116,9 @@ N/A.
 
 ## Future Work
 
-- Additional Settings: Expand getSettings() with more panel configuration options
-- Position Change Events: Add event listener for position changes (again open for discussion)
+* Additional Settings: Expand getSettings() with more panel configuration options.
+* Position Change Events: Add event listener for
+ position changes (again open for discussion).
 
 ## Basic uses
 
