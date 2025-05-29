@@ -35,7 +35,7 @@ This event aims to give developers an easier control.
 
 #### Use Cases
 
-Programmatic Control: 
+Programmatic Control:
 - An extension could automatically close the panel after completing an action or
   when certain conditions are met. For example, closing the side panel after longer
   inactivity.
@@ -77,18 +77,18 @@ namespace sidePanel {
 
 - Type: Promise<void>
 
-- Resolves when the panel has been closed. If the panel is 
+- Resolves when the panel has been closed. If the panel is
   already closed, still resolves successfully.
 
 ### Behavior
 
-- The operation will only close side panels that belong to the 
+- The operation will only close side panels that belong to the
   calling extension.
-- If the panel is already closed or does not exist in the given 
+- If the panel is already closed or does not exist in the given
   context, the method does nothing.
-- If neither `windowId` nor `tabId` is provided, rejects with an error 
+- If neither `windowId` nor `tabId` is provided, rejects with an error.
 - If `windowId` or `tabId` is invalid, rejects with an error.
-- If both `windowId` and `tabId` are provided, the method will verify 
+- If both `windowId` and `tabId` are provided, the method will verify
   that the tab belongs to the specified window. If not, it rejects with an error.
 
 ### New Permissions
@@ -120,7 +120,7 @@ N/A
 
 ### Open Web API
 
-Not applicable to the open web as it only complements the existing `open()` 
+Not applicable to the open web as it only complements the existing `open()`
 functionality.
 
 ## Implementation Notes
