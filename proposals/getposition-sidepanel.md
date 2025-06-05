@@ -21,9 +21,9 @@ Proposal to introduce a programmatic way to query the Side panel position.
 
 ### Objective
 
-* At `chrome://settings`, it is possible to change the "Side panel position"
-  which affects which side of the browser the side panel UI opens on. This
-  can include panels registered by the developer using the sidePanel API.
+* Browsers may offer users the ability to change which side of the browser
+  the side panel opens on. In Chrome, this is exposed at `chrome://settings`.
+  This can include side panels registered by the extensions using the sidePanel API.
 * We should add a way to query this so the developer can adjust their UI
   based on the position.
 
@@ -43,26 +43,25 @@ consideration by Chrome among work items for Summer of Code.
 
 ```typescript
 namespace sidePanel {
- namespace sidePanel {
-  // Possible side panel positions
-  enum PanelPosition {
-    LEFT = "left",
-    RIGHT = "right"
-  };
+    // Possible side panel positions
+    enum Side {
+        LEFT = "left",
+        RIGHT = "right"
+    }
 
-  interface Functions {
-    // Returns the current position of the side panel.
-    static Promise<PanelPosition> getPosition();
-    
-    // Alternative approach for future extensibility (open for discussion).
-    dictionary PanelSettings {
-      PanelPosition position;
-      // Future settings could be added here.
-    };
-    
-    static Promise<PanelSettings> getSettings();
-  };
-};
+    interface PanelPosition {
+        side: Side;
+    }
+
+    interface PanelSettings {
+        position: PanelPosition;
+        // Future settings could be added here
+    }
+
+    // Example function declarations
+    function getPosition(): Promise<PanelPosition>;
+    function getSettings(): Promise<PanelSettings>;
+}
 ```
 
 ### Return value
@@ -101,11 +100,7 @@ N/A
 
 ### Existing Workarounds
 
-So far, nothing works. The DOM of the side panel and the
-content script are separate, so even if we detect the resize
-event when the side panel is opened, we can't determine the
-panel's position. It will be interesting to see other's
-approaches in the comments of this PR.
+N/A
 
 ### Open Web API
 
