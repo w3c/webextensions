@@ -10,11 +10,13 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2025-06-05 at 8 AM PDT = https://everytimezone.com/?t=6840de00,384
-- 2025-06-19 at 8 AM PDT = https://everytimezone.com/?t=68535300,384
+- 2025-06-19 - Cancelled due to Juneteenth in USA
+- 2025-07-03 at 8 AM PDT = https://everytimezone.com/?t=68671980,384
+- 2025-07-17 at 8 AM PDT = https://everytimezone.com/?t=68798e80,384
 
 ## Past meetings
 
+* 2025-06-05 ([minutes](2025-06-05-wecg.md))
 * 2025-05-22 ([minutes](2025-05-22-wecg.md))
 * 2025-05-08 ([minutes](2025-05-08-wecg.md))
 * 2025-04-24 ([minutes](2025-04-24-wecg.md))
@@ -24,13 +26,13 @@ After the end of each meeting, meeting notes are published here.
 * 2025-03-27 F2F meetup in Berlin ([minutes](2025-03-27-berlin-f2f.md))
 * 2025-03-26 F2F meetup in Berlin ([minutes](2025-03-26-berlin-f2f.md))
 * 2025-03-25 F2F meetup in Berlin ([minutes](2025-03-25-berlin-f2f.md))
-* 2025-03-13 ([minutes](2025-03-13-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2025**
 
+* 2025-06-05 ([minutes](2025-06-05-wecg.md))
 * 2025-05-22 ([minutes](2025-05-22-wecg.md))
 * 2025-05-08 ([minutes](2025-05-08-wecg.md))
 * 2025-04-24 ([minutes](2025-04-24-wecg.md))
