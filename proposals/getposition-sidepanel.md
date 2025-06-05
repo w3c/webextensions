@@ -53,14 +53,8 @@ namespace sidePanel {
         side: Side;
     }
 
-    interface PanelSettings {
-        position: PanelPosition;
-        // Future settings could be added here
-    }
-
     // Example function declarations
     function getPosition(): Promise<PanelPosition>;
-    function getSettings(): Promise<PanelSettings>;
 }
 ```
 
@@ -113,7 +107,7 @@ N/A
 
 ## Future Work
 
-* Additional Settings: Expand `getSettings()` with more panel configuration options.
+N/A
 
 ## Basic uses
 
