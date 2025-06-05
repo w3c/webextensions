@@ -37,8 +37,10 @@ This event aims to give developers an easier control.
 
 Programmatic Control:
 - An extension could automatically close the panel after completing an action or
-  when certain conditions are met. For example, closing the side panel after longer
-  inactivity.
+  when certain conditions are met. For example, an extension that helps users fill
+  out a form could close the side panel automatically once the form is submitted.
+  This ensures the side panel only stays open while it’s needed,
+  streamlining the user experience.
 
 ### Known Consumers
 
