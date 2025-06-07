@@ -1,4 +1,4 @@
-# Add API to Query Side Panel Position
+# Add API to Query Side Panel Layout
 
 **Summary**
 
@@ -47,14 +47,14 @@ namespace sidePanel {
     enum Side {
         LEFT = "left",
         RIGHT = "right"
-    }
+    };
 
-    interface PanelPosition {
+    interface PanelLayout {
         side: Side;
-    }
+    };
 
     // Example function declarations
-    function getPosition(): Promise<PanelPosition>;
+    function getLayout(): Promise<PanelPosition>;
 }
 ```
 
@@ -112,8 +112,8 @@ N/A
 ## Basic uses
 
 ```typescript
-chrome.sidePanel.getPosition().then(position => {
-  console.log(`Panel is on the ${position} side`);
-  applyPositionSpecificStyles(position);
+chrome.sidePanel.getLayout().then(layout => {
+  console.log(`Panel is on the ${layout.side} side`);
+  applyPositionSpecificStyles(layout.side);
 });
 ```
