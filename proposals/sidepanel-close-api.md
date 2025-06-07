@@ -92,11 +92,16 @@ namespace sidePanel {
 - If `windowId` or `tabId` is invalid, rejects with an error.
 - If both `windowId` and `tabId` are provided, the method will verify
   that the tab belongs to the specified window. If not, it rejects with an error.
+- If a side panel is opened globally for a given `windowId` and the method is
+  called with both `windowId` and `tabId`, the side panel will be closed
+  for all tabs in that window, not just the specified tab.
 
 ### New Permissions
+
 N/A
 
 ### Manifest File Changes
+
 N/A
 
 ## Security and Privacy
