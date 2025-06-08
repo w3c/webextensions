@@ -30,6 +30,9 @@ Why do we need it?
   background script, developers have to:
   1. Send a message from a background script to the side panel.
   2. Call `window.close()` from the side panel window on message delivery.
+- Further, this method has a big problem: when `window.close()`
+  is used in a tab-specific side panel, it also closes any global side panels
+  that might be open on other tabs.
 
 This event aims to give developers an easier control.
 
