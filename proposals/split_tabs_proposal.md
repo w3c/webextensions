@@ -2,8 +2,9 @@
 
 **Summary**
 
-Expose a unique identifier for split tabs, similar to the identifier used for
-tab groups.
+Expose a unique identifier for split tabs (a view where two tabs can be viewed
+at the same time within a single browser window), similar to the identifier
+used for tab groups.
 
 **Document Metadata**
 
@@ -15,7 +16,7 @@ tab groups.
 
 **Created:** 2025-06-06
 
-**Related Issues:** N/A
+**Related Issues:** https://github.com/microsoft/MicrosoftEdge-Extensions/issues/296
 
 ## Motivation
 
