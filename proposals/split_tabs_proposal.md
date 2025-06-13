@@ -2,7 +2,7 @@
 
 **Summary**
 
-Expose a unique identifier for split tabs (a view where two tabs can be viewed
+Expose a unique identifier for Split Views (a view where two tabs can be viewed
 at the same time within a single browser window), similar to the identifier
 used for tab groups.
 
@@ -24,17 +24,22 @@ used for tab groups.
 
 When extensions manipulate tabs, we want them to be able to take into
 consideration how a user has grouped and organized their tabs. If two tabs are
-part of a split and an extension is not aware of it, then the extension may
-attempt to move tabs in invalid ways which might cause user confusion.
+part of a Split View and an extension is not aware of it, then the extension
+may attempt to move tabs in invalid ways which might cause user confusion.
+
+Note that this change is experimental and we may remove this field in a future
+Chrome release. So even if tabs are in a Split View, it isn't guarenteed that a
+split id will be returned.
 
 #### Use Cases
 
 * An extension wants to move a tab within the tab strip. With this API, it can
-detect if the moved tab is part of a split and can move the split together or
-choose not to move the tab.
+detect if the moved tab is part of a Split View and can move the tabs within a
+Split View together or choose not to move the tab.
 * An extension wants to close a tab within the tab strip. With this API, it can
-detect that the closed tab was part of a split and can decide to close
-everything in the split or not to close the tab to preserve the split.
+detect that the closed tab was part of a Split View and can decide to close
+everything in the Split View or not to close the tab to preserve the Split
+View.
 
 
 ### Known Consumers
@@ -64,7 +69,7 @@ similarly to the “groupId” field that already exists.
             "type": "integer",
             "minimum": -1,
             "optional": "true",
-            "description": "The ID of the split that the tab belongs to."
+            "description": "The ID of the Split View that the tab belongs to."
           },
           ...
         }
@@ -85,7 +90,7 @@ similarly to the “groupId” field that already exists.
        "type": "integer",
        "minimum": -1,
        "optional": true,
-       "description": "The ID of the split that the tabs are in, or $(ref:tabs.SPLIT_TAB_ID_NONE) for unsplit tabs."
+       "description": "The ID of the Split View that the tabs are in, or $(ref:tabs.SPLIT_TAB_ID_NONE) for tabs that aren't in a Split View."
           },
           ...
         }]
@@ -109,7 +114,7 @@ similarly to the “groupId” field that already exists.
                 "type": "integer",
                 "minimum": -1,
                 "optional": true,
-                "description": "The tab's new split."
+                "description": "The tab's new Split View."
               }
               ...
             }
@@ -124,13 +129,13 @@ similarly to the “groupId” field that already exists.
 
 ### Behavior
 
-If a tab isn’t currently in a split, the splitId will be -1, otherwise it will
-have a unique value that represents the split. All tabs in the split will have
-the same identifier.
+If a tab isn’t currently in a Split View, the splitId will be -1, otherwise it
+will have a unique value that represents the Split View. All tabs in the Split
+View will have the same identifier.
 
-When split tabs are visible to the user, one of the tabs will be denoted as
+When Split Views are visible to the user, one of the tabs will be denoted as
 active with a unique visual treatment. That is the only tab that will return
-as active, even if the other half of the split is visible.
+as active, even if the other half of the Split View is visible.
 
 ### New Permissions
 
@@ -174,13 +179,14 @@ complete.
 ## Implementation Notes
 
 Within Chrome, when extensions make updates to tabs in the tab strip that are
-inconsistent with a current split, we plan to fail gracefully by unsplitting
-the tab. So if a tab is moved in between two tabs in a split, that split will
-be removed and the two tabs will be separated. If one tab in a split is
-closed, the split will be removed and the one tab will be closed.
+inconsistent with a current Split View, we plan to fail gracefully by
+unsplitting the view. So if a tab is moved in between two tabs in a Split View,
+that Split View will be removed and the two tabs will be separated. If one tab
+in a Split View is closed, the Split View will be removed and the one tab will
+be closed.
 
 ## Future Work
 
 In the future, it would be nice to have an API to create, update, and remove
-splits. It would also be helpful to have an API to query/update details of a
-split like whether it is a vertical or horizontal.
+Split Views. It would also be helpful to have an API to query/update details of
+a Split View like whether it is a vertical or horizontal.
