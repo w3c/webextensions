@@ -51,7 +51,7 @@ We don’t have specific known consumers but we expect any consumers of the
 
 ### Schema
 
-We will add a new property called “splitId” to the Tab object. This will behave
+We will add a new property called “splitViewId`” to the Tab object. This will behave
 similarly to the “groupId” field that already exists.
 
 ```
@@ -65,7 +65,7 @@ similarly to the “groupId” field that already exists.
         "type": "object",
         "properties": {
           ...
-          "splitId": {
+          "splitViewId`": {
             "type": "integer",
             "minimum": -1,
             "optional": "true",
@@ -86,7 +86,7 @@ similarly to the “groupId” field that already exists.
    "name": "queryInfo",
    "properties": {
      ...
-     "splitId": {
+     "splitViewId`": {
        "type": "integer",
        "minimum": -1,
        "optional": true,
@@ -110,7 +110,7 @@ similarly to the “groupId” field that already exists.
             "description": "Lists the changes to the state of the tab that was updated.",
             "properties": {
               ...
-              "splitId": {
+              "splitViewId`": {
                 "type": "integer",
                 "minimum": -1,
                 "optional": true,
@@ -129,7 +129,7 @@ similarly to the “groupId” field that already exists.
 
 ### Behavior
 
-If a tab isn’t currently in a Split View, the splitId will be -1, otherwise it
+If a tab isn’t currently in a Split View, the splitViewId` will be -1, otherwise it
 will have a unique value that represents the Split View. All tabs in the Split
 View will have the same identifier.
 
