@@ -41,7 +41,6 @@ detect that the closed tab was part of a Split View and can decide to close
 everything in the Split View or not to close the tab to preserve the Split
 View.
 
-
 ### Known Consumers
 
 We don’t have specific known consumers but we expect any consumers of the
@@ -51,7 +50,7 @@ We don’t have specific known consumers but we expect any consumers of the
 
 ### Schema
 
-We will add a new property called “splitViewId`” to the Tab object. This will behave
+We will add a new property called “`splitViewId`” to the Tab object. This will behave
 similarly to the “groupId” field that already exists.
 
 ```
@@ -65,7 +64,7 @@ similarly to the “groupId” field that already exists.
         "type": "object",
         "properties": {
           ...
-          "splitViewId`": {
+          "splitViewId": {
             "type": "integer",
             "minimum": -1,
             "optional": "true",
@@ -86,7 +85,7 @@ similarly to the “groupId” field that already exists.
    "name": "queryInfo",
    "properties": {
      ...
-     "splitViewId`": {
+     "splitViewId": {
        "type": "integer",
        "minimum": -1,
        "optional": true,
@@ -110,7 +109,7 @@ similarly to the “groupId” field that already exists.
             "description": "Lists the changes to the state of the tab that was updated.",
             "properties": {
               ...
-              "splitViewId`": {
+              "splitViewId": {
                 "type": "integer",
                 "minimum": -1,
                 "optional": true,
@@ -129,7 +128,7 @@ similarly to the “groupId” field that already exists.
 
 ### Behavior
 
-If a tab isn’t currently in a Split View, the splitViewId` will be -1, otherwise it
+If a tab isn’t currently in a Split View, the `splitViewId` will be -1, otherwise it
 will have a unique value that represents the Split View. All tabs in the Split
 View will have the same identifier.
 
@@ -175,7 +174,6 @@ tabs.
 This isn’t adding a new API method, just updating an existing one to be more
 complete.
 
-
 ## Implementation Notes
 
 Within Chrome, when extensions make updates to tabs in the tab strip that are
@@ -190,3 +188,4 @@ be closed.
 In the future, it would be nice to have an API to create, update, and remove
 Split Views. It would also be helpful to have an API to query/update details of
 a Split View like whether it is a vertical or horizontal.
+
