@@ -23,7 +23,7 @@ Proposal to introduce a programmatic way to query the Side panel position.
 
 * Browsers may offer users the ability to change which side of the browser
   the side panel opens on. In Chrome, this is exposed at `chrome://settings`.
-  This can include side panels registered by the extensions using the sidePanel API.
+  This can include side panels registered by the extensions using the `sidePanel` API.
 * We should add a way to query this so the developer can adjust their UI
   based on the position.
 
