@@ -60,7 +60,7 @@ namespace sidePanel {
 
 ### Return value
 
-* Type: Promise<void>
+* Type: `Promise<PanelPosition>`
 * Resolves when it returns the panel position.
 
 ### Behavior
