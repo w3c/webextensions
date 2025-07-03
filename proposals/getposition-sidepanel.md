@@ -15,7 +15,7 @@ Proposal to introduce a programmatic way to query the Side panel position.
 
 **Created:** 2025-05-27
 
-**Related Issues:** [#chromium](https://issues.chromium.org/issues/406511291)
+**Related Issues:** https://issues.chromium.org/issues/406511291
 
 ## Motivation
 
