@@ -43,7 +43,7 @@ consideration by Chrome among work items for Summer of Code.
 
 ```typescript
 namespace sidePanel {
-    // Possible side panel positions
+    // Possible side panel positions.
     enum Side {
         LEFT = "left",
         RIGHT = "right"
@@ -54,13 +54,13 @@ namespace sidePanel {
     };
 
     // Example function declarations
-    function getLayout(): Promise<PanelPosition>;
+    function getLayout(): Promise<PanelLayout>;
 }
 ```
 
 ### Return value
 
-* Type: `Promise<PanelPosition>`
+* Type: `Promise<PanelLayout>`
 * Resolves when it returns the panel position.
 
 ### Behavior
