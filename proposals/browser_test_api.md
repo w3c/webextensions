@@ -122,7 +122,7 @@ This API does not provide any additional avenue for abuse because
 ### Existing Workarounds
 
 Current ways of testing extensions use proprietary methods and non-standard
-protocols like CDP.  As a result, testing extensions is hard and as a result,
+protocols like CDP.  As a result, testing extensions is hard and especially,
 automated testing of extensions across browsers is very rare.
 
 ### Open Web API
@@ -141,7 +141,6 @@ Existing implementation have additional methods with different names and
 behaviors, and we plan to align and specify more of them, for example:
 
  - `assertRejects`
- - `assertThrows`
  - `log`
  - `sendMessage`
  - `withHandlingUserInput`
