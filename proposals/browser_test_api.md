@@ -97,6 +97,30 @@ Tests pass when they return `undefined` or a resolved promise. They fail if they
 **Parameters**
 - `tests` (array of functions)
 
+### Methods for Test Harness Pages
+
+**`browser.test.onTestStarted(listener)`**
+Event listener that runs when a test starts.
+
+**Parameters**
+- `listener` (function)
+
+**Listener receives:**
+- `data.testName` (string)
+
+**`browser.test.onTestFinished(listener)`**
+Event listener that runs when a test finishes.
+
+**Parameters**
+- `listener` (function)
+
+**Listener receives:**
+- `data.testName` (string)
+- `result` (boolean)
+- `remainingTests` (number)
+- `message` (string, optional)
+- `assertionDescription` (string)
+
 ### New Permissions
 
 No new permissions are necessary.
