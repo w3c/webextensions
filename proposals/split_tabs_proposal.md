@@ -57,7 +57,7 @@ similarly to the “groupId” field that already exists.
 [
   {
     "namespace": "tabs",
-    "description": "Use the <code>chrome.tabs</code> API to interact with the browser's tab system. You can use this API to create, modify, and rearrange tabs in the browser.",
+    ...
     "types": [
       {
         "id": "Tab",
@@ -81,17 +81,18 @@ similarly to the “groupId” field that already exists.
         "type": "function",
         "description": "Gets all tabs that have the specified properties, or all tabs if no properties are specified.",
         "parameters": [{
-   "type": "object",
-   "name": "queryInfo",
-   "properties": {
-     ...
-     "splitViewId": {
-       "type": "integer",
-       "minimum": -1,
-       "optional": true,
-       "description": "The ID of the Split View that the tabs are in, or $(ref:tabs.SPLIT_TAB_ID_NONE) for tabs that aren't in a Split View."
-          },
-          ...
+          "type": "object",
+          "name": "queryInfo",
+          "properties": {
+            ...
+            "splitViewId": {
+              "type": "integer",
+              "minimum": -1,
+              "optional": true,
+              "description": "The ID of the Split View that the tabs are in, or $(ref:tabs.SPLIT_VIEW_ID_NONE) for tabs that aren't in a Split View."
+            },
+            ...
+          }
         }]
       }
     ]
