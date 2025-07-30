@@ -30,22 +30,24 @@ write and run a cross-browser test suite for their own extensions.
 
 ### Known Consumers
 
-All browsers already have this API namespace, and the goal of specifying it
-here is to align existing implementations around common behaviors.
+All browsers already use this API namespace internally, with several shared
+methods and some inconsistencies between implementations.  The intention of
+this proposal is to specify a desired common behavior and then introduce
+changes to align existing implementations around it.
 
 ## Specification
 
 ### Schema
 
 **`browser.test.assertTrue(condition, message)`**
-Asserts that a given condition is `true`. If the condition is `false`, the test fails.
+Asserts that a given condition is `true`, otherwise the test fails.
 
 **Parameters**
 - `condition` (boolean) – The condition to assert.
 - `message` (string, optional) – A message describing the assertion.
 
 **`browser.test.assertFalse(condition, message)`**
-Asserts that a given condition is `false`. If the condition is `true`, the test fails.
+Asserts that a given condition is `false`, otherwise the test fails.
 
 **Parameters**
 - `condition` (boolean)
