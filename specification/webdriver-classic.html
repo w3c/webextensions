@@ -5,9 +5,9 @@
   <title>webdriver-classic</title>
   <meta content="CG-DRAFT" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version b25686b9f, updated Fri Mar 14 14:15:20 2025 -0700" name="generator">
+  <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://w3c.github.io/webextensions/specification/webdriver-classic.html" rel="canonical">
-  <meta content="8fa7a29d5767cebeeb8152953191dca5ddf777e2" name="revision">
+  <meta content="234392e20268b541670185932953507555d5a7f5" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -410,9 +410,13 @@ dfn > a.self-link::before      { content: "#"; }
 </style>
  <body class="h-entry">
   <div class="head">
-   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
+   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/">
+    <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72">
+</a>
+</p>
    <h1 class="p-name no-ref" id="title">webdriver-classic</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2025-05-01">1 May 2025</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
+    <time class="dt-updated" datetime="2025-07-30">30 July 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -428,7 +432,8 @@ dfn > a.self-link::before      { content: "#"; }
    </details>
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 the Contributors to the webdriver-classic Specification, published by the <a href="https://www.w3.org/community/webextensions/">WebExtensions Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
-A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available. </p>
+A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available.
+</p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -437,12 +442,17 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p> This specification was published by the <a href="https://www.w3.org/community/webextensions/">WebExtensions Community Group</a>.
+   <p>
+  This specification was published by the <a href="https://www.w3.org/community/webextensions/">WebExtensions Community Group</a>.
   It is not a W3C Standard nor is it on the W3C Standards Track.
 
-  Please note that under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a> there is a limited opt-out and other conditions apply.
+  Please note that under the
+  <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>
+  there is a limited opt-out and other conditions apply.
 
-  Learn more about <a href="http://www.w3.org/community/">W3C Community and Business Groups</a>. </p>
+  Learn more about
+  <a href="http://www.w3.org/community/">W3C Community and Business Groups</a>.
+</p>
    <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -470,7 +480,10 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   <main>
    <section class="non-normative">
     <h3 class="heading settled" id="introduction"><span class="content">Introduction</span></h3>
-     <em>This section is non-normative.</em> 
+    
+      <em>This section is non-normative.</em>
+
+
     <p>This specification is non-normative.The intention of this spec is to
       document how extensions should be installed/uninstalled in WebDriver Classic,
       for browser vendors who choose to implement it.</p>
@@ -494,26 +507,42 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <table class="simple">
      <tbody>
       <tr>
-       <th>Error Code 
-       <th>HTTP Status 
-       <th>JSON Error Code 
-       <th>Description 
+       <th>Error Code
+      
+       <th>HTTP Status
+      
+       <th>JSON Error Code
+      
+       <th>Description
+     
       <tr>
-       <td>no such web extension 
-       <td>404 
-       <td><code>no such web extension</code> 
+       <td>no such web extension
+      
+       <td>404
+      
+       <td><code>no such web extension</code>
+      
        <td>No web extension matching the given extension id was found
-          amongst the <var>session</var>'s installed extensions. 
+          amongst the <var>session</var>'s installed extensions.
+     
       <tr>
-       <td>unable to install extension 
-       <td>500 
-       <td><code>unable to install extension</code> 
-       <td>A command to install an extension could not be satisfied. 
+       <td>unable to install extension
+       
+       <td>500
+       
+       <td><code>unable to install extension</code>
+       
+       <td>A command to install an extension could not be satisfied.
+     
       <tr>
-       <td>unable to uninstall extension 
-       <td>500 
-       <td><code>unable to uninstall extension</code> 
-       <td>A command to uninstall an extension could not be satisfied. 
+       <td>unable to uninstall extension
+       
+       <td>500
+       
+       <td><code>unable to uninstall extension</code>
+       
+       <td>A command to uninstall an extension could not be satisfied.
+     
     </table>
    </section>
    <section>
@@ -522,7 +551,9 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      <h2 class="heading settled" data-level="1" id="webextensions"><span class="secno">1. </span><span class="content">WebExtensions</span><a class="self-link" href="#webextensions"></a></h2>
      <p>The WebExtensions API provides an interface that allows
       extensions to modify and enhance the capability of the browser.
-      This section describes the interaction with WebExtensions. </p>
+      This section describes the interaction with WebExtensions.
+
+      </p>
      <section>
       <h3 class="heading settled" data-level="1.1" id="install-webextension"><span class="secno">1.1. </span><span class="content">Install WebExtension</span><a class="self-link" href="#install-webextension"></a></h3>
       <table class="simple jsoncommand">
@@ -534,38 +565,72 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
          <td>POST
          <td>/session/{<var>session id</var>}/webextension
       </table>
-      <p>Based on the <a href="https://www.w3.org/TR/webdriver-bidi/#command-webExtension-install"> BiDi implementation</a>, the remote end steps, given <var>session</var>, <var>URL variables</var> and <var>parameters</var> are: </p>
+      <p>Based on the
+        <a href="https://www.w3.org/TR/webdriver-bidi/#command-webExtension-install">
+        BiDi implementation</a>, the remote end steps, given <var>session</var>,
+        <var>URL variables</var> and <var>parameters</var> are:
+
+        </p>
       <ol>
        <li>
         <p>If <var>session</var>'s current browsing context
-          is no longer open, return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a> no such window. </p>
+          is no longer open, return
+          <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with
+          <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a>
+          no such window.
+
+          </p>
        <li>
-        <p>If installing web extensions isn’t supported, return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a> unsupported operation. </p>
+        <p>If installing web extensions isn’t supported, return
+          <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
+          with <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a>
+           unsupported operation.
+          </p>
        <li>
         <p>Let <var>type hint</var> be the result of getting the
-          property "<code>type</code>" from <var>parameters</var>. </p>
+          property "<code>type</code>" from <var>parameters</var>.
+            </p>
         <ol style="list-style-type: lower-latin">
          <li>
           <p> If <var>type hint</var> does not have the value of
-                      "path", "archivePath", or "base64", return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error"> error code</a> invalid argument. </p>
+                      "path", "archivePath", or "base64", return
+                      <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
+                      with <a href="https://w3c.github.io/webdriver/#dfn-error">
+                      error code</a> invalid argument.
+              </p>
          <li>
           <p>If the implementation does not support installing web
-                      extensions using <var>type hint</var>, return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error"> error code</a> unsupported operation. </p>
+                      extensions using <var>type hint</var>, return
+                      <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
+                      with <a href="https://w3c.github.io/webdriver/#dfn-error">
+                      error code</a> unsupported operation.
+              </p>
          <li>
-          <p>If <var>type hint</var> is "base64", let <var>value</var> be the result of getting the property "<code>value</code>" from <var>parameters</var>. If <var>type hint</var> is "path" or "archivePath",
-                      let <var>value</var> be the result of getting the property "<code>path</code>" from <var>parameters</var>. If <var>value</var> is <code>null</code>, return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error"> error code</a> invalid argument. </p>
+          <p>If <var>type hint</var> is "base64", let <var>value</var>
+                      be the result of getting the property "<code>value</code>" from
+                      <var>parameters</var>. If <var>type hint</var> is "path" or "archivePath",
+                      let <var>value</var> be the result of getting the property "<code>path</code>" from
+                      <var>parameters</var>. If <var>value</var> is <code>null</code>, return
+                      <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
+                      with <a href="https://w3c.github.io/webdriver/#dfn-error">
+                      error code</a> invalid argument.
+              </p>
          <li>
           <p>If <var>type hint</var> has the value "path" and the
                       implementation supports installing a web extension given a
                       path to it’s resources, the implementation should install the
-                      extension located at the path stored in "<code>value</code>". </p>
+                      extension located at the path stored in "<code>value</code>".
+              </p>
          <li>
           <p>If <var>type hint</var> has the value "archivePath"
                       and the implementation supports installing a web extension
                       given a path to a ZIP of it’s resources, the implementation
                       should extract the ZIP and install the extension located at
                       the path stored in "<code>value</code>". If this extraction
-                      fails, return <a href="https://w3c.github.io/webdriver/#dfn-error"> error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error"> error code</a> unable to install extension. </p>
+                      fails, return <a href="https://w3c.github.io/webdriver/#dfn-error">
+                      error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error">
+                      error code</a> unable to install extension.
+              </p>
          <li>
           <p>If <var>type hint</var> has the value "base64" and the
                       implementation supports installing a web extension given a
@@ -573,14 +638,23 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
                       extension’s resources, the implementation should extract
                       the archive from the encoded string stored in
                       "<code>value</code>". If this extraction fails, return
-                      error with <a href="https://w3c.github.io/webdriver/#dfn-error"> error code</a> unable to install extension. </p>
+                      error with <a href="https://w3c.github.io/webdriver/#dfn-error">
+                      error code</a> unable to install extension.
+            </p>
         </ol>
        <li>
-        <p>If the extension fails to install, return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a> unable to install extension. </p>
+        <p>If the extension fails to install, return
+          <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with
+              <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a>
+              unable to install extension.
+          </p>
        <li>
-        <p>Let <var>result</var> be the identifier of the installed extension. </p>
+        <p>Let <var>result</var> be the identifier of the installed extension.
+
+         </p>
        <li>
-        <p>Return success with <var>result</var>. </p>
+        <p>Return success with <var>result</var>.
+        </p>
       </ol>
      </section>
      <section>
@@ -594,23 +668,51 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
          <td>DELETE
          <td>/session/{<var>session id</var>}/webextension/{<var>extension id</var>}
       </table>
-      <p>Based on the <a href="https://www.w3.org/TR/webdriver-bidi/#command-webExtension-uninstall"> BiDi implementation</a>, the remote end steps, given <var>session</var>, <var>URL variables</var> and <var>parameters</var> are: </p>
+      <p>Based on the
+        <a href="https://www.w3.org/TR/webdriver-bidi/#command-webExtension-uninstall">
+        BiDi implementation</a>, the remote end steps, given <var>session</var>,
+        <var>URL variables</var> and <var>parameters</var> are:
+
+        </p>
       <ol>
        <li>
         <p>If <var>session</var>'s current browsing context  is no
-         longer open, return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a> no such window. </p>
+         longer open, return
+         <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with
+         <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a>
+         no such window.
+
+         </p>
        <li>
-        <p>If uninstalling web extensions isn’t supported, return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error"> error code</a> unsupported operation. </p>
+        <p>If uninstalling web extensions isn’t supported, return
+         <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
+              with <a href="https://w3c.github.io/webdriver/#dfn-error">
+              error code</a> unsupported operation.
+
+         </p>
        <li>
-        <p>Let <var>extension id</var> be <var>URL variables</var> ["<code>extension id</code>"]. </p>
+        <p>Let <var>extension id</var> be <var>URL variables</var>
+              ["<code>extension id</code>"].
+
+         </p>
        <li>
-        <p>If the browser has no web extension installed with an id equal to <var>extension id</var>, return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> code
-              no such web extension. </p>
+        <p>If the browser has no web extension installed with an id equal to
+              <var>extension id</var>, return
+              <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> code
+              no such web extension.
+
+         </p>
        <li>
         <p>Perform any implementation defined steps to uninstall the extension.
-              If these steps failed, return <a href="https://w3c.github.io/webdriver/#dfn-error">error</a> with <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a> unable to uninstall extension. </p>
+              If these steps failed, return
+              <a href="https://w3c.github.io/webdriver/#dfn-error">error</a>
+              with <a href="https://w3c.github.io/webdriver/#dfn-error">error code</a>
+              unable to uninstall extension.
+
+         </p>
        <li>
-        <p>Return success with data <code>null</code>. </p>
+        <p>Return success with data <code>null</code>.
+        </p>
       </ol>
      </section>
     </section>
@@ -626,21 +728,31 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     in the normative parts of this document
     are to be interpreted as described in RFC 2119.
     However, for readability,
-    these words do not appear in all uppercase letters in this specification. </p>
+    these words do not appear in all uppercase letters in this specification.
+
+    </p>
    <p>All of the text of this specification is normative
-    except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a> </p>
+    except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a>
+
+    </p>
    <p>Examples in this specification are introduced with the words “for example”
     or are set apart from the normative text
     with <code>class="example"</code>,
-    like this: </p>
+    like this:
+
+    </p>
    <div class="example" id="w3c-example">
-    <a class="self-link" href="#w3c-example"></a> 
-    <p>This is an example of an informative example. </p>
+    <a class="self-link" href="#w3c-example"></a>
+        
+    <p>This is an example of an informative example.
+    </p>
    </div>
    <p>Informative notes begin with the word “Note”
     and are set apart from the normative text
     with <code>class="note"</code>,
-    like this: </p>
+    like this:
+
+    </p>
    <p class="note" role="note">Note, this is an informative note.</p>
   </div>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
