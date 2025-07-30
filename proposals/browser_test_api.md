@@ -89,7 +89,7 @@ The promise:
 - **Resolves** if all tests pass.
 - **Rejects** if any fail.
 
-Tests pass when they return `undefined` or a resolved promise. They fail if they:
+Tests pass when they either return `undefined` or when a promise returned by the test resolves.  They fail if they:
 - Throw an exception
 - Return a rejected promise
 - Trigger an assertion failure
