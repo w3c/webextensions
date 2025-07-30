@@ -91,7 +91,7 @@ The promise:
 
 Tests pass when they either return `undefined` or when a promise returned by the test resolves.  They fail if they:
 - Throw an exception
-- Return a rejected promise
+- Return a promise that rejects
 - Trigger an assertion failure
 
 **Parameters**
