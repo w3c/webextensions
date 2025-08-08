@@ -197,4 +197,3 @@ Views. Currently the Sessions API as well as the History feature within the
 browser allows you to restore tabs and windows from the current browsing
 session. Chrome is not planning to implement this as part of the initial Split
 View but it may be implemented at a later date.
-
