@@ -188,5 +188,13 @@ be closed.
 
 In the future, it would be nice to have an API to create, update, and remove
 Split Views. It would also be helpful to have an API to query/update details of
-a Split View like whether it is a vertical or horizontal.
+a Split View like whether it is a vertical or horizontal but this might require
+more coordination between browsers to understand the full set of configuration
+options available. 
+
+Additionally, it would be helpful to support restoring recently closed Split
+Views. Currently the Sessions API as well as the History feature within the
+browser allows you to restore tabs and windows from the current browsing
+session. Chrome is not planning to implement this as part of the initial Split
+View but it may be implemented at a later date.
 
