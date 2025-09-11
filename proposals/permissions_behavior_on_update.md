@@ -2,7 +2,7 @@
 
 **Proposal Summary**
 
-Add a new property, `permissions_behavior.updates`, to the manifest to specify how browsers should act when extension updates introduce new `permissions`. When set to `defer`, new permissions will behave as if specified in `optional_permissions` for existing. They are not requested or granted on update thus must be explicitly requested by the extension. The default browser behavior will NOT be applied (warning, turn off, stop further updates, etc.).
+Add a new property, `permissions_behavior.updates`, to the manifest to specify how browsers should act when extension updates introduce new `permissions` and `host_permissions`. When set to `defer`, new permissions will behave as if specified in `optional_permissions` for existing. They are not requested or granted on update thus must be explicitly requested by the extension. The default browser behavior will NOT be applied (warning, turn off, stop further updates, etc.).
 
 The new behavior is not applicable during install time or for permissions that do not trigger a warning.
 
@@ -61,11 +61,11 @@ Today, developers have two options for adding [new permissions that trigger warn
 
 1. Add a new permission as install-time permission which will disable the extension for 100% of current users or stop further updates until they take manual steps to grant the new permission. This is not a viable option for extension with large user install bases, as [The UI for re-approval of such permission is very unclear](https://developer.chrome.com/docs/extensions/develop/concepts/permission-warnings), and in most cases, it means a loss of most active users.
 
-On the manifest-files level, it's a "permissions" property that represents a list of permissions the user agreed upon installation.
+On the manifest-files level, the "permissions" and "host_permissions" properties represent a list of permissions the user agreed upon installation.
 
 2. Add new permissions as 'optional,' which will limit access to new features until the user grants access to the new permission.  <—  This is not optimal as it creates a confusing experience for new users who reviewed and accepted permissions a few seconds earlier while installing the extension.
 
-On the manifest-files level, it's an "optional_permissions" property that represents a list of permissions that the extension may request at any point, and the user agrees or declines them.
+On the manifest-files level, the "optional_permissions" and "optional_host_permissions" properties represent a list of permissions that the extension may request at any point, and the user agrees or declines them.
 
 **The proposal is to introduce a way to avoid permission's warning during the extension's update and, instead of turning off the extension or stopping further updates for existing users, make it behave optional where the extension has to request permission explicitly.**
 
