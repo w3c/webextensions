@@ -8,6 +8,7 @@ URL: https://w3c.github.io/webextensions/specification/index.html
 Editor: Mukul Purohit, Microsoft Corporation https://www.microsoft.com, mpurohit@microsoft.com
 Editor: Tomislav Jovanovic, Mozilla https://www.mozilla.org/, tjovanovic@mozilla.com
 Editor: Oliver Dunk, Google https://www.google.com, oliverdunk@chromium.org
+Editor: Kiara Rose, Apple https://www.apple.com, kiara_rose@apple.com
 Abstract: [Placeholder] Abstract.
 Markup Shorthands: markdown yes
 </pre>
@@ -143,7 +144,19 @@ This key may be present.
 
 ### Key `externally_connectable`
 
-This key may be present.
+The <a href="#key-externally_connectable">`externally_connectable`</a> key declares which extensions and web pages can establish connections to the extension using [=runtime.connect()=] and [=runtime.sendMessage()=]. If omitted, all extensions may connect, but no web pages can connect.
+
+This key may be present and may include the following optional keys:
+
+#### Key `ids`
+
+A [=list=] of [=extension IDs=] that specifies which extensions can communicate with the extension. To allow all extensions, include the pattern `*` in the list. If left empty or omitted, no extensions can connect.
+
+#### Key `matches`
+
+A [=list=] of [=match patterns=] that specifies which web pages can communicate with the extension. If left empty or omitted, no web pages can connect.
+
+Any [=match patterns=] that include wildcard domains, or wildcard subdomains of a top-level domain, must be ignored.
 
 ### Key `devtools_page`
 
