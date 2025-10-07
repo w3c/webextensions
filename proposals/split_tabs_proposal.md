@@ -16,7 +16,10 @@ used for tab groups.
 
 **Created:** 2025-06-06
 
-**Related Issues:** https://github.com/microsoft/MicrosoftEdge-Extensions/issues/296
+**Related Issues:** 
+- http://crbug.com/406794014
+- https://github.com/microsoft/MicrosoftEdge-Extensions/issues/296
+- https://bugzilla.mozilla.org/show_bug.cgi?id=1993037
 
 ## Motivation
 
