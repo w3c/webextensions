@@ -132,9 +132,15 @@ similarly to the “groupId” field that already exists.
 
 ### Behavior
 
-If a tab isn’t currently in a Split View, the `splitViewId` will be -1, otherwise it
-will have a unique value that represents the Split View. All tabs in the Split
-View will have the same identifier.
+If a tab isn’t currently in a Split View, the `splitViewId` will be -1,
+otherwise it will have a unique value that represents the Split View. All
+tabs in the Split View will have the same identifier. The identifier should
+persist across browser sessions.
+
+> [!NOTE]  
+> It isn't a requirement that `splitViewId` must be persisted across browser
+sessions because this is new functionality and further alignment is needed to
+confirm that behavior is desired for all browsers.
 
 When Split Views are visible to the user, one of the tabs will be denoted as
 active with a unique visual treatment. That is the only tab that will return
