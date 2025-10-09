@@ -115,7 +115,7 @@ menus.update(id, menusProperties);
   iconVariants: exampleProperties
 }
 
-if iconVariants is specified, iconUrl will be ignored.
+If `iconVariants` is specified, `iconUrl` will be ignored.
 
 In a past version of the proposal and in earlier implementations in Safari. `icon_variants` and `color_schemes` was used instead of `iconVariants` and `colorSchemes`.
 ```
