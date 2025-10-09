@@ -10,23 +10,24 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2025-09-25 at 8 AM PDT = https://everytimezone.com/?t=68d5d780,384
 - 2025-10-09 at 8 AM PDT = https://everytimezone.com/?t=68e84c80,384
+- 2025-10-23 at 8 AM PDT = https://everytimezone.com/?t=68fac180,384
 
 ## Past meetings
 
+* 2025-09-25 ([minutes](2025-09-25-wecg.md))
 * 2025-09-11 ([minutes](2025-09-11-wecg.md))
 * 2025-08-28 ([minutes](2025-08-28-wecg.md))
 * 2025-08-14 ([minutes](2025-08-14-wecg.md))
 * 2025-07-31 ([minutes](2025-07-31-wecg.md))
 * 2025-07-17 ([minutes](2025-07-17-wecg.md))
-* 2025-07-03 ([minutes](2025-07-03-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2025**
 
+* 2025-09-25 ([minutes](2025-09-25-wecg.md))
 * 2025-09-11 ([minutes](2025-09-11-wecg.md))
 * 2025-08-28 ([minutes](2025-08-28-wecg.md))
 * 2025-08-14 ([minutes](2025-08-14-wecg.md))
