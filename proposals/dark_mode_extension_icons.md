@@ -117,7 +117,7 @@ menus.update(id, menusProperties);
 
 If `iconVariants` is specified, `iconUrl` will be ignored.
 
-In a past version of the proposal and in earlier implementations in Safari. `icon_variants` and `color_schemes` was used instead of `iconVariants` and `colorSchemes`.
+Note: In a past version of the proposal and in earlier implementations in Safari. `icon_variants` and `color_schemes` was used instead of `iconVariants` and `colorSchemes`.
 ```
 
 A benefit of this new structure is that it's more resilient to future changes,
