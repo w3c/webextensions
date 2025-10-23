@@ -90,12 +90,12 @@ const exampleProperties: {string: string | ImageData}[] = [
   {
     "16": darkImageData16,
     "32": darkImageData32,
-    "color_schemes": ["dark"]
+    "colorSchemes": ["dark"]
   },
   {
     "16": lightImageData16,
     "32": lightImageData32,
-    "color_schemes": ["light"]
+    "colorSchemes": ["light"]
   }
 ];
 
@@ -104,9 +104,20 @@ const createProperties = {variants: exampleProperties};
 action.setIcon(createProperties);
 
 // menus.*(), for supporting browsers.
-const menusProperties = {icon_variants: exampleProperties};
+const menusProperties = {iconVariants: exampleProperties};
 menus.create(menusProperties);
 menus.update(id, menusProperties);
+
+// notifications.NotificationOptions
+{
+  type: "basic",
+  iconUrl: "/icon.png",
+  iconVariants: exampleProperties
+}
+
+If `iconVariants` is specified, `iconUrl` will be ignored.
+
+Note: In a past version of the proposal and in earlier implementations in Safari. `icon_variants` and `color_schemes` was used instead of `iconVariants` and `colorSchemes`.
 ```
 
 A benefit of this new structure is that it's more resilient to future changes,
