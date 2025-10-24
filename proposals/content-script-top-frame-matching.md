@@ -3,14 +3,14 @@
 
 **Summary**
 
-API proposal to allow content script registration (both static and dynamic) to be restricted based on the origin of the top-level frame using standard [match patterns](https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns), enabling more intuitive and secure site blocking/allowing functionality for extensions.
+API proposal to allow content script registration (both static and dynamic) to be restricted based on the origin of the top-level frame using standard match patterns ([Mdn](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Match_patterns), [Chrome Docs](https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns)), enabling more intuitive and secure site blocking/allowing functionality for extensions.
 
 **Document Metadata**
 
 *   **Author:** [Polywock](https://github.com/polywock)
 *   **Sponsoring Browser:** *(Seeking browser sponsorship)*
 *   **Status:** Draft *(Seeking feedback and browser interest)*
-*   **Proposal Champions:** [Kzar](https://github.com/kzar), [Carlosjeurissen](https://github.com/carlosjeurissen), [Polywock](https://github.com/polywock)
+*   **Proposal Champions:** [Dave Vandyke](https://github.com/kzar), [Carlos Jeurissen](https://github.com/carlosjeurissen), [Raymond Hill](https://github.com/gorhill), [Polywock](https://github.com/polywock)
 *   **Created:** 2025-03-30
 *   **Related Issues:**
     *   [w3c/webextensions#763](https://github.com/w3c/webextensions/issues/763)
@@ -61,7 +61,7 @@ The object definition within the `content_scripts` array in `manifest.json` is e
 }
 ```
 
-*Where `MatchPattern` is a string containing a single match pattern as specified in [mdn [Match patterns](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Match_patterns). 
+*Where `MatchPattern` is a string containing a single match pattern. 
 
 
 #### `scripting.RegisteredContentScript` Type
@@ -85,11 +85,11 @@ dictionary RegisteredContentScript {
 
 1.  **Validation:** When processing `content_scripts` from `manifest.json` or a call to `scripting.registerContentScripts` / `scripting.updateContentScripts`:
     *   The browser must first validate all patterns provided in `topFrameMatches` and `excludeTopFrameMatches` as they would validate patterns provided through `matches` and `excludeMatches`. That includes validating that all provided patterns are not malformed. If malformed URL patterns are found, the browser must treat this as an error.
-    *   Empty arrays are valid values for both `topFramesMatches` and `excludeTopFramesMatches`. 
+    *   Empty arrays are valid values for both `topFrameMatches` and `excludeTopFrameMatches`. 
     *   Additionally, if any pattern contains a path component other than the wildcard path `/*` (i.e., it specifies a specific path like `/foo` or `/bar/*`), the browser must treat this as an error. Patterns without an explicit path or those explicitly using `/*` are considered valid. This restriction ensures these patterns are intended to match origins.
     *   Handling validation errors: 
          * For static declarations in `manifest.json`, validation errors should result in a manifest parsing error, preventing the extension from loading.
-         * For dynamic API calls (`registerContentScripts`, `updateContentScripts`), validation errors results in the promise being rejected with an with an appropriate error (e.g., `Match patterns for top_frame_matches must not specify a path.` or `One of more match patterns in top_frame_matches weren't able to be parsed`). 
+         * For dynamic API calls (`registerContentScripts`, `updateContentScripts`), validation errors results in the promise being rejected with an with an appropriate error (e.g., `Match patterns for top_frame_matches must not specify a path.` or `One or more match patterns in top_frame_matches weren't able to be parsed`). 
 
 3.  **Injection Logic:** Assuming validation passes, a content script will be injected into a frame if and only if *all* the following conditions are met:
     *   All existing checks based on the frame's own URL and context are satisfied (e.g., `matches`, `excludeMatches`).
@@ -104,18 +104,18 @@ The **Top-level document's origin** is determined as follows:
 
 2.  If the W3C algorithm returns a "URL for matching":
     *   This URL is then canonicalized to its origin part for the purpose of this matching. This means retaining the scheme and authority (hostname and port, if specified or non-default), while any path, query, or fragment components are discarded.
-    *   The resulting string (e.g., `https://example.com`, `http://localhost:8080`) is the "top-level document's origin" that is compared against the patterns in `top_frame_matches` and `exclude_top_frame_matches`.
+    *   The resulting string is the "top-level document's origin" that is compared against the patterns in `top_frame_matches` and `exclude_top_frame_matches`.
 
 **Handling Undeterminable Origins for Matching**
 
-If the top-level document's origin cannot be determined, the `topFrameMatches` and `excludeTopFrameMatches` criteria are not applied. The determination of whether to inject the content script will then depend solely on other factors (e.g., the frame's own URL against matches and excludeMatches).
+If the top-level document’s origin cannot be determined and either (a) `topFrameMatches` is specified, or (b) a non-empty `excludeTopFrameMatches` is specified, the browser MUST NOT inject the content script. This prevents accidental execution in ambiguous or sensitive contexts. 
 
 
 **Static Usage Example:** An extension that applies a dark theme to all frames except for when the top frame's origin matches `https://www.example.com/*`. 
 
 ```json
 {
-   "matches": ["<all_urls>>"],
+   "matches": ["<all_urls>"],
    "exclude_top_frame_matches": ["https://www.example.com/*"],
    "all_frames": true,
    "js": ["force_dark_theme.js"]
