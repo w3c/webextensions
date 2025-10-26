@@ -94,7 +94,7 @@ dictionary RegisteredContentScript {
 3.  **Injection Logic:** Assuming validation passes, a content script will be injected into a frame if and only if *all* the following conditions are met:
     *   All existing checks based on the frame's own URL and context are satisfied (e.g., `matches`, `excludeMatches`).
     *   And if `topFrameMatches` was specified, the **top-level document's origin** must match at least one pattern in `topFrameMatches`. If `topFrameMatches` is an empty array, the content script will effectively never run.
-    *   And if `excludeTopFrameMatches` was specified, the **top-level document's origin** must *not* match any pattern in `excludeTopFrameMatches`. If `excludeTopFrameMatches` is an empty array, the property will be ignored and not considered when injecting content scripts.
+    *   And if `excludeTopFrameMatches` was specified, the **top-level document's origin** must *not* match any pattern in `excludeTopFrameMatches`.
 
 
 
@@ -108,19 +108,7 @@ The **Top-level document's origin** is determined as follows:
 
 **Handling Undeterminable Origins for Matching**
 
-If the top-level document’s origin cannot be determined and either (a) `topFrameMatches` is specified, or (b) a non-empty `excludeTopFrameMatches` is specified, the browser MUST NOT inject the content script. This prevents accidental execution in ambiguous or sensitive contexts. 
-
-
-**Static Usage Example:** An extension that applies a dark theme to all frames except for when the top frame's origin matches `https://www.example.com/*`. 
-
-```json
-{
-   "matches": ["<all_urls>"],
-   "exclude_top_frame_matches": ["https://www.example.com/*"],
-   "all_frames": true,
-   "js": ["force_dark_theme.js"]
-}
-```
+If the top-level document’s origin cannot be determined and either `topFrameMatches` or `excludeTopFrameMatches` is specified, the browser MUST NOT inject the content script. This prevents accidental execution in ambiguous or sensitive contexts. 
 
 ### New Permissions
 
