@@ -146,11 +146,13 @@ This key may be present.
 
 The <a href="#key-externally_connectable">`externally_connectable`</a> key declares which extensions and web pages can establish connections to the extension using [=runtime.connect()=] and [=runtime.sendMessage()=]. If omitted, all extensions may connect, but no web pages can connect.
 
+A connection from an external web page or extension triggers the [=runtime.onConnectExternal=] event listener to fire. Similarly, a message sent by an external web page or extension triggers the [=runtime.onMessageExternal=] event listener to fire.
+
 This key may be present and may include the following optional keys:
 
 #### Key `ids`
 
-A [=list=] of [=extension IDs=] that specifies which extensions can communicate with the extension. To allow all extensions, include the pattern `*` in the list. If left empty or omitted, no extensions can connect.
+A [=list=] of [=extension IDs=] that specifies which extensions can communicate with the extension. To allow all extensions to connect, include the wildcard pattern `*`. If left empty or omitted while the `externally_connectable` key is present, no extensions can connect.
 
 #### Key `matches`
 
