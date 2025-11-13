@@ -15,20 +15,18 @@ After the end of each meeting, meeting notes are published here.
 
 ## Past meetings
 
+* 2025-11-06 ([minutes](2025-11-06-wecg.md))
 * 2025-10-23 ([minutes](2025-10-23-wecg.md))
 * 2025-10-09 ([minutes](2025-10-09-wecg.md))
 * 2025-09-25 ([minutes](2025-09-25-wecg.md))
 * 2025-09-11 ([minutes](2025-09-11-wecg.md))
-* 2025-08-28 ([minutes](2025-08-28-wecg.md))
-* 2025-08-14 ([minutes](2025-08-14-wecg.md))
-* 2025-07-31 ([minutes](2025-07-31-wecg.md))
-* 2025-07-17 ([minutes](2025-07-17-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2025**
 
+* 2025-11-06 ([minutes](2025-11-06-wecg.md))
 * 2025-10-23 ([minutes](2025-10-23-wecg.md))
 * 2025-10-09 ([minutes](2025-10-09-wecg.md))
 * 2025-09-25 ([minutes](2025-09-25-wecg.md))
