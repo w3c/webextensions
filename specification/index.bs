@@ -153,13 +153,23 @@ This key may be present.
 
 Filenames beginning with an underscore (`_`) are reserved for use by user agent.
 
-# Isolated worlds
+# Execution contexts
 
-<dfn>Worlds</dfn> are isolated JavaScript contexts with access to the same underlying DOM tree but their own set of wrappers around those DOM objects. Declarations in the global scope are also isolated.
+Extensions can execute JavaScript code, in any of the following execution contexts:
+
+* An <dfn>extension context</dfn> is any JavaScript execution context associated with an extension.
+* A <dfn>privileged extension context</dfn> has access to the full set of extension APIs available to the extension. The most prominent example is the background page or worker defined by the [[#key-background]] part of the [=manifest=].
+* The main execution context of a web page, also known as the <dfn>main world</dfn>, is not an extension context. It does not have access to any extension API, except when an extension allows so through [#key-externally_connectable].
+* An <dfn>isolated world</dfn> is an isolated JavaScript context with access to the same underlying DOM tree but their own set of wrappers around those DOM objects. Declarations in the global scope are also isolated. A limited number of extension APIs may be available in these execution contexts.
+* Some extension APIs may involve the execution of JavaScript code in contexts other than what is specified above. For example, the `userScripts` API allows the creation of `USER_SCRIPT` worlds that are isolated similarly to [=isolated world=]s but with distinct API availability. The `proxy` API allows the registration of Proxy auto-config (PAC) scripts whose execution environment is outside the scope of this specification.
 
 # Unavailable APIs
 
 # The `browser` global
+
+The `browser` global is the primary namespace hosting extension APIs, available to [=extension context=]s.
+
+Although the [=main world=] of a web page is not an [=extension context=], it may also contain the `browser` global to offer access functionality granted by [#key-externally_connectable].
 
 # Extension origin
 
