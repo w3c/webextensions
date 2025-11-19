@@ -5,9 +5,9 @@
   <title>Web Extensions</title>
   <meta content="CG-DRAFT" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
-  <link href="https://w3c.github.io/webextensions/specification/index.html" rel="canonical">
-  <meta content="e8d17bc0f56f5326b111a710a774fa03aa206846" name="revision">
+  <meta content="Bikeshed version 86e3be07a, updated Tue Nov 18 16:58:08 2025 +0000" name="generator">
+  <link href="https://w3c.github.io/webextensions/specification/" rel="canonical">
+  <meta content="d25dbccfe62446e3f8bd4c55159fe27f63ca552d" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -320,7 +320,7 @@ body {
 }
 .invalid.example:not(.no-marker)::before,
 .illegal.example:not(.no-marker)::before {
-    content: "Invalid Example" counter(example);
+    content: "Invalid Example " counter(example);
 }
 
 figcaption {
@@ -697,22 +697,22 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72">
 </a>
 </p>
-   <h1 class="p-name no-ref" id="title">Web Extensions</h1>
+   <h1 class="no-ref p-name" id="title">Web Extensions</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2025-10-13">13 October 2025</time></p>
+    <time class="dt-updated" datetime="2025-11-19">19 November 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
      <dl>
       <dt>This version:
-      <dd><a class="u-url" href="https://w3c.github.io/webextensions/specification/index.html">https://w3c.github.io/webextensions/specification/index.html</a>
+      <dd><a class="u-url" href="https://w3c.github.io/webextensions/specification/">https://w3c.github.io/webextensions/specification/</a>
       <dt>Issue Tracking:
       <dd><a href="https://github.com/w3c/webextensions/issues/">GitHub</a>
       <dd><a href="#issues-index">Inline In Spec</a>
       <dt class="editor">Editors:
-      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:mpurohit@microsoft.com">Mukul Purohit</a> (<a class="p-org org" href="https://www.microsoft.com">Microsoft Corporation</a>)
-      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:tjovanovic@mozilla.com">Tomislav Jovanovic</a> (<a class="p-org org" href="https://www.mozilla.org/">Mozilla</a>)
-      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:oliverdunk@chromium.org">Oliver Dunk</a> (<a class="p-org org" href="https://www.google.com">Google</a>)
+      <dd class="editor h-card p-author vcard"><a class="email fn p-name u-email" href="mailto:mpurohit@microsoft.com">Mukul Purohit</a> (<a class="org p-org" href="https://www.microsoft.com">Microsoft Corporation</a>)
+      <dd class="editor h-card p-author vcard"><a class="email fn p-name u-email" href="mailto:tjovanovic@mozilla.com">Tomislav Jovanovic</a> (<a class="org p-org" href="https://www.mozilla.org/">Mozilla</a>)
+      <dd class="editor h-card p-author vcard"><a class="email fn p-name u-email" href="mailto:oliverdunk@chromium.org">Oliver Dunk</a> (<a class="org p-org" href="https://www.google.com">Google</a>)
      </dl>
     </div>
    </details>
@@ -723,10 +723,10 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
-   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+   <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>[Placeholder] Abstract.</p>
   </div>
-  <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
+  <h2 class="heading no-num no-ref no-toc settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
    <p>
   This specification was published by the <a href="https://www.w3.org/community/webextensions/">WebExtensions Community Group</a>.
@@ -743,7 +743,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
-   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
+   <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
     <li>
      <a href="#file-structure"><span class="secno">1</span> <span class="content">File structure</span></a>
@@ -1011,7 +1011,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <h4 class="heading settled" data-level="13.2.11" id="key-world"><span class="secno">13.2.11. </span><span class="content">Key <code>world</code></span><a class="self-link" href="#key-world"></a></h4>
    <p>The <a data-link-type="dfn" href="#worlds" id="ref-for-worlds">world</a> any JavaScript scripts should be injected into. Defaults to <code>ISOLATED</code>. Valid values are defined by the <code class="idl"><a data-link-type="idl" href="#enumdef-executionworld" id="ref-for-enumdef-executionworld">ExecutionWorld</a></code> enum.</p>
    <h4 class="heading settled" data-level="13.2.12" id="runat-enum"><span class="secno">13.2.12. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="runat">RunAt</dfn> enum</span><a class="self-link" href="#runat-enum"></a></h4>
-<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-runat"><code><c- g>RunAt</c-></code></dfn> {
+<pre class="def highlight idl"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-runat"><code><c- g>RunAt</c-></code></dfn> {
     <dfn class="dfn-paneled idl-code" data-dfn-for="RunAt" data-dfn-type="enum-value" data-export id="dom-runat-document_start"><code><c- s>"document_start"</c-></code></dfn>,
     <dfn class="dfn-paneled idl-code" data-dfn-for="RunAt" data-dfn-type="enum-value" data-export id="dom-runat-document_end"><code><c- s>"document_end"</c-></code></dfn>,
     <dfn class="dfn-paneled idl-code" data-dfn-for="RunAt" data-dfn-type="enum-value" data-export id="dom-runat-document_idle"><code><c- s>"document_idle"</c-></code></dfn>
@@ -1019,7 +1019,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 </pre>
    <p>The <code class="idl"><a data-link-type="idl" href="#enumdef-runat" id="ref-for-enumdef-runat①">RunAt</a></code> enum represents when a content script should be injected.</p>
    <h4 class="heading settled" data-level="13.2.13" id="executionworld-enum"><span class="secno">13.2.13. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="executionworld">ExecutionWorld</dfn> enum</span><a class="self-link" href="#executionworld-enum"></a></h4>
-<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-executionworld"><code><c- g>ExecutionWorld</c-></code></dfn> {
+<pre class="def highlight idl"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-executionworld"><code><c- g>ExecutionWorld</c-></code></dfn> {
     <dfn class="dfn-paneled idl-code" data-dfn-for="ExecutionWorld" data-dfn-type="enum-value" data-export id="dom-executionworld-isolated"><code><c- s>"ISOLATED"</c-></code></dfn>,
     <dfn class="dfn-paneled idl-code" data-dfn-for="ExecutionWorld" data-dfn-type="enum-value" data-export id="dom-executionworld-main"><code><c- s>"MAIN"</c-></code></dfn>
 };
@@ -1126,8 +1126,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    </ol>
   </main>
   <div data-fill-with="conformance">
-   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
-   <h3 class="no-ref no-num heading settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
+   <h2 class="heading no-num no-ref settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
+   <h3 class="heading no-num no-ref settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
    <p>Conformance requirements are expressed
     with a combination of descriptive assertions
     and RFC 2119 terminology.
@@ -1163,8 +1163,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <p class="note" role="note">Note, this is an informative note.</p>
   </div>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
-  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#content-scripts①">Content scripts</a><span>, in § 13.2</span>
    <li><a href="#dom-runat-document_end">"document_end"</a><span>, in § 13.2.12</span>
@@ -1189,7 +1189,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     </ul>
    <li><a href="#worlds">Worlds</a><span>, in § 3</span>
   </ul>
-  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
     <a data-link-type="biblio">[ECMASCRIPT]</a> defines the following terms:
@@ -1210,8 +1210,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      <li><span class="dfn-paneled" id="0698d556">string</span>
     </ul>
   </ul>
-  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-ecmascript">[ECMASCRIPT]
    <dd><a href="https://tc39.es/ecma262/multipage/"><cite>ECMAScript Language Specification</cite></a>. URL: <a href="https://tc39.es/ecma262/multipage/">https://tc39.es/ecma262/multipage/</a>
@@ -1224,8 +1224,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
   </dl>
-  <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
-<pre class="idl highlight def"><c- b>enum</c-> <a href="#enumdef-runat"><code><c- g>RunAt</c-></code></a> {
+  <h2 class="heading no-num no-ref settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
+<pre class="def highlight idl"><c- b>enum</c-> <a href="#enumdef-runat"><code><c- g>RunAt</c-></code></a> {
     <a href="#dom-runat-document_start"><code><c- s>"document_start"</c-></code></a>,
     <a href="#dom-runat-document_end"><code><c- s>"document_end"</c-></code></a>,
     <a href="#dom-runat-document_idle"><code><c- s>"document_idle"</c-></code></a>
@@ -1237,7 +1237,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 };
 
 </pre>
-  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <h2 class="heading no-num no-ref settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Specify localization handling. <a href="https://github.com/w3c/webextensions/issues/62">[Issue #62]</a> <a class="issue-return" href="#issue-e5b8cfc7" title="Jump to section">↵</a></div>
    <div class="issue"> "precursor origin" concept needs to be specified. It is not in the HTML spec at the moment. At least Chrome and Firefox recognize the concept, see e.g. <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1715167">https://bugzilla.mozilla.org/show_bug.cgi?id=1715167</a>. <a class="issue-return" href="#issue-efba42d5" title="Jump to section">↵</a></div>
