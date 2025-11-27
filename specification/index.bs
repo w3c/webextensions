@@ -63,6 +63,7 @@ The following keys must be considered valid:
 * <a href="#key-web_accessible_resources">`web_accessible_resources`</a>: optional
 * <a href="#key-devtools_page">`devtools_page`</a>: optional
 * <a href="#key-externally_connectable">`externally_connectable`</a>: optional
+* <a href="#key-trial_tokens">`trial_tokens`</a>: optional
 
 The following keys must be considered valid in Manifest V3:
 
