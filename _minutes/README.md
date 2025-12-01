@@ -16,7 +16,9 @@ After the end of each meeting, meeting notes are published here.
 ## Past meetings
 
 * 2025-11-20 ([minutes](2025-11-20-wecg.md))
-* (WECG minutes at TPAC 2025 will be added here)
+* 2025-11-14 at TPAC ([minutes](2025-11-14-wecg-tpac.md))
+* 2025-11-13 at TPAC ([minutes](2025-11-13-wecg-tpac.md))
+* 2025-11-10 at TPAC ([minutes](2025-11-10-wecg-tpac.md))
 * 2025-11-06 ([minutes](2025-11-06-wecg.md))
 * 2025-10-23 ([minutes](2025-10-23-wecg.md))
 * 2025-10-09 ([minutes](2025-10-09-wecg.md))
@@ -28,7 +30,9 @@ After the end of each meeting, meeting notes are published here.
 **2025**
 
 * 2025-11-20 ([minutes](2025-11-20-wecg.md))
-* (WECG minutes at TPAC 2025 will be added here)
+* 2025-11-14 at TPAC ([minutes](2025-11-14-wecg-tpac.md))
+* 2025-11-13 at TPAC ([minutes](2025-11-13-wecg-tpac.md))
+* 2025-11-10 at TPAC ([minutes](2025-11-10-wecg-tpac.md))
 * 2025-11-06 ([minutes](2025-11-06-wecg.md))
 * 2025-10-23 ([minutes](2025-10-23-wecg.md))
 * 2025-10-09 ([minutes](2025-10-09-wecg.md))
