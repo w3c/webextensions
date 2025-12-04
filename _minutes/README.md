@@ -10,11 +10,12 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2025-12-04 at 8 AM PST = https://everytimezone.com/?t=69322080,3c0
 - 2025-12-18 at 8 AM PST = https://everytimezone.com/?t=69449580,3c0
+- 2026-01-15 at 8 AM PST = https://everytimezone.com/?t=69697f80,3c0
 
 ## Past meetings
 
+* 2025-12-04 ([minutes](2025-12-04-wecg.md))
 * 2025-11-20 ([minutes](2025-11-20-wecg.md))
 * 2025-11-14 at TPAC ([minutes](2025-11-14-wecg-tpac.md))
 * 2025-11-13 at TPAC ([minutes](2025-11-13-wecg-tpac.md))
@@ -22,13 +23,13 @@ After the end of each meeting, meeting notes are published here.
 * 2025-11-06 ([minutes](2025-11-06-wecg.md))
 * 2025-10-23 ([minutes](2025-10-23-wecg.md))
 * 2025-10-09 ([minutes](2025-10-09-wecg.md))
-* 2025-09-25 ([minutes](2025-09-25-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2025**
 
+* 2025-12-04 ([minutes](2025-12-04-wecg.md))
 * 2025-11-20 ([minutes](2025-11-20-wecg.md))
 * 2025-11-14 at TPAC ([minutes](2025-11-14-wecg-tpac.md))
 * 2025-11-13 at TPAC ([minutes](2025-11-13-wecg-tpac.md))
