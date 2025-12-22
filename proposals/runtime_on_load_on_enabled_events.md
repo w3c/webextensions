@@ -95,19 +95,27 @@ namespace runtime {
 namespace runtime {
   // The reason for which the event is being dispatched.
   //
-  // 'enabled': The extension was re-enabled from a disabled state.
+  // This is a superset of runtime.OnInstalledReason
   //
-  // 'installed': The extension was newly installed.
+  // 'enable': The extension was re-enabled from a disabled state.
   //
-  // 'updated': The extension was reloaded after an update.
+  // 'install': The extension was newly installed.
+  //
+  // 'update': The extension was reloaded after an update.
+  //
+  // 'browser_update': The browser was updated to a new version.
+  //
+  // 'shared_module_update': Another extension, which contains a module used by this extension, was updated.
   //
   // 'startup': The extension is being loaded during browser startup.
   //
   // 'reload': The extension was reloaded (e.g. via `chrome.runtime.reload() or`
   // the user manually reloaded the extension).
-  export type OnLoadedReason = 'enabled' |
-                               'installed' |
-                               'updated' |
+  export type OnLoadedReason = 'install' |
+                               'update' |
+                               'browser_update' |
+                               'shared_module_update' |
+                               'enable' |
                                'startup' |
                                'reload';
 
