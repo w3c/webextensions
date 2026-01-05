@@ -17,6 +17,8 @@ An API proposal to extend the `webRequest` API to provide TLS/QUIC certificate i
 **Related Issues:**
 * [Mozilla Bug 1322748](https://bugzilla.mozilla.org/show_bug.cgi?id=1322748)
 * [Previous abandoned Chromium Proposal](https://github.com/EFForg/webrequest-tlsinfo-api/blob/master/proposal.md)
+* [Chromium Feature Request: webRequest.getSecurityInfo()](https://g-issues.chromium.org/issues/40754456)
+* [Chromium Feature Request: Extend webRequests onCompleted callback to include information about TLS connections](https://g-issues.chromium.org/issues/41264310)
 
 ## Motivation
 
@@ -35,8 +37,9 @@ The lack of TLS introspection prevents the development of a number of security-f
 
 ### Known Consumers
 
-This API would facilitate the migration of existing Firefox extensions to Chrome and other browsers that adopt this specification. 
-A notable example is [IndicateTLS](https://addons.mozilla.org/en-US/firefox/addon/indicatetls/), which relies on similar functionality.
+This API would lay the groundwork for enabling the mentioned use-cases and facilitate the migration of existing Firefox extensions to Chrome and other browsers that adopt this specification. 
+A notable example is [IndicateTLS](https://addons.mozilla.org/en-US/firefox/addon/indicatetls/), which relies on similar functionality. Note, that this extension requires more fields to be present and 
+cannot be fully build in the current revisions of the API.
 
 ## Specification
 
@@ -89,10 +92,10 @@ export enum ConnectionState {
 
 export interface SecurityInfo {
     /**
-     * The array contains a single CertificateInfo object, for the server certificate, or empty in case 
-     * the connection state is "insecure" (http).
+     * The array contains a single CertificateInfo object, for the server certificate.
+     * The field is absent in a case when the connection state is "insecure" (http).
      */
-    certificates: CertificateInfo[];
+    certificates?: CertificateInfo[];
     /**
      * State of the connection.
      */
@@ -129,7 +132,6 @@ Browsers interrupt connections when there's a certificate error, unless user has
     * `"broken"`: the TLS handshake failed (for example, the certificate has expired)
     * `"insecure"`: the connection is not a TLS connection
     * `"secure"`: the connection is a secure TLS connection
-    * Note that Firefox extension API has a `“weak”` state of connection, which does not exist in Chrome.
 
 * The `CertificateInfo.rawDER` field contains the raw certificate bytes in DER format, which can be parsed by the extension using a third-party library. This field is only provided if `extraInfoSpec` array includes `"securityInfoRawDer"`. The reason for it is a performance optimization to not pass raw bytes when
 it is not necessary, and compatibility with Firefox extensions API.
@@ -191,3 +193,4 @@ This proposal focuses on the most critical and high-priority data (the leaf cert
 * The full certificate chain (`CertificateInfo[]`).
 * Specific TLS parameters (e.g., protocol version, cipher suite).
 * Additional properties like `isDomainMismatch` or `isEV`.
+* `securityInfo` object in `webRequest.onErrorOccurred` to allow extensions to measure connection failures and debug it.
