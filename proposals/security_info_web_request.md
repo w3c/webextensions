@@ -67,7 +67,8 @@ export interface Fingerprint {
 
 export interface CertificateInfo {
     fingerprint: Fingerprint;
-    rawDER: Uint8Array;
+    // Only included if "securityInfoRawDer" is passed to extraInfoSpec
+    rawDER?: Uint8Array;
 }
 
 /**
