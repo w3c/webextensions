@@ -23,12 +23,12 @@ take action on the full “lifecycle” of their extensions.
 
 Enable two new extension lifecycle events for the developer to add listeners for:
 
-#### chrome.runtime.onEnabled
+#### browser.runtime.onEnabled
 Enables a developer to listen to when an extension is re-enabled from a disabled
 state. There is currently no way for a developer to listen for the extension
 being disabled and then enabled.
 
-### chrome.runtime.onExtensionLoaded
+### browser.runtime.onExtensionLoaded
 Enables a developer to listen to when an extension is added to the set of active
 extensions. This can occur from being installed, enabled, or when the browser /
 profile first starts. The listener will be given the cause so they can decide to
@@ -36,7 +36,7 @@ take different actions based on the reason it was added to the set. There is
 currently no generic event that encapsulates all instances of extension install
 (and update), startup, and being enabled from a disabled state.
 
-#### Use Cases `chrome.runtime.onEnabled`
+#### Use Cases `browser.runtime.onEnabled`
 A developer wants to run code once in an extension’s "lifecycle", without storing
 a flag to keep track of this.
 
@@ -48,13 +48,13 @@ complexity.
 
 More use cases can be found [here](https://github.com/w3c/webextensions/issues/353#issuecomment-1490078217).
 
-#### Use Cases `chrome.runtime.onExtensionLoaded`
+#### Use Cases `browser.runtime.onExtensionLoaded`
 An extension automatically does initial bootstrapping, such as creating an
 initial state used throughout the browser session, creating a WebSocket
 connection, checking for things you've missed while the browser was closed etc.
 
 Before this API the developer would have to create multiple listeners for
-`chrome.runtime.onInstalled()`, `onStartup()`, and (above) `onEnabled()`.
+`browser.runtime.onInstalled()`, `onStartup()`, and (above) `onEnabled()`.
 
 With this new API method the developer could write one method that performs the
 same action for all three, potentially with small differences based on the
@@ -78,7 +78,7 @@ appears to be strong interest per the [WECG discussion](https://github.com/w3c/w
 ## Specification
 
 ### Schema
-#### `chrome.runtime.onEnabled`
+#### `browser.runtime.onEnabled`
 ```typescript
 namespace runtime {
   // Fired when an extension goes from being in a disabled state to an enabled
@@ -90,24 +90,29 @@ namespace runtime {
 }
 ```
 
-#### `chrome.runtime.onExtensionLoaded`
+#### `browser.runtime.onExtensionLoaded`
 ```typescript
 namespace runtime {
   // The reason for which the event is being dispatched.
   //
-  // 'enabled': The extension was re-enabled from a disabled state.
+  // This is a superset of runtime.OnInstalledReason
   //
-  // 'installed': The extension was newly installed.
+  // 'enable': The extension was re-enabled from a disabled state.
   //
-  // 'updated': The extension was reloaded after an update.
+  // 'install': The extension was newly installed.
+  //
+  // 'update': The extension was reloaded after an update.
+  //
+  // 'browser_update': The browser was updated to a new version.
   //
   // 'startup': The extension is being loaded during browser startup.
   //
-  // 'reload': The extension was reloaded (e.g. via `chrome.runtime.reload() or`
+  // 'reload': The extension was reloaded (e.g. via `browser.runtime.reload() or`
   // the user manually reloaded the extension).
-  export type OnLoadedReason = 'enabled' |
-                               'installed' |
-                               'updated' |
+  export type OnLoadedReason = 'install' |
+                               'update' |
+                               'browser_update' |
+                               'enable' |
                                'startup' |
                                'reload';
 
@@ -134,6 +139,10 @@ namespace runtime {
 ### Behavior
 
 Described as code comments in schema description.
+
+If multiple reasons apply at the same time, only one event should be fired.
+The precedence of reasons is as follows, with the first item having the highest precedence:
+update > install > reload > enable > browser_update > startup
 
 ### New Permissions
 
@@ -168,10 +177,10 @@ N/A.
 
 ### Existing Workarounds
 
-There is currently `chrome.runtime.onInstalled`, and `chrome.runtime.onStartup`.
+There is currently `browser.runtime.onInstalled`, and `browser.runtime.onStartup`.
 These API have gaps in listening that are addressed by these two events. In
-short, `chrome.runtime.onEnabled`, covers the remaining status that developers
-care to know, and `chrome.runtime.onExtensionLoaded` encapsulates them all
+short, `browser.runtime.onEnabled`, covers the remaining status that developers
+care to know, and `browser.runtime.onExtensionLoaded` encapsulates them all
 together with a single listener.
 
 ### Open Web API
