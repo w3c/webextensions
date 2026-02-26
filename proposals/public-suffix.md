@@ -333,6 +333,10 @@ url bar. In such instances, a PSL lookup is made and:
 * If the domain has a known eTLD, attempt to navigate.
 * If the domain has an unknown eTLD, use a search engine.
 
+While this particular use case relates to the host browser itself, it is assumed
+that extensions may also need to determine if a user-provided string is a known domain,
+or can be assumed to be some other type of information.
+
 #### 5. Site-specific data
 
 Extensions sometimes need to associate data with a hostname's "site", which may be:
@@ -405,13 +409,13 @@ namespace publicSuffix {
   // Options that may be passed to the API method to control its behaviour.
   interface DomainOptions {
 
-    // If true, the returned domain should be encoded as Unicode.
-    // Default = false (Punycode)
-    unicode?: boolean,
+    // Determines how the returned domain should be encoded.
+    // Default = punycode
+    encoding?: DomainEncoding,
 
     // If true, and the input hostname is an IP address, then this is returned as-is.
     // Default = false
-    allowIP?: boolean,
+    allowIPAddress?: boolean,
 
     // If true, and the input hostname is itself a known eTLD (without a preceding label)
     // then this is returned as-is.
@@ -425,6 +429,11 @@ namespace publicSuffix {
     allowUnknownSuffix?: boolean,
   }
 
+  // The available encoding types for the returned domain.
+  enum DomainEncoding {
+    punycode,
+    unicode,
+  }
 }
 ```
 
@@ -699,6 +708,58 @@ A high level analysis of the implementations of the major browser engines
 (Firefox, Chromium, Webkit) indicates that the synchronous approach is feasible,
 since the required functionality is already available in each browser engine's
 content/render process.
+
+###### 6.1 Justification: Sync API
+
+This proposal sets out a sync API because:
+
+1. This API's methods are called in performance-critical paths. For example,
+the use cases in this proposal that involve filtering web requests (e.g. for ad blocking)
+will call this API's methods during the [onBeforeRequest](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest) event. They obtain
+the eTLD in order to determine if the request should be blocked,
+e.g. because it is a third party request, or because it matches a filtering rule.
+If this API's methods were async, then API calls would add latency potentially to every
+network request, effectively slowing down the user's browser.
+
+2. Popular existing extensions all use sync functions to access the PSL (see below).
+Extensions are less likely to replace their existing solutions if this
+involves significant refactoring, which may be the case when changing
+a sync method call to async, since the async keyword must be added to all
+enclosing methods, potentially requiring multiple changes across the codebase.
+Adopting an async API may not be feasible in specific cases. For example,
+for many years Chrome's `onBeforeRequest` had to return values synchronously,
+which ruled out any use of async APIs.
+
+###### 6.2 Analysis: Existing Extensions
+
+An analysis was done of the the source code of the most popular Firefox extensions that use the PSL.
+The examined extensions either used third-party libraries or hand-rolled code to obtain eTLDs
+from domain names. In all cases, the functions for obtaining the eTLDs were found to be sync:
+
+| # | Extension | PSL Library Used | PSL Functions |
+|:-:|:--|:--|:-:|
+| 1 | [adblock-plus](https://addons.mozilla.org/en-US/firefox/addon/adblock-plus/) | None (own code) | Sync |
+| 2 | [duckduckgo-for-firefox](https://addons.mozilla.org/en-US/firefox/addon/duckduckgo-for-firefox/) | [tldts](https://www.npmjs.com/package/tldts) | Sync |
+| 3 | [adblock-for-firefox](https://addons.mozilla.org/en-US/firefox/addon/adblock-for-firefox/) | None (own code) | Sync |
+| 4 | [adguard-adblocker](https://addons.mozilla.org/en-US/firefox/addon/adguard-adblocker/) | [tldts](https://www.npmjs.com/package/tldts) | Sync |
+| 5 | [bitwarden-password-manager](https://addons.mozilla.org/en-US/firefox/addon/bitwarden-password-manager/) | [tldts](https://www.npmjs.com/package/tldts) | Sync |
+| 6 | [wikibuy-for-firefox](https://addons.mozilla.org/en-US/firefox/addon/wikibuy-for-firefox/) | [better-psl](https://www.npmjs.com/package/better-psl) | Sync |
+| 7 | [browsec](https://addons.mozilla.org/en-US/firefox/addon/browsec/) | None (own code) | Sync |
+| 8 | [malwarebytes](https://addons.mozilla.org/en-US/firefox/addon/malwarebytes/) | [tldts](https://www.npmjs.com/package/tldts) | Sync |
+| 9 | [noscript](https://addons.mozilla.org/en-US/firefox/addon/noscript/) | [nscl](https://github.com/hackademix/nscl/blob/main/common/tld.js) | Sync |
+| 10 | [coupert](https://addons.mozilla.org/en-US/firefox/addon/coupert/) | [parse-domain](https://www.npmjs.com/package/parse-domain) | Sync |
+| 11 | [nordvpn-proxy-extension](https://addons.mozilla.org/en-US/firefox/addon/nordvpn-proxy-extension/) | [tldts](https://www.npmjs.com/package/tldts) | Sync |
+| 12 | [dashlane](https://addons.mozilla.org/en-US/firefox/addon/dashlane/) | [tldts](https://www.npmjs.com/package/tldts) | Sync |
+
+###### 6.3 Future Development: DMARC
+
+It is noted that:
+
+1. DMARC is proposing to publish PSL DNS records ([source](https://datatracker.ietf.org/doc/draft-ietf-dmarc-dmarcbis/)).
+2. The PSL already uses `_psl` `TXT` records to validate that a domain owner wants to be on the PSL.
+
+In the future, if PSL lookups are resolved by way of DNS requests rather than by querying a
+browser-bundled PSL dataset (as is the case currently), then an async API may be a better fit.
 
 #### 11. PSL Version
 
