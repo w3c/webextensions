@@ -10,22 +10,24 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2026-03-26 at 8 AM PDT = https://everytimezone.com/?t=69c5c880,384
+- 2026-04-07 until 2026-04-09, face-to-face meeting in London ([issue 951](https://github.com/w3c/webextensions/issues/951))
 - 2026-04-09 at 8 AM PDT = https://everytimezone.com/?t=69d83d80,3c0
+- 2026-04-23 at 8 AM PDT = https://everytimezone.com/?t=69eab280,3c0
 
 ## Past meetings
 
+* 2026-03-26 ([minutes](2026-03-26-wecg.md))
 * 2026-03-12 ([minutes](2026-03-12-wecg.md))
 * 2026-02-26 ([minutes](2026-02-26-wecg.md))
 * 2026-02-12 ([minutes](2026-02-12-wecg.md))
 * 2026-01-29 ([minutes](2026-01-29-wecg.md))
-* 2026-01-15 ([minutes](2026-01-15-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2026**
 
+* 2026-03-26 ([minutes](2026-03-26-wecg.md))
 * 2026-03-12 ([minutes](2026-03-12-wecg.md))
 * 2026-02-26 ([minutes](2026-02-26-wecg.md))
 * 2026-02-12 ([minutes](2026-02-12-wecg.md))
