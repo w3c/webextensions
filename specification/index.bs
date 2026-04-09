@@ -63,6 +63,7 @@ The following keys must be considered valid:
 * <a href="#key-web_accessible_resources">`web_accessible_resources`</a>: optional
 * <a href="#key-devtools_page">`devtools_page`</a>: optional
 * <a href="#key-externally_connectable">`externally_connectable`</a>: optional
+* <a href="#key-trial_tokens">`trial_tokens`</a>: optional
 
 The following keys must be considered valid in Manifest V3:
 
@@ -148,6 +149,10 @@ This key may be present.
 ### Key `devtools_page`
 
 This key may be present.
+
+### Key `trial_tokens`
+
+The <a href="#key-trial_tokens">`trial_tokens`</a> key is an optional [=list=] of strings. These may be used by the user agent to enable experimental features for the [[#extension-origin]]. The user agent may ignore or warn about any unrecognized, expired or malformed keys but any such entries must not prevent the extension from loading.
 
 ## Reserved file names
 
