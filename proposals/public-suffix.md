@@ -548,14 +548,14 @@ a hostname's "site", additional options are provided, allowing a more
 general-purpose interpretation of a domain to include not only registrable domains
 but also IP addresses and domains with unknown (non-registrable) eTLDs.
 
-Options `allowIP`, `allowPlainSuffix` and `allowUnknownSuffix` each target
+Options `allowIPAddress`, `allowPlainSuffix` and `allowUnknownSuffix` each target
 a specific kind of input hostname lacking a registrable domain
 in the strictest sense (i.e. having a known eTLD as stipulated by
 the PSL algorithm), as follows:
 
 | Option             | Kind of Input Hostname Targeted  |
 |--------------------|---------------------------------:|
-| allowIP            | IP Address (IPv4 of IPv6)        |
+| allowIPAddress     | IP Address (IPv4 of IPv6)        |
 | allowPlainSuffix   | is itself a known eTLD           |
 | allowUnknownSuffix | lacks a known eTLD               |
 
@@ -565,7 +565,7 @@ from being `null` to being the following:
 
 | Option             | Returned Domain                                  | Returned Domain Kind |
 |--------------------|:------------------------------------------------:|:--------------------:|
-| allowIP            | input hostname                                   | IP address           |
+| allowIPAddress     | input hostname                                   | IP address           |
 | allowPlainSuffix   | input hostname                                   | eTLD                 |
 | allowUnknownSuffix | last 2 labels, or input hostname if single label | eTLD+1 or eTLD       |
 
@@ -573,7 +573,7 @@ from being `null` to being the following:
 
 | Input hostname    | Option = true      |    Returned domain |
 |-------------------|--------------------|-------------------:|
-| 192.168.2.1       | allowIP            |        192.168.2.1 |
+| 192.168.2.1       | allowIPAddress     |        192.168.2.1 |
 | github.io         | allowPlainSuffix   |          github.io |
 | apple.pear.banana | allowUnknownSuffix |        pear.banana |
 | banana            | allowUnknownSuffix |             banana |
@@ -594,14 +594,14 @@ take care to ensure input hostnames that are IP addresses (IPv4 or IPv6) are det
 otherwise it would be possible for `100.200.30.2` and `100.200.31.2` to be
 mistakenly interpreted as belonging to the same organization (i.e. with unknown eTLD `.2`).
 
-Option `allowIP` supports use cases needing to obtain a hostname's site,
+Option `allowIPAddress` supports use cases needing to obtain a hostname's site,
 which may be an IP address or a domain name.
 
 An example of such a use case is Firefox's [Search vs Navigate](#4-search-vs-navigate),
 which involves determining if an entry in the URL bar is a navigable site,
 or a search term. If this functionality was based purely on the return value
 of `getDomain()`, i.e. navigate if nonnull or search if null,
-then IP addresses would incorrectly cause a search. By using the `allowIP` option,
+then IP addresses would incorrectly cause a search. By using the `allowIPAddress` option,
 the return value for an input IP address would be the IP address itself instead of null,
 thereby causing the desired result of navigating instead of searching.
 
@@ -663,9 +663,9 @@ classes of input `hostname` parameter:
 | foobar.net         | has an eTLD in the ICANN section                 | foobar.net             |
 | foobar.github.io   | has an eTLD in the Private section               | foobar.github.io       |
 | 127.0.0.1          | IP address, IPv4                                 | null                   |
-| 127.0.0.1          | as above, with `allowIP = true`                  | 127.0.0.1              |
+| 127.0.0.1          | as above, with `allowIPAddress = true`           | 127.0.0.1              |
 | [::1]              | IPv6 address                                     | null                   |
-| [::1]              | as above, with `allowIP = true`                  | [::1]                  |
+| [::1]              | as above, with `allowIPAddress = true`           | [::1]                  |
 | EXAMPLE.NET        | uppercase                                        | example.net            |
 | .example.net       | dot in front                                     | example.net            |
 | example.net.       | dot in the end, this is an FQDN                  | example.net.           |
@@ -884,7 +884,7 @@ with additional options this method may return other types of domain:
 IP addresses, intranet hostnames lacking known suffixes, and public suffixes themselves.
 There is currently no straightfoward way for the method caller to determine
 which of these kinds of value was returned from an invocation such as:
-`getDomain(hostname, { allowIP, allowUnknownSuffix, allowPlainSuffix })`.
+`getDomain(hostname, { allowIPAddress, allowUnknownSuffix, allowPlainSuffix })`.
 
 It may be beneficial to provide an additional API method that would
 return not only the domain value as returned by `getDomain()`,
