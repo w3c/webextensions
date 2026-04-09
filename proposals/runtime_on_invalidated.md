@@ -78,6 +78,7 @@ OnInvalidatedReason:
   "type": "string",
   "enum": [
     {"name": "uninstall", "description": "Specifies the event reason as an uninstallation."},
+    {"name": "unload", "description": "Specifies the event reason as an extension unload (could be update, reload, or disabling)."},
     {"name": "update", "description": "Specifies the event reason as an extension update."},
     {"name": "reload", "description": "Specifies the event reason as an extension reloading."},
     {"name": "disable", "description": "Specifies the event reason as an extension disabling."}
@@ -85,6 +86,8 @@ OnInvalidatedReason:
   "description": "The reason that this event is being dispatched."
 }
 ```
+
+The API should only be exposed to isolated content script worlds.
 
 ### Behavior
 
