@@ -18,7 +18,7 @@ A mechanism for extensions to specify values that are synchronously available wh
 
 * [Issue 536 comment](https://github.com/w3c/webextensions/issues/536#issuecomment-2200692043): `scripting.globalParams` in content scripts
 * [Issue 703](https://github.com/w3c/webextensions/issues/703): State in background scripts, synchronously available across restarts
-* Seemingly related but explicitly out of scope: [Issue 284](https://github.com/w3c/webextensions/issues/284): Main world User Script shared params
+* Seemingly related but explicitly out of scope: [Issue 284](https://github.com/w3c/webextensions/issues/284): Main world Content Script shared params
 * Resolves use case: [Issue 501](https://github.com/w3c/webextensions/issues/501): Proposal: Toggleable event listeners
 * Resolves use case: [issue 747](https://github.com/w3c/webextensions/issues/747): API to invalidate BFCache'd webpage with outdated content added by the extension
 
@@ -59,7 +59,7 @@ initialization, for example registering listeners based on user configuration
 
 ### Known Consumers
 
-Classes of privacy extentensions, such as NoScript
+Classes of privacy extensions, such as NoScript
 ([issue 536](https://github.com/w3c/webextensions/issues/536)).
 
 Classes of extensions that modify web pages based on user input,
@@ -72,32 +72,31 @@ The Violentmonkey author expressed a desire to use such an API in
 
 ### Schema
 
-This proposal builds upon the existing `browser.storage` API. The `StorageArea`
-type that commonly describes the various areas within `browser.storage` is
-extended with new methods to allow synchronous access to the data.
+This proposal extends the `browser.storage` namespace with two new storage
+areas. Their interface is inspired by the `StorageArea` type, except the
+methods to look up stored keys/values are synchronous (`get` and `getKeys`).
 
 The `set` method includes a new optional `options` parameter to configure the
-persistency of the specified parameters.
+persistence of the specified parameters.
 
 ```
-// When execution context is allowed to read synchronously.
-               any ConfigStorageArea.getSync(keyOrKeysOrObjectWithDefaults: string | string[] | null | object)
-          string[] ConfigStorageArea.getKeysSync();
+// Methods available to extension contexts and content scripts:
+               any ConfigStorageArea.get(keyOrKeysOrObjectWithDefaults: string | string[] | null | object)
+          string[] ConfigStorageArea.getKeys();
+    ExtensionEvent ConfigStorageArea.onChanged;
 
-// These are the same interfaces as storage.StorageArea
-   Promise<object> ConfigStorageArea.get(keyOrKeysOrObjectWithDefaults: string | string[] | null | object)
+// Methods available to extension contexts only, not content scripts:
    Promise<number> ConfigStorageArea.getBytesInUse()
- Promise<string[]> ConfigStorageArea.getKeys()
 Promise<undefined> ConfigStorageArea.set(items: object, options?: ConfigStorageAreaSetOptions)
 Promise<undefined> ConfigStorageArea.remove(keyOrKeys: string | string[])
 Promise<undefined> ConfigStorageArea.clear()
 
-    ExtensionEvent ConfigStorageArea.onChanged;
             number ConfigStorageArea.QUOTA_BYTES;
 
-// Read-only to content scripts; no synchronous reading from extension contexts.
+// In content scripts, the set/remove/clear methods are unavailable:
 ConfigStorageArea browser.storage.contentScriptConfig;
-// Extension contexts only; can read synchronously and write.
+
+// Extension contexts only:
 ConfigStorageArea browser.storage.extensionConfig;
 
 dictionary ConfigStorageAreaSetOptions {
@@ -105,41 +104,80 @@ dictionary ConfigStorageAreaSetOptions {
 }
 ```
 
+#### Explicit list of APIs
+
+This section describes the full list of APIs specified by this proposal.
+
+APIs available to content scripts:
+
+- `browser.storage.contentScriptConfig.get`
+- `browser.storage.contentScriptConfig.getKeys`
+- `browser.storage.contentScriptConfig.onChanged`
+- `browser.storage.contentScriptConfig.QUOTA_BYTES`
+
+APIs available to privileged extension contexts:
+
+- `browser.storage.contentScriptConfig.get`
+- `browser.storage.contentScriptConfig.getKeys`
+- `browser.storage.contentScriptConfig.getBytesInUse`
+- `browser.storage.contentScriptConfig.set`
+- `browser.storage.contentScriptConfig.remove`
+- `browser.storage.contentScriptConfig.clear`
+- `browser.storage.contentScriptConfig.onChanged`
+- `browser.storage.contentScriptConfig.QUOTA_BYTES`
+- `browser.storage.extensionConfig.get`
+- `browser.storage.extensionConfig.getKeys`
+- `browser.storage.extensionConfig.getBytesInUse`
+- `browser.storage.extensionConfig.set`
+- `browser.storage.extensionConfig.remove`
+- `browser.storage.extensionConfig.clear`
+- `browser.storage.extensionConfig.onChanged`
+- `browser.storage.extensionConfig.QUOTA_BYTES`
+
 ### Behavior
 
 #### ConfigStorageArea
 
-The `ConfigStorageArea` type is a composition of the existing `StorageArea`
-interface and two new methods, `getSync` and `getKeysSync`. Upon invoking the
-methods that update the storage area, the data is propagated to all processes
-where a context may exists with a need for synchronous data access.
+This proposal defines two fully independent `ConfigStorageArea` instances,
+`contentScriptConfig` and `extensionConfig`. Privileged extension contexts have
+full read and write access to both areas, whereas content scripts can only
+read from `contentScriptConfig`.
 
-Content scripts can *synchronously* access a copy of the available data with:
+The `ConfigStorageArea` type is based on the `StorageArea` interface, except
+with the `get` and `getKeys` methods returning data synchronously instead of
+asynchronously.
 
-- `browser.storage.contentScriptConfig.getSync(...)`
-- `browser.storage.contentScriptConfig.getKeysSync(...)`
+Updates to the storage area are propagated to all processes where a context may
+exists with a need for synchronous data access. This proposal specifies the
+`set`, `remove` and `clear` methods to update data, that eventually flushes.
 
-These methods are unavailable to privileged extension contexts, to encourage
-extensions to use the `extensionConfig` storage area that is hidden from
-content scripts and only available to privileged extension contexts:
+Once flushed, saved data should immediately be readable. In particular:
 
-- `browser.storage.extensionConfig.getSync(...)`
-- `browser.storage.extensionConfig.getKeysSync(...)`
+- Background scripts / extension service workers should be able to read from
+  `extensionConfig` at any stage of their life cycle, including startup.
+- Content scripts should be able to read from `contentScriptConfig`, even at
+  the earliest execution (`document_start`).
 
-The asynchronous methods (inherit from the `StorageArea` interface) are only
-available to privileged extension contexts, and allow them to update the data.
-Notably, the asynchronous `get`, `getKeys` and `getBytesInUse` methods are not
-available to content scripts, despite their read-only capabilities.
+By default, data only lasts for the duration of the browser session. The `set`
+method has a `persistent` option that extends the lifetime past browser and
+extension restarts. The data may be cleared when an extension is uninstalled.
 
-#### getSync
+#### get
 
-The `getSync()` method has similar semantics as the `get()` method, except it
+The `get()` method has similar semantics as `StorageArea.get`, except it
 *synchronously* returns keys and values that are known locally in the process.
 
-#### getKeysSync
+#### getKeys
 
-The `getKeysSync()` method has similar semantics as the `getKeys()` method,
-except it *synchronously* returns keys that are known locally in the process.
+The `getKeys()` method has similar semantics as `StorageArea.getKeys`, except
+it *synchronously* returns keys that are known locally in the process.
+
+#### getBytesInUse
+
+The `getBytesInUse()` method returns the amount of bytes in use by the data.
+
+See `QUOTA_BYTES` for remarks about how quota is measured.
+
 
 #### set
 
@@ -151,8 +189,29 @@ specified key-value pairs are persisted across browser and extension restarts.
 
 Each key has its own associated `persistent` flag, which affect the behavior of
 the latest `set()` call, and any following `remove()` or `clear()` calls.
+The `set` method can update multiple keys at once, and the `persistent` option
+applies to all specified keys. To have different `persistent` flags for keys,
+call the `set()` method again, with a different `persistent` option value.
 
 Persisted data should be stored locally, comparable to `storage.local`.
+
+Updates are asynchronous. The returned `Promise` may await writes to disk when
+the persistent flag is set, but does not guarantee the delivery of data to
+other processes. This ensures that non-responsive processes cannot delay the
+resolution of the `Promise`. The caller resides in the extension process and
+is guaranteed to receive the updated value when `get` or `getSync` are called.
+
+#### remove
+
+Removes data associated with the specified keys.
+
+See the `set` method for remarks about this method's asynchronous behavior.
+
+#### clear
+
+Clears all data in this storage area.
+
+See the `set` method for remarks about this method's asynchronous behavior.
 
 #### onChanged
 
@@ -161,11 +220,6 @@ When a storage change is observed, the `browser.storage.onChanged`,
 `browser.storage.extensionConfig.onChanged` events are dispatched as needed.
 
 The `onChanged` event receives an object with all modified keys.
-
-TODO: Should the `oldValue` and `newValue` fields be omitted? This would enable
-the browser to lazily deserialize values on demand, as an optimization.
-The recipient can use `getSync` to look up the actual value if desired.
-See also https://github.com/w3c/webextensions/issues/475
 
 #### QUOTA_BYTES
 
@@ -237,4 +291,23 @@ is incompatible with that design.
 
 ## Future Work
 
-Highlight any planned or prospective future work.
+### Domain or Origin specific data
+
+This proposal offers one global storage area for content scripts shared between
+all websites. A potential enhancement could be to offer a way to scope storage
+to specific domains or origins. While the proposal currently allows extensions
+to implement the domain-specific values themselves by including the domain or
+origin in the key, the data would still be exposed across all processes, which
+makes the mechanism less suited for data that ought to only be shared with
+processes from a specific origin.
+
+### onChanged event filter
+
+The `onChanged` event fires for any storage change, which is inefficient if a
+content script is only interested in changes to a specific key.
+
+There is a proposal to add filter options to `StorageArea.onChanged` at
+[Issue 475](https://github.com/w3c/webextensions/issues/475).
+
+An alternative for extensions is to use `tabs.sendMessage` as a mechanism to
+notify specific content scripts of data changes, but that would add overhead.
