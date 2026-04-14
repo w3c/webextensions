@@ -16,7 +16,9 @@ After the end of each meeting, meeting notes are published here.
 ## Past meetings
 
 * 2026-04-09 ([minutes](2026-04-09-wecg.md))
-* (minutes for the 2026-04-07 until 2026-04-09 face-to-face meeting in London will be published later and announced at [issue 951](https://github.com/w3c/webextensions/issues/951))
+* 2026-04-09 F2F meetup in London ([minutes](2026-04-09-london-f2f.md))
+* 2026-04-08 F2F meetup in London ([minutes](2026-04-08-london-f2f.md))
+* 2026-04-07 F2F meetup in London ([minutes](2026-04-07-london-f2f.md))
 * 2026-03-26 ([minutes](2026-03-26-wecg.md))
 * 2026-03-12 ([minutes](2026-03-12-wecg.md))
 * 2026-02-26 ([minutes](2026-02-26-wecg.md))
@@ -28,6 +30,9 @@ After the end of each meeting, meeting notes are published here.
 **2026**
 
 * 2026-04-09 ([minutes](2026-04-09-wecg.md))
+* 2026-04-09 F2F meetup in London ([minutes](2026-04-09-london-f2f.md))
+* 2026-04-08 F2F meetup in London ([minutes](2026-04-08-london-f2f.md))
+* 2026-04-07 F2F meetup in London ([minutes](2026-04-07-london-f2f.md))
 * 2026-03-26 ([minutes](2026-03-26-wecg.md))
 * 2026-03-12 ([minutes](2026-03-12-wecg.md))
 * 2026-02-26 ([minutes](2026-02-26-wecg.md))
