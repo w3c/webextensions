@@ -10,11 +10,12 @@ After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
-- 2026-04-23 at 8 AM PDT = https://everytimezone.com/?t=69eab280,384
 - 2026-05-07 at 8 AM PDT = https://everytimezone.com/?t=69fd2780,384
+- 2026-05-21 at 8 AM PDT = https://everytimezone.com/?t=6a0f9c80,384
 
 ## Past meetings
 
+* 2026-04-23 ([minutes](2026-04-23-wecg.md))
 * 2026-04-09 ([minutes](2026-04-09-wecg.md))
 * 2026-04-09 F2F meetup in London ([minutes](2026-04-09-london-f2f.md))
 * 2026-04-08 F2F meetup in London ([minutes](2026-04-08-london-f2f.md))
@@ -22,13 +23,13 @@ After the end of each meeting, meeting notes are published here.
 * 2026-03-26 ([minutes](2026-03-26-wecg.md))
 * 2026-03-12 ([minutes](2026-03-12-wecg.md))
 * 2026-02-26 ([minutes](2026-02-26-wecg.md))
-* 2026-02-12 ([minutes](2026-02-12-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2026**
 
+* 2026-04-23 ([minutes](2026-04-23-wecg.md))
 * 2026-04-09 ([minutes](2026-04-09-wecg.md))
 * 2026-04-09 F2F meetup in London ([minutes](2026-04-09-london-f2f.md))
 * 2026-04-08 F2F meetup in London ([minutes](2026-04-08-london-f2f.md))
