@@ -6,13 +6,13 @@ An API proposal to allow extensions to explicitly manage their service worker in
 
 **Document Metadata**
 
-**Author:** andreaorru@chromium.org
+**Author:** @AndreaOrru
 
 **Sponsoring Browser:** Google Chrome
 
-**Contributors:** rdevlin.cronin@chromium.org
+**Contributors:** @rdcronin
 
-**Created:** 2026-04-22
+**Created:** 2026-04-27
 
 **Related Issues:** N/A
 
