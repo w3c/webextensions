@@ -74,7 +74,7 @@ namespace runtime {
 * **Renderer-side queueing:** During the initialization phase, the browser routes incoming events that match the previously registered listeners to the service worker's renderer process, which queues them instead of immediately attempting to dispatch them to JavaScript callbacks (which might not be attached yet).
 * **Event routing (union of old and new):** While in the initialization phase, the browser will route an event to the renderer queue if it matches *either* the old persisted routing state (from the previous run) or any new listeners currently being registered by the executing script.
 * **Listener registration:** Developers perform their asynchronous setup (e.g., reading from storage) and call `addListener()` to attach their desired JavaScript callbacks *before* calling the completion API.
-* **State commit & completion API:** The extension must call `browser.runtime.markInitializationComplete()` once its async setup is complete. At that moment:
+* **State commit & completion API:** The extension must call `browser.runtime.markInitializationComplete()` once its potentially async setup is complete. At that moment:
 	1. The old persisted routing state is **thrown away**.
 	2. The new listeners currently registered are committed to the browser as the new persisted routing state for future wake-ups.
 * **Event flush:** Once `markInitializationComplete()` ends the initialization phase, the renderer flushes its queue, dispatching all held events to the newly registered JavaScript callbacks in FIFO order.
