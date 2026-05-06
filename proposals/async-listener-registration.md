@@ -59,6 +59,8 @@ namespace runtime {
    * Transitions the service worker out of the initialization phase, replaces 
    * the previous run's persisted listeners with the newly registered ones, 
    * and flushes the event queue.
+   *
+   * This method is only available to the background script context.
    */  
   export function markInitializationComplete(): void;
 }
