@@ -2,7 +2,7 @@
 
 **Summary**
 
-An API proposal to allow extensions to explicitly manage their service worker initialization phase via a manifest opt-in field and a `markInitializationComplete()` API, enabling the asynchronous registration of event listeners. 
+An API proposal to allow extensions to explicitly delay the dispatch of extension API events to their service worker during its initialization phase via a manifest opt-in field and a `markInitializationComplete()` API, enabling the asynchronous registration of event listeners. 
 
 **Document Metadata**
 
