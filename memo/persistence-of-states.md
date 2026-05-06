@@ -43,5 +43,6 @@ If developers want to keep states persistent across B, C or D, but the default p
 | proxy.settings.set() | | | |
 | [sidePanel.setPanelBehavior()](https://developer.chrome.com/docs/extensions/reference/sidePanel/#method-setPanelBehavior) | B + C + D | | |
 | privacy | B + C + D | B + C + D | Not supported |
+| [setUninstallURL](https://github.com/w3c/webextensions/issues/981) | B + C + D | A | No-op |
 
 \* This table may not be exhaustive, nor may it be adequately tested. Additions and corrections are welcome.
