@@ -30,6 +30,7 @@ This proposal introduces a mechanism to explicitly delay the finalization of the
 
 * **Conditional event registration:** An extension may need to read user preferences from local storage to determine whether it should register listeners for high-traffic events (e.g., `tabs.onUpdated` or `webRequest`).
 * **Dynamic configuration:** An extension might need to fetch a configuration file to decide which listener options to set up (e.g. `webRequest` URL filters).
+* **Atomic startup completion signal**: An extension that partially failed to register its listeners at its first run can have another chance at the next startup, without being in an inconsistent state (e.g. https://bugzilla.mozilla.org/show_bug.cgi?id=1822735).
 
 ### Known Consumers
 
