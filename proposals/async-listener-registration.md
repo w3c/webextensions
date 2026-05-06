@@ -234,6 +234,7 @@ Service workers on the open web handle initialization via the `install` and `act
 * The `async_initialization` manifest key allows the browser to know before spinning up the service worker that it should start queuing events *in the renderer*.
 * The browser's event router must compute the union of the old persisted listener configurations and any newly evaluated configurations during startup to determine which events to forward to the initializing renderer.
 * Implementations must ensure that enqueued tasks are flushed and dispatched normally upon calling `markInitializationComplete()`. If the initialization fails before the method is called, the state commit is aborted, and the previous run's listener state is preserved in the browser process.
+* When the initialization completion is signaled while the background script is still starting/executing, events are not queued and the usual event dispatch happens as soon as possible.
 
 ## Future Work
 
