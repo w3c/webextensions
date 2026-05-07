@@ -2,7 +2,7 @@
 
 **Summary**
 
-An API proposal to allow extensions to explicitly delay the dispatch of extension API events to their background context during its initialization phase via a manifest opt-in field and a `markListenersRegistrationComplete()` API, enabling the asynchronous registration of event listeners. 
+An API proposal to allow extensions to explicitly delay the dispatch of extension API events to their background context during its initialization phase via a manifest opt-in field and a `markListenerRegistrationComplete()` API, enabling the asynchronous registration of event listeners. 
 
 **Document Metadata**
 
@@ -46,7 +46,7 @@ Extensions which require dynamic or conditionally registered event listeners bas
 {
   "background": {
     "service_worker": "background.js",
-    "async_initialization": true
+    "async_listener_registration": true
   }
 }
 ```
@@ -63,7 +63,7 @@ namespace runtime {
    *
    * This method is only available to the background script context.
    */  
-  export function markListenersRegistrationComplete(): void;
+  export function markListenerRegistrationComplete(): void;
 }
 ```
 
@@ -71,14 +71,14 @@ namespace runtime {
 
 #### Initialization Lifecycle
 
-* **Manifest opt-in:** Extensions declare `"async_initialization": true` nested inside the `"background"` key in their `manifest.json`.
+* **Manifest opt-in:** Extensions declare `"async_listener_registration": true` nested inside the `"background"` key in their `manifest.json`.
 * **Renderer-side queueing:** During the initialization phase, the browser routes incoming events that match the previously registered listeners to the background context's renderer process, which queues them instead of immediately attempting to dispatch them to JavaScript callbacks (which might not be attached yet).
 * **Event routing (union of old and new):** While in the initialization phase, the browser will route an event to the renderer queue if it matches *either* the old persisted routing state (from the previous run) or any new listeners currently being registered by the executing script.
 * **Listener registration:** Developers perform their potentially asynchronous setup (e.g., reading from storage) and call `addListener()` to attach their desired JavaScript callbacks *before* calling the completion API.
-* **State commit & completion API:** The extension must call `browser.runtime.markListenersRegistrationComplete()` once its potentially async setup is complete. At that moment:
+* **State commit & completion API:** The extension must call `browser.runtime.markListenerRegistrationComplete()` once its potentially async setup is complete. At that moment:
 	1. The old persisted routing state is **thrown away**.
 	2. The new listeners currently registered are committed to the browser as the new persisted routing state for future wake-ups.
-* **Event flush:** Once `markListenersRegistrationComplete()` ends the initialization phase, the renderer flushes its queue, dispatching all held events to the newly registered JavaScript callbacks in FIFO order.
+* **Event flush:** Once `markListenerRegistrationComplete()` ends the initialization phase, the renderer flushes its queue, dispatching all held events to the newly registered JavaScript callbacks in FIFO order.
 
 #### Example Flow
 
@@ -92,13 +92,13 @@ browser.storage.local.get("shouldListen").then((settings) => {
     browser.tabs.onUpdated.addListener(handleTabUpdate);
   }
   // Signal the end of the initialization phase.
-  browser.runtime.markListenersRegistrationComplete();
+  browser.runtime.markListenerRegistrationComplete();
 });
 ```
 
 Assume that during a previous run, `settings.shouldListen` was `true`, the listener was registered, and the browser persisted this routing state. The background context has since been terminated. 
 
-When a new `tabs.onUpdated` event fires, the browser checks the persisted state and wakes the background context. Because the manifest includes `"async_initialization": true`, the renderer process queues the waking event rather than attempting to dispatch it immediately. 
+When a new `tabs.onUpdated` event fires, the browser checks the persisted state and wakes the background context. Because the manifest includes `"async_listener_registration": true`, the renderer process queues the waking event rather than attempting to dispatch it immediately. 
 
 From here, execution resolves into one of two cases.
 
@@ -106,28 +106,28 @@ From here, execution resolves into one of two cases.
 
 If the storage promise resolves and `settings.shouldListen` evaluates to `true`:
 1. The extension executes the `addListener()` call.
-2. The extension calls `browser.runtime.markListenersRegistrationComplete()`.
+2. The extension calls `browser.runtime.markListenerRegistrationComplete()`.
 3. The browser commits the routing state (maintaining the `tabs.onUpdated` registration for future wake-ups). The renderer flushes its holding queue, and the queued `tabs.onUpdated` event is safely dispatched to the newly attached `handleTabUpdate` callback. No events were missed.
 
 ##### Case 2: The listener is not registered
 
 If the storage promise resolves but `settings.shouldListen` evaluates to `false`:
 1. The extension skips the `addListener()` call.
-2. The extension calls `browser.runtime.markListenersRegistrationComplete()`.
+2. The extension calls `browser.runtime.markListenerRegistrationComplete()`.
 3. The browser commits the routing state. Because the listener was omitted during this run, the browser overwrites and **clears** the old persisted routing state. The renderer flushes the queued event, which is harmlessly dropped since no JavaScript callback is attached.
 4. Because the routing state is now cleared, future `tabs.onUpdated` events will no longer wake up the background context. This implicitly cleans up the routing state without the developer needing to explicitly call `removeListener()` (see Workaround B) or accept unnecessary wake-ups on future events (see Workaround A).
 
 #### Edge Cases
 
 * **Initialization failure fallback:** If the initialization phase fails (e.g., the worker crashes or hits a timeout before the completion API is called), the browser will abort the state commit. It will keep the previous persisted routing state to prevent leaving the extension in a broken state.
-* **Late registration:** It is permissible to register new listeners after the `markListenersRegistrationComplete()` API call. If an extension does so, developers must understand the following lifecycle:
+* **Late registration:** It is permissible to register new listeners after the `markListenerRegistrationComplete()` API call. If an extension does so, developers must understand the following lifecycle:
 	* The browser will persist these "late" listeners across background context terminations to successfully trigger a future wake-up.
-	* On the subsequent wake-up, all relevant listeners must be re-registered. Calling `markListenersRegistrationComplete()` entirely replaces the routing state from the previous run.
+	* On the subsequent wake-up, all relevant listeners must be re-registered. Calling `markListenerRegistrationComplete()` entirely replaces the routing state from the previous run.
 	* Therefore, any late-registered listeners from a previous run will be removed from the registered listeners during the next run's state commit unless the extension explicitly re-registers them before calling the completion API.
 
 #### Performance Considerations
 
-Because MV3 background contexts are ephemeral and wake up frequently, developers must be aware that delaying initialization adds latency to event dispatch. If an extension relies on slow I/O before calling `markListenersRegistrationComplete()`, that latency penalty applies to every single event that triggers a cold start. Developers are heavily encouraged to use fast, local I/O for conditional listener registration during routine wake-ups.
+Because MV3 background contexts are ephemeral and wake up frequently, developers must be aware that delaying initialization adds latency to event dispatch. If an extension relies on slow I/O before calling `markListenerRegistrationComplete()`, that latency penalty applies to every single event that triggers a cold start. Developers are heavily encouraged to use fast, local I/O for conditional listener registration during routine wake-ups.
 
 ### New Permissions
 
@@ -139,13 +139,13 @@ This API modifies the initialization lifecycle of the extension's background con
 
 ### Manifest File Changes
 
-Add an optional (default false) `async_initialization` field inside the `background` key.
+Add an optional (default false) `async_listener_registration` field inside the `background` key.
 
 ```json
 {
   "background": {
     "service_worker": "background.js",
-    "async_initialization": true
+    "async_listener_registration": true
   }
 }
 ```
@@ -158,7 +158,7 @@ This API does not expose any sensitive data or personally identifiable informati
 
 ### Abuse Mitigations
 
-* **Indefinite hangs:** A malicious or poorly coded extension could fail to call `markListenersRegistrationComplete()` in an attempt to consume memory by forcing the browser to queue a massive number of events. This is mitigated by queuing the events in the renderer process, scoping the impact to the renderer only. The browser can also enforce an initialization timeout, falling back to the previous run's routing state if it expires.
+* **Indefinite hangs:** A malicious or poorly coded extension could fail to call `markListenerRegistrationComplete()` in an attempt to consume memory by forcing the browser to queue a massive number of events. This is mitigated by queuing the events in the renderer process, scoping the impact to the renderer only. The browser can also enforce an initialization timeout, falling back to the previous run's routing state if it expires.
 * **Queue limits:** Implementations could enforce an upper bound on the event queue size, dropping the oldest events if the limit is exceeded during the wait phase to prevent unbounded memory growth. Again, because the queuing happens renderer-side, in the worst case scenario a misbehaving renderer can be killed.
 
 ## Alternatives
@@ -231,9 +231,9 @@ Service workers on the open web handle initialization via the `install` and `act
 
 ## Implementation Notes
 
-* The `async_initialization` manifest key allows the browser to know before spinning up the background context that it should start queuing events *in the renderer*.
+* The `async_listener_registration` manifest key allows the browser to know before spinning up the background context that it should start queuing events *in the renderer*.
 * The browser's event router must compute the union of the old persisted listener configurations and any newly evaluated configurations during startup to determine which events to forward to the initializing renderer.
-* Implementations must ensure that enqueued tasks are flushed and dispatched normally upon calling `markListenersRegistrationComplete()`. If the initialization fails before the method is called, the state commit is aborted, and the previous run's listener state is preserved in the browser process.
+* Implementations must ensure that enqueued tasks are flushed and dispatched normally upon calling `markListenerRegistrationComplete()`. If the initialization fails before the method is called, the state commit is aborted, and the previous run's listener state is preserved in the browser process.
 * When the initialization completion is signaled while the background script is still starting/executing, events are not queued and the usual event dispatch happens as soon as possible.
 
 ## Future Work
