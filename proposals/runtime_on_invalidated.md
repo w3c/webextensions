@@ -78,13 +78,13 @@ OnInvalidatedReason:
   "type": "string",
   "enum": [
     {"name": "uninstall", "description": "Specifies the event reason as an uninstallation."},
-    {"name": "update", "description": "Specifies the event reason as an extension update."},
-    {"name": "reload", "description": "Specifies the event reason as an extension reloading."},
-    {"name": "disable", "description": "Specifies the event reason as an extension disabling."}
+    {"name": "unload", "description": "Specifies the event reason as an extension unload (like extension updates, reloads, and disabling)."}
   ],
   "description": "The reason that this event is being dispatched."
 }
 ```
+
+The API should only be exposed to isolated content script worlds.
 
 ### Behavior
 
@@ -150,6 +150,9 @@ There is no viable path to turn this into an Open Web API.
 
 The event should be fired in the situation in which extension APIs would throw
 with an context invalidated error.
+
+For this to work, browsers need to keep the content script context alive for
+the extension to handle the invalidation event.
 
 ## Future Work
 
