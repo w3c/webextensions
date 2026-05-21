@@ -3,13 +3,14 @@
 ** How to Use This Template **
 
 See [Proposal Process](proposal_process.md) for the detailed process on how to
-propose new APIs and use this template.  Each section includes instructions on
-what to include.  Delete the instructions for a given section once it's filled
-out.  Remove this section once the template is filled out.
+propose new APIs and use this template, including the requirement to have an
+associated issue. Each section includes instructions on what to include. Delete
+the instructions for a given section once it's filled out. Remove this section
+once the template is filled out.
 
 **Summary**
 
-An API proposal for your new API.  Describe in **one sentence** what it will be
+An API proposal for your new API. Describe in **one sentence** what it will be
 used for.
 
 **Document Metadata**
@@ -23,7 +24,7 @@ if approved.
 
 **Created:** YYYY-MM-DD
 
-**Related Issues:** &lt;urls>
+**Related Issues:** &lt;URL(s). At least one>
 
 ## Motivation
 
