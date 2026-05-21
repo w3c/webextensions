@@ -126,6 +126,10 @@ processes for such APIs.)
 
 ## How to Use this Proposal
 
+*   Ensure your proposal has an associated issue. Before creating a new issue,
+    search for existing issues to prevent duplicates. Having an associated issue
+    allows the group to collect initial support and use cases for the proposal
+    and provides a single place for follow-up discussions.
 *   Find (or represent) a browser willing to implement the API imminently and
     propose the API.  We want to ensure these API proposals don't become a
     collection of "aspirational" APIs -- things that we would ideally like to
@@ -134,7 +138,7 @@ processes for such APIs.)
     of a suggestion in a filed issue.  As such, these proposals should only be
     used for APIs that have support and commitment to implement from at least
     one browser.
-*   Copy the [API Proposal template](proposal_template.md) and fill it out.  
+*   Copy the [API Proposal template](proposal_template.md) and fill it out.
     There are instructions in each section of the proposal template.  As you
     fill out each section, you may delete the instructions for that section.
     For any section that is not relevant, you may put "N/A" (likely with a
