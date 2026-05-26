@@ -216,27 +216,24 @@ The PSL uses Unicode, and contains International Domain Name (IDN) eTLDs. Depend
 on the use case, when returning the registrable domain for a domain name,
 either Unicode or Punycode may be preferred.
 
-According to a possible [PSL algorithm](https://github.com/publicsuffix/list/wiki/Format#formal-algorithm)
+Points to consider regarding the encoding used for returned domains are:
+
+* According to a possible [PSL algorithm](https://github.com/publicsuffix/list/wiki/Format#formal-algorithm)
 for interpreting the PSL dataset, candidate domains should be converted to Punycode
-before matching against the PSL. Therefore, a requirement to convert Punycode
-back to Unicode would involve extra work, and it may be preferable to avoid this in
-performance-sensitive use cases. However, it has been suggested that this PSL algorithm
-is not authoritative. Indeed, any algorithm used to interpret the PSL dataset is likely
-to be fairly trivial, since it essentially involves comparing labels for equality.
-
-Further points to consider in this context are:
-
+before matching against the PSL. Therefore, returning Punycode avoids requiring the
+browser to convert matching results back to Unicode.
 * Punycode may be the most appropriate encoding to use, since a Punycode hostname is a
-valid URL whereas a Unicode hostname is not. Therefore Punycode may be the most sane default.
-
-* When this API is used to obtain registrable domains intended for display to the user,
-it is likely that the end result will at some point need to be converted to Unicode,
-since users may be less familiar with Punycode.
+valid URL whereas a Unicode hostname is not.
+* When intended for display to the user, converting a Punycode domain to Unicode is not always safe.
+For example, sometimes Unicode domains are used to spoof popular domains, in an attempt to trick users.
+Therefore, browsers have their own internal heuristics for deciding how URLs are displayed, sometimes
+choosing to stick to Punycode where it is safer - those heuristics should likely be exposed as a more
+general web or extensions API, rather than as a part of this one.
 
 ##### 4.1 Recommendation
 
-It is recommended that registrable domains should be returned as Punycode by default,
-but the API should also provide an option to convert these to Unicode.
+It is recommended that registrable domains and eTLDs should always be returned
+using Punycode.
 
 #### Use Cases
 
@@ -409,10 +406,6 @@ namespace publicSuffix {
   // Options that may be passed to the API method to control its behaviour.
   interface DomainOptions {
 
-    // Determines how the returned domain should be encoded.
-    // Default = punycode
-    encoding?: DomainEncoding,
-
     // If true, and the input hostname is an IP address, then this is returned as-is.
     // Default = false
     allowIPAddress?: boolean,
@@ -429,11 +422,6 @@ namespace publicSuffix {
     allowUnknownSuffix?: boolean,
   }
 
-  // The available encoding types for the returned domain.
-  enum DomainEncoding {
-    punycode,
-    unicode,
-  }
 }
 ```
 
@@ -614,19 +602,13 @@ navigated to, such as github.io and blogspot.com.
 All API methods should accept hostnames passed as input parameters using either
 Unicode or Punycode encoding.
 
-Methods that return registrable domains or eTLDs should encode them using Punycode
-encoding by default, unless an `options` object is passed as an input parameter
-with key `unicode` set to `true`, in which case they should be encoded
-using Unicode encoding.
+Methods that return registrable domains or eTLDs should always encode them using
+Punycode.
 
 ##### Example
 
-`domain` = foo.bar.example.مليسيا
-
-| Option                     |        Returned Domain |
-|----------------------------|-----------------------:|
-| unicode == false (default) | example.xn--mgbx4cd0ab |
-| unicode == true            |         example.مليسيا |
+For `hostname` = `foo.bar.example.مليسيا`, the returned domain is
+`example.xn--mgbx4cd0ab`.
 
 #### 4. Invalid hostname
 
@@ -672,9 +654,7 @@ classes of input `hostname` parameter:
 | مليسيا             | this is an IDN that is also an eTLD              | null                   |
 | xn--mgbx4cd0ab     | as above, but Punycode                           | null                   |
 | foo.مليسيا         | this is an IDN                                   | foo.xn--mgbx4cd0ab     |
-| foo.مليسيا         | as above, with `unicode = true`                  | foo.مليسيا             |
 | foo.xn--mgbx4cd0ab | this is an IDN, but Punycode                     | foo.xn--mgbx4cd0ab     |
-| foo.xn--mgbx4cd0ab | as above, with `unicode = true`                  | foo.مليسيا             |
 | *.com              | contains invalid character `'*'`                 | Error                  |
 |                    | empty string                                     | Error                  |
 | .                  | no domain labels                                 | Error                  |
