@@ -683,6 +683,7 @@ classes of input `hostname` parameter:
 | foo.مليسيا         | as above, with `encoding = display`              | foo.مليسيا             |
 | foo.xn--mgbx4cd0ab | this is an IDN, but Punycode                     | foo.xn--mgbx4cd0ab     |
 | foo.xn--mgbx4cd0ab | as above, with `encoding = display`              | foo.مليسيا             |
+| xn--bs-red.com | `bսs.com` in Unicode, kept as punycode even with `encoding = display` due to presence of confusable | xn--bs-red.com | 
 | *.com              | contains invalid character `'*'`                 | Error                  |
 |                    | empty string                                     | Error                  |
 | .                  | no domain labels                                 | Error                  |
