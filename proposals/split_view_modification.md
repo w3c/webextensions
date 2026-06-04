@@ -58,7 +58,7 @@ Tab managers, offering tab management functionality through a custom UI, e.g.:
 - [Tree Style Tabs](https://addons.mozilla.org/firefox/addon/tree-style-tab/),
   tracked at https://github.com/piroor/treestyletab/issues/3806
 - [Sidebery](https://addons.mozilla.org/firefox/addon/sidebery/), tracked
-  at thttps://github.com/mbnuqw/sidebery/issues/2327
+  at https://github.com/mbnuqw/sidebery/issues/2327
 
 Any extension that wants to open to a split view, e.g. requested at
  https://issues.chromium.org/issues/510252106
