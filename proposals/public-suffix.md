@@ -400,9 +400,6 @@ namespace publicSuffix {
   )
   : string | null;
 
-  // Gets the value of the VERSION metadata field in the PSL dataset if available
-  export function getVersion(): string | null;
-
 
   // INTERFACES
 
@@ -761,22 +758,11 @@ It is noted that:
 In the future, if PSL lookups are resolved by way of DNS requests rather than by querying a
 browser-bundled PSL dataset (as is the case currently), then an async API may be a better fit.
 
-#### 11. PSL Version
-
-Versioning metadata was introduced into the PSL with [this commit](https://github.com/publicsuffix/list/issues/1808#issuecomment-2455793503).
-
-Method `getVersion()` of this API should return the value of the
-VERSION metadata field contained in the specific PSL dataset used by the browser.
-
 ### New Permissions
 
 | Permission Added | Suggested Warning |
 | ---------------- | ----------------- |
 | publicSuffix     | N/A               |
-
-Method `publicSuffix.getVersion()` may theoretically contribute to making the browser
-fingerprintable. However, it is already possible for malicious sites to get the browser's
-version, therefore this API does not introduce significant additional fingerprintability.
 
 ### Manifest File Changes
 
@@ -873,10 +859,6 @@ is provided for notifying extensions when the host browser's PSL dataset changes
 understood that such changes are only made currently when a new browser version
 is released, however this may not always be the case.
 
-It may be useful to implement a notification mechanism so that extensions can take
-appropriate action when the host browser's PSL dataset changes, to avoid having to
-poll the `getVersion()` function provided by this API.
-
 ### 3. Get Domain and Kind
 
 While API method `getDomain()` by default returns registrable domains,
@@ -895,3 +877,15 @@ An example use case would be if extension developers wanted to prepend
 additional labels to the domain returned by `getDomain()`. This would
 not make sense for returned IP addresses, so developers would need a
 way of separating returned IP addresses from returned domain names.
+
+### 4. Versioning
+
+The Public Suffix database includes a version field, introduced in
+https://github.com/publicsuffix/list/issues/1808#issuecomment-2455793503.
+
+An early draft of this proposal specified the `publicSuffix.getVersion()`
+method to retrieve that version. However, this method was dropped after
+feedback from implementers and PSL maintainers:
+
+- https://phabricator.services.mozilla.com/D295513#10264666
+- https://phabricator.services.mozilla.com/D295513#10434003
