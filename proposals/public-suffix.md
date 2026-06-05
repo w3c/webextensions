@@ -233,10 +233,17 @@ valid URL whereas a Unicode hostname is not. Therefore Punycode may be the most 
 it is likely that the end result will at some point need to be converted to Unicode,
 since users may be less familiar with Punycode.
 
+* When converting domains to Unicode for display to the user, security considerations
+relating to ["Unicode confusables"](https://www.unicode.org/reports/tr39/#Confusable_Detection)
+should be taken into account. "Unicode confusables" are cases where two strings
+are visually confusable. It is understood that the major browsers already have
+functionality for safely converting Punycode domains to Unicode.
+
 ##### 4.1 Recommendation
 
 It is recommended that registrable domains should be returned as Punycode by default,
-but the API should also provide an option to convert these to Unicode.
+but the API should also provide an option to convert these to an encoding suitable
+for display to the user ("safe Unicode").
 
 #### Use Cases
 
@@ -429,7 +436,7 @@ namespace publicSuffix {
   // The available encoding types for the returned domain.
   enum DomainEncoding {
     punycode,
-    unicode,
+    display,
   }
 }
 ```
@@ -613,17 +620,18 @@ Unicode or Punycode encoding.
 
 Methods that return registrable domains or eTLDs should encode them using Punycode
 encoding by default, unless an `options` object is passed as an input parameter
-with key `unicode` set to `true`, in which case they should be encoded
-using Unicode encoding.
+with key `encoding` set to `display`, in which case they should be encoded using
+an encoding suitable for display to the user (usually Unicode, but may be Punycode
+if the Unicode version is determined to be a "Unicode Confusable").
 
 ##### Example
 
 `domain` = foo.bar.example.مليسيا
 
-| Option                     |        Returned Domain |
-|----------------------------|-----------------------:|
-| unicode == false (default) | example.xn--mgbx4cd0ab |
-| unicode == true            |         example.مليسيا |
+| Option                        |        Returned Domain |
+|-------------------------------|-----------------------:|
+| encoding = punycode (default) | example.xn--mgbx4cd0ab |
+| encoding = display            |         example.مليسيا |
 
 #### 4. Invalid hostname
 
@@ -669,9 +677,10 @@ classes of input `hostname` parameter:
 | مليسيا             | this is an IDN that is also an eTLD              | null                   |
 | xn--mgbx4cd0ab     | as above, but Punycode                           | null                   |
 | foo.مليسيا         | this is an IDN                                   | foo.xn--mgbx4cd0ab     |
-| foo.مليسيا         | as above, with `unicode = true`                  | foo.مليسيا             |
+| foo.مليسيا         | as above, with `encoding = display`              | foo.مليسيا             |
 | foo.xn--mgbx4cd0ab | this is an IDN, but Punycode                     | foo.xn--mgbx4cd0ab     |
-| foo.xn--mgbx4cd0ab | as above, with `unicode = true`                  | foo.مليسيا             |
+| foo.xn--mgbx4cd0ab | as above, with `encoding = display`              | foo.مليسيا             |
+| xn--bs-red.com | `bսs.com` in Unicode, kept as punycode even with `encoding = display` due to presence of confusable | xn--bs-red.com | 
 | *.com              | contains invalid character `'*'`                 | Error                  |
 |                    | empty string                                     | Error                  |
 | .                  | no domain labels                                 | Error                  |
