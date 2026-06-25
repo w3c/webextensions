@@ -1,6 +1,6 @@
 <pre class="metadata">
 Title: window.browser
-Shortname: wecg-browser
+Shortname: webextensions-browser-global
 Level: 1
 Group: wecg
 Status: w3c/CG-DRAFT
