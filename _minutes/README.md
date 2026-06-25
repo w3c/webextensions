@@ -1,20 +1,31 @@
 # Meetings
 
-The [WebExtensions Community group](https://www.w3.org/community/webextensions/) meets virtually every other week, for one hour.
-The instructions to join the meeting and agenda are available at https://www.w3.org/groups/cg/webextensions/calendar.
+The [WebExtensions Community group](https://www.w3.org/community/webextensions/) (WECG) meets virtually every other week, for one hour.
+Upcoming CG meetings and instructions to join them are at https://www.w3.org/groups/cg/webextensions/calendar/.
 
 * Thursday 8 AM PDT (3 PM UTC)
 * To convert to your local time zone, see https://everytimezone.com/
+
+The [WebExtensions Working Group](https://www.w3.org/groups/wg/webextensions/) (WEWG) meets virtually every four weeks, for one hour (when the WECG is not meeting).
+Upcoming WG meetings and instructions to join them are at https://www.w3.org/groups/wg/webextensions/calendar/.
 
 After the end of each meeting, meeting notes are published here.
 
 ## Upcoming meetings
 
+The agenda for upcoming meetings is prepared in [issues with `label:agenda`](https://github.com/w3c/webextensions/issues?q=is%3Aissue%20state%3Aopen%20label%3Aagenda).
+
 - 2026-07-02 at 8 AM PDT = https://everytimezone.com/?t=6a46fb80,384
 - 2026-07-16 at 8 AM PDT = https://everytimezone.com/?t=6a597080,384
+- 2026-07-23 WEWG meeting: https://everytimezone.com/?t=6a62ab00,384
+
+Calendars:
+- https://www.w3.org/groups/cg/webextensions/calendar/ (Community Group)
+- https://www.w3.org/groups/wg/webextensions/calendar/ (Working Group)
 
 ## Past meetings
 
+* 2026-06-25 WEWG meeting ([minutes](2026-06-25-wewg.md))
 * 2026-06-18 ([minutes](2026-06-18-wecg.md))
 * 2026-06-04 ([minutes](2026-06-04-wecg.md))
 * 2026-05-21 ([minutes](2026-05-21-wecg.md))
@@ -26,6 +37,7 @@ After the end of each meeting, meeting notes are published here.
 
 **2026**
 
+* 2026-06-25 WEWG meeting ([minutes](2026-06-25-wewg.md))
 * 2026-06-18 ([minutes](2026-06-18-wecg.md))
 * 2026-06-04 ([minutes](2026-06-04-wecg.md))
 * 2026-05-21 ([minutes](2026-05-21-wecg.md))
