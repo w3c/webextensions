@@ -12,7 +12,7 @@ Enable testing using the `browser.test` runner and assertion API.
 
 **Created:** 2025-07-17
 
-**Related Issues:** web-platform-tests/rfcs/pull/219
+**Related Issues:** web-platform-tests/rfcs/pull/219, #1051
 
 ## Motivation
 
@@ -79,6 +79,32 @@ match `expectedError` (if defined), the test fails.
 - `expectedError` (string | RegExp, optional)
 - `message` (string, optional)
 
+**`browser.test.assertRejects(promise, expectedError, message)`**
+Asserts that a given Promise rejects with a specific `error.message`. If it does not, or if the `error.message` doesn't match `expectedError` (if defined), the test fails.
+
+**Parameters**
+- `promise` (Promise)
+- `expectedError` (string | RegExp, optional)
+- `message` (string, optional)
+
+**`browser.test.succeed(message)`**
+Immediately marks the current test as passed, optionally with a custom message. This is helpful in cases where returning a Promise or `undefined` is less obvious than explicitly indicating success.
+
+**Parameters**
+- `message` (string, optional)
+
+**`browser.test.fail(message)`**
+Immediately marks the current test as failed, optionally with a custom message. This is helpful in cases where returning a Promise or `undefined` is less obvious than explicitly indicating failure.
+
+**Parameters**
+- `message` (string, optional)
+
+**`browser.test.runWithUserGesture(fn)`**
+Runs the provided function in the context of a user gesture.
+
+**Parameters**
+- `fn` (function)
+
 **`browser.test.runTests(tests)`**
 Queues test functions to run sequentially and returns a promise that resolves or rejects based
 on the outcome.
@@ -91,13 +117,19 @@ The promise:
 - **Resolves** if all tests pass.
 - **Rejects** if any fail.
 
-Tests pass when they either return `undefined` or when a promise returned by the test resolves.  They fail if they:
+Tests pass when they either return `undefined`, when a promise returned by the test resolves, or when `browser.test.succeed()` is called. They fail if they:
 - Throw an exception
 - Return a promise that rejects
 - Trigger an assertion failure
+- Call `browser.test.fail()`
 
 **Parameters**
 - `tests` (array of functions)
+
+### Properties
+
+**`browser.test.isUserGestureActive`** (boolean)
+Set to `true` when the current extension code is running in the context of a user gesture. Otherwise set to `false`. This is helpful in validating that an event notification is only fired when processing a user gesture.
 
 ### Methods for Test Harness Pages
 
@@ -163,13 +195,11 @@ running under WPT or other test modes.
 
 ## Future Work
 
-Existing implementation have additional methods with different names and
+Existing implementations have additional methods with different names and
 behaviors, and we plan to align and specify more of them, for example:
 
- - `assertRejects`
  - `log`
  - `sendMessage`
- - `withHandlingUserInput`
 
-This list non-exhaustive, and future methods might be specified under
+This list is non-exhaustive, and future methods might be specified under
 different names.
