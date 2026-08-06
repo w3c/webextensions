@@ -105,6 +105,9 @@ Runs the provided function in the context of a user gesture.
 **Parameters**
 - `fn` (function)
 
+**Returns**
+- (any) – The return value of `fn`.
+
 **`browser.test.runTests(tests)`**
 Queues test functions to run sequentially and returns a promise that resolves or rejects based
 on the outcome.
