@@ -12,7 +12,7 @@ Enable testing using the `browser.test` runner and assertion API.
 
 **Created:** 2025-07-17
 
-**Related Issues:** web-platform-tests/rfcs/pull/219, #1051
+**Related Issues:** web-platform-tests/rfcs/pull/219, https://github.com/w3c/webextensions/issues/1051
 
 ## Motivation
 
