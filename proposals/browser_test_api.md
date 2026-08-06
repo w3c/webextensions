@@ -87,6 +87,9 @@ Asserts that a given Promise rejects with a specific `error.message`. If it does
 - `expectedError` (string | RegExp, optional)
 - `message` (string, optional)
 
+**Returns**
+- (Promise) – A promise that will be resolved once the assertion is complete. The promise resolves if the passed-in promise rejects as expected (matching `expectedError` if specified). The promise rejects if the passed-in promise resolves unexpectedly or rejects with an error different from `expectedError`.
+
 **`browser.test.succeed(message)`**
 Immediately marks the current test as passed, optionally with a custom message. This is helpful in cases where returning a Promise or `undefined` is less obvious than explicitly indicating success.
 
