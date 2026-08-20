@@ -2,7 +2,7 @@
 
 ## Summary
 
-This is an initial proposal of how the WebExtensions Community Group (WECG) and WebExtensions Working Group (WEWG), collectively the WebExtensions Groups, should organize their work and collaborate on the advancement of a common browser extension platform. It details what work happens in each group, how proposals move from WECG incubation or other groups into spec text, and how we plan to publish the resulting specifications. This document is a working draft that is meant to drive discussion. Several items below are explicitly flagged as needing group agreement before we treat them as settled process.
+This document describes  how the WebExtensions Community Group (WECG) and WebExtensions Working Group (WEWG), collectively the WebExtensions Groups organize their work and collaborate on the advancement of a common browser extension platform. It details what work happens in each group, how proposals move from WECG incubation or other groups into spec text, and how resulting specifications are published. This document is a working draft that is meant to drive discussion. Several items below are explicitly flagged as needing group agreement before we treat them as settled process.
 
 ## Background and Motivation
 
@@ -10,8 +10,8 @@ The WEWG was chartered in May 2026 to give the WECG's years of API design discus
 
 ## Goals
 
-- Establish a shared vocabulary for the stages a piece of work passes through, from initial idea to published spec text.
-- Clarify which group is responsible for which kind of work, so contributors know where to bring a given discussion.
+- This document describes the shared vocabulary for the stages a piece of work passes through, from initial idea to published spec text.
+- This document clarifies which group is responsible for which kind of work, so contributors know where to bring a given discussion.
 - Define how proposals move from WECG incubation into WEWG consideration, including the possible outcomes of that review.
 - Define how the WEWG receives specifications or artifacts from groups other than the WECG.
 - Lay out a concrete plan for how, where, and when we publish specifications, from Editor's Draft through Candidate Recommendation Snapshot.
