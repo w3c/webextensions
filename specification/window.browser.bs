@@ -46,13 +46,15 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
   <h2 id="browser-interface">{{Browser}}</h2>
 
   <pre class="idl">
-    [Exposed=(Window,Worker), LegacyNoInterfaceObject]
+    [Exposed=(Window,Worker)]
     interface Browser {
       // Intentionally left blank.
     };
   </pre>
 
   Note: This interface is intentionally left blank to allow APIs to be exposed by other specifications.
+
+  Issue(1065): In all known implementations, {{browser}} is currently a plain object and does not have the semantics expected from a WebIDL interface.
 </section>
 
   <section>
