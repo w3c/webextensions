@@ -42,11 +42,25 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
   and are left up to User Agent implementation.
 </section>
 
+<section>
+  <h2 id="browser-interface">{{Browser}}</h2>
+
+  <pre class="idl">
+    [Exposed=(Window,Worker)]
+    interface Browser {
+      // Intentionally left blank.
+    };
+  </pre>
+
+  Note: This interface is intentionally left blank to allow APIs to be exposed by other specifications.
+
+  Issue(1065): In all known implementations, {{browser}} is currently a plain object and does not have the semantics expected from a WebIDL interface.
+</section>
 
   <section>
-    <h3 id="window-interface">
+    <h2 id="window-interface">
       <a attribute lt="browser"><code>window.browser</code></a> API
-    </h3>
+    </h2>
 
     {{browser}} is UA defined attribute exposed on {{window}}. When implemented,
     it MUST be used only for WebExtension related functionality.
@@ -89,15 +103,15 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
 
 <pre class="idl">
   partial interface Window {
-   attribute object browser;
+   attribute Browser browser;
   };
 
 </pre>
 
   <section>
-    <h3 id="worker-interface">
+    <h2 id="worker-interface">
       Worker API
-    </h3>
+    </h2>
 
     When {{browser}} is defined on {{window}}, it SHOULD also be exposed on {{ServiceWorkerGlobalScope}}
     of origins associated with WebExtensions.
@@ -106,6 +120,6 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
 
 <pre class="idl">
   partial interface ServiceWorkerGlobalScope {
-    attribute object browser;
+    attribute Browser browser;
   };
 </pre>
