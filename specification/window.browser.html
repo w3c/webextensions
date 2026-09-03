@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version ac92c2f0d, updated Fri Aug 21 16:01:29 2026 -0700" name="generator">
   <link href="https://w3c.github.io/webextensions/specification/window.browser.html" rel="canonical">
-  <meta content="bbd4a9fd158349a3bb6d95894465e15c6d6fb61b" name="revision">
+  <meta content="643a06fccf052fa471010b580fca3dbc16b36c59" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -730,7 +730,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 </p>
    <h1 class="no-ref p-name" id="title">window.browser</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2026-08-24">24 August 2026</time></p>
+    <time class="dt-updated" datetime="2026-09-03">3 September 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -837,7 +837,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <h2 class="heading settled" data-level="2" id="window-interface"><span class="secno">2. </span><span class="content">
       <a class="idl-code" data-link-type="attribute" href="#dom-window-browser" id="ref-for-dom-window-browser①"><code>window.browser</code></a> API
     </span><a class="self-link" href="#window-interface"></a></h2>
-    <p><code class="idl"><a data-link-type="idl" href="#dom-serviceworkerglobalscope-browser" id="ref-for-dom-serviceworkerglobalscope-browser">browser</a></code> is UA defined attribute exposed on <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-window" id="ref-for-dom-window">window</a></code>. When implemented,
+    <p><code class="idl"><a data-link-type="idl" href="#dom-window-browser" id="ref-for-dom-window-browser②">browser</a></code> is UA defined attribute exposed on <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-window" id="ref-for-dom-window">window</a></code>. When implemented,
     it MUST be used only for WebExtension related functionality.</p>
    </section>
    <section>
@@ -845,12 +845,12 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     For backwards compatibility with older versions of WebExtensions that used
     <code>chrome</code> as a global identifier for WebExtension related methods,
     a UA MAY define a global <code>chrome</code> object that includes all
-    properties of <code class="idl"><a data-link-type="idl" href="#dom-serviceworkerglobalscope-browser" id="ref-for-dom-serviceworkerglobalscope-browser①">browser</a></code>.
-    <code class="idl"><a data-link-type="idl" href="#dom-window-browser" id="ref-for-dom-window-browser②">browser</a></code> and <code>chrome</code> MAY be direct aliases of each other.
-    When <code class="idl"><a data-link-type="idl" href="#dom-serviceworkerglobalscope-browser" id="ref-for-dom-serviceworkerglobalscope-browser②">browser</a></code> and <code>chrome</code> are distinct objects, each initial
-    property of <code class="idl"><a data-link-type="idl" href="#dom-serviceworkerglobalscope-browser" id="ref-for-dom-serviceworkerglobalscope-browser③">browser</a></code> SHOULD be defined on the <code>chrome</code> object,
+    properties of <code class="idl"><a data-link-type="idl" href="#dom-window-browser" id="ref-for-dom-window-browser③">browser</a></code>.
+    <code class="idl"><a data-link-type="idl" href="#dom-window-browser" id="ref-for-dom-window-browser④">browser</a></code> and <code>chrome</code> MAY be direct aliases of each other.
+    When <code class="idl"><a data-link-type="idl" href="#dom-window-browser" id="ref-for-dom-window-browser⑤">browser</a></code> and <code>chrome</code> are distinct objects, each initial
+    property of <code class="idl"><a data-link-type="idl" href="#dom-serviceworkerglobalscope-browser" id="ref-for-dom-serviceworkerglobalscope-browser">browser</a></code> SHOULD be defined on the <code>chrome</code> object,
     and each property descriptor on the <code>chrome</code> object SHOULD return
-    the same value as the corresponding property on the <code class="idl"><a data-link-type="idl" href="#dom-window-browser" id="ref-for-dom-window-browser③">browser</a></code> object.
+    the same value as the corresponding property on the <code class="idl"><a data-link-type="idl" href="#dom-serviceworkerglobalscope-browser" id="ref-for-dom-serviceworkerglobalscope-browser①">browser</a></code> object.
 
     
     <div class="example" id="example-1">
@@ -883,9 +883,9 @@ console<c- p>.</c->log<c- p>(</c->globalThis<c- p>.</c->chrome<c- p>.</c->runtim
     <h2 class="heading settled" data-level="3" id="worker-interface"><span class="secno">3. </span><span class="content">
       Worker API
     </span><a class="self-link" href="#worker-interface"></a></h2>
-    <p>When <code class="idl"><a data-link-type="idl" href="#dom-serviceworkerglobalscope-browser" id="ref-for-dom-serviceworkerglobalscope-browser④">browser</a></code> is defined on <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-window" id="ref-for-dom-window①">window</a></code>, it SHOULD also be exposed on <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope" id="ref-for-serviceworkerglobalscope">ServiceWorkerGlobalScope</a></code>
+    <p>When <code class="idl"><a data-link-type="idl" href="#dom-serviceworkerglobalscope-browser" id="ref-for-dom-serviceworkerglobalscope-browser②">browser</a></code> is defined on <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-window" id="ref-for-dom-window①">window</a></code>, it SHOULD also be exposed on <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope" id="ref-for-serviceworkerglobalscope">ServiceWorkerGlobalScope</a></code>
     of origins associated with WebExtensions.
-    It MUST be used exclusively for WebExtension purposes, however the contents of each instance of <code class="idl"><a data-link-type="idl" href="#dom-window-browser" id="ref-for-dom-window-browser④">browser</a></code> is UA defined.</p>
+    It MUST be used exclusively for WebExtension purposes, however the contents of each instance of <code class="idl"><a data-link-type="idl" href="#dom-window-browser" id="ref-for-dom-window-browser⑥">browser</a></code> is UA defined.</p>
    </section>
 <pre class="def highlight idl"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope" id="ref-for-serviceworkerglobalscope①"><c- g>ServiceWorkerGlobalScope</c-></a> {
   <c- b>attribute</c-> <a data-link-type="idl-name" href="#browser" id="ref-for-browser②"><c- n>Browser</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="ServiceWorkerGlobalScope" data-dfn-type="attribute" data-export data-type="Browser" id="dom-serviceworkerglobalscope-browser"><code><c- g>browser</c-></code></dfn>;
@@ -1197,8 +1197,8 @@ let dfnPanelData = {
 "889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"1. Browser"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
 "9f156e6b": {"dfnID":"9f156e6b","dfnText":"window","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window"}],"title":"2. \n      window.browser API\n    "},{"refs":[{"id":"ref-for-dom-window\u2460"}],"title":"3. \n      Worker API\n    "}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-window"},
 "browser": {"dfnID":"browser","dfnText":"Browser","external":false,"refSections":[{"refs":[{"id":"ref-for-browser"}],"title":"1. Browser"}],"url":"#browser"},
-"dom-serviceworkerglobalscope-browser": {"dfnID":"dom-serviceworkerglobalscope-browser","dfnText":"browser","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-serviceworkerglobalscope-browser"}],"title":"2. window.browser API"},{"refs":[{"id":"ref-for-dom-serviceworkerglobalscope-browser\u2463"}],"title":"3. Worker API"}],"url":"#dom-serviceworkerglobalscope-browser"},
-"dom-window-browser": {"dfnID":"dom-window-browser","dfnText":"browser","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-window-browser"}],"title":"1. Browser"},{"refs":[{"id":"ref-for-dom-window-browser\u2460"}],"title":"2. window.browser API"},{"refs":[{"id":"ref-for-dom-window-browser\u2463"}],"title":"3. Worker API"}],"url":"#dom-window-browser"},
+"dom-serviceworkerglobalscope-browser": {"dfnID":"dom-serviceworkerglobalscope-browser","dfnText":"browser","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-serviceworkerglobalscope-browser\u2461"}],"title":"3. Worker API"}],"url":"#dom-serviceworkerglobalscope-browser"},
+"dom-window-browser": {"dfnID":"dom-window-browser","dfnText":"browser","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-window-browser"}],"title":"1. Browser"},{"refs":[{"id":"ref-for-dom-window-browser\u2460"},{"id":"ref-for-dom-window-browser\u2461"}],"title":"2. window.browser API"},{"refs":[{"id":"ref-for-dom-window-browser\u2465"}],"title":"3. Worker API"}],"url":"#dom-window-browser"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
