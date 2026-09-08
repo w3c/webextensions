@@ -41,15 +41,15 @@ Enabling extensions to offer the built-in functionality as documented at:
 
 Specifically:
 
-- Creating a split view from an existing tab, which creates a new split view
-  consisting of the specified tab, plus a browser-native UI page where the user
-  can choose the tab to adopt in that split.
+- Creating a split view from a single existing tab, which creates a new split
+  view consisting of the specified tab, plus a browser-native UI page where the
+  user can choose the tab to adopt in that split.
 
 - Creating a split view from two existing tabs, putting two splits together.
 
 - Separating split views.
 
-- Reversing tabs in a split view.
+- Reversing the order of tabs in a split view.
 
 ### Known Consumers
 
@@ -73,11 +73,11 @@ browser.tabs.create({
   splitWithTabId: number,   // Existing tab to pair with
 }) : Promise<Tab>           // Returns new tab in split with given tab
 
-browser.tabs.createSplitView(
+browser.tabs.createSplit(
   tabIds: Array<number>     // Two tabIds.
 ) : Promise<number>         // Returns splitViewId
 
-browser.tabs.separateSplitView(splitViewId) : Promise<void>
+browser.tabs.unsplit(splitViewId) : Promise<void>
 ```
 
 
@@ -87,15 +87,14 @@ browser.tabs.separateSplitView(splitViewId) : Promise<void>
 
 First, validate the options and ensure that it would create a tab next to the
 tab specified by `splitWithTabId`. The method SHOULD reject if it cannot create
-a split view (see createSplitView). If a tab was created, the created tab must
-be returned as usual, even if the split view cannot be created.
+a split view (see createSplit). If a tab was created, the created tab MAY be
+returned as usual, even if the split view cannot be created.
 
-The returned `Tab.splitViewId` MUST reflect whether the tab successfully joined
-the split view.
+The returned `Tab.splitViewId` MUST reflect the split view that the tab joined.
 
 Tabs in a split view are neighbors of each other, and as such the new tab MUST
 be adjacent to the specified `splitWithTabId`. The `index` property affects the
-relative positioning:
+relative positioning (the following assumes a left-to-right browser UI):
 - `index` unspecified - default behavior, create tab at the right.
 - `index` set to index of `splitWithTabId` - create tab at the left.
 - `index` set to index of `splitWithTabId` plus one - create tab at the right.
@@ -109,7 +108,7 @@ If `url` is not specified, the browser MAY open a custom split view-specific
 page instead of the default new tab page.
 
 
-#### tabs.createSplitView()
+#### tabs.createSplit()
 
 Requires a pair of tabIds referring to distinct tabs, rejects otherwise.
 
@@ -127,14 +126,17 @@ At the bare minimum, two eligible tabs, with tabIds specified in order, should
 be able to join a split view, reflected in `Tab.splitViewId` and two
 `tabs.onUpdated` events.
 
-When tabs are not adjacent, or even in order, the implementation MAY try to
-move the tabs to the given order and join them.
+When tabs are not adjacent, or even in order, the implementation MUST reject
+the method call. This constraint may be relaxed later, see "Future Work".
 
 Upon returning, either the given tabs are in the same split view, or the method
 rejects without having changed the tab state.
 
+A browser supporting more than two tabs in a split view MAY accept up to that
+many tabIds (instead of at most 2).
 
-#### tabs.separateSplitView()
+
+#### tabs.unsplit()
 
 Separates the tabs in a split view, "unsplitting" the split view.
 
@@ -161,6 +163,9 @@ tabs MAY separate tabs automatically.
 Browsers that treat split views as one unit MAY move multiple tabs, exposed via
 `tabs.onMoved`, `tabs.onDetached`, `tabs.onAttached` as needed. In that case,
 the `index` specifies the desired position of the split view after moving.
+
+*Informational note: Chrome separates splits upon move, Firefox preserves the
+split by default, see [discussion on PR 1019](https://github.com/w3c/webextensions/pull/1019#discussion_r3406856534).*
 
 
 ### New Permissions
@@ -206,8 +211,11 @@ browsers, please indicate them here.  (Feel free to add more sections.)
 
 ## Future Work
 
-The `tabs.createSplitView` method could take an additional `options` object to
+The `tabs.createSplit` method could take an additional `options` object to
 enable additional behaviors, such as the relative size.
 
-The `tabs.createSplitView` method is forwards-compatible with the possibility
-of a split view having more than two tabs.
+The `tabs.createSplit` method could support tabs that are not adjacent or in
+a different order.
+
+The `tabs.createSplit` method is forwards-compatible with the possibility of a
+split view having more than two tabs.
