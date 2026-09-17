@@ -87,8 +87,9 @@ browser.tabs.unsplit(splitViewId) : Promise<void>
 
 First, validate the options and ensure that it would create a tab next to the
 tab specified by `splitWithTabId`. The method SHOULD reject if it cannot create
-a split view (see createSplit). If a tab was created, the created tab MAY be
-returned as usual, even if the split view cannot be created.
+a split view (see createSplit). In the (rare) case that a tab was created but
+could not be added to a split view, the browser MAY return the created tab or
+reject the promise with an error.
 
 The returned `Tab.splitViewId` MUST reflect the split view that the tab joined.
 
