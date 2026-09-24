@@ -138,12 +138,14 @@ processes for such APIs.)
     of a suggestion in a filed issue.  As such, these proposals should only be
     used for APIs that have support and commitment to implement from at least
     one browser.
-*   Copy the [API Proposal template](proposal_template.md) and fill it out.
-    There are instructions in each section of the proposal template.  As you
-    fill out each section, you may delete the instructions for that section.
-    For any section that is not relevant, you may put "N/A" (likely with a
-    brief summary of why the section is not relevant, if it is not immediately
-    obvious).
+*   Copy the [API Proposal template](proposal_template.md) and rename it to the
+    name of the proposed API. Use kebab case (dash-separated) for your filename
+    and avoid suffixes like "-api".
+*   Fill out the template using the instructions in each section of the proposal
+    template. As you fill out each section, you may delete the instructions for
+    that section. For any section that is not relevant, you may put "N/A"
+    (likely with a brief summary of why the section is not relevant, if it is
+    not immediately obvious).
 *   Submit a pull request with the completed proposal to the
     [Proposals directory](https://github.com/w3c/webextensions/tree/main/proposals)
     of the WECG repository.
