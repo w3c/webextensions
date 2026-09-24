@@ -646,7 +646,7 @@ For example, an error should be thrown if the hostname is not an IP address and 
 * Contains a character that is invalid in an IDN - e.g. symbols, whitespace
 * Is an empty string
 * Is equal to `'.'`
-* Contains empty domain labels (i.e. any occurrences of `'..'`)
+* Contains empty domain labels (i.e. any occurrences of `'..'`, or starts with a `'.'`)
 
 #### 5. Summary of behaviours
 
@@ -672,7 +672,6 @@ classes of input `hostname` parameter:
 | [::1]              | IPv6 address                                     | null                   |
 | [::1]              | as above, with `allowIPAddress = true`           | [::1]                  |
 | EXAMPLE.NET        | uppercase                                        | example.net            |
-| .example.net       | dot in front                                     | example.net            |
 | example.net.       | dot in the end, this is an FQDN                  | example.net.           |
 | مليسيا             | this is an IDN that is also an eTLD              | null                   |
 | xn--mgbx4cd0ab     | as above, but Punycode                           | null                   |
@@ -685,6 +684,8 @@ classes of input `hostname` parameter:
 |                    | empty string                                     | Error                  |
 | .                  | no domain labels                                 | Error                  |
 | example..com       | contains an empty domain label                   | Error                  |
+| .example.com       | dot in front                                     | Error                  |
+| ..example.com      | two dots in front                                | Error                  |
 
 #### 6. Sync vs Async
 
