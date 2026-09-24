@@ -7,8 +7,8 @@ This repository is the home for the W3C WebExtensions Community Group (WECG) and
 
 ### Contributing & Issue Tracking
 - [🤝 Contributing Guidelines](CONTRIBUTING.md)
-- [🌐 Browser-specific issue tracking](/issues/155)
-- [🐛 W3C Issue Tracker](/issues)
+- [🌐 Browser-specific issue tracking](docs/browser-specific-issue-tracking.md)
+- [🐛 W3C Issue Tracker](../../issues)
 
 ### WebExtension Community Group (WECG)
 Focuses on gathering community feedback and early API design incubation.
