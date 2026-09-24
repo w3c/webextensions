@@ -25,6 +25,7 @@ Calendars:
 
 ## Past meetings
 
+* 2026-09-24 ([minutes](2026-09-24-wecg.md))
 * 2026-09-17 WEWG meeting ([minutes](2026-09-17-wewg.md))
 * 2026-09-10 ([minutes](2026-09-10-wecg.md))
 * 2026-08-27 ([minutes](2026-08-27-wecg.md))
@@ -32,13 +33,13 @@ Calendars:
 * 2026-08-13 ([minutes](2026-08-13-wecg.md))
 * 2026-07-30 ([minutes](2026-07-30-wecg.md))
 * 2026-07-23 WEWG meeting ([minutes](2026-07-23-wewg.md))
-* 2026-07-16 ([minutes](2026-07-16-wecg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2026**
 
+* 2026-09-24 ([minutes](2026-09-24-wecg.md))
 * 2026-09-17 WEWG meeting ([minutes](2026-09-17-wewg.md))
 * 2026-09-10 ([minutes](2026-09-10-wecg.md))
 * 2026-08-27 ([minutes](2026-08-27-wecg.md))
