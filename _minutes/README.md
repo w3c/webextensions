@@ -15,9 +15,10 @@ After the end of each meeting, meeting notes are published here.
 
 The agenda for upcoming meetings is prepared in [issues with `label:agenda`](https://github.com/w3c/webextensions/issues?q=is%3Aissue%20state%3Aopen%20label%3Aagenda).
 
-- 2026-09-24 at 8 AM PDT = https://everytimezone.com/?t=6ab5b980,384
-- 2026-10-08 at 8 AM PDT = https://everytimezone.com/?t=6ac82e80,384
 - 2026-10-15 WEWG meeting: https://everytimezone.com/?t=6ad16900,384
+- 2026-10-22 at 8 AM PDT = https://everytimezone.com/?t=6adaa380,384
+- 2026-10-26 until 2026-10-30 = TPAC 2026 ([issue 1072](https://github.com/w3c/webextensions/issues/1072)) ([TPAC 2026 Coordination](https://github.com/w3c/webextensions/wiki/2026-TPAC-Coordination))
+- 2026-11-05 at 8 AM PST = https://everytimezone.com/?t=6aed1880,3c0
 
 Calendars:
 - https://www.w3.org/groups/cg/webextensions/calendar/ (Community Group)
@@ -25,20 +26,20 @@ Calendars:
 
 ## Past meetings
 
+* 2026-10-08 ([minutes](2026-10-08-wecg.md))
 * 2026-09-24 ([minutes](2026-09-24-wecg.md))
 * 2026-09-17 WEWG meeting ([minutes](2026-09-17-wewg.md))
 * 2026-09-10 ([minutes](2026-09-10-wecg.md))
 * 2026-08-27 ([minutes](2026-08-27-wecg.md))
 * 2026-08-20 WEWG meeting ([minutes](2026-08-20-wewg.md))
 * 2026-08-13 ([minutes](2026-08-13-wecg.md))
-* 2026-07-30 ([minutes](2026-07-30-wecg.md))
-* 2026-07-23 WEWG meeting ([minutes](2026-07-23-wewg.md))
 
 <details>
 <summary><strong>All past meeting notes</strong></summary>
 
 **2026**
 
+* 2026-10-08 ([minutes](2026-10-08-wecg.md))
 * 2026-09-24 ([minutes](2026-09-24-wecg.md))
 * 2026-09-17 WEWG meeting ([minutes](2026-09-17-wewg.md))
 * 2026-09-10 ([minutes](2026-09-10-wecg.md))
