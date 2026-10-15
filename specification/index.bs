@@ -51,7 +51,7 @@ If manifest keys that are defined in this specification are specified with a dif
 
 To <dfn>report a warning</dfn> or <dfn>report an error</dfn>, the user agent makes a message available to the extension developer in a way the user agent chooses.
 
-A manifest value that this specification requires to be a [=package path=], and that is not one or that [=resolve a package path|resolves=] to null against the root of the package, is [=invalid=].
+A manifest value, or an item of a manifest value that is a [=list=], that this specification requires to be a [=package path=], and that is not one, including a value of another JSON type, or that [=resolve a package path|resolves=] to null against the root of the package, is [=invalid=].
 
 The following keys must be considered valid:
 
@@ -288,13 +288,15 @@ A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards 
 
 ## Package paths
 
-A <dfn>package path</dfn> is a non-empty [=string=] that is the path of a file in the extension's package. The user agent resolves a package path against a directory of the package by running the steps in [[#resolve-a-package-path]]. The root of the package is the directory that contains the [=manifest=]. A manifest value is resolved against the root of the package. Where an API accepts a package path, that API states the directory it is resolved against.
+A <dfn>package path</dfn> is a non-empty [=string=] that identifies a location in the extension's package. The user agent resolves a package path against a directory of the package by running the steps in [[#resolve-a-package-path]]. The <dfn>root of the package</dfn> is the directory that contains the [=manifest=]. A manifest value is resolved against the root of the package. Where an API accepts a package path, that API states the directory it is resolved against.
 
-Issue: A path that escapes the root of the package, such as `../manifest.json`, is invalid in this specification. Firefox resolves it to the path with the extra `..` segments removed, and does not treat it as invalid.
-
-Issue: Specify how a [=package path=] with an empty segment, such as `a//b`, or a trailing `/` is resolved, and whether a path that names no file is [=invalid=] or fails when the content that uses it loads. See <#273> and <#281>.
+The <dfn>resolved path</dfn> of a [=package path=] is the [=string=] made of U+002F (/) followed by the items of the [=list=] that [[#resolve-a-package-path]] returns for it against the root of the package, joined with U+002F (/).
 
 Issue(#1122): User agents differ on whether a [=package path=] that an API accepts, such as a path to an icon, is resolved against the root of the package or against the document that makes the call.
+
+Issue: User agents differ on a path that escapes the root of the package, such as `../background.js`. Chromium does not load the file. Firefox resolves it as a URL, which drops the extra `..` segments. Safari does the same when a file is loaded through a URL, such as a background page, and does not load the file when it reads the file directly, such as a content script. The steps in [[#resolve-a-package-path]] return null for such a path.
+
+Issue: A [=package path=] that names no file is not [=invalid=] in this specification. The content that uses the path fails to load, and the extension is still loaded. Chromium does not load the extension in this case, and Safari and Firefox do.
 
 ## Uniqueness of extension IDs
 
@@ -331,17 +333,17 @@ Issue: Specify what counts as a failure to load, such as a resource that cannot 
 
 The key and the environment of a [=background selection=] determine the resource that the user agent runs:
 
-* For [[#key-background-service_worker]], the environment is a [=service worker environment=], and the resource is the JavaScript file at that path. The file is run as a [=module script=] when [[#key-background-type]] is `"module"`, and as a [=classic script=] otherwise.
-* For [[#key-background-page]], the environment is a [=document environment=], and the resource is the [=HTML document=] at that path. [[#key-background-type]] does not affect the document.
+* For [[#key-background-service_worker]], the environment is a [=service worker environment=], and the resource is the JavaScript file at the [=resolved path=] of the value. The file is run as a [=module script=] when [[#key-background-type]] is `"module"`, and as a [=classic script=] otherwise.
+* For [[#key-background-page]], the environment is a [=document environment=], and the resource is the [=HTML document=] at the [=resolved path=] of the value. [[#key-background-type]] does not affect the document.
 * For [[#key-background-scripts]], the environment is either one, and the resource depends on it:
     * In a service worker environment, the resource is the [=generated service worker=].
     * In a document environment, the resource is the [=generated background document=].
 
-The <dfn>generated service worker</dfn> is a JavaScript file in the [=extension origin=], at the path `/_generated_service_worker.js`, whose file name is [reserved](#reserved-file-names). It loads each path in [[#key-background-scripts]], in order. When [[#key-background-type]] is `"module"`, it imports each path as a [=module script=]. Otherwise, it loads the paths as [=classic scripts=] with {{WorkerGlobalScope/importScripts()}}. All of the scripts run in the same [=global object=].
+The <dfn>generated service worker</dfn> is a JavaScript file in the [=extension origin=], at the path `/_generated_service_worker.js`, whose file name is [reserved](#reserved-file-names). It loads the [=resolved path=] of each path in [[#key-background-scripts]], in order. When [[#key-background-type]] is `"module"`, it imports each path as a [=module script=]. Otherwise, it loads the paths as [=classic scripts=] with {{WorkerGlobalScope/importScripts()}}. All of the scripts run in the same [=global object=].
 
 Issue(#785): The generated service worker is not implemented by all user agents.
 
-The <dfn>generated background document</dfn> is an [=HTML document=] in the [=extension origin=], at the path `/_generated_background_page.html`, whose file name is [reserved](#reserved-file-names). It contains one <{script}> element for each path in [[#key-background-scripts]], in order, with that path as its `src`. Each element is a [=module script=] when [[#key-background-type]] is `"module"`, and a [=classic script=] otherwise. All of the scripts run in the same [=global object=].
+The <dfn>generated background document</dfn> is an [=HTML document=] in the [=extension origin=], at the path `/_generated_background_page.html`, whose file name is [reserved](#reserved-file-names). It contains one <{script}> element for each path in [[#key-background-scripts]], in order, with the [=resolved path=] of that path as its `src`. Each element is a [=module script=] when [[#key-background-type]] is `"module"`, and a [=classic script=] otherwise. All of the scripts run in the same [=global object=].
 
 ### Declaring several environments
 
@@ -502,13 +504,14 @@ To determine if a content script should be injected in a document:
 
 ## Resolve a package path
 
-To <dfn>resolve a package path</dfn>, given |path|, a [=package path=], and |directory|, a [=list=] of [=strings=] that are the segments of the directory that |path| is relative to, return a list of strings or null. The list is empty for the root of the package. The steps return null when |path| would leave the root of the package:
+To <dfn>resolve a package path</dfn>, given |path|, a [=package path=], and |directory|, a [=list=] of [=strings=] that are the segments of the directory that |path| is relative to, return a list of strings or null. The list is empty for the [=root of the package=]. The steps return null when |path| would leave the root of the package or names a directory:
 
 1. If |path| starts with U+002F (/), remove that first code point from |path| and set |directory| to an empty [=list=].
 1. Let |segments| be the result of [=strictly splitting=] |path| on U+002F (/).
+1. If the last item of |segments| is `""`, `"."`, or `".."`, return null.
 1. Let |resolved| be a clone of |directory|.
 1. For each |segment| of |segments|:
-    1. If |segment| is `"."`, continue.
+    1. If |segment| is `""` or `"."`, continue.
     1. If |segment| is `".."`:
         1. If |resolved| is [=list/empty=], |path| escapes the root of the package. Return null.
         1. [=list/Remove=] the last item of |resolved|.
