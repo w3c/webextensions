@@ -51,6 +51,8 @@ If manifest keys that are defined in this specification are specified with a dif
 
 To <dfn>report a warning</dfn> or <dfn>report an error</dfn>, the user agent makes a message available to the extension developer in a way the user agent chooses.
 
+A manifest value that this specification requires to be a [=package path=], and that is not one or that [=resolve a package path|resolves=] to null against the root of the package, is [=invalid=].
+
 The following keys must be considered valid:
 
 * <a href="#key-manifest_version">`manifest_version`</a>: required.
@@ -119,17 +121,15 @@ This key may include the following optional keys:
 
 #### Key `service_worker` #### {#key-background-service_worker}
 
-A [=string=] that is the path, relative to the extension's package, of the resource for a [=service worker environment=]. The resource is a JavaScript file. A value that is not a string, or is the empty string, is [=invalid=].
+A [=package path=] of the resource for a [=service worker environment=]. The resource is a JavaScript file.
 
 #### Key `scripts` #### {#key-background-scripts}
 
-A [=list=] of [=strings=] that are the paths, relative to the extension's package, of JavaScript files. The [=generated service worker=] or [=generated background document=] loads these files, as described in [[#resource-of-a-background-environment]]. An empty list is treated as if the key were absent. A value that is not a list, or that contains an item that is not a string or is the empty string, is [=invalid=].
+A [=list=] of [=package paths=] of JavaScript files. The [=generated service worker=] or [=generated background document=] loads these files, as described in [[#resource-of-a-background-environment]]. An empty list is treated as if the key were absent. A value that is not a list, or that contains an item that is not a [=package path=], is [=invalid=].
 
 #### Key `page` #### {#key-background-page}
 
-A [=string=] that is the path, relative to the extension's package, of the resource for a [=document environment=]. The resource is an [=HTML document=]. A value that is not a string, or is the empty string, is [=invalid=].
-
-Issue: Specify how the paths in [[#key-background-service_worker]], [[#key-background-scripts]], and [[#key-background-page]] are resolved relative to the extension's package, and whether a path that does not name a file is [=invalid=] or fails when the background content loads.
+A [=package path=] of the resource for a [=document environment=]. The resource is an [=HTML document=].
 
 #### Key `type` #### {#key-background-type}
 
@@ -138,8 +138,6 @@ A [=string=], either `"classic"` or `"module"`. Defaults to `"classic"`. Any oth
 #### Key `preferred_environment` #### {#key-background-preferred_environment}
 
 A [=list=] of [=strings=] that names environments in order of preference. The recognized items are `"service_worker"`, for the [=service worker environment=], and `"document"`, for the [=document environment=]. An empty list names no preference. The user agent ignores any other string and does not treat it as [=invalid=], so that an environment added in the future does not prevent an extension that names it from loading in a user agent that predates it. The user agent may [=report a warning=] for an ignored string. A value that is not a list, or that contains an item that is not a string, is [=invalid=].
-
-Issue: User agents differ on whether an empty path and a value of the wrong JSON type are [=invalid=], and some report a warning and load the extension instead. See [issue 784](https://github.com/w3c/webextensions/issues/784).
 
 ### Key `commands`
 
@@ -205,7 +203,7 @@ The <a href="#key-trial_tokens">`trial_tokens`</a> key is an optional [=list=] o
 
 ## Reserved file names
 
-Filenames beginning with an underscore (`_`) are reserved for use by user agent.
+Filenames beginning with U+005F (_) are reserved for use by user agent.
 
 Issue: Specify what happens when an extension contains a file with a reserved name, such as the name of a [=generated background document=] or [=generated service worker=], and whether a name is reserved in every path segment. The `_locales` directory also has a reserved name.
 
@@ -288,6 +286,16 @@ A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards 
 
 # Concepts
 
+## Package paths
+
+A <dfn>package path</dfn> is a non-empty [=string=] that is the path of a file in the extension's package. The user agent resolves a package path against a directory of the package by running the steps in [[#resolve-a-package-path]]. The root of the package is the directory that contains the [=manifest=]. A manifest value is resolved against the root of the package. Where an API accepts a package path, that API states the directory it is resolved against.
+
+Issue: A path that escapes the root of the package, such as `../manifest.json`, is invalid in this specification. Firefox resolves it to the path with the extra `..` segments removed, and does not treat it as invalid.
+
+Issue: Specify how a [=package path=] with an empty segment, such as `a//b`, or a trailing `/` is resolved, and whether a path that names no file is [=invalid=] or fails when the content that uses it loads. See <#273> and <#281>.
+
+Issue(#1122): User agents differ on whether a [=package path=] that an API accepts, such as a path to an icon, is resolved against the root of the package or against the document that makes the call.
+
 ## Uniqueness of extension IDs
 
 ## Promises and callbacks
@@ -317,7 +325,7 @@ The user agent runs the resource of a [=background selection=] in the environmen
 
 A resource that fails to load causes the user agent to [=report an error=]. The extension remains loaded, and the user agent does not select a second environment.
 
-Issue: Specify what counts as a failure to load, such as a resource that cannot be fetched or a script that throws while it first runs.
+Issue: Specify what counts as a failure to load, such as a resource that cannot be fetched or a script that throws while it first runs. Also specify how a failure affects the other scripts of a [=background selection=] that uses [[#key-background-scripts]]. In the [=generated service worker=], the scripts load one after another, so a script that cannot be fetched can prevent the scripts after it from loading. In the [=generated background document=], each <{script}> element loads on its own, so the scripts after a failed one still run. The two generated resources are expected to fail in the same way.
 
 ### Resource of a background environment
 
@@ -331,7 +339,7 @@ The key and the environment of a [=background selection=] determine the resource
 
 The <dfn>generated service worker</dfn> is a JavaScript file in the [=extension origin=], at the path `/_generated_service_worker.js`, whose file name is [reserved](#reserved-file-names). It loads each path in [[#key-background-scripts]], in order. When [[#key-background-type]] is `"module"`, it imports each path as a [=module script=]. Otherwise, it loads the paths as [=classic scripts=] with {{WorkerGlobalScope/importScripts()}}. All of the scripts run in the same [=global object=].
 
-Issue: The generated service worker is not implemented by all user agents. See [issue 785](https://github.com/w3c/webextensions/issues/785).
+Issue(#785): The generated service worker is not implemented by all user agents.
 
 The <dfn>generated background document</dfn> is an [=HTML document=] in the [=extension origin=], at the path `/_generated_background_page.html`, whose file name is [reserved](#reserved-file-names). It contains one <{script}> element for each path in [[#key-background-scripts]], in order, with that path as its `src`. Each element is a [=module script=] when [[#key-background-type]] is `"module"`, and a [=classic script=] otherwise. All of the scripts run in the same [=global object=].
 
@@ -351,7 +359,7 @@ Issue: User agents differ in which of `page` and `scripts` they select when both
 
 Issue: Define when a listener counts as registered. The user agent has to observe the listeners that the background content adds while it loads, and keep them so that a later event can load the background content again. A proposal adds a method that lets the extension tell the user agent it has finished registering listeners. See [Asynchronous Listener Registration](https://github.com/w3c/webextensions/blob/main/proposals/async-listener-registration.md).
 
-Issue: Specify when the background content first loads, what counts as idle, and how events that arrive while it is loading are ordered. See [issue 147](https://github.com/w3c/webextensions/issues/147), [issue 416](https://github.com/w3c/webextensions/issues/416), and [issue 464](https://github.com/w3c/webextensions/issues/464).
+Issue: Specify when the background content first loads, what counts as idle, and how events that arrive while it is loading are ordered. See <#147>, <#416>, and <#464>.
 
 ## <dfn>Content scripts</dfn>
 
@@ -367,11 +375,11 @@ A [=list=] of [=match patterns=] that can be used to specify URLs where the cont
 
 ### Key `js`
 
-A [=list=] of file paths, relative to the extension's package, that should be injected as scripts.
+A [=list=] of [=package paths=] of JavaScript files that should be injected as scripts. A value that contains an item that is not a [=package path=] is [=invalid=].
 
 ### Key `css`
 
-A [=list=] of file paths, relative to the extension's package, that should be injected as stylesheets.
+A [=list=] of [=package paths=] of CSS files that should be injected as stylesheets. A value that contains an item that is not a [=package path=] is [=invalid=].
 
 ### Key `all_frames`
 
@@ -491,6 +499,22 @@ To determine if a content script should be injected in a document:
 1. If |url| matches an entry in `exclude_matches` or `exclude_globs`, return.
 1. If this is a child frame, and `all_frames` is not `true`, return.
 1. Otherwise, inject the content script. This should be done based on the `run_at` setting.
+
+## Resolve a package path
+
+To <dfn>resolve a package path</dfn>, given |path|, a [=package path=], and |directory|, a [=list=] of [=strings=] that are the segments of the directory that |path| is relative to, return a list of strings or null. The list is empty for the root of the package. The steps return null when |path| would leave the root of the package:
+
+1. If |path| starts with U+002F (/), remove that first code point from |path| and set |directory| to an empty [=list=].
+1. Let |segments| be the result of [=strictly splitting=] |path| on U+002F (/).
+1. Let |resolved| be a clone of |directory|.
+1. For each |segment| of |segments|:
+    1. If |segment| is `"."`, continue.
+    1. If |segment| is `".."`:
+        1. If |resolved| is [=list/empty=], |path| escapes the root of the package. Return null.
+        1. [=list/Remove=] the last item of |resolved|.
+        1. Continue.
+    1. [=list/Append=] |segment| to |resolved|.
+1. Return |resolved|.
 
 ## Select the background environment
 
