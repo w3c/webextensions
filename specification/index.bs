@@ -127,6 +127,8 @@ A [=package path=] of the resource for a [=service worker environment=]. The res
 
 A [=list=] of [=package paths=] of JavaScript files. The [=generated service worker=] or [=generated background document=] loads these files, as described in [[#resource-of-a-background-environment]]. An empty list is treated as if the key were absent. A value that is not a list, or that contains an item that is not a [=package path=], is [=invalid=].
 
+Issue(#1127): User agents differ on whether an empty `scripts` list loads background content. Firefox loads a background document with no scripts, and Chrome and Safari do not load background content.
+
 #### Key `page` #### {#key-background-page}
 
 A [=package path=] of the resource for a [=document environment=]. The resource is an [=HTML document=].
