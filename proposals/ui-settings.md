@@ -49,8 +49,7 @@ horizontal tab scrolling can also enable wheel tab switching).
 ### Known Consumers
 
 - [chromium-tab-scroller](https://github.com/hjanuschka/chromium-tab-scroller),
-  a sample extension that enables scroll-to-switch-tabs on install and offers
-  a toolbar toggle.
+  a sample extension that offers a toolbar toggle for scroll-to-switch-tabs.
 
 ## Specification
 
@@ -66,7 +65,8 @@ declare namespace uiSettings {
 
 `ChromeSetting<T>` is the existing prototype from the `types` API, providing
 `get()`, `set()`, `clear()`, and `onChange`, with the standard
-`levelOfControl` semantics.
+`levelOfControl` semantics. Unlike other `ChromeSetting` instances, `set()`
+and `clear()` on `uiSettings` properties require a user gesture.
 
 ### Behavior
 
@@ -78,6 +78,8 @@ declare namespace uiSettings {
   provides the opt-in path.
 - `clear()` reverts the value to the platform default and releases control to
   other extensions or policies, following standard `ChromeSetting` semantics.
+- `set()` and `clear()` must be called from a user gesture (for example, a
+  click on the extension's action or UI); calls without one are rejected.
 - Changes take effect immediately, starting with the next wheel event.
 - The value is stored per browser profile.
 - The API is available in extension contexts only (not content scripts) and on
@@ -107,6 +109,8 @@ connection to the extension. Mitigations:
 
 - The API requires an explicit permission, declared in the manifest and
   surfaced with a permission warning at install and in the permissions UI.
+- `set()` and `clear()` require a user gesture, so an extension cannot change
+  UI behavior silently in the background (for example, at install time).
 - The behaviors it controls are immediately user-visible when they take effect,
   and the user can undo the change by disabling or removing the extension.
 - `levelOfControl` makes it clear which extension controls a value, and
