@@ -9,6 +9,7 @@ Editor: Mukul Purohit, Microsoft Corporation https://www.microsoft.com, mpurohit
 Editor: Tomislav Jovanovic, Mozilla https://www.mozilla.org/, tjovanovic@mozilla.com
 Editor: Oliver Dunk, Google https://www.google.com, oliverdunk@chromium.org
 Editor: Kiara Rose, Apple https://www.apple.com, kiara_rose@apple.com
+Editor: Carlos Jeurissen, invited expert https://jeurissen.co/, carlos@jeurissen.co
 Abstract: [Placeholder] Abstract.
 Repository: w3c/webextensions
 Markup Shorthands: markdown yes
@@ -66,11 +67,13 @@ The following keys must be considered valid:
 * <a href="#key-devtools_page">`devtools_page`</a>: optional
 * <a href="#key-externally_connectable">`externally_connectable`</a>: optional
 * <a href="#key-trial_tokens">`trial_tokens`</a>: optional
+* <a href="#key-icon_variants">`icon_variants`</a>: optional
 
 The following keys must be considered valid in Manifest V3:
 
 * <a href="#key-host_permissions">`host_permissions`</a>: optional
 * <a href="#key-optional_host_permissions">`optional_host_permissions`</a>: optional
+* <a href="#key-action">`action`</a>: optional
 
 ### Key `manifest_version`
 
@@ -130,7 +133,20 @@ This key may be present.
 
 ### Key `icons`
 
-This key may be present.
+This key may be present and has to be a single [=basic icon group=], as described in [[#extension-icons]].
+
+### Key `icon_variants`
+
+This key may be present and has to be an [=icon variants=] list of [=icon groups=].
+
+### Key `action`
+
+This key may be present. This defines the extension's primary action and may include the following optional keys:
+#### Key `default_icon` #### {#key-action-default_icon}
+An [=icon resource=] for an icon or a [=basic icon group=] that specifies the default icon for the extension's action, as described in [[#extension-icons]].
+
+#### Key `icon_variants` #### {#key-action-icon_variants}
+This is an [=icon variants=] list of [=icon groups=] to be used for the action icon.
 
 ### Key `options_ui`
 
@@ -350,6 +366,47 @@ The {{ExecutionWorld}} enum represents a JavaScript [=world=].
 
 "MAIN" corresponds to the [=main world=].
 
+## <dfn>Extension icons</dfn>
+Extension icons represent the extension in the user interface of the browser,
+such as the extension action button, the management page or notifications.
+
+### <dfn>Icon resource</dfn>
+A single package path referencing an icon in the extension's package.
+
+Issue: link `package path` once PR(1123) is merged.
+
+### <dfn>Icon group</dfn>
+An [=icon group=] consists of a set of [=icon resources=] and optional [=matching criteria=].
+
+#### Size keys
+Each icon resource in an [=icon group=] is set using the size as key. Such as `16`, `32`, or `48` and / or the keyword `any` as a size wildcard.
+
+Issue: in addition to `any`, do we want to accept the `src` key as wildcard size?
+
+#### <dfn>Matching criteria</dfn>
+An icon group can optionally be accompanied with matching criteria.
+
+Each matching criterion is required to be a [=list=] of values.
+
+##### color_schemes
+An optional [=list=] of [=color schemes=]. The final color scheme a browser picks does not have to match the browser or operating system dark theme preference if contrast reasons dictate it. However it strictly needs to respect the specific icon resources provided by the extension for each color scheme.
+
+### <dfn>Basic icon group</dfn>
+A basic version of [=icon group=], which:
+
+- has no matching criteria
+- has no `any` keyword
+- does not use dpi-independent icon size lookup
+
+### <dfn>Color scheme</dfn>
+A [=string=] which indicates a specific color scheme. Current recognized values are:
+
+- `light`: tells the user agent the icons are adapted to work on light backgrounds / themes.
+- `dark`: tells the user agent the icons are adapted to work on dark backgrounds / themes.
+
+### <dfn>Icon variants</dfn>
+A [=list=] of [=icon groups=]. The user agent selects an [=icon resource=] based on [[#extension-icon-selection]].
+
 ## Extension pages
 
 # Classes of security risk
@@ -409,6 +466,81 @@ To determine if a content script should be injected in a document:
 1. If |url| matches an entry in `exclude_matches` or `exclude_globs`, return.
 1. If this is a child frame, and `all_frames` is not `true`, return.
 1. Otherwise, inject the content script. This should be done based on the `run_at` setting.
+
+## Extension icon selection
+
+### Icon selection precedence order
+Given the different ways extension authors can declare icons, a specific precedence order should be respected when selecting an extension icon.
+
+1. Prefer API-based JavaScript icon overrides.
+    1. Prefer instance-specific if declared and supported (For example, `browser.notifications.create({iconUrl})`).
+    1. Prefer tab-specific if declared and supported.
+    1. Prefer window-specific if declared and supported.
+    1. Prefer global if declared and supported.
+1. Prefer API-specific declarative manifest values.
+    1. Prefer `action.icon_variants`.
+    1. Prefer `action.default_icon`.
+1. Prefer generic declarative manifest values.
+    1. Prefer `icon_variants`.
+    1. Prefer `icons`.
+
+Issue(1115): unspecified behavior for [=icon resource=] declarations which do not resolve to an actual extension path. In general if no valid [=icon resource=] can be extracted from a specific layer, not all implementations currently walk down the above specified precedence order.
+
+### Selecting [=icon resource=] from [=icon variants=]
+Before walking each [=icon group=] in [=icon variants=], the user agent first determines the different matching criteria which will be matched on. For example, the [=color scheme=] `dark`.
+
+The user agent also determines the type of icon resources it supports.
+
+With these matching criteria, [=icon variants=] are walked through as such:
+
+1. Take the first [=icon group=] in the list.
+1. If the [=icon group=] is not of type object, go to next [=icon group=].
+1. If the [=icon group=] has unknown keys, go to next [=icon group=] and optionally log a warning.
+1. Walk through each matching criterion specified in the [=icon group=].
+    1. Check if the matching criterion is a [=list=]. If not, go to next [=icon group=] and optionally log a warning.
+    1. If the list of criterion values includes unknown values, ignore these and optionally log a warning.
+    1. If the matching criterion does not include the pre-selected criterion, go to next [=icon group=].
+    1. Otherwise, continue checking the next matching criterion.
+1. Use [[#selecting-icon-size-resource-from-an-icon-group]] to determine the final icon resource to use. If this algorithm gives no valid icon resource, go to next [=icon group=].
+
+Issue(1119): the current WebKit and Chromium implementations do not skip when encountering unknown keys. While the Orion implementation actively skips the [=icon group=] with unrecognized keys.
+
+The first fully supported [=icon group=] will be selected for use as extension icons.
+
+If no [=icon group=] is considered valid, the whole [=icon variants=] is invalidated and the user agent should select a different icon bucket as specified in [[#icon-selection-precedence-order]].
+
+### Selecting icon size resource from an [=icon group=]
+
+Walk through each icon resource:
+
+1. Discard each unsupported icon resource.
+1. Determine if the icon resource is a vector.
+
+The user agent will use the icon selection algorithm to determine the final [=icon resource=] to use.
+
+#### Icon selection algorithm
+Sort the icon resources by size. When sorting, the `any` keyword is regarded as the largest possible size and is sorted at the bottom of the list.
+
+If no icon resource is supported, invalidate the [=icon group=].
+
+If only a single icon resource is supported select this icon resource. Otherwise:
+
+Determine lookup size:
+
+1. If all icon resources are vectors and come from an [=icon variants=] list, the lookup size will be the same as the dp icon size.
+1. Otherwise the lookup size will be the dp icon size multiplied by the devicePixelRatio.
+
+For example, in case the user agent wants to render a 16dp icon and the device is set to a dpi of 2x, in case of vector resources, the lookup size is 16, and in all other cases, it will be 16 * 2 = 32.
+
+Walk through each icon size:
+
+1. If the icon size is equal or larger than the lookup size, return this icon resource.
+1. Otherwise move to the next icon size.
+
+If none of the icon sizes are equal or larger than the lookup size, the
+largest icon size will be selected. If `any` is provided, the icon resource
+associated with the `any` keyword will be selected if none of the other icon
+sizes are equal or larger than the lookup size.
 
 <pre class="link-defaults">
 spec:html; type:dfn; for:realm; text:global object
