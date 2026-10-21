@@ -1,0 +1,60 @@
+# Advisory check: builds each spec with Bikeshed and flags any warnings or
+# errors. This runs separately from the deploy workflow and the PR Preview
+# service, so a failure here never prevents a preview from being published.
+# Do not mark this check as required in branch protection.
+
+name: Bikeshed Warnings
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'specification/**'
+      - '.github/workflows/bikeshed-warnings.yml'
+      - '.github/scripts/bikeshed-report.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bikeshed:
+    name: Bikeshed warnings (${{ matrix.name }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: specification
+            source: specification/index.bs
+          - name: webdriver-classic
+            source: specification/webdriver-classic.bs
+          - name: window-browser
+            source: specification/window.browser.bs
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Bikeshed
+        run: |
+          pip install bikeshed
+          bikeshed update
+
+      - name: Build with Bikeshed
+        id: build
+        run: |
+          set +e
+          bikeshed --print=json --die-on=nothing --no-update \
+            spec "${{ matrix.source }}" "$RUNNER_TEMP/out.html" > "$RUNNER_TEMP/bikeshed.json"
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          cat "$RUNNER_TEMP/bikeshed.json"
+
+      - name: Report warnings and errors
+        run: |
+          python3 .github/scripts/bikeshed-report.py \
+            "${{ matrix.source }}" "$RUNNER_TEMP/bikeshed.json" "${{ steps.build.outputs.exit_code }}"
