@@ -135,7 +135,9 @@ This key may be present.
 
 A [=basic icon group=] that specifies the [=extension icons=].
 
-Issue: User agents differ on a wrong-typed `icons`, an invalid size key, or an empty path. Some do not load the extension. Others report an error and load it.
+Issue: User agents differ how a non-object `icons` value or an empty path for it's keys is handled. Some do not load the extension. Others report an error and load it.
+
+Issue(1136): User agents differ on how non-integer keys are handled. Some do not load the extension. Others report an error and load it.
 
 ### Key `icon_variants`
 
