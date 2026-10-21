@@ -143,12 +143,25 @@ An [=icon variants=] list that specifies the [=extension icons=].
 
 ### Key `action`
 
-This key may be present. This defines the extension's primary action and may include the following optional keys:
+This key may be present. It is an object that defines the extension's primary action.
+
+Issue: Specify the `action` key and its behavior. This section covers only the icon keys.
+
 #### Key `default_icon` #### {#key-action-default_icon}
-An [=icon resource=] for an icon or a [=basic icon group=] that specifies the default icon for the extension's action, as described in [[#extension-icons]].
+
+An [=icon resource=] or a [=basic icon group=] that specifies the default icon of the action, as described in [=extension icons=].
 
 #### Key `icon_variants` #### {#key-action-icon_variants}
-This is an [=icon variants=] list of [=icon groups=] to be used for the action icon.
+
+An [=icon variants=] list used for the icon of the action.
+
+#### Key `default_title` #### {#key-action-default_title}
+
+This key may be present.
+
+#### Key `default_popup` #### {#key-action-default_popup}
+
+This key may be present.
 
 ### Key `options_ui`
 
@@ -511,7 +524,9 @@ Issue(1119): the current WebKit and Chromium implementations do not skip when en
 
 The first fully supported [=icon group=] is selected for use as the [=extension icons=].
 
-If no [=icon group=] is considered valid, the whole [=icon variants=] is invalidated and the user agent should select a different icon bucket as specified in [[#icon-selection-precedence-order]].
+If no [=icon group=] yields an [=icon resource=], the user agent continues with the next source in [[#icon-selection-precedence-order]].
+
+Issue: User agents differ on whether a lone [=icon group=] is used whatever its matching criteria, and on whether criteria are dropped when no group matches.
 
 ### Selecting icon size resource from an [=icon group=]
 
@@ -535,7 +550,9 @@ Determine lookup size:
 1. If every icon resource is a vector and the group comes from [=icon variants=], let |lookup size| be |size|, because a vector renders sharply at any scale.
 1. Otherwise, let |lookup size| be |size| multiplied by the device pixel ratio of the display.
 
-For example, in case the user agent wants to render a 16dp icon and the device is set to a dpi of 2x, in case of vector resources, the lookup size is 16, and in all other cases, it will be 16 * 2 = 32.
+For example, the user agent renders a 16 pixel icon on a 2x display. The lookup size is 16 for vector resources and 32 for all other resources.
+
+Issue: WebKit and Firefox scale the lookup size by the device pixel ratio for vector resources too.
 
 Walk through the sorted icon sizes and return the first [=icon resource=] whose size is equal to or larger than the lookup size. If there is none, return the icon resource with the largest size.
 
