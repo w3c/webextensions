@@ -523,6 +523,7 @@ With these matching criteria, [=icon variants=] are walked through as such:
 1. Use [[#selecting-icon-size-resource-from-an-icon-group]] to determine the final icon resource to use. If this algorithm gives no valid icon resource, go to next [=icon group=].
 
 Issue(1119): the current WebKit and Chromium implementations do not skip when encountering unknown keys. While the Orion implementation actively skips the [=icon group=] with unrecognized keys.
+Issue: Orion does not skip blocks with only SVG icons while it does not support SVG icons properly currently.
 
 The first fully supported [=icon group=] is selected for use as the [=extension icons=].
 
