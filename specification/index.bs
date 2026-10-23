@@ -9,6 +9,7 @@ Editor: Mukul Purohit, Microsoft Corporation https://www.microsoft.com, mpurohit
 Editor: Tomislav Jovanovic, Mozilla https://www.mozilla.org/, tjovanovic@mozilla.com
 Editor: Oliver Dunk, Google https://www.google.com, oliverdunk@chromium.org
 Editor: Kiara Rose, Apple https://www.apple.com, kiara_rose@apple.com
+Editor: Carlos Jeurissen, invited expert https://jeurissen.co/, carlos@jeurissen.co
 Abstract: [Placeholder] Abstract.
 Repository: w3c/webextensions
 Markup Shorthands: markdown yes
@@ -66,11 +67,13 @@ The following keys must be considered valid:
 * <a href="#key-devtools_page">`devtools_page`</a>: optional
 * <a href="#key-externally_connectable">`externally_connectable`</a>: optional
 * <a href="#key-trial_tokens">`trial_tokens`</a>: optional
+* <a href="#key-icon_variants">`icon_variants`</a>: optional
 
 The following keys must be considered valid in Manifest V3:
 
 * <a href="#key-host_permissions">`host_permissions`</a>: optional
 * <a href="#key-optional_host_permissions">`optional_host_permissions`</a>: optional
+* <a href="#key-action">`action`</a>: optional
 
 ### Key `manifest_version`
 
@@ -129,6 +132,36 @@ This key may be present.
 This key may be present.
 
 ### Key `icons`
+
+A [=basic icon group=] that specifies the [=extension icons=].
+
+Issue: User agents differ how a non-object `icons` value or an empty path for it's keys is handled. Some do not load the extension. Others report an error and load it.
+
+Issue(1136): User agents differ on how non-integer keys are handled. Some do not load the extension. Others report an error and load it.
+
+### Key `icon_variants`
+
+An [=icon variants=] list that specifies the [=extension icons=].
+
+### Key `action`
+
+This key may be present. It is an object that defines the extension's primary action.
+
+Issue: Specify the `action` key and its behavior. This section covers only the icon keys.
+
+#### Key `default_icon` #### {#key-action-default_icon}
+
+An [=icon resource=] or a [=basic icon group=] that specifies the default icon of the action, as described in [=extension icons=].
+
+#### Key `icon_variants` #### {#key-action-icon_variants}
+
+An [=icon variants=] list used for the icon of the action.
+
+#### Key `default_title` #### {#key-action-default_title}
+
+This key may be present.
+
+#### Key `default_popup` #### {#key-action-default_popup}
 
 This key may be present.
 
@@ -350,6 +383,49 @@ The {{ExecutionWorld}} enum represents a JavaScript [=world=].
 
 "MAIN" corresponds to the [=main world=].
 
+## <dfn>Extension icons</dfn>
+Extension icons represent the extension in the user interface of the browser,
+such as the extension action button, the management page or notifications.
+
+### <dfn>Icon resource</dfn>
+A single package path referencing an icon in the extension's package.
+
+Issue: link `package path` once PR(1123) is merged.
+
+### <dfn>Icon group</dfn>
+An [=icon group=] consists of a set of [=icon resources=] and optional [=matching criteria=].
+
+#### Size keys
+An [=icon resource=] in an [=icon group=] has a size as its key: a string of ASCII digits that is a positive integer, such as `16`, `32`, or `48`, or the keyword `any`. Any key that is not a size, `any`, or a [=matching criteria|matching criterion=] is an unknown key.
+
+Issue: in addition to `any`, do we want to accept the `src` key as wildcard size?
+
+#### <dfn>Matching criteria</dfn>
+An icon group can optionally be accompanied with matching criteria.
+
+Each matching criterion is required to be a [=list=] of values.
+
+##### Key `color_schemes` ##### {#icon-group-color_schemes}
+
+An optional [=list=] of [=color schemes=]. The user agent selects the [=icon group=] only if the list includes the color scheme it is matching. That color scheme may differ from the browser or operating system preference, for example to keep contrast.
+
+Issue: User agents differ on a list that is empty or has no recognized value. Some match every color scheme. Others match none and fall back to a group that does not list the scheme.
+
+### <dfn>Basic icon group</dfn>
+A basic version of [=icon group=], which:
+
+- has no matching criteria
+- has no `any` keyword
+
+### <dfn>Color scheme</dfn>
+A [=string=] which indicates a specific color scheme. Current recognized values are:
+
+- `light`: tells the user agent the icons are adapted to work on light backgrounds / themes.
+- `dark`: tells the user agent the icons are adapted to work on dark backgrounds / themes.
+
+### <dfn>Icon variants</dfn>
+A [=list=] of [=icon groups=]. The user agent selects an [=icon resource=] based on [[#extension-icon-selection]].
+
 ## Extension pages
 
 # Classes of security risk
@@ -409,6 +485,81 @@ To determine if a content script should be injected in a document:
 1. If |url| matches an entry in `exclude_matches` or `exclude_globs`, return.
 1. If this is a child frame, and `all_frames` is not `true`, return.
 1. Otherwise, inject the content script. This should be done based on the `run_at` setting.
+
+## Extension icon selection
+
+### Icon selection precedence order
+The user agent selects the icon from the first of these sources that yields an [=icon resource=]:
+
+1. An icon set through an API. The API defines its scopes, which apply from most to least specific, for example instance, tab, window, then global.
+    1. Prefer instance-specific if declared and supported (For example, `browser.notifications.create({iconUrl})`).
+    1. Prefer tab-specific if declared and supported.
+    1. Prefer window-specific if declared and supported.
+    1. Prefer global if declared and supported.
+1. Prefer API-specific declarative manifest values.
+    1. Prefer `action.icon_variants`.
+    1. Prefer `action.default_icon`.
+1. Prefer generic declarative manifest values.
+    1. Prefer `icon_variants`.
+    1. Prefer `icons`.
+
+Issue(1115): unspecified behavior for [=icon resource=] declarations which do not resolve to an actual extension path. In general if no valid [=icon resource=] can be extracted from a specific layer, not all implementations currently walk down the above specified precedence order.
+
+### Selecting [=icon resource=] from [=icon variants=]
+Before walking each [=icon group=] in [=icon variants=], the user agent first determines the different matching criteria which will be matched on. For example, the [=color scheme=] `dark`.
+
+The user agent determines the media type of an [=icon resource=] from the file extension of its [=package path=], for example `image/png` for `.png` and `image/svg+xml` for `.svg`. An icon resource is supported when the user agent can decode that media type, and is a vector when that media type is resolution independent, such as `image/svg+xml`. A user agent must support `image/png` and should support `image/svg+xml`.
+
+With these matching criteria, [=icon variants=] are walked through as such:
+
+1. Take the first [=icon group=] in the list.
+1. If the [=icon group=] is not of type object, go to next [=icon group=].
+1. If the [=icon group=] has unknown keys, go to next [=icon group=] and optionally log a warning.
+1. Walk through each matching criterion specified in the [=icon group=].
+    1. Check if the matching criterion is a [=list=]. If not, go to next [=icon group=] and optionally log a warning.
+    1. If the list of criterion values includes unknown values, ignore these and optionally log a warning.
+    1. If the matching criterion does not include the pre-selected criterion, go to next [=icon group=].
+    1. Otherwise, continue checking the next matching criterion.
+1. Use [[#selecting-icon-size-resource-from-an-icon-group]] to determine the final icon resource to use. If this algorithm gives no valid icon resource, go to next [=icon group=].
+
+Issue(1119): the current WebKit and Chromium implementations do not skip when encountering unknown keys. While the Orion implementation actively skips the [=icon group=] with unrecognized keys.
+Issue: Orion does not skip blocks with only SVG icons while it does not support SVG icons properly currently.
+
+The first fully supported [=icon group=] is selected for use as the [=extension icons=].
+
+If no [=icon group=] yields an [=icon resource=], the user agent continues with the next source in [[#icon-selection-precedence-order]].
+
+Issue: User agents differ on whether a lone [=icon group=] is used whatever its matching criteria, and on whether criteria are dropped when no group matches.
+
+### Selecting icon size resource from an [=icon group=]
+
+Walk through each icon resource:
+
+1. Discard each unsupported icon resource.
+1. Determine if the icon resource is a vector.
+
+The user agent uses the icon selection algorithm to determine the final [=icon resource=] to use.
+
+#### Icon selection algorithm
+Sort the icon resources by size, from smallest to largest. When sorting, the `any` keyword is regarded as the largest possible size.
+
+If no icon resource is supported, the [=icon group=] yields no [=icon resource=].
+
+If only a single icon resource is supported select this icon resource. Otherwise:
+
+Determine lookup size:
+
+1. Let |size| be the size, in device-independent pixels, at which the user agent renders the icon.
+1. If every icon resource is a vector and the group comes from [=icon variants=], let |lookup size| be |size|, because a vector renders sharply at any scale.
+1. Otherwise, let |lookup size| be |size| multiplied by the device pixel ratio of the display.
+
+For example, the user agent renders a 16 pixel icon on a 2x display. The lookup size is 16 for vector resources and 32 for all other resources.
+
+Issue: WebKit and Firefox scale the lookup size by the device pixel ratio for vector resources too.
+
+Walk through the sorted icon sizes and return the first [=icon resource=] whose size is equal to or larger than the lookup size. If there is none, return the icon resource with the largest size.
+
+Issue(949): User agents differ on whether `any` is preferred over a numeric size or used only when no numeric size is large enough.
 
 <pre class="link-defaults">
 spec:html; type:dfn; for:realm; text:global object
