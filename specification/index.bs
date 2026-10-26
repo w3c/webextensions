@@ -9,7 +9,6 @@ Editor: Mukul Purohit, Microsoft Corporation https://www.microsoft.com, mpurohit
 Editor: Tomislav Jovanovic, Mozilla https://www.mozilla.org/, tjovanovic@mozilla.com
 Editor: Oliver Dunk, Google https://www.google.com, oliverdunk@chromium.org
 Editor: Kiara Rose, Apple https://www.apple.com, kiara_rose@apple.com
-Editor: Timothy Hatcher, Apple https://www.apple.com, timothy@apple.com
 Abstract: [Placeholder] Abstract.
 Repository: w3c/webextensions
 Markup Shorthands: markdown yes
