@@ -122,7 +122,41 @@ The <a href="#key-content_scripts">`content_scripts`</a> key is a [=list=] of it
 
 ### Key `content_security_policy` ### {#key-content_security_policy}
 
-This key may be present.
+The <a href="#key-content_security_policy">`content_security_policy`</a> key defines the Content Security Policies [[!CSP3]] applied to the extension's contexts and pages.
+
+This key is an optional dictionary that may include the following optional keys:
+
+* <a href="#key-content_security_policy-extension_pages">`extension_pages`</a>
+* <a href="#key-content_security_policy-sandbox">`sandbox`</a>
+
+Each policy [=string=] specified in `content_security_policy` must represent a single serialized Content Security Policy (for example, it must not contain comma (`,`) characters separating multiple policies or control characters such as newlines).
+
+User agents may place additional restrictions on the policies specified in `content_security_policy`. If `content_security_policy` or any of its subkeys is invalid or violates user agent restrictions, the user agent may either reject the extension (failing to load it) or emit a warning and fall back to the default policy.
+
+#### Key `extension_pages` #### {#key-content_security_policy-extension_pages}
+
+An optional [=string=] that specifies the Content Security Policy applied to resources served from the [=extension origin=], including [=privileged extension contexts=] such as extension pages (e.g., popups, options pages, tabs, and frames) and extension workers (including the background service worker), excluding pages designated as sandboxed pages.
+
+If omitted, the default `extension_pages` policy restricts script and object loading to the [=extension origin=] (`'self'`), such as `"script-src 'self';"`. User agents may include additional directives in the default policy (such as `object-src 'self'` or `upgrade-insecure-requests`).
+
+User agents may place restrictions on the directives and source expressions permitted in `extension_pages`, such as requiring `script-src` (or `default-src`) and `worker-src` to be present and disallowing remotely-hosted code, inline scripts (`'unsafe-inline'`), and arbitrary string evaluation (`'unsafe-eval'`). In general, `script-src`, `worker-src`, and `object-src` are restricted to local or safe sources such as `'self'`, `'none'`, and `'wasm-unsafe-eval'` (and, in some user agents, `http://localhost` or `http://127.0.0.1` for unpacked extensions).
+
+#### Key `sandbox` #### {#key-content_security_policy-sandbox}
+
+An optional [=string=] that specifies the Content Security Policy applied to extension pages that are designated as sandboxed (via `sandbox.pages` in the [=manifest=]).
+
+If omitted, the default `sandbox` policy is:
+
+```
+sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';
+```
+
+A custom `sandbox` policy must satisfy the following requirements:
+
+* It must include a `sandbox` directive.
+* The `sandbox` directive must not include the `allow-same-origin` token (as allowing same-origin access would negate the unique opaque origin of the sandboxed page).
+
+Unlike `extension_pages`, a `sandbox` policy may allow remote sources, `'unsafe-inline'`, and `'unsafe-eval'`.
 
 ### Key `description` ### {#key-description}
 
@@ -266,6 +300,26 @@ A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards 
 ## Extension permissions and web perissions ## {#extension-permissions-and-web-perissions}
 
 # Content security policy # {#content-security-policy}
+
+Extensions are subject to Content Security Policies [[!CSP3]] configured via the [[#key-content_security_policy]] manifest key.
+
+## Minimum Content Security Policy ## {#minimum-extension-csp}
+
+In addition to the policy specified in <a href="#key-content_security_policy-extension_pages">`content_security_policy.extension_pages`</a>, the user agent may enforce a baseline minimum Content Security Policy on all non-sandboxed extension documents and workers (including background service workers) to ensure that extensions cannot relax core security restrictions (such as disallowing remotely-hosted code, `'unsafe-inline'`, and `'unsafe-eval'`).
+
+For example, a user agent may enforce a minimum policy such as:
+
+```
+script-src 'self' 'wasm-unsafe-eval'; object-src 'self';
+```
+
+(potentially with additional sources permitted by the user agent, such as `'inline-speculation-rules'` or `http://localhost:*` and `http://127.0.0.1:*` for unpacked extensions).
+
+When both a minimum policy and the extension's `extension_pages` policy are enforced simultaneously, an operation must be permitted by both policies. Consequently, an extension's `extension_pages` policy can further restrict the baseline policy, or opt into capabilities permitted by the minimum policy that are omitted from the default `extension_pages` policy (such as `'wasm-unsafe-eval'`).
+
+## Isolated world Content Security Policy ## {#isolated-world-csp}
+
+[=Content scripts=] executing in an [=isolated world=] are not customized by the manifest's [[#key-content_security_policy]], and user agents may enforce a baseline Content Security Policy on the [=isolated world=] to disallow remotely-hosted code and arbitrary string evaluation.
 
 # Architecture # {#architecture}
 
