@@ -5,9 +5,9 @@
   <title>Web Extensions</title>
   <meta content="CG-DRAFT" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version ea4009a02, updated Thu Sep 17 15:24:44 2026 -0700" name="generator">
+  <meta content="Bikeshed version 49e9fdd4f, updated Tue Oct 13 14:27:53 2026 -0700" name="generator">
   <link href="https://w3c.github.io/webextensions/specification/" rel="canonical">
-  <meta content="96f287b2825edfbdd108a5c8379991936c5a0aa9" name="revision">
+  <meta content="37327e8dde17f3fc1c76e26d14b3e6dd19813a6a" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -730,7 +730,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 </p>
    <h1 class="no-ref p-name" id="title">Web Extensions</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2026-09-30">30 September 2026</time></p>
+    <time class="dt-updated" datetime="2026-10-26">26 October 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -880,6 +880,15 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      <ol class="toc">
       <li><a href="#determine-the-url-for-matching-a-document"><span class="secno">18.1</span> <span class="content">Determine the URL for matching a document</span></a>
       <li><a href="#inject-a-content-script"><span class="secno">18.2</span> <span class="content">Inject a content script</span></a>
+     </ol>
+    <li>
+     <a href="#apis"><span class="secno">19</span> <span class="content">APIs</span></a>
+     <ol class="toc">
+      <li>
+       <a href="#alarms-api"><span class="secno">19.1</span> <span class="content">Alarms API</span></a>
+       <ol class="toc">
+        <li><a href="#alarms-interface"><span class="secno">19.1.1</span> <span class="content">Alarms interface</span></a>
+       </ol>
      </ol>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
@@ -1232,6 +1241,54 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
     <li data-md>
      <p>Otherwise, inject the content script. This should be done based on the <code>run_at</code> setting.</p>
    </ol>
+   <h2 class="heading settled" data-level="19" id="apis"><span class="secno">19. </span><span class="content">APIs</span><a class="self-link" href="#apis"></a></h2>
+   <h3 class="heading settled" data-level="19.1" id="alarms-api"><span class="secno">19.1. </span><span class="content">Alarms API</span><a class="self-link" href="#alarms-api"></a></h3>
+   <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Browser" data-dfn-type="attribute" data-export id="dom-browser-alarms"><code>alarms</code></dfn> attribute allows you to access the Alarms API to schedule one-time or repeating alarms.</p>
+   <h4 class="heading settled" data-level="19.1.1" id="alarms-interface"><span class="secno">19.1.1. </span><span class="content">Alarms interface</span><a class="self-link" href="#alarms-interface"></a></h4>
+<pre class="def highlight idl"><c- b>partial</c-> <c- b>interface</c-> <u class="link-error" data-lt="Browser" title="LINK ERROR: No &apos;interface&apos; refs found for &apos;Browser&apos;."><c- g>Browser</c-></u> {
+  <c- b>attribute</c-> <a data-link-type="idl-name" href="#alarms" id="ref-for-alarms"><c- n>Alarms</c-></a> <a class="idl-code" data-link-type="attribute" data-type="Alarms" href="#dom-browser-alarms" id="ref-for-dom-browser-alarms"><c- g>alarms</c-></a>;
+};
+</pre>
+   <p class="issue" id="issue-abd88e98"><a class="self-link" href="#issue-abd88e98"></a> Some user-agents set <code class="idl"><a data-link-type="idl" href="#dom-alarm-periodinminutes" id="ref-for-dom-alarm-periodinminutes">periodInMinutes</a></code> to null instead of not including it in the dictionary. <a href="https://github.com/w3c/webextensions/issues/1124">[Issue #1124]</a></p>
+<pre class="def highlight idl"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-alarm"><code><c- g>Alarm</c-></code></dfn> {
+  <c- b>required</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarm" data-dfn-type="dict-member" data-export data-type="DOMString" id="dom-alarm-name"><code><c- g>name</c-></code></dfn>;
+  <c- b>required</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-double" id="ref-for-idl-double"><c- b>double</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarm" data-dfn-type="dict-member" data-export data-type="double" id="dom-alarm-scheduledtime"><code><c- g>scheduledTime</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-double" id="ref-for-idl-double①"><c- b>double</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarm" data-dfn-type="dict-member" data-export data-type="double" id="dom-alarm-periodinminutes"><code><c- g>periodInMinutes</c-></code></dfn>;
+  <c- b>required</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarm" data-dfn-type="dict-member" data-export data-type="boolean" id="dom-alarm-persistacrosssessions"><code><c- g>persistAcrossSessions</c-></code></dfn>;
+};
+</pre>
+   <p class="issue" id="issue-ba9ea111"><a class="self-link" href="#issue-ba9ea111"></a> Should we rename <code class="idl"><a data-link-type="idl" href="#dictdef-alarmcreateinfo" id="ref-for-dictdef-alarmcreateinfo">AlarmCreateInfo</a></code> to <code>CreateInfo</code> per <a href="http://crbug.com/123073">crbug.com/123073</a>?</p>
+   <p class="issue" id="issue-7b57ef4a"><a class="self-link" href="#issue-7b57ef4a"></a> In <code class="idl"><a data-link-type="idl" href="#dom-alarms-create-name-alarminfo" id="ref-for-dom-alarms-create-name-alarminfo">create(name, alarmInfo)</a></code>, the dictionary is marked as optional in the IDL as WebIDL does not allow requiring a dictionary with no required members. We should handle this in prose.</p>
+<pre class="def highlight idl"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-alarmcreateinfo"><code><c- g>AlarmCreateInfo</c-></code></dfn> {
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="AlarmCreateInfo" data-dfn-type="dict-member" data-export data-type="DOMString" id="dom-alarmcreateinfo-name"><code><c- g>name</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-double" id="ref-for-idl-double②"><c- b>double</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="AlarmCreateInfo" data-dfn-type="dict-member" data-export data-type="double" id="dom-alarmcreateinfo-when"><code><c- g>when</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-double" id="ref-for-idl-double③"><c- b>double</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="AlarmCreateInfo" data-dfn-type="dict-member" data-export data-type="double" id="dom-alarmcreateinfo-delayinminutes"><code><c- g>delayInMinutes</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-double" id="ref-for-idl-double④"><c- b>double</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="AlarmCreateInfo" data-dfn-type="dict-member" data-export data-type="double" id="dom-alarmcreateinfo-periodinminutes"><code><c- g>periodInMinutes</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="AlarmCreateInfo" data-dfn-type="dict-member" data-export data-type="boolean" id="dom-alarmcreateinfo-persistacrosssessions"><code><c- g>persistAcrossSessions</c-></code></dfn>;
+};
+
+<c- b>callback</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="callback" data-export id="callbackdef-alarmlistener"><code><c- g>AlarmListener</c-></code></dfn> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined"><c- b>undefined</c-></a> (<a data-link-type="idl-name" href="#dictdef-alarm" id="ref-for-dictdef-alarm"><c- n>Alarm</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="AlarmListener" data-dfn-type="argument" data-export id="dom-alarmlistener-alarm"><code><c- g>alarm</c-></code></dfn>);
+
+[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="onalarmevent"><code><c- g>OnAlarmEvent</c-></code></dfn> {
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined①"><c- b>undefined</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="OnAlarmEvent" data-dfn-type="method" data-export data-lt="addListener(listener)" id="dom-onalarmevent-addlistener"><code><c- g>addListener</c-></code></dfn>(<a data-link-type="idl-name" href="#callbackdef-alarmlistener" id="ref-for-callbackdef-alarmlistener"><c- n>AlarmListener</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="OnAlarmEvent/addListener(listener)" data-dfn-type="argument" data-export id="dom-onalarmevent-addlistener-listener-listener"><code><c- g>listener</c-></code></dfn>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined②"><c- b>undefined</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="OnAlarmEvent" data-dfn-type="method" data-export data-lt="removeListener(listener)" id="dom-onalarmevent-removelistener"><code><c- g>removeListener</c-></code></dfn>(<a data-link-type="idl-name" href="#callbackdef-alarmlistener" id="ref-for-callbackdef-alarmlistener①"><c- n>AlarmListener</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="OnAlarmEvent/removeListener(listener)" data-dfn-type="argument" data-export id="dom-onalarmevent-removelistener-listener-listener"><code><c- g>listener</c-></code></dfn>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean②"><c- b>boolean</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="OnAlarmEvent" data-dfn-type="method" data-export data-lt="hasListener(listener)" id="dom-onalarmevent-haslistener"><code><c- g>hasListener</c-></code></dfn>(<a data-link-type="idl-name" href="#callbackdef-alarmlistener" id="ref-for-callbackdef-alarmlistener②"><c- n>AlarmListener</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="OnAlarmEvent/hasListener(listener)" data-dfn-type="argument" data-export id="dom-onalarmevent-haslistener-listener-listener"><code><c- g>listener</c-></code></dfn>);
+};
+
+[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="alarms"><code><c- g>Alarms</c-></code></dfn> {
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined③"><c- b>undefined</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarms" data-dfn-type="method" data-export data-lt="create(alarmInfo)|create()" id="dom-alarms-create"><code><c- g>create</c-></code></dfn>(<c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-alarmcreateinfo" id="ref-for-dictdef-alarmcreateinfo①"><c- n>AlarmCreateInfo</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarms/create(alarmInfo), Alarms/create()" data-dfn-type="argument" data-export id="dom-alarms-create-alarminfo-alarminfo"><code><c- g>alarmInfo</c-></code></dfn> = {});
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise①"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined④"><c- b>undefined</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarms" data-dfn-type="method" data-export data-lt="create(name, alarmInfo)|create(name)" id="dom-alarms-create-name-alarminfo"><code><c- g>create</c-></code></dfn>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString②"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarms/create(name, alarmInfo), Alarms/create(name)" data-dfn-type="argument" data-export id="dom-alarms-create-name-alarminfo-name"><code><c- g>name</c-></code></dfn>, <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-alarmcreateinfo" id="ref-for-dictdef-alarmcreateinfo②"><c- n>AlarmCreateInfo</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarms/create(name, alarmInfo), Alarms/create(name)" data-dfn-type="argument" data-export id="dom-alarms-create-name-alarminfo-alarminfo"><code><c- g>alarmInfo</c-></code></dfn> = {});
+
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise②"><c- b>Promise</c-></a>&lt;(<a data-link-type="idl-name" href="#dictdef-alarm" id="ref-for-dictdef-alarm①"><c- n>Alarm</c-></a> <c- b>or</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined⑤"><c- b>undefined</c-></a>)> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarms" data-dfn-type="method" data-export data-lt="get(name)|get()" id="dom-alarms-get"><code><c- g>get</c-></code></dfn>(<c- b>optional</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString③"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarms/get(name), Alarms/get()" data-dfn-type="argument" data-export id="dom-alarms-get-name-name"><code><c- g>name</c-></code></dfn>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise③"><c- b>Promise</c-></a>&lt;<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="#dictdef-alarm" id="ref-for-dictdef-alarm②"><c- n>Alarm</c-></a>>> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarms" data-dfn-type="method" data-export data-lt="getAll()" id="dom-alarms-getall"><code><c- g>getAll</c-></code></dfn>();
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise④"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean③"><c- b>boolean</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarms" data-dfn-type="method" data-export data-lt="clear(name)|clear()" id="dom-alarms-clear"><code><c- g>clear</c-></code></dfn>(<c- b>optional</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString④"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarms/clear(name), Alarms/clear()" data-dfn-type="argument" data-export id="dom-alarms-clear-name-name"><code><c- g>name</c-></code></dfn>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise⑤"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined⑥"><c- b>undefined</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarms" data-dfn-type="method" data-export data-lt="clearAll()" id="dom-alarms-clearall"><code><c- g>clearAll</c-></code></dfn>();
+
+  <c- b>attribute</c-> <a data-link-type="idl-name" href="#onalarmevent" id="ref-for-onalarmevent"><c- n>OnAlarmEvent</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Alarms" data-dfn-type="attribute" data-export data-type="OnAlarmEvent" id="dom-alarms-onalarm"><code><c- g>onAlarm</c-></code></dfn>;
+};
+</pre>
   </main>
   <div data-fill-with="conformance">
    <h2 class="heading no-num no-ref settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
@@ -1274,8 +1331,22 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
   <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
+   <li><a href="#dom-onalarmevent-addlistener">addListener(listener)</a><span>, in § 19.1.1</span>
+   <li><a href="#dictdef-alarm">Alarm</a><span>, in § 19.1.1</span>
+   <li><a href="#dictdef-alarmcreateinfo">AlarmCreateInfo</a><span>, in § 19.1.1</span>
+   <li><a href="#callbackdef-alarmlistener">AlarmListener</a><span>, in § 19.1.1</span>
+   <li><a href="#alarms">Alarms</a><span>, in § 19.1.1</span>
+   <li><a href="#dom-browser-alarms">alarms</a><span>, in § 19.1</span>
+   <li><a href="#dom-alarms-clear">clear()</a><span>, in § 19.1.1</span>
+   <li><a href="#dom-alarms-clearall">clearAll()</a><span>, in § 19.1.1</span>
+   <li><a href="#dom-alarms-clear">clear(name)</a><span>, in § 19.1.1</span>
    <li><a href="#content-script-context">content script context</a><span>, in § 3</span>
    <li><a href="#content-scripts①">Content scripts</a><span>, in § 13.2</span>
+   <li><a href="#dom-alarms-create">create()</a><span>, in § 19.1.1</span>
+   <li><a href="#dom-alarms-create">create(alarmInfo)</a><span>, in § 19.1.1</span>
+   <li><a href="#dom-alarms-create-name-alarminfo">create(name)</a><span>, in § 19.1.1</span>
+   <li><a href="#dom-alarms-create-name-alarminfo">create(name, alarmInfo)</a><span>, in § 19.1.1</span>
+   <li><a href="#dom-alarmcreateinfo-delayinminutes">delayInMinutes</a><span>, in § 19.1.1</span>
    <li><a href="#dom-runat-document_end">"document_end"</a><span>, in § 13.2.12</span>
    <li><a href="#dom-runat-document_idle">"document_idle"</a><span>, in § 13.2.12</span>
    <li><a href="#dom-runat-document_start">"document_start"</a><span>, in § 13.2.12</span>
@@ -1288,20 +1359,47 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
    <li><a href="#extension-context">extension context</a><span>, in § 3</span>
    <li><a href="#extension-origin①">Extension origin</a><span>, in § 6</span>
    <li><a href="#extension-scheme">extension scheme</a><span>, in § 6</span>
+   <li><a href="#dom-alarms-get">get()</a><span>, in § 19.1.1</span>
+   <li><a href="#dom-alarms-getall">getAll()</a><span>, in § 19.1.1</span>
+   <li><a href="#dom-alarms-get">get(name)</a><span>, in § 19.1.1</span>
    <li><a href="#glob">glob</a><span>, in § 10</span>
+   <li><a href="#dom-onalarmevent-haslistener">hasListener(listener)</a><span>, in § 19.1.1</span>
    <li><a href="#dom-executionworld-isolated">"ISOLATED"</a><span>, in § 13.2.13</span>
    <li><a href="#isolated-world">isolated world</a><span>, in § 3.1</span>
    <li><a href="#dom-executionworld-main">"MAIN"</a><span>, in § 13.2.13</span>
    <li><a href="#main-world">main world</a><span>, in § 3.1</span>
    <li><a href="#manifest①">manifest</a><span>, in § 2</span>
    <li><a href="#match-pattern">match pattern</a><span>, in § 9</span>
+   <li>
+    name
+    <ul>
+     <li><a href="#dom-alarm-name">dict-member for Alarm</a><span>, in § 19.1.1</span>
+     <li><a href="#dom-alarmcreateinfo-name">dict-member for AlarmCreateInfo</a><span>, in § 19.1.1</span>
+    </ul>
+   <li><a href="#dom-alarms-onalarm">onAlarm</a><span>, in § 19.1.1</span>
+   <li><a href="#onalarmevent">OnAlarmEvent</a><span>, in § 19.1.1</span>
+   <li>
+    periodInMinutes
+    <ul>
+     <li><a href="#dom-alarm-periodinminutes">dict-member for Alarm</a><span>, in § 19.1.1</span>
+     <li><a href="#dom-alarmcreateinfo-periodinminutes">dict-member for AlarmCreateInfo</a><span>, in § 19.1.1</span>
+    </ul>
+   <li>
+    persistAcrossSessions
+    <ul>
+     <li><a href="#dom-alarm-persistacrosssessions">dict-member for Alarm</a><span>, in § 19.1.1</span>
+     <li><a href="#dom-alarmcreateinfo-persistacrosssessions">dict-member for AlarmCreateInfo</a><span>, in § 19.1.1</span>
+    </ul>
    <li><a href="#privileged-extension-context">privileged extension context</a><span>, in § 3</span>
+   <li><a href="#dom-onalarmevent-removelistener">removeListener(listener)</a><span>, in § 19.1.1</span>
    <li>
     RunAt
     <ul>
      <li><a href="#enumdef-runat">(enum)</a><span>, in § 13.2.12</span>
      <li><a href="#runat">definition of</a><span>, in § 13.2.12</span>
     </ul>
+   <li><a href="#dom-alarm-scheduledtime">scheduledTime</a><span>, in § 19.1.1</span>
+   <li><a href="#dom-alarmcreateinfo-when">when</a><span>, in § 19.1.1</span>
    <li><a href="#world">world</a><span>, in § 3.1</span>
   </ul>
   <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -1335,7 +1433,14 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
    <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="8855a9aa">DOMString</span>
+     <li><span class="dfn-paneled" id="889e932f">Exposed</span>
+     <li><span class="dfn-paneled" id="bdbd19d1">Promise</span>
+     <li><span class="dfn-paneled" id="5372cca8">boolean</span>
+     <li><span class="dfn-paneled" id="8c800cdf">double</span>
      <li><span class="dfn-paneled" id="6728fdee">platform object</span>
+     <li><span class="dfn-paneled" id="9cce47fd">sequence</span>
+     <li><span class="dfn-paneled" id="5f90bbfb">undefined</span>
     </ul>
   </ul>
   <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -1373,6 +1478,47 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
     <a href="#dom-executionworld-main"><code><c- s>"MAIN"</c-></code></a>
 };
 
+<c- b>partial</c-> <c- b>interface</c-> <u class="link-error" data-lt="Browser" title="LINK ERROR: No &apos;interface&apos; refs found for &apos;Browser&apos;."><c- g>Browser</c-></u> {
+  <c- b>attribute</c-> <a data-link-type="idl-name" href="#alarms"><c- n>Alarms</c-></a> <a class="idl-code" data-link-type="attribute" data-type="Alarms" href="#dom-browser-alarms"><c- g>alarms</c-></a>;
+};
+
+<c- b>dictionary</c-> <a href="#dictdef-alarm"><code><c- g>Alarm</c-></code></a> {
+  <c- b>required</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-alarm-name"><code><c- g>name</c-></code></a>;
+  <c- b>required</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-double"><c- b>double</c-></a> <a data-type="double" href="#dom-alarm-scheduledtime"><code><c- g>scheduledTime</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-double"><c- b>double</c-></a> <a data-type="double" href="#dom-alarm-periodinminutes"><code><c- g>periodInMinutes</c-></code></a>;
+  <c- b>required</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a data-type="boolean" href="#dom-alarm-persistacrosssessions"><code><c- g>persistAcrossSessions</c-></code></a>;
+};
+
+<c- b>dictionary</c-> <a href="#dictdef-alarmcreateinfo"><code><c- g>AlarmCreateInfo</c-></code></a> {
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-alarmcreateinfo-name"><code><c- g>name</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-double"><c- b>double</c-></a> <a data-type="double" href="#dom-alarmcreateinfo-when"><code><c- g>when</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-double"><c- b>double</c-></a> <a data-type="double" href="#dom-alarmcreateinfo-delayinminutes"><code><c- g>delayInMinutes</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-double"><c- b>double</c-></a> <a data-type="double" href="#dom-alarmcreateinfo-periodinminutes"><code><c- g>periodInMinutes</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a data-type="boolean" href="#dom-alarmcreateinfo-persistacrosssessions"><code><c- g>persistAcrossSessions</c-></code></a>;
+};
+
+<c- b>callback</c-> <a href="#callbackdef-alarmlistener"><code><c- g>AlarmListener</c-></code></a> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a> (<a data-link-type="idl-name" href="#dictdef-alarm"><c- n>Alarm</c-></a> <a href="#dom-alarmlistener-alarm"><code><c- g>alarm</c-></code></a>);
+
+[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <a href="#onalarmevent"><code><c- g>OnAlarmEvent</c-></code></a> {
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a> <a href="#dom-onalarmevent-addlistener"><code><c- g>addListener</c-></code></a>(<a data-link-type="idl-name" href="#callbackdef-alarmlistener"><c- n>AlarmListener</c-></a> <a href="#dom-onalarmevent-addlistener-listener-listener"><code><c- g>listener</c-></code></a>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a> <a href="#dom-onalarmevent-removelistener"><code><c- g>removeListener</c-></code></a>(<a data-link-type="idl-name" href="#callbackdef-alarmlistener"><c- n>AlarmListener</c-></a> <a href="#dom-onalarmevent-removelistener-listener-listener"><code><c- g>listener</c-></code></a>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a href="#dom-onalarmevent-haslistener"><code><c- g>hasListener</c-></code></a>(<a data-link-type="idl-name" href="#callbackdef-alarmlistener"><c- n>AlarmListener</c-></a> <a href="#dom-onalarmevent-haslistener-listener-listener"><code><c- g>listener</c-></code></a>);
+};
+
+[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <a href="#alarms"><code><c- g>Alarms</c-></code></a> {
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a>> <a href="#dom-alarms-create"><code><c- g>create</c-></code></a>(<c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-alarmcreateinfo"><c- n>AlarmCreateInfo</c-></a> <a href="#dom-alarms-create-alarminfo-alarminfo"><code><c- g>alarmInfo</c-></code></a> = {});
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a>> <a href="#dom-alarms-create-name-alarminfo"><code><c- g>create</c-></code></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-alarms-create-name-alarminfo-name"><code><c- g>name</c-></code></a>, <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-alarmcreateinfo"><c- n>AlarmCreateInfo</c-></a> <a href="#dom-alarms-create-name-alarminfo-alarminfo"><code><c- g>alarmInfo</c-></code></a> = {});
+
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;(<a data-link-type="idl-name" href="#dictdef-alarm"><c- n>Alarm</c-></a> <c- b>or</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a>)> <a href="#dom-alarms-get"><code><c- g>get</c-></code></a>(<c- b>optional</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-alarms-get-name-name"><code><c- g>name</c-></code></a>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="#dictdef-alarm"><c- n>Alarm</c-></a>>> <a href="#dom-alarms-getall"><code><c- g>getAll</c-></code></a>();
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a>> <a href="#dom-alarms-clear"><code><c- g>clear</c-></code></a>(<c- b>optional</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-alarms-clear-name-name"><code><c- g>name</c-></code></a>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a>> <a href="#dom-alarms-clearall"><code><c- g>clearAll</c-></code></a>();
+
+  <c- b>attribute</c-> <a data-link-type="idl-name" href="#onalarmevent"><c- n>OnAlarmEvent</c-></a> <a data-type="OnAlarmEvent" href="#dom-alarms-onalarm"><code><c- g>onAlarm</c-></code></a>;
+};
+
 </pre>
   <h2 class="heading no-num no-ref settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
@@ -1380,6 +1526,9 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
    <div class="issue"> Specify localization handling. <a href="https://github.com/w3c/webextensions/issues/62">[Issue #62]</a> <a class="issue-return" href="#issue-e5b8cfc7" title="Jump to section">↵</a></div>
    <div class="issue"> "precursor origin" concept needs to be specified. It is not in the HTML spec at the moment. At least Chrome and Firefox recognize the concept, see e.g. <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1715167">https://bugzilla.mozilla.org/show_bug.cgi?id=1715167</a>. <a class="issue-return" href="#issue-efba42d5" title="Jump to section">↵</a></div>
    <div class="issue"> If the same extension specifies the same script twice, what should happen? (<a href="https://crbug.com/324096753">bug</a>) <a class="issue-return" href="#issue-9b040dd0" title="Jump to section">↵</a></div>
+   <div class="issue"> Some user-agents set <code class="idl"><a data-link-type="idl" href="#dom-alarm-periodinminutes">periodInMinutes</a></code> to null instead of not including it in the dictionary. <a href="https://github.com/w3c/webextensions/issues/1124">[Issue #1124]</a> <a class="issue-return" href="#issue-abd88e98" title="Jump to section">↵</a></div>
+   <div class="issue"> Should we rename <code class="idl"><a data-link-type="idl" href="#dictdef-alarmcreateinfo">AlarmCreateInfo</a></code> to <code>CreateInfo</code> per <a href="http://crbug.com/123073">crbug.com/123073</a>? <a class="issue-return" href="#issue-ba9ea111" title="Jump to section">↵</a></div>
+   <div class="issue"> In <code class="idl"><a data-link-type="idl" href="#dom-alarms-create-name-alarminfo">create(name, alarmInfo)</a></code>, the dictionary is marked as optional in the IDL as WebIDL does not allow requiring a dictionary with no required members. We should handle this in prose. <a class="issue-return" href="#issue-7b57ef4a" title="Jump to section">↵</a></div>
   </div>
 <script>/* Boilerplate: script-dom-helper */
 "use strict";
@@ -1587,15 +1736,55 @@ let dfnPanelData = {
 "0698d556": {"dfnID":"0698d556","dfnText":"string","external":true,"refSections":[{"refs":[{"id":"ref-for-string"}],"title":"10. Globs"}],"url":"https://infra.spec.whatwg.org/#string"},
 "168f1b6e": {"dfnID":"168f1b6e","dfnText":"global object","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-realm-global"},{"id":"ref-for-concept-realm-global\u2460"},{"id":"ref-for-concept-realm-global\u2461"}],"title":"3.1. Isolated worlds"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global"},
 "1d2aa117": {"dfnID":"1d2aa117","dfnText":"tuple origin","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-origin-tuple"}],"title":"6. Extension origin"},{"refs":[{"id":"ref-for-concept-origin-tuple\u2460"},{"id":"ref-for-concept-origin-tuple\u2461"}],"title":"18.1. Determine the URL for matching a document"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-tuple"},
+"5372cca8": {"dfnID":"5372cca8","dfnText":"boolean","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-boolean"},{"id":"ref-for-idl-boolean\u2460"},{"id":"ref-for-idl-boolean\u2461"},{"id":"ref-for-idl-boolean\u2462"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-boolean"},
 "5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"},{"id":"ref-for-window\u2460"}],"title":"3.1. Isolated worlds"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
+"5f90bbfb": {"dfnID":"5f90bbfb","dfnText":"undefined","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-undefined"},{"id":"ref-for-idl-undefined\u2460"},{"id":"ref-for-idl-undefined\u2461"},{"id":"ref-for-idl-undefined\u2462"},{"id":"ref-for-idl-undefined\u2463"},{"id":"ref-for-idl-undefined\u2464"},{"id":"ref-for-idl-undefined\u2465"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-undefined"},
 "6728fdee": {"dfnID":"6728fdee","dfnText":"platform object","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-platform-object"}],"title":"3.1. Isolated worlds"}],"url":"https://webidl.spec.whatwg.org/#dfn-platform-object"},
 "78787bc5": {"dfnID":"78787bc5","dfnText":"opener browsing context","external":true,"refSections":[{"refs":[{"id":"ref-for-opener-browsing-context"}],"title":"18.1. Determine the URL for matching a document"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#opener-browsing-context"},
+"8855a9aa": {"dfnID":"8855a9aa","dfnText":"DOMString","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-DOMString"},{"id":"ref-for-idl-DOMString\u2460"},{"id":"ref-for-idl-DOMString\u2461"},{"id":"ref-for-idl-DOMString\u2462"},{"id":"ref-for-idl-DOMString\u2463"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
+"889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"},{"id":"ref-for-Exposed\u2460"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
+"8c800cdf": {"dfnID":"8c800cdf","dfnText":"double","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-double"},{"id":"ref-for-idl-double\u2460"},{"id":"ref-for-idl-double\u2461"},{"id":"ref-for-idl-double\u2462"},{"id":"ref-for-idl-double\u2463"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-double"},
+"9cce47fd": {"dfnID":"9cce47fd","dfnText":"sequence","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-sequence"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-sequence"},
 "a23d12a9": {"dfnID":"a23d12a9","dfnText":"scheme","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-origin-scheme"},{"id":"ref-for-concept-origin-scheme\u2460"},{"id":"ref-for-concept-origin-scheme\u2461"},{"id":"ref-for-concept-origin-scheme\u2462"}],"title":"18.1. Determine the URL for matching a document"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-scheme"},
+"alarms": {"dfnID":"alarms","dfnText":"Alarms","external":false,"refSections":[{"refs":[{"id":"ref-for-alarms"}],"title":"19.1.1. Alarms interface"}],"url":"#alarms"},
 "b01b1359": {"dfnID":"b01b1359","dfnText":"opaque origin","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-origin-opaque"}],"title":"18.1. Determine the URL for matching a document"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-opaque"},
+"bdbd19d1": {"dfnID":"bdbd19d1","dfnText":"Promise","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-promise"},{"id":"ref-for-idl-promise\u2460"},{"id":"ref-for-idl-promise\u2461"},{"id":"ref-for-idl-promise\u2462"},{"id":"ref-for-idl-promise\u2463"},{"id":"ref-for-idl-promise\u2464"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-promise"},
+"callbackdef-alarmlistener": {"dfnID":"callbackdef-alarmlistener","dfnText":"AlarmListener","external":false,"refSections":[{"refs":[{"id":"ref-for-callbackdef-alarmlistener"},{"id":"ref-for-callbackdef-alarmlistener\u2460"},{"id":"ref-for-callbackdef-alarmlistener\u2461"}],"title":"19.1.1. Alarms interface"}],"url":"#callbackdef-alarmlistener"},
 "content-script-context": {"dfnID":"content-script-context","dfnText":"content script context","external":false,"refSections":[{"refs":[{"id":"ref-for-content-script-context"}],"title":"3.1. Isolated worlds"}],"url":"#content-script-context"},
 "content-scripts①": {"dfnID":"content-scripts\u2460","dfnText":"Content scripts","external":false,"refSections":[{"refs":[{"id":"ref-for-content-scripts\u2460"}],"title":"2.2.11. Key content_scripts"},{"refs":[{"id":"ref-for-content-scripts\u2460\u2460"}],"title":"2.2.18. Key externally_connectable"},{"refs":[{"id":"ref-for-content-scripts\u2460\u2461"}],"title":"3. Execution contexts"},{"refs":[{"id":"ref-for-content-scripts\u2460\u2462"}],"title":"3.1. Isolated worlds"}],"url":"#content-scripts\u2460"},
+"dictdef-alarm": {"dfnID":"dictdef-alarm","dfnText":"Alarm","external":false,"refSections":[{"refs":[{"id":"ref-for-dictdef-alarm"},{"id":"ref-for-dictdef-alarm\u2460"},{"id":"ref-for-dictdef-alarm\u2461"}],"title":"19.1.1. Alarms interface"}],"url":"#dictdef-alarm"},
+"dictdef-alarmcreateinfo": {"dfnID":"dictdef-alarmcreateinfo","dfnText":"AlarmCreateInfo","external":false,"refSections":[{"refs":[{"id":"ref-for-dictdef-alarmcreateinfo"},{"id":"ref-for-dictdef-alarmcreateinfo\u2460"},{"id":"ref-for-dictdef-alarmcreateinfo\u2461"}],"title":"19.1.1. Alarms interface"}],"url":"#dictdef-alarmcreateinfo"},
+"dom-alarm-name": {"dfnID":"dom-alarm-name","dfnText":"name","external":false,"refSections":[],"url":"#dom-alarm-name"},
+"dom-alarm-periodinminutes": {"dfnID":"dom-alarm-periodinminutes","dfnText":"periodInMinutes","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-alarm-periodinminutes"}],"title":"19.1.1. Alarms interface"}],"url":"#dom-alarm-periodinminutes"},
+"dom-alarm-persistacrosssessions": {"dfnID":"dom-alarm-persistacrosssessions","dfnText":"persistAcrossSessions","external":false,"refSections":[],"url":"#dom-alarm-persistacrosssessions"},
+"dom-alarm-scheduledtime": {"dfnID":"dom-alarm-scheduledtime","dfnText":"scheduledTime","external":false,"refSections":[],"url":"#dom-alarm-scheduledtime"},
+"dom-alarmcreateinfo-delayinminutes": {"dfnID":"dom-alarmcreateinfo-delayinminutes","dfnText":"delayInMinutes","external":false,"refSections":[],"url":"#dom-alarmcreateinfo-delayinminutes"},
+"dom-alarmcreateinfo-name": {"dfnID":"dom-alarmcreateinfo-name","dfnText":"name","external":false,"refSections":[],"url":"#dom-alarmcreateinfo-name"},
+"dom-alarmcreateinfo-periodinminutes": {"dfnID":"dom-alarmcreateinfo-periodinminutes","dfnText":"periodInMinutes","external":false,"refSections":[],"url":"#dom-alarmcreateinfo-periodinminutes"},
+"dom-alarmcreateinfo-persistacrosssessions": {"dfnID":"dom-alarmcreateinfo-persistacrosssessions","dfnText":"persistAcrossSessions","external":false,"refSections":[],"url":"#dom-alarmcreateinfo-persistacrosssessions"},
+"dom-alarmcreateinfo-when": {"dfnID":"dom-alarmcreateinfo-when","dfnText":"when","external":false,"refSections":[],"url":"#dom-alarmcreateinfo-when"},
+"dom-alarmlistener-alarm": {"dfnID":"dom-alarmlistener-alarm","dfnText":"alarm","external":false,"refSections":[],"url":"#dom-alarmlistener-alarm"},
+"dom-alarms-clear": {"dfnID":"dom-alarms-clear","dfnText":"clear","external":false,"refSections":[],"url":"#dom-alarms-clear"},
+"dom-alarms-clear-name-name": {"dfnID":"dom-alarms-clear-name-name","dfnText":"name","external":false,"refSections":[],"url":"#dom-alarms-clear-name-name"},
+"dom-alarms-clearall": {"dfnID":"dom-alarms-clearall","dfnText":"clearAll","external":false,"refSections":[],"url":"#dom-alarms-clearall"},
+"dom-alarms-create": {"dfnID":"dom-alarms-create","dfnText":"create","external":false,"refSections":[],"url":"#dom-alarms-create"},
+"dom-alarms-create-alarminfo-alarminfo": {"dfnID":"dom-alarms-create-alarminfo-alarminfo","dfnText":"alarmInfo","external":false,"refSections":[],"url":"#dom-alarms-create-alarminfo-alarminfo"},
+"dom-alarms-create-name-alarminfo": {"dfnID":"dom-alarms-create-name-alarminfo","dfnText":"create","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-alarms-create-name-alarminfo"}],"title":"19.1.1. Alarms interface"}],"url":"#dom-alarms-create-name-alarminfo"},
+"dom-alarms-create-name-alarminfo-alarminfo": {"dfnID":"dom-alarms-create-name-alarminfo-alarminfo","dfnText":"alarmInfo","external":false,"refSections":[],"url":"#dom-alarms-create-name-alarminfo-alarminfo"},
+"dom-alarms-create-name-alarminfo-name": {"dfnID":"dom-alarms-create-name-alarminfo-name","dfnText":"name","external":false,"refSections":[],"url":"#dom-alarms-create-name-alarminfo-name"},
+"dom-alarms-get": {"dfnID":"dom-alarms-get","dfnText":"get","external":false,"refSections":[],"url":"#dom-alarms-get"},
+"dom-alarms-get-name-name": {"dfnID":"dom-alarms-get-name-name","dfnText":"name","external":false,"refSections":[],"url":"#dom-alarms-get-name-name"},
+"dom-alarms-getall": {"dfnID":"dom-alarms-getall","dfnText":"getAll","external":false,"refSections":[],"url":"#dom-alarms-getall"},
+"dom-alarms-onalarm": {"dfnID":"dom-alarms-onalarm","dfnText":"onAlarm","external":false,"refSections":[],"url":"#dom-alarms-onalarm"},
+"dom-browser-alarms": {"dfnID":"dom-browser-alarms","dfnText":"alarms","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-browser-alarms"}],"title":"19.1.1. Alarms interface"}],"url":"#dom-browser-alarms"},
 "dom-executionworld-isolated": {"dfnID":"dom-executionworld-isolated","dfnText":"\"ISOLATED\"","external":false,"refSections":[],"url":"#dom-executionworld-isolated"},
 "dom-executionworld-main": {"dfnID":"dom-executionworld-main","dfnText":"\"MAIN\"","external":false,"refSections":[],"url":"#dom-executionworld-main"},
+"dom-onalarmevent-addlistener": {"dfnID":"dom-onalarmevent-addlistener","dfnText":"addListener","external":false,"refSections":[],"url":"#dom-onalarmevent-addlistener"},
+"dom-onalarmevent-addlistener-listener-listener": {"dfnID":"dom-onalarmevent-addlistener-listener-listener","dfnText":"listener","external":false,"refSections":[],"url":"#dom-onalarmevent-addlistener-listener-listener"},
+"dom-onalarmevent-haslistener": {"dfnID":"dom-onalarmevent-haslistener","dfnText":"hasListener","external":false,"refSections":[],"url":"#dom-onalarmevent-haslistener"},
+"dom-onalarmevent-haslistener-listener-listener": {"dfnID":"dom-onalarmevent-haslistener-listener-listener","dfnText":"listener","external":false,"refSections":[],"url":"#dom-onalarmevent-haslistener-listener-listener"},
+"dom-onalarmevent-removelistener": {"dfnID":"dom-onalarmevent-removelistener","dfnText":"removeListener","external":false,"refSections":[],"url":"#dom-onalarmevent-removelistener"},
+"dom-onalarmevent-removelistener-listener-listener": {"dfnID":"dom-onalarmevent-removelistener-listener-listener","dfnText":"listener","external":false,"refSections":[],"url":"#dom-onalarmevent-removelistener-listener-listener"},
 "dom-runat-document_end": {"dfnID":"dom-runat-document_end","dfnText":"\"document_end\"","external":false,"refSections":[],"url":"#dom-runat-document_end"},
 "dom-runat-document_idle": {"dfnID":"dom-runat-document_idle","dfnText":"\"document_idle\"","external":false,"refSections":[],"url":"#dom-runat-document_idle"},
 "dom-runat-document_start": {"dfnID":"dom-runat-document_start","dfnText":"\"document_start\"","external":false,"refSections":[],"url":"#dom-runat-document_start"},
@@ -1610,6 +1799,7 @@ let dfnPanelData = {
 "main-world": {"dfnID":"main-world","dfnText":"main world","external":false,"refSections":[{"refs":[{"id":"ref-for-main-world"}],"title":"3. Execution contexts"},{"refs":[{"id":"ref-for-main-world\u2460"},{"id":"ref-for-main-world\u2461"},{"id":"ref-for-main-world\u2462"}],"title":"3.1. Isolated worlds"},{"refs":[{"id":"ref-for-main-world\u2463"}],"title":"5. The browser global"},{"refs":[{"id":"ref-for-main-world\u2464"}],"title":"13.2.13. ExecutionWorld enum"}],"url":"#main-world"},
 "manifest①": {"dfnID":"manifest\u2460","dfnText":"manifest","external":false,"refSections":[{"refs":[{"id":"ref-for-manifest\u2460"}],"title":"1.3. Other files"}],"url":"#manifest\u2460"},
 "match-pattern": {"dfnID":"match-pattern","dfnText":"match pattern","external":false,"refSections":[{"refs":[{"id":"ref-for-match-pattern"}],"title":"2.2.18.2. Key matches"},{"refs":[{"id":"ref-for-match-pattern\u2460"}],"title":"13.2.1. Key matches"},{"refs":[{"id":"ref-for-match-pattern\u2461"}],"title":"13.2.2. Key exclude_matches"}],"url":"#match-pattern"},
+"onalarmevent": {"dfnID":"onalarmevent","dfnText":"OnAlarmEvent","external":false,"refSections":[{"refs":[{"id":"ref-for-onalarmevent"}],"title":"19.1.1. Alarms interface"}],"url":"#onalarmevent"},
 "privileged-extension-context": {"dfnID":"privileged-extension-context","dfnText":"privileged extension context","external":false,"refSections":[{"refs":[{"id":"ref-for-privileged-extension-context"}],"title":"2.2.18. Key externally_connectable"}],"url":"#privileged-extension-context"},
 "runat": {"dfnID":"runat","dfnText":"RunAt","external":false,"refSections":[],"url":"#runat"},
 "world": {"dfnID":"world","dfnText":"world","external":false,"refSections":[{"refs":[{"id":"ref-for-world"}],"title":"13.2.11. Key world"},{"refs":[{"id":"ref-for-world\u2460"}],"title":"13.2.13. ExecutionWorld enum"}],"url":"#world"},
@@ -2001,8 +2191,15 @@ function genLinkingSyntaxes(dfn) {
 "use strict";
 {
 let refsData = {
+"#alarms": {"displayText":"Alarms","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"Alarms","type":"interface","url":"#alarms"},
+"#callbackdef-alarmlistener": {"displayText":"AlarmListener","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"AlarmListener","type":"callback","url":"#callbackdef-alarmlistener"},
 "#content-script-context": {"displayText":"content script context","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"content script context","type":"dfn","url":"#content-script-context"},
 "#content-scripts①": {"displayText":"content scripts","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"content scripts","type":"dfn","url":"#content-scripts\u2460"},
+"#dictdef-alarm": {"displayText":"Alarm","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"Alarm","type":"dictionary","url":"#dictdef-alarm"},
+"#dictdef-alarmcreateinfo": {"displayText":"AlarmCreateInfo","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"AlarmCreateInfo","type":"dictionary","url":"#dictdef-alarmcreateinfo"},
+"#dom-alarm-periodinminutes": {"displayText":"periodInMinutes","export":true,"for_":["Alarm"],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"periodInMinutes","type":"dict-member","url":"#dom-alarm-periodinminutes"},
+"#dom-alarms-create-name-alarminfo": {"displayText":"create(name, alarmInfo)","export":true,"for_":["Alarms"],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"create(name, alarmInfo)","type":"method","url":"#dom-alarms-create-name-alarminfo"},
+"#dom-browser-alarms": {"displayText":"alarms","export":true,"for_":["Browser"],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"alarms","type":"attribute","url":"#dom-browser-alarms"},
 "#enumdef-executionworld": {"displayText":"ExecutionWorld","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"ExecutionWorld","type":"enum","url":"#enumdef-executionworld"},
 "#enumdef-runat": {"displayText":"RunAt","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"RunAt","type":"enum","url":"#enumdef-runat"},
 "#extension-context": {"displayText":"extension context","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"extension context","type":"dfn","url":"#extension-context"},
@@ -2013,6 +2210,7 @@ let refsData = {
 "#main-world": {"displayText":"main world","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"main world","type":"dfn","url":"#main-world"},
 "#manifest①": {"displayText":"manifest","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"manifest","type":"dfn","url":"#manifest\u2460"},
 "#match-pattern": {"displayText":"match pattern","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"match pattern","type":"dfn","url":"#match-pattern"},
+"#onalarmevent": {"displayText":"OnAlarmEvent","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"OnAlarmEvent","type":"interface","url":"#onalarmevent"},
 "#privileged-extension-context": {"displayText":"privileged extension context","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"privileged extension context","type":"dfn","url":"#privileged-extension-context"},
 "#world": {"displayText":"world","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"world","type":"dfn","url":"#world"},
 "https://dom.spec.whatwg.org/#customevent": {"displayText":"CustomEvent","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"CustomEvent","type":"interface","url":"https://dom.spec.whatwg.org/#customevent"},
@@ -2025,7 +2223,14 @@ let refsData = {
 "https://infra.spec.whatwg.org/#string": {"displayText":"string","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"string","type":"dfn","url":"https://infra.spec.whatwg.org/#string"},
 "https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type": {"displayText":"list","export":true,"for_":["ECMAScript"],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"list","type":"dfn","url":"https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type"},
 "https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#table-state-components-for-all-execution-contexts": {"displayText":"realm","export":true,"for_":["All Execution Contexts"],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"realm","type":"dfn","url":"https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#table-state-components-for-all-execution-contexts"},
+"https://webidl.spec.whatwg.org/#Exposed": {"displayText":"Exposed","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
 "https://webidl.spec.whatwg.org/#dfn-platform-object": {"displayText":"platform object","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"platform object","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-platform-object"},
+"https://webidl.spec.whatwg.org/#idl-DOMString": {"displayText":"DOMString","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMString","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
+"https://webidl.spec.whatwg.org/#idl-boolean": {"displayText":"boolean","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"boolean","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-boolean"},
+"https://webidl.spec.whatwg.org/#idl-double": {"displayText":"double","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"double","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-double"},
+"https://webidl.spec.whatwg.org/#idl-promise": {"displayText":"Promise","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Promise","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-promise"},
+"https://webidl.spec.whatwg.org/#idl-sequence": {"displayText":"sequence","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"sequence","type":"dfn","url":"https://webidl.spec.whatwg.org/#idl-sequence"},
+"https://webidl.spec.whatwg.org/#idl-undefined": {"displayText":"undefined","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"undefined","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-undefined"},
 };
 
 function mkRefHint(link, ref) {
