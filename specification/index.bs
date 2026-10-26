@@ -45,13 +45,19 @@ A manifest file is a [[!JSON]] document named `manifest.json`. Malformed JSON fi
 
 If manifest keys that are not defined in this specification are specified, implementors must ignore those keys.
 
-A manifest value that this specification calls <dfn>invalid</dfn> causes the user agent to [=report an error=] and not load the extension.
+A manifest value that this specification calls <dfn>invalid</dfn> is one the user agent cannot use as written. The user agent should [=report a warning=] or [=report an error=]. It may ignore the value, use a default, or not load the extension.
 
-If manifest keys that are defined in this specification are specified with a different JSON type than defined in this specification, implementors must ignore those keys, unless this specification calls the value [=invalid=].
+If manifest keys that are defined in this specification are specified with a different JSON type than defined in this specification, implementors must ignore those keys and may [=report a warning=], unless this specification calls the value [=invalid=].
 
 To <dfn>report a warning</dfn> or <dfn>report an error</dfn>, the user agent makes a message available to the extension developer in a way the user agent chooses.
 
-A manifest value, or an item of a manifest value that is a [=list=], that this specification requires to be a [=package path=], and that is not one, including a value of another JSON type, or that [=resolve a package path|resolves=] to null against the root of the package, is [=invalid=].
+A manifest value that this specification requires to be a [=package path=] is [=invalid=] if any of the following is true:
+
+* It is not a [=string=].
+* It is the empty string.
+* Running [=resolve a package path=] with the value and an empty [=list=] returns null.
+
+A manifest value that this specification requires to be a [=list=] of [=package paths=] is [=invalid=] if any of its items is invalid by the rule above.
 
 The following keys must be considered valid:
 
@@ -125,7 +131,7 @@ A [=package path=] of the resource for a [=service worker environment=]. The res
 
 #### Key `scripts` #### {#key-background-scripts}
 
-A [=list=] of [=package paths=] of JavaScript files. The [=generated service worker=] or [=generated background document=] loads these files, as described in [[#resource-of-a-background-environment]]. An empty list is treated as if the key were absent. A value that is not a list, or that contains an item that is not a [=package path=], is [=invalid=].
+A [=list=] of [=package paths=] of JavaScript files. The [=generated service worker=] or [=generated background document=] loads these files, as described in [[#resource-of-a-background-environment]]. An empty list must be treated as if the key were absent. A value that is not a list, or that contains an item that is not a [=package path=], is [=invalid=].
 
 Issue(#1127): User agents differ on whether an empty `scripts` list loads background content. Firefox loads a background document with no scripts, and Chrome and Safari do not load background content.
 
@@ -139,7 +145,7 @@ A [=string=], either `"classic"` or `"module"`. Defaults to `"classic"`. Any oth
 
 #### Key `preferred_environment` #### {#key-background-preferred_environment}
 
-A [=list=] of [=strings=] that names environments in order of preference. The recognized items are `"service_worker"`, for the [=service worker environment=], and `"document"`, for the [=document environment=]. An empty list names no preference. The user agent ignores any other string and does not treat it as [=invalid=], so that an environment added in the future does not prevent an extension that names it from loading in a user agent that predates it. The user agent may [=report a warning=] for an ignored string. A value that is not a list, or that contains an item that is not a string, is [=invalid=].
+A [=list=] of [=strings=] that names environments in order of preference. The recognized items are `"service_worker"`, for the [=service worker environment=], and `"document"`, for the [=document environment=]. An empty list names no preference. The user agent must ignore any other string and must not treat it as [=invalid=], so that an environment added in the future does not prevent an extension that names it from loading in a user agent that predates it. The user agent may [=report a warning=] for an ignored string. A value that is not a list, or that contains an item that is not a string, is [=invalid=].
 
 ### Key `commands`
 
@@ -205,9 +211,7 @@ The <a href="#key-trial_tokens">`trial_tokens`</a> key is an optional [=list=] o
 
 ## Reserved file names
 
-Filenames beginning with U+005F (_) are reserved for use by user agent.
-
-Issue: Specify what happens when an extension contains a file with a reserved name, such as the name of a [=generated background document=] or [=generated service worker=], and whether a name is reserved in every path segment. The `_locales` directory also has a reserved name.
+Filenames in the root of the package that begin with U+005F (_) are reserved for use by the user agent. A user agent may [=report a warning=] for a file or directory in the root of the package whose name is reserved and not defined by this specification.
 
 # Execution contexts
 
@@ -294,11 +298,13 @@ A <dfn>package path</dfn> is a non-empty [=string=] that identifies a location i
 
 The <dfn>resolved path</dfn> of a [=package path=] is the [=string=] made of U+002F (/) followed by the items of the [=list=] that [[#resolve-a-package-path]] returns for it against the root of the package, joined with U+002F (/).
 
+The user agent determines how it matches the names in a [=package path=] to the files in the package, including whether the match is case-sensitive and how Unicode normalization applies. A symbolic link that points outside the package must not be followed. A package path that names no file in the package is not [=invalid=]. The content that uses the path fails to load.
+
 Issue(#1122): User agents differ on whether a [=package path=] that an API accepts, such as a path to an icon, is resolved against the root of the package or against the document that makes the call.
 
-Issue: User agents differ on a path that escapes the root of the package, such as `../background.js`. Chromium does not load the file. Firefox resolves it as a URL, which drops the extra `..` segments. Safari does the same when a file is loaded through a URL, such as a background page, and does not load the file when it reads the file directly, such as a content script. The steps in [[#resolve-a-package-path]] return null for such a path.
+Issue: User agents differ on a path that escapes the root of the package, such as `../background.js`. Chromium does not load the file for keys such as content scripts and icons. Firefox resolves every manifest path as a URL, which drops the extra `..` segments. Safari does the same when a file is loaded through a URL, such as a background page, and does not load the file when it reads the file directly, such as a content script. The steps in [[#resolve-a-package-path]] return null for such a path.
 
-Issue: A [=package path=] that names no file is not [=invalid=] in this specification. The content that uses the path fails to load, and the extension is still loaded. Chromium does not load the extension in this case, and Safari and Firefox do.
+Issue(#1035): Specify which characters a path segment may contain, such as U+0000 NULL, U+005C (\), U+0025 (%), U+003F (?) and U+0023 (#), whether names are matched with case sensitivity, and whether the URL Standard defines what a path segment is.
 
 ## Uniqueness of extension IDs
 
@@ -321,13 +327,13 @@ The user agent runs background content in one of two environments:
 * A <dfn>service worker environment</dfn>, in which the user agent runs a [=service worker=] from the [=extension origin=].
 * A <dfn>document environment</dfn>, in which the user agent loads an [=HTML document=] from the [=extension origin=] without displaying it.
 
-A user agent supports the service worker environment, the document environment, or both.
+A user agent supports the [=service worker environment=], the [=document environment=], or both.
 
-When the user agent loads an extension that has a `background` key, it runs the steps in [[#select-the-background-environment]] on the value of that key. The steps return a <dfn>background selection</dfn>, a pair of an environment and a key of the `background` object, or null. The key is the one whose value determines the resource: `service_worker`, `page`, or `scripts`.
+When the user agent loads an extension that has a `background` key, it runs the steps to [=select the background environment=] on the value of that key. The steps return a <dfn>background selection</dfn>, a pair of an environment and a key of the `background` object, or null. The key is the one whose value determines the resource: `service_worker`, `page`, or `scripts`.
 
-The user agent runs the resource of a [=background selection=] in the environment of that selection, as described in [[#resource-of-a-background-environment]]. When the steps return null, the extension has no background content, and the extension still loads.
+The user agent runs the resource of a [=background selection=] in the environment of that selection, as described in [[#resource-of-a-background-environment]]. When the steps return null, the extension has no background content.
 
-A resource that fails to load causes the user agent to [=report an error=]. The extension remains loaded, and the user agent does not select a second environment.
+Background content can fail to load, for example when its resource cannot be fetched or a script throws as it first runs. A [=document environment=] loads its resource as any [=HTML document=] loads, and a [=service worker environment=] loads its resource as any [=service worker=] script loads, so the default behavior of each applies. An API that expects background content can fail when the content did not load. A failure to load the resource must not by itself prevent the extension from loading, and the user agent must not select a second environment. The user agent may [=report an error=].
 
 Issue: Specify what counts as a failure to load, such as a resource that cannot be fetched or a script that throws while it first runs. Also specify how a failure affects the other scripts of a [=background selection=] that uses [[#key-background-scripts]]. In the [=generated service worker=], the scripts load one after another, so a script that cannot be fetched can prevent the scripts after it from loading. In the [=generated background document=], each <{script}> element loads on its own, so the scripts after a failed one still run. The two generated resources are expected to fail in the same way.
 
@@ -338,12 +344,12 @@ The key and the environment of a [=background selection=] determine the resource
 * For [[#key-background-service_worker]], the environment is a [=service worker environment=], and the resource is the JavaScript file at the [=resolved path=] of the value. The file is run as a [=module script=] when [[#key-background-type]] is `"module"`, and as a [=classic script=] otherwise.
 * For [[#key-background-page]], the environment is a [=document environment=], and the resource is the [=HTML document=] at the [=resolved path=] of the value. [[#key-background-type]] does not affect the document.
 * For [[#key-background-scripts]], the environment is either one, and the resource depends on it:
-    * In a service worker environment, the resource is the [=generated service worker=].
-    * In a document environment, the resource is the [=generated background document=].
+    * In a [=service worker environment=], the resource is the [=generated service worker=].
+    * In a [=document environment=], the resource is the [=generated background document=].
 
 The <dfn>generated service worker</dfn> is a JavaScript file in the [=extension origin=], at the path `/_generated_service_worker.js`, whose filename is [reserved](#reserved-file-names). It loads the [=resolved path=] of each path in [[#key-background-scripts]], in order. When [[#key-background-type]] is `"module"`, it imports each path as a [=module script=]. Otherwise, it loads the paths as [=classic scripts=] with {{WorkerGlobalScope/importScripts()}}. All of the scripts run in the same [=global object=].
 
-Issue(#785): The generated service worker is not implemented by all user agents.
+Issue(#785): The [=generated service worker=] is not implemented by all user agents.
 
 The <dfn>generated background document</dfn> is an [=HTML document=] in the [=extension origin=], at the path `/_generated_background_page.html`, whose filename is [reserved](#reserved-file-names). It contains one <{script}> element for each path in [[#key-background-scripts]], in order, with the [=resolved path=] of that path as its `src`. Each element is a [=module script=] when [[#key-background-type]] is `"module"`, and a [=classic script=] otherwise. All of the scripts run in the same [=global object=].
 
@@ -351,11 +357,7 @@ The <dfn>generated background document</dfn> is an [=HTML document=] in the [=ex
 
 [[#key-background-service_worker]] may be present together with [[#key-background-scripts]] or with [[#key-background-page]], so that one manifest works in user agents that support different environments. `scripts` and `page` are alternatives, and the user agent may [=report a warning=] when both are present. When two keys provide a resource for the same environment, `service_worker` and `page` take precedence over `scripts`. The [[#key-background-preferred_environment]] key lets the extension choose between the environments that a user agent supports.
 
-A user agent ignores the keys that belong only to environments it does not support, even when their values would otherwise be [=invalid=], and may [=report a warning=] for them.
-
-Issue: User agents differ on whether they validate the keys of an environment they do not support. This specification does not require validation.
-
-Issue: User agents differ in which of `page` and `scripts` they select when both are present and `preferred_environment` does not decide. This specification selects `page`.
+A user agent must ignore the keys that belong only to environments it does not support, even when their values would otherwise be [=invalid=], and may [=report a warning=] for them.
 
 ### Background lifecycle
 
@@ -510,11 +512,11 @@ To <dfn>resolve a package path</dfn>, given |path|, a [=package path=], and |dir
 
 1. If |path| starts with U+002F (/), remove that first code point from |path| and set |directory| to an empty [=list=].
 1. Let |segments| be the result of [=strictly splitting=] |path| on U+002F (/).
-1. If the last item of |segments| is `""`, `"."`, or `".."`, return null.
+1. If the last item of |segments| is `""`, a [=single-dot URL path segment=], or a [=double-dot URL path segment=], return null.
 1. Let |resolved| be a clone of |directory|.
 1. For each |segment| of |segments|:
-    1. If |segment| is `""` or `"."`, continue.
-    1. If |segment| is `".."`:
+    1. If |segment| is `""` or a [=single-dot URL path segment=], continue.
+    1. If |segment| is a [=double-dot URL path segment=]:
         1. If |resolved| is [=list/empty=], |path| escapes the root of the package. Return null.
         1. [=list/Remove=] the last item of |resolved|.
         1. Continue.
@@ -523,20 +525,20 @@ To <dfn>resolve a package path</dfn>, given |path|, a [=package path=], and |dir
 
 ## Select the background environment
 
-To select the background environment, given |background|, the value of the `background` key, return a [=background selection=] or null. A key is present if |background| contains it, except that an empty `scripts` list is treated as absent:
+To <dfn>select the background environment</dfn>, given |background|, the value of the `background` key, return a [=background selection=] or null. A key is present if |background| contains it and the user agent did not ignore its value as [=invalid=], except that an empty `scripts` list is treated as absent:
 
 1. Let |preferences| be the [=strings=] in |background|'s `preferred_environment` that are `"service_worker"` or `"document"` and name an environment the user agent supports. If `preferred_environment` is absent, |preferences| is empty.
 1. For each |preference| of |preferences|:
     1. If |preference| is `"service_worker"`:
         1. If `service_worker` is present, return the [=service worker environment=] and `service_worker`.
-        1. If `scripts` is present, return the service worker environment and `scripts`.
+        1. If `scripts` is present, return the [=service worker environment=] and `scripts`.
     1. If |preference| is `"document"`:
         1. If `page` is present, return the [=document environment=] and `page`.
-        1. If `scripts` is present, return the document environment and `scripts`.
-1. If `page` is present and the user agent supports the document environment, return the document environment and `page`.
-1. If `scripts` is present and the user agent supports the document environment, return the document environment and `scripts`.
-1. If `service_worker` is present and the user agent supports the service worker environment, return the service worker environment and `service_worker`.
-1. If `scripts` is present and the user agent supports the service worker environment, return the service worker environment and `scripts`.
+        1. If `scripts` is present, return the [=document environment=] and `scripts`.
+1. If `page` is present and the user agent supports the [=document environment=], return the [=document environment=] and `page`.
+1. If `scripts` is present and the user agent supports the [=document environment=], return the [=document environment=] and `scripts`.
+1. If `service_worker` is present and the user agent supports the [=service worker environment=], return the [=service worker environment=] and `service_worker`.
+1. If `scripts` is present and the user agent supports the [=service worker environment=], return the [=service worker environment=] and `scripts`.
 1. [=Report a warning=] and return null.
 
 <pre class="link-defaults">
