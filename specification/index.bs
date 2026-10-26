@@ -434,6 +434,8 @@ dictionary Alarm {
   required boolean persistAcrossSessions;
 };
 
+Issue(#1124): some user-agents set `periodInMinutes` to null instead of not including it in the dictionary.
+
 dictionary AlarmCreateInfo {
   DOMString name;
   double when;
