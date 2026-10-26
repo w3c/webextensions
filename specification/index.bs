@@ -302,7 +302,7 @@ The user agent determines how it matches the names in a [=package path=] to the 
 
 Issue(#1122): User agents differ on whether a [=package path=] that an API accepts, such as a path to an icon, is resolved against the root of the package or against the document that makes the call.
 
-Issue: User agents differ on a path that escapes the root of the package, such as `../background.js`. Chromium does not load the file for keys such as content scripts and icons. Firefox resolves every manifest path as a URL, which drops the extra `..` segments. Safari does the same when a file is loaded through a URL, such as a background page, and does not load the file when it reads the file directly, such as a content script. The steps in [[#resolve-a-package-path]] return null for such a path.
+Issue(#1157): User agents differ on a path that escapes the root of the package, such as `../background.js`. Chromium does not load the file for keys such as content scripts and icons. Firefox resolves every manifest path as a URL, which drops the extra `..` segments. Safari does the same when a file is loaded through a URL, such as a background page, and does not load the file when it reads the file directly, such as a content script. The steps in [[#resolve-a-package-path]] return null for such a path.
 
 Issue(#1035): Specify which characters a path segment may contain, such as U+0000 NULL, U+005C (\), U+0025 (%), U+003F (?) and U+0023 (#), whether names are matched with case sensitivity, and whether the URL Standard defines what a path segment is.
 
@@ -335,7 +335,7 @@ The user agent runs the resource of a [=background selection=] in the environmen
 
 Background content can fail to load, for example when its resource cannot be fetched or a script throws as it first runs. A [=document environment=] loads its resource as any [=HTML document=] loads, and a [=service worker environment=] loads its resource as any [=service worker=] script loads, so the default behavior of each applies. An API that expects background content can fail when the content did not load. A failure to load the resource must not by itself prevent the extension from loading, and the user agent must not select a second environment. The user agent may [=report an error=].
 
-Issue: Specify what counts as a failure to load, such as a resource that cannot be fetched or a script that throws while it first runs. Also specify how a failure affects the other scripts of a [=background selection=] that uses [[#key-background-scripts]]. In the [=generated service worker=], the scripts load one after another, so a script that cannot be fetched can prevent the scripts after it from loading. In the [=generated background document=], each <{script}> element loads on its own, so the scripts after a failed one still run. The two generated resources are expected to fail in the same way.
+Issue(#1156): Specify what counts as a failure to load, such as a resource that cannot be fetched or a script that throws while it first runs. Also specify how a failure affects the other scripts of a [=background selection=] that uses [[#key-background-scripts]]. In the [=generated service worker=], the scripts load one after another, so a script that cannot be fetched can prevent the scripts after it from loading. In the [=generated background document=], each <{script}> element loads on its own, so the scripts after a failed one still run. The two generated resources are expected to fail in the same way.
 
 ### Resource of a background environment
 
@@ -363,7 +363,7 @@ A user agent must ignore the keys that belong only to environments it does not s
 
 [=Background content=] is event-based. The user agent loads it when an event occurs for which it has registered a listener, and may unload it when it is idle. Unloading discards the [=global object=] of the environment and the state held in it. A later event loads the background content again.
 
-Issue: Define when a listener counts as registered. The user agent has to observe the listeners that the background content adds while it loads, and keep them so that a later event can load the background content again. A proposal adds a method that lets the extension tell the user agent it has finished registering listeners. See [Asynchronous Listener Registration](https://github.com/w3c/webextensions/blob/main/proposals/async-listener-registration.md).
+Issue(#1158): Define when a listener counts as registered. The user agent has to observe the listeners that the background content adds while it loads, and keep them so that a later event can load the background content again. A proposal adds a method that lets the extension tell the user agent it has finished registering listeners. See [Asynchronous Listener Registration](https://github.com/w3c/webextensions/blob/main/proposals/async-listener-registration.md).
 
 Issue: Specify when the background content first loads, what counts as idle, and how events that arrive while it is loading are ordered. See <#147>, <#416>, and <#464>.
 
