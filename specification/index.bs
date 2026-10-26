@@ -418,24 +418,28 @@ The <dfn attribute for=Browser>alarms</dfn> attribute allows you to access the A
 
 ### Alarms interface
 
-Issue: Should we rename {{AlarmCreateInfo}} to `CreateInfo` per <a href="http://crbug.com/123073">crbug.com/123073</a>?
-
-Issue: In `alarms.create(AlarmCreateInfo alarmInfo)`, the dictionary is marked as optional in the IDL as WebIDL does not allow requiring a dictionary with no required members. We should handle this in prose.
-
 <script type=idl>
 partial interface Browser {
   attribute Alarms alarms;
 };
+</script>
 
+Issue(#1124): Some user-agents set {{Alarm/periodInMinutes}} to null instead of not including it in the dictionary.
+
+<script type=idl>
 dictionary Alarm {
   required DOMString name;
   required double scheduledTime;
   double periodInMinutes;
   required boolean persistAcrossSessions;
 };
+</script>
 
-Issue(#1124): some user-agents set `periodInMinutes` to null instead of not including it in the dictionary.
+Issue: Should we rename {{AlarmCreateInfo}} to `CreateInfo` per <a href="http://crbug.com/123073">crbug.com/123073</a>?
 
+Issue: In {{Alarms/create(name, alarmInfo)}}, the dictionary is marked as optional in the IDL as WebIDL does not allow requiring a dictionary with no required members. We should handle this in prose.
+
+<script type=idl>
 dictionary AlarmCreateInfo {
   DOMString name;
   double when;
