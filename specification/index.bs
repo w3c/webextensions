@@ -9,7 +9,6 @@ Editor: Mukul Purohit, Microsoft Corporation https://www.microsoft.com, mpurohit
 Editor: Tomislav Jovanovic, Mozilla https://www.mozilla.org/, tjovanovic@mozilla.com
 Editor: Oliver Dunk, Google https://www.google.com, oliverdunk@chromium.org
 Editor: Kiara Rose, Apple https://www.apple.com, kiara_rose@apple.com
-Editor: Carlos Jeurissen, invited expert https://jeurissen.co/, carlos@jeurissen.co
 Abstract: [Placeholder] Abstract.
 Repository: w3c/webextensions
 Markup Shorthands: markdown yes
@@ -529,7 +528,7 @@ The first fully supported [=icon group=] is selected for use as the [=extension 
 
 If no [=icon group=] yields an [=icon resource=], the user agent continues with the next source in [[#icon-selection-precedence-order]].
 
-Issue: User agents differ on whether a lone [=icon group=] is used whatever its matching criteria, and on whether criteria are dropped when no group matches.
+Issue(1159): User agents differ on whether a lone [=icon group=] is used whatever its matching criteria, and on whether criteria are dropped when no group matches.
 
 ### Selecting icon size resource from an [=icon group=]
 
