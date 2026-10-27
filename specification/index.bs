@@ -88,11 +88,15 @@ This key must be present.
 
 ### Key `permissions`
 
-This key may be present.
+This key may be present. Its value is a [=list=] of [=strings=] that name the permissions the extension requests. The user agent ignores a string that is not the name of a permission it recognizes, including a string that differs from a name only in case.
+
+Issue: Further specify the `permissions` key. See [issue 1150](https://github.com/w3c/webextensions/issues/1150).
 
 ### Key `optional_permissions`
 
-This key may be present.
+This key may be present. Its value is a [=list=] of [=strings=] that name permissions the extension can request while it runs.
+
+Issue: Further specify the `optional_permissions` key. See [issue 1150](https://github.com/w3c/webextensions/issues/1150).
 
 ### Key `host_permissions`
 
@@ -261,7 +265,86 @@ A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards 
 
 ## Promises and callbacks
 
+## Tabs and windows
+
+A <dfn>tab</dfn> is a [=top-level traversable=] that belongs to a browser window. Each browser window has a <dfn>selected tab</dfn>, the tab that it currently shows.
+
+Note: Extension popups, sidebars and side panels are not tabs.
+
 ## User gestures and activeTab
+
+Issue: Specify which user interactions give grant a user gesture, how long the gesture lasts, and whether it passes from one context to another. See [issue 918](https://github.com/w3c/webextensions/issues/918), [issue 919](https://github.com/w3c/webextensions/issues/919), and [issue 920](https://github.com/w3c/webextensions/issues/920).
+
+The <dfn>activeTab permission</dfn> is the permission named `"activeTab"`, which an extension lists in [[#key-permissions]] or [[#key-optional_permissions]]. An extension has the [=activeTab permission=] if it lists the permission in [[#key-permissions]], or if it lists the permission in [[#key-optional_permissions]] and the user agent has granted the extension's request for it, such as through `permissions.request()`.
+
+Issue: Specify whether a grant ends when the extension loses the [=activeTab permission=], such as through `permissions.remove()`.
+
+When the user invokes an extension that has the [=activeTab permission=], the user agent runs the steps in [[#granting-the-activetab-permission]], which can give the extension an [=activeTab grant=] for a [=tab=]. The grant gives the extension access to the tab for the purposes in [[#access-from-an-activetab-grant]], until it ends as described in [[#end-of-an-activetab-grant]].
+
+A <dfn>document in a tab</dfn> is a [=Document/fully active=] [=document=] whose [=node navigable=] has a [=tab=] as its [=navigable/top-level traversable=].
+
+### Invoking an extension
+
+An <dfn>invocation</dfn> of an extension is one of the following user interactions, each of which identifies a [=tab=], called the <dfn for="invocation">target tab</dfn>. No other user interaction is an invocation.
+
+* Clicking the extension's action, a button that the user agent shows for the extension, such as a toolbar button. The target tab is the [=selected tab=] of the browser window in which the user activates the action.
+* Choosing a menu item that the extension created with the `menus` or `contextMenus` API, in a menu that the user agent shows for a tab, for a [=document in a tab=], or for the extension's action. The target tab is that tab, the tab of that document, or, for a menu shown for the action, the [=selected tab=] of the browser window that contains the action.
+* Pressing the keyboard shortcut of a command that the extension declares, including a shortcut that activates the extension's action, while a browser window is focused. The target tab is the [=selected tab=] of the focused window.
+* Accepting input in the address bar while the extension's `omnibox` keyword is active, which dispatches `omnibox.onInputEntered`. The target tab is the [=selected tab=] of the browser window that contains the address bar.
+
+Note: A call that the extension makes itself, such as `action.openPopup()`, is not an [=invocation=].
+
+Issue: User agents differ on whether a call to `action.openPopup()` made while the extension has a user gesture is an invocation. This specification does not treat it as one. See [issue 1149](https://github.com/w3c/webextensions/issues/1149).
+
+Issue: No user agent treats showing the extension's developer tools panel as an invocation, though [issue 386](https://github.com/w3c/webextensions/issues/386), which user agents support, proposes making it one.
+
+### Granting the activeTab permission
+
+An <dfn>activeTab grant</dfn> is access to a [=tab=] that an extension receives when the user invokes it. Each grant is for one extension and one tab, and has an [=origin=], the <dfn for="activeTab grant">origin of the grant</dfn>, which is the origin of the tab's active document when the grant is given. An extension has at most one activeTab grant for each tab, and a grant for one tab does not affect the extension's grants for other tabs.
+
+When an [=invocation=] of an extension that has the [=activeTab permission=] occurs, the user agent runs the following steps before it dispatches any event that the invocation causes, such as `action.onClicked`:
+
+1. Let |tab| be the [=invocation/target tab=].
+1. Let |origin| be the [=Document/origin=] of |tab|'s [=navigable/active document=].
+1. If |origin| is an [=opaque origin=], return.
+1. If the user has denied the extension access to |origin|, or if |tab|'s active document is one that the user agent does not let extensions access, the user agent may return.
+1. Give the extension an activeTab grant for |tab|, with |origin| as the [=activeTab grant/origin of the grant=], replacing any grant that the extension already has for |tab|.
+
+A grant does not let the extension run scripts in a document that the user agent does not let extensions access, such as a document that is part of the user agent's own user interface.
+
+### Access from an activeTab grant
+
+While an extension has an [=activeTab grant=] for a [=tab=], the user agent treats the extension as having a host permission for the [=activeTab grant/origin of the grant=] for the following purposes:
+
+* Injecting scripts and style sheets into any [=document in a tab|document=] in the granted tab whose origin is [=same origin=] with the [=activeTab grant/origin of the grant=], and removing the style sheets that the extension inserted, using the `scripting` API.
+* Reading the URL and title of the tab's [=navigable/active document=] and the URL of the tab's favicon, such as through the `url`, `title` and `favIconUrl` properties of the `tabs.Tab` object that represents the tab.
+* Capturing the visible content of the tab while it is the [=selected tab=] of its browser window, such as with `tabs.captureVisibleTab()`.
+* Intercepting network requests in the tab to URLs whose origin is [=same origin=] with the [=activeTab grant/origin of the grant=], such as with `webRequest` and `declarativeNetRequest`.
+* Making requests from a [=privileged extension context=], such as with `fetch()`, to URLs whose origin is [=same origin=] with the [=activeTab grant/origin of the grant=].
+
+Issue: User agents differ on whether a grant lets the extension intercept network requests in the tab to the [=activeTab grant/origin of the grant=]. This specification allows it.
+
+Issue: User agents differ on whether a grant lets the extension make requests to the [=activeTab grant/origin of the grant=] from its privileged extension contexts. This specification allows it. See the discussion of [PR 799](https://github.com/w3c/webextensions/pull/799).
+
+A grant does not add to the permissions that the user agent has granted to the extension. For example, `permissions.contains()` does not report the grant, and the `cookies` API does not treat the extension as having a host permission for the [=activeTab grant/origin of the grant=].
+
+Issue: User agents differ on whether an invocation runs [=content scripts=] that the extension declares in [[#key-content_scripts]] when the user has not given the extension access to that URL. See [issue 657](https://github.com/w3c/webextensions/issues/657).
+
+### End of an activeTab grant
+
+The user agent removes an extension's [=activeTab grant=] for a [=tab=] when any of the following occurs:
+
+* The tab's [=navigable/active document=] becomes a document whose [=Document/origin=] is not [=same origin=] with the [=activeTab grant/origin of the grant=].
+* The tab is closed.
+* The extension is disabled, uninstalled, or reloaded.
+
+A navigation of the tab to a document whose origin is same origin with the [=activeTab grant/origin of the grant=], including a reload, keeps the grant. So does a navigation that does not change the tab's active document, such as a navigation to a fragment, and a navigation of a [=child navigable=] in the tab. Navigating back to a document after the grant was removed does not restore the grant.
+
+Issue: User agents differ on whether a grant ends when the tab navigates to a document whose origin is same origin with the [=activeTab grant/origin of the grant=], including a reload. This specification keeps the grant. See [issue 55](https://github.com/w3c/webextensions/issues/55).
+
+Issue: User agents differ on whether a document that the user agent restores from the back/forward cache regains a grant that ended when the tab navigated away from it. This specification does not restore the grant. See [issue 55](https://github.com/w3c/webextensions/issues/55).
+
+The user agent may also remove a grant when the user changes the extension's access to the [=activeTab grant/origin of the grant=], or when the tab's active document is one that the user agent does not let extensions access. A grant has no time limit.
 
 ## Extension permissions and web perissions
 
@@ -473,6 +556,11 @@ interface Alarms {
 
 <pre class="link-defaults">
 spec:html; type:dfn; for:realm; text:global object
+spec:infra; type:dfn; text:list
+spec:dom; type:dfn; for:/; text:document
+spec:html; type:dfn; for:/; text:origin
+spec:html; type:dfn; for:/; text:navigable
+spec:html; type:dfn; for:/; text:top-level traversable
 </pre>
 
 <pre class="biblio">
