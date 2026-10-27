@@ -467,7 +467,7 @@ interface Alarms {
   Promise<boolean> clear(optional DOMString name);
   Promise<undefined> clearAll();
 
-  attribute OnAlarmEvent onAlarm;
+  readonly attribute OnAlarmEvent onAlarm;
 };
 </script>
 
