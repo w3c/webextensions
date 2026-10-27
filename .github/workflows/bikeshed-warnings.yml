@@ -16,22 +16,62 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
+
+env:
+  # The specs to check. Each entry's source is the only spec file it reads,
+  # so a PR only needs to check the specs whose source it changes.
+  SPECS: >-
+    [
+      {"name": "specification", "source": "specification/index.bs"},
+      {"name": "webdriver-classic", "source": "specification/webdriver-classic.bs"},
+      {"name": "window-browser", "source": "specification/window.browser.bs"}
+    ]
 
 jobs:
+  changes:
+    name: Select specs to check
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+    steps:
+      - name: Select specs changed by the PR
+        id: select
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if [ "$EVENT_NAME" != "pull_request" ]; then
+            # Manual runs check every spec.
+            changed=""
+          else
+            changed=$(gh api --paginate "repos/$REPO/pulls/$PR_NUMBER/files" --jq '.[].filename')
+          fi
+          printf 'Changed files:\n%s\n' "$changed"
+          # Changes to this workflow or its report script affect every spec.
+          matrix=$(jq -c --arg event "$EVENT_NAME" --arg changed "$changed" '
+            ($changed | split("\n")) as $files
+            | if $event != "pull_request"
+                or any($files[]; . == ".github/workflows/bikeshed-warnings.yml"
+                                 or . == ".github/scripts/bikeshed-report.py")
+              then .
+              else map(select(.source as $s | any($files[]; . == $s)))
+              end' <<< "$SPECS")
+          echo "Specs to check: $matrix"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
   bikeshed:
     name: Bikeshed warnings (${{ matrix.name }})
+    needs: changes
+    if: needs.changes.outputs.matrix != '[]'
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - name: specification
-            source: specification/index.bs
-          - name: webdriver-classic
-            source: specification/webdriver-classic.bs
-          - name: window-browser
-            source: specification/window.browser.bs
+        include: ${{ fromJSON(needs.changes.outputs.matrix) }}
 
     steps:
       - uses: actions/checkout@v4
