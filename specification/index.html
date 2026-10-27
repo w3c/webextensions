@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version 49e9fdd4f, updated Tue Oct 13 14:27:53 2026 -0700" name="generator">
   <link href="https://w3c.github.io/webextensions/specification/" rel="canonical">
-  <meta content="fd7db85e183cb2dc9419bd59357fec8c553010a5" name="revision">
+  <meta content="99c5b2b4cc1c57b089c061254195aff8f96c5032" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -862,8 +862,8 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
         <li><a href="#key-include_globs"><span class="secno">13.2.9</span> <span class="content">Key <code>include_globs</code></span></a>
         <li><a href="#key-exclude_globs"><span class="secno">13.2.10</span> <span class="content">Key <code>exclude_globs</code></span></a>
         <li><a href="#key-world"><span class="secno">13.2.11</span> <span class="content">Key <code>world</code></span></a>
-        <li><a href="#runat-enum"><span class="secno">13.2.12</span> <span class="content"><span>RunAt</span> enum</span></a>
-        <li><a href="#executionworld-enum"><span class="secno">13.2.13</span> <span class="content"><span>ExecutionWorld</span> enum</span></a>
+        <li><a href="#runat-enum"><span class="secno">13.2.12</span> <span class="content"><code>RunAt</code> enum</span></a>
+        <li><a href="#executionworld-enum"><span class="secno">13.2.13</span> <span class="content"><code>ExecutionWorld</code> enum</span></a>
        </ol>
       <li><a href="#extension-pages"><span class="secno">13.3</span> <span class="content">Extension pages</span></a>
      </ol>
@@ -920,9 +920,9 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <h3 class="heading settled" data-level="1.2" id="_locales-subdirectory"><span class="secno">1.2. </span><span class="content">_locales subdirectory</span><a class="self-link" href="#_locales-subdirectory"></a></h3>
    <p>An optional directory containing strings as defined in <a href="#localization">localization</a>.</p>
    <h3 class="heading settled" data-level="1.3" id="other-files"><span class="secno">1.3. </span><span class="content">Other files</span><a class="self-link" href="#other-files"></a></h3>
-   <p>An extension may also contain other files, such as those referenced in the <a href="#key-content_scripts">§ 2.2.11 Key content_scripts</a> and <a href="#key-background">§ 2.2.9 Key background</a> parts of the <a data-link-type="dfn" href="#manifest①" id="ref-for-manifest①">manifest</a>.</p>
+   <p>An extension may also contain other files, such as those referenced in the <a href="#key-content_scripts">§ 2.2.11 Key content_scripts</a> and <a href="#key-background">§ 2.2.9 Key background</a> parts of the <a data-link-type="dfn" href="#dfn-manifest" id="ref-for-dfn-manifest">manifest</a>.</p>
    <h2 class="heading settled" data-level="2" id="manifest"><span class="secno">2. </span><span class="content">Manifest</span><a class="self-link" href="#manifest"></a></h2>
-   <p>A WebExtension must have a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="manifest①">manifest</dfn> file at its root directory.</p>
+   <p>A WebExtension must have a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="dfn-manifest">manifest</dfn> file at its root directory.</p>
    <h3 class="heading settled" data-level="2.1" id="manifest-file"><span class="secno">2.1. </span><span class="content">Manifest file</span><a class="self-link" href="#manifest-file"></a></h3>
    <p>A manifest file is a <a data-link-type="biblio" href="#biblio-json" title="The JavaScript Object Notation (JSON) Data Interchange Format">[JSON]</a> document named <code>manifest.json</code>. Malformed JSON files are not supported. Note that some implementors may accept comments, represented by any content following <code>//</code> outside of a JSON string.</p>
    <h3 class="heading settled" data-level="2.2" id="manifest-keys"><span class="secno">2.2. </span><span class="content">Manifest keys</span><a class="self-link" href="#manifest-keys"></a></h3>
@@ -997,7 +997,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <h4 class="heading settled" data-level="2.2.10" id="key-commands"><span class="secno">2.2.10. </span><span class="content">Key <code>commands</code></span><a class="self-link" href="#key-commands"></a></h4>
    <p>This key may be present.</p>
    <h4 class="heading settled" data-level="2.2.11" id="key-content_scripts"><span class="secno">2.2.11. </span><span class="content">Key <code>content_scripts</code></span><a class="self-link" href="#key-content_scripts"></a></h4>
-   <p>The <a href="#key-content_scripts"><code>content_scripts</code></a> key is a <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type" id="ref-for-sec-list-and-record-specification-type">list</a> of items representing <a data-link-type="dfn" href="#content-scripts①" id="ref-for-content-scripts①">content scripts</a> that should be registered.</p>
+   <p>The <a href="#key-content_scripts"><code>content_scripts</code></a> key is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a> of items representing <a data-link-type="dfn" href="#dfn-content-scripts" id="ref-for-dfn-content-scripts">content scripts</a> that should be registered.</p>
    <h4 class="heading settled" data-level="2.2.12" id="key-content_security_policy"><span class="secno">2.2.12. </span><span class="content">Key <code>content_security_policy</code></span><a class="self-link" href="#key-content_security_policy"></a></h4>
    <p>This key may be present.</p>
    <h4 class="heading settled" data-level="2.2.13" id="key-description"><span class="secno">2.2.13. </span><span class="content">Key <code>description</code></span><a class="self-link" href="#key-description"></a></h4>
@@ -1012,43 +1012,43 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <h4 class="heading settled" data-level="2.2.17" id="key-web_accessible_resources"><span class="secno">2.2.17. </span><span class="content">Key <code>web_accessible_resources</code></span><a class="self-link" href="#key-web_accessible_resources"></a></h4>
    <p>This key may be present.</p>
    <h4 class="heading settled" data-level="2.2.18" id="key-externally_connectable"><span class="secno">2.2.18. </span><span class="content">Key <code>externally_connectable</code></span><a class="self-link" href="#key-externally_connectable"></a></h4>
-   <p>The <a href="#key-externally_connectable"><code>externally_connectable</code></a> key declares which extensions and web pages can establish connections to the extension using <u class="link-error" data-lt="runtime.connect()" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;runtime.connect()&apos;.">runtime.connect()</u> and <u class="link-error" data-lt="runtime.sendMessage()" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;runtime.sendmessage()&apos;.">runtime.sendMessage()</u>. If omitted, all extensions may connect, but no web pages can connect.</p>
-   <p>A call to <u class="link-error" data-lt="runtime.connect()" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;runtime.connect()&apos;.">runtime.connect()</u> from an external web page or extension triggers the <u class="link-error" data-lt="runtime.onConnectExternal" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;runtime.onconnectexternal&apos;.">runtime.onConnectExternal</u> event listener to fire. Similarly, a message sent by an external web page or extension with <u class="link-error" data-lt="runtime.sendMessage()" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;runtime.sendmessage()&apos;.">runtime.sendMessage()</u> triggers the <u class="link-error" data-lt="runtime.onMessageExternal" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;runtime.onmessageexternal&apos;.">runtime.onMessageExternal</u> event listener to fire. These events are only available in a <a data-link-type="dfn" href="#privileged-extension-context" id="ref-for-privileged-extension-context">privileged extension context</a>, not in web pages or less-privileged contexts like <a data-link-type="dfn" href="#content-scripts①" id="ref-for-content-scripts①①">content scripts</a>.</p>
+   <p>The <a href="#key-externally_connectable"><code>externally_connectable</code></a> key declares which extensions and web pages can establish connections to the extension using <code>runtime.connect()</code> and <code>runtime.sendMessage()</code>. If omitted, all extensions may connect, but no web pages can connect.</p>
+   <p>A call to <code>runtime.connect()</code> from an external web page or extension triggers the <code>runtime.onConnectExternal</code> event listener to fire. Similarly, a message sent by an external web page or extension with <code>runtime.sendMessage()</code> triggers the <code>runtime.onMessageExternal</code> event listener to fire. These events are only available in a <a data-link-type="dfn" href="#privileged-extension-context" id="ref-for-privileged-extension-context">privileged extension context</a>, not in web pages or less-privileged contexts like <a data-link-type="dfn" href="#dfn-content-scripts" id="ref-for-dfn-content-scripts①">content scripts</a>.</p>
    <p>This key may be present and may include the following optional keys:</p>
    <h5 class="heading settled" data-level="2.2.18.1" id="key-externally_connectable-ids"><span class="secno">2.2.18.1. </span><span class="content">Key <code>ids</code></span><a class="self-link" href="#key-externally_connectable-ids"></a></h5>
-   <p>A <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type" id="ref-for-sec-list-and-record-specification-type①">list</a> of <u class="link-error" data-lt="extension IDs" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;extension ids&apos;.">extension IDs</u> that specifies which extensions can communicate with the extension. To allow all extensions to connect, include the wildcard pattern <code>"*"</code>.</p>
+   <p>A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list①">list</a> of extension IDs that specifies which extensions can communicate with the extension. To allow all extensions to connect, include the wildcard pattern <code>"*"</code>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> The default of whether an extension can connect changes based on whether the <code>externally_connectable</code> key is present. If the key is omitted, the default is to allow all extensions to connect. If the key is present, no extensions can connect unless specified in <code>"ids"</code>, even if the <code>"ids"</code> key is ommitted.</p>
    <h5 class="heading settled" data-level="2.2.18.2" id="key-externally_connectable-matches"><span class="secno">2.2.18.2. </span><span class="content">Key <code>matches</code></span><a class="self-link" href="#key-externally_connectable-matches"></a></h5>
-   <p>A <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type" id="ref-for-sec-list-and-record-specification-type②">list</a> of <a data-link-type="dfn" href="#match-pattern" id="ref-for-match-pattern">match patterns</a> that specifies which web pages can communicate with the extension. If left empty or omitted, no web pages can connect.</p>
+   <p>A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list②">list</a> of <a data-link-type="dfn" href="#match-pattern" id="ref-for-match-pattern">match patterns</a> that specifies which web pages can communicate with the extension. If left empty or omitted, no web pages can connect.</p>
    <p class="note" role="note"><span class="marker">Note:</span> Only the document’s own URL is used for matching. There is no fallback to the URL of the document that created it.</p>
    <h4 class="heading settled" data-level="2.2.19" id="key-devtools_page"><span class="secno">2.2.19. </span><span class="content">Key <code>devtools_page</code></span><a class="self-link" href="#key-devtools_page"></a></h4>
    <p>This key may be present.</p>
    <h4 class="heading settled" data-level="2.2.20" id="key-trial_tokens"><span class="secno">2.2.20. </span><span class="content">Key <code>trial_tokens</code></span><a class="self-link" href="#key-trial_tokens"></a></h4>
-   <p>The <a href="#key-trial_tokens"><code>trial_tokens</code></a> key is an optional <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type" id="ref-for-sec-list-and-record-specification-type③">list</a> of strings. These may be used by the user agent to enable experimental features for the <a href="#extension-origin">§ 6 Extension origin</a>. The user agent may ignore or warn about any unrecognized, expired or malformed keys but any such entries must not prevent the extension from loading.</p>
+   <p>The <a href="#key-trial_tokens"><code>trial_tokens</code></a> key is an optional <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list③">list</a> of strings. These may be used by the user agent to enable experimental features for the <a href="#extension-origin">§ 6 Extension origin</a>. The user agent may ignore or warn about any unrecognized, expired or malformed keys but any such entries must not prevent the extension from loading.</p>
    <h3 class="heading settled" data-level="2.3" id="reserved-file-names"><span class="secno">2.3. </span><span class="content">Reserved file names</span><a class="self-link" href="#reserved-file-names"></a></h3>
    <p>Filenames beginning with an underscore (<code>_</code>) are reserved for use by user agent.</p>
    <h2 class="heading settled" data-level="3" id="execution-contexts"><span class="secno">3. </span><span class="content">Execution contexts</span><a class="self-link" href="#execution-contexts"></a></h2>
    <p>Extensions can execute JavaScript code, in any of the following execution contexts:</p>
    <ul>
     <li data-md>
-     <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="extension-context">extension context</dfn> is a <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#table-state-components-for-all-execution-contexts" id="ref-for-table-state-components-for-all-execution-contexts">realm</a> associated with an <a data-link-type="dfn" href="#extension-origin①" id="ref-for-extension-origin①">extension origin</a>.</p>
+     <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="extension-context">extension context</dfn> is a <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#realm" id="ref-for-realm">realm</a> associated with an <a data-link-type="dfn" href="#dfn-extension-origin" id="ref-for-dfn-extension-origin">extension origin</a>.</p>
     <li data-md>
      <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="privileged-extension-context">privileged extension context</dfn> is an <a data-link-type="dfn" href="#extension-context" id="ref-for-extension-context">extension context</a> with access to the full set of extension APIs available to the extension. For example, the background page or worker defined through <a href="#key-background">§ 2.2.9 Key background</a>.</p>
     <li data-md>
-     <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="content-script-context">content script context</dfn> is an <a data-link-type="dfn" href="#extension-context" id="ref-for-extension-context①">extension context</a> and <a data-link-type="dfn" href="#isolated-world" id="ref-for-isolated-world">isolated world</a> with limited access to a subset of extension APIs. This is the default execution environment of all <a data-link-type="dfn" href="#content-scripts①" id="ref-for-content-scripts①②">content scripts</a> of an extension.</p>
+     <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="content-script-context">content script context</dfn> is an <a data-link-type="dfn" href="#extension-context" id="ref-for-extension-context①">extension context</a> and <a data-link-type="dfn" href="#isolated-world" id="ref-for-isolated-world">isolated world</a> with limited access to a subset of extension APIs. This is the default execution environment of all <a data-link-type="dfn" href="#dfn-content-scripts" id="ref-for-dfn-content-scripts②">content scripts</a> of an extension.</p>
     <li data-md>
-     <p>The <a data-link-type="dfn" href="#main-world" id="ref-for-main-world">main world</a> of a web page not associated with an <a data-link-type="dfn" href="#extension-origin①" id="ref-for-extension-origin①①">extension origin</a> is not an extension context. It does not have access to any extension API, except when an extension allows so through <a href="#key-externally_connectable">§ 2.2.18 Key externally_connectable</a>.</p>
+     <p>The <a data-link-type="dfn" href="#main-world" id="ref-for-main-world">main world</a> of a web page not associated with an <a data-link-type="dfn" href="#dfn-extension-origin" id="ref-for-dfn-extension-origin①">extension origin</a> is not an extension context. It does not have access to any extension API, except when an extension allows so through <a href="#key-externally_connectable">§ 2.2.18 Key externally_connectable</a>.</p>
    </ul>
    <p>Some extension APIs may involve the execution of JavaScript code in contexts other than what is specified above. For example, the <code>userScripts</code> API allows the creation of <code>USER_SCRIPT</code> worlds that are isolated similarly to <a data-link-type="dfn" href="#isolated-world" id="ref-for-isolated-world①">isolated worlds</a> but with distinct API availability.</p>
    <h3 class="heading settled" data-level="3.1" id="isolated-worlds"><span class="secno">3.1. </span><span class="content">Isolated worlds</span><a class="self-link" href="#isolated-worlds"></a></h3>
-   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="world">world</dfn> is a <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#table-state-components-for-all-execution-contexts" id="ref-for-table-state-components-for-all-execution-contexts①">realm</a> with its own <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global">global object</a>.</p>
-   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="main-world">main world</dfn> is the <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#table-state-components-for-all-execution-contexts" id="ref-for-table-state-components-for-all-execution-contexts②">realm</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global①">global object</a> is the
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="world">world</dfn> is a <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#realm" id="ref-for-realm①">realm</a> with its own <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global">global object</a>.</p>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="main-world">main world</dfn> is the <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#realm" id="ref-for-realm②">realm</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global①">global object</a> is the
 associated document’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window">Window</a></code>, in which the document’s own scripts run.
 This is the realm implied throughout other specifications that assume a single
 realm per document.</p>
    <p>A document may also have a number of <a data-link-type="dfn" href="#isolated-world" id="ref-for-isolated-world②">isolated worlds</a>, created by the user
-agent to run <a data-link-type="dfn" href="#content-scripts①" id="ref-for-content-scripts①③">content scripts</a> in a <a data-link-type="dfn" href="#content-script-context" id="ref-for-content-script-context">content script context</a>.</p>
-   <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="isolated-world">isolated world</dfn> is a distinct <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#table-state-components-for-all-execution-contexts" id="ref-for-table-state-components-for-all-execution-contexts③">realm</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global②">global object</a>’s
+agent to run <a data-link-type="dfn" href="#dfn-content-scripts" id="ref-for-dfn-content-scripts③">content scripts</a> in a <a data-link-type="dfn" href="#content-script-context" id="ref-for-content-script-context">content script context</a>.</p>
+   <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="isolated-world">isolated world</dfn> is a distinct <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#realm" id="ref-for-realm③">realm</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global②">global object</a>’s
 interface is <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window①">Window</a></code>, associated with the <a data-link-type="dfn" href="#main-world" id="ref-for-main-world①">main world</a>’s document. The
 <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-platform-object" id="ref-for-dfn-platform-object">platform objects</a> of this realm are distinct from their counterparts in the
 <a data-link-type="dfn" href="#main-world" id="ref-for-main-world②">main world</a>, but operate on the same underlying state. These operations
@@ -1077,7 +1077,7 @@ an object from one realm to another. Potential resolutions include:
    <h2 class="heading settled" data-level="5" id="the-browser-global"><span class="secno">5. </span><span class="content">The <code>browser</code> global</span><a class="self-link" href="#the-browser-global"></a></h2>
    <p><a data-biblio-display="inline" data-link-type="biblio" href="https://w3c.github.io/webextensions/specification/window.browser.html"><cite>window.browser</cite></a> is the primary namespace hosting extension APIs, available to <a data-link-type="dfn" href="#extension-context" id="ref-for-extension-context②">extension contexts</a>.</p>
    <p>Although the <a data-link-type="dfn" href="#main-world" id="ref-for-main-world④">main world</a> of a web page is not an <a data-link-type="dfn" href="#extension-context" id="ref-for-extension-context③">extension context</a>, it may also contain the <code>browser</code> global to offer access to functionality granted by <a href="#key-externally_connectable">§ 2.2.18 Key externally_connectable</a>.</p>
-   <h2 class="heading settled" data-level="6" id="extension-origin"><span class="secno">6. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="extension-origin①">Extension origin</dfn></span><a class="self-link" href="#extension-origin"></a></h2>
+   <h2 class="heading settled" data-level="6" id="extension-origin"><span class="secno">6. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="dfn-extension-origin">Extension origin</dfn></span><a class="self-link" href="#extension-origin"></a></h2>
    <p>The extension origin is a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-tuple" id="ref-for-concept-origin-tuple">tuple origin</a> consisting of an <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extension-scheme">extension scheme</a> and an extension-specific host. An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="extension-scheme">extension scheme</dfn> is a browser-specific scheme reserved for extension use.</p>
    <div class="example" id="example-e9b7df70"><a class="self-link" href="#example-e9b7df70"></a>
 Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extension-scheme①">extension schemes</a> include <code>chrome-extension</code>, <code>moz-extension</code>, and <code>safari-web-extension</code>.
@@ -1099,16 +1099,16 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
    <h2 class="heading settled" data-level="12" id="content-security-policy"><span class="secno">12. </span><span class="content">Content security policy</span><a class="self-link" href="#content-security-policy"></a></h2>
    <h2 class="heading settled" data-level="13" id="architecture"><span class="secno">13. </span><span class="content">Architecture</span><a class="self-link" href="#architecture"></a></h2>
    <h3 class="heading settled" data-level="13.1" id="background-content"><span class="secno">13.1. </span><span class="content">Background content</span><a class="self-link" href="#background-content"></a></h3>
-   <h3 class="heading settled" data-level="13.2" id="content-scripts"><span class="secno">13.2. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="content-scripts①">Content scripts</dfn></span><a class="self-link" href="#content-scripts"></a></h3>
+   <h3 class="heading settled" data-level="13.2" id="content-scripts"><span class="secno">13.2. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="dfn-content-scripts">Content scripts</dfn></span><a class="self-link" href="#content-scripts"></a></h3>
    <p>Content scripts represent a set of JS and CSS files that should be injected into matching pages loaded by the user agent. They are injected using the steps in <a href="#inject-a-content-script">§ 18.2 Inject a content script</a>. Content scripts run in an <a data-link-type="dfn" href="#isolated-world" id="ref-for-isolated-world④">isolated world</a> by default.</p>
    <h4 class="heading settled" data-level="13.2.1" id="key-content_scripts-matches"><span class="secno">13.2.1. </span><span class="content">Key <code>matches</code></span><a class="self-link" href="#key-content_scripts-matches"></a></h4>
-   <p>A <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type" id="ref-for-sec-list-and-record-specification-type④">list</a> of <a data-link-type="dfn" href="#match-pattern" id="ref-for-match-pattern①">match patterns</a> that are used to decide which pages the user agent injects the content script into. This key is required.</p>
+   <p>A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list④">list</a> of <a data-link-type="dfn" href="#match-pattern" id="ref-for-match-pattern①">match patterns</a> that are used to decide which pages the user agent injects the content script into. This key is required.</p>
    <h4 class="heading settled" data-level="13.2.2" id="key-exclude_matches"><span class="secno">13.2.2. </span><span class="content">Key <code>exclude_matches</code></span><a class="self-link" href="#key-exclude_matches"></a></h4>
-   <p>A <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type" id="ref-for-sec-list-and-record-specification-type⑤">list</a> of <a data-link-type="dfn" href="#match-pattern" id="ref-for-match-pattern②">match patterns</a> that can be used to specify URLs where the content script should not run, even if the URL matches entries in <a href="#key-content_scripts-matches">§ 13.2.1 Key matches</a> and (if specified) <a href="#key-include_globs">§ 13.2.9 Key include_globs</a>.</p>
+   <p>A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list⑤">list</a> of <a data-link-type="dfn" href="#match-pattern" id="ref-for-match-pattern②">match patterns</a> that can be used to specify URLs where the content script should not run, even if the URL matches entries in <a href="#key-content_scripts-matches">§ 13.2.1 Key matches</a> and (if specified) <a href="#key-include_globs">§ 13.2.9 Key include_globs</a>.</p>
    <h4 class="heading settled" data-level="13.2.3" id="key-js"><span class="secno">13.2.3. </span><span class="content">Key <code>js</code></span><a class="self-link" href="#key-js"></a></h4>
-   <p>A <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type" id="ref-for-sec-list-and-record-specification-type⑥">list</a> of file paths, relative to the extension’s package, that should be injected as scripts.</p>
+   <p>A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list⑥">list</a> of file paths, relative to the extension’s package, that should be injected as scripts.</p>
    <h4 class="heading settled" data-level="13.2.4" id="key-css"><span class="secno">13.2.4. </span><span class="content">Key <code>css</code></span><a class="self-link" href="#key-css"></a></h4>
-   <p>A <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type" id="ref-for-sec-list-and-record-specification-type⑦">list</a> of file paths, relative to the extension’s package, that should be injected as stylesheets.</p>
+   <p>A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list⑦">list</a> of file paths, relative to the extension’s package, that should be injected as stylesheets.</p>
    <h4 class="heading settled" data-level="13.2.5" id="key-all_frames"><span class="secno">13.2.5. </span><span class="content">Key <code>all_frames</code></span><a class="self-link" href="#key-all_frames"></a></h4>
    <p>If <code>all_frames</code> is <code>true</code>, the content script must be injected into any subframes that match the other matching criteria for the content script. If <code>false</code>, content scripts will only be injected into top-level documents. Defaults to <code>false</code>.</p>
    <h4 class="heading settled" data-level="13.2.6" id="key-match_about_blank"><span class="secno">13.2.6. </span><span class="content">Key <code>match_about_blank</code></span><a class="self-link" href="#key-match_about_blank"></a></h4>
@@ -1122,10 +1122,10 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
    <h4 class="heading settled" data-level="13.2.9" id="key-include_globs"><span class="secno">13.2.9. </span><span class="content">Key <code>include_globs</code></span><a class="self-link" href="#key-include_globs"></a></h4>
    <p>A list of <a data-link-type="dfn" href="#glob" id="ref-for-glob">globs</a> that a document should match. A document matches if the URL matches both the <a href="#key-content_scripts-matches">§ 13.2.1 Key matches</a> field and the <a href="#key-include_globs">§ 13.2.9 Key include_globs</a> field.</p>
    <h4 class="heading settled" data-level="13.2.10" id="key-exclude_globs"><span class="secno">13.2.10. </span><span class="content">Key <code>exclude_globs</code></span><a class="self-link" href="#key-exclude_globs"></a></h4>
-   <p>A <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type" id="ref-for-sec-list-and-record-specification-type⑧">list</a> of <a data-link-type="dfn" href="#glob" id="ref-for-glob①">globs</a> that can be used to specify URLs where the content script should not run, even if the URL matches entries in <a href="#key-content_scripts-matches">§ 13.2.1 Key matches</a> and (if specified) <a href="#key-include_globs">§ 13.2.9 Key include_globs</a>.</p>
+   <p>A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list⑧">list</a> of <a data-link-type="dfn" href="#glob" id="ref-for-glob①">globs</a> that can be used to specify URLs where the content script should not run, even if the URL matches entries in <a href="#key-content_scripts-matches">§ 13.2.1 Key matches</a> and (if specified) <a href="#key-include_globs">§ 13.2.9 Key include_globs</a>.</p>
    <h4 class="heading settled" data-level="13.2.11" id="key-world"><span class="secno">13.2.11. </span><span class="content">Key <code>world</code></span><a class="self-link" href="#key-world"></a></h4>
    <p>The <a data-link-type="dfn" href="#world" id="ref-for-world">world</a> any JavaScript scripts should be injected into. Defaults to <code>ISOLATED</code>. Valid values are defined by the <code class="idl"><a data-link-type="idl" href="#enumdef-executionworld" id="ref-for-enumdef-executionworld">ExecutionWorld</a></code> enum.</p>
-   <h4 class="heading settled" data-level="13.2.12" id="runat-enum"><span class="secno">13.2.12. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="runat">RunAt</dfn> enum</span><a class="self-link" href="#runat-enum"></a></h4>
+   <h4 class="heading settled" data-level="13.2.12" id="runat-enum"><span class="secno">13.2.12. </span><span class="content"><code>RunAt</code> enum</span><a class="self-link" href="#runat-enum"></a></h4>
 <pre class="def highlight idl"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-runat"><code><c- g>RunAt</c-></code></dfn> {
     <dfn class="dfn-paneled idl-code" data-dfn-for="RunAt" data-dfn-type="enum-value" data-export id="dom-runat-document_start"><code><c- s>"document_start"</c-></code></dfn>,
     <dfn class="dfn-paneled idl-code" data-dfn-for="RunAt" data-dfn-type="enum-value" data-export id="dom-runat-document_end"><code><c- s>"document_end"</c-></code></dfn>,
@@ -1133,7 +1133,7 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
 };
 </pre>
    <p>The <code class="idl"><a data-link-type="idl" href="#enumdef-runat" id="ref-for-enumdef-runat①">RunAt</a></code> enum represents when a content script should be injected.</p>
-   <h4 class="heading settled" data-level="13.2.13" id="executionworld-enum"><span class="secno">13.2.13. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="executionworld">ExecutionWorld</dfn> enum</span><a class="self-link" href="#executionworld-enum"></a></h4>
+   <h4 class="heading settled" data-level="13.2.13" id="executionworld-enum"><span class="secno">13.2.13. </span><span class="content"><code>ExecutionWorld</code> enum</span><a class="self-link" href="#executionworld-enum"></a></h4>
 <pre class="def highlight idl"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-executionworld"><code><c- g>ExecutionWorld</c-></code></dfn> {
     <dfn class="dfn-paneled idl-code" data-dfn-for="ExecutionWorld" data-dfn-type="enum-value" data-export id="dom-executionworld-isolated"><code><c- s>"ISOLATED"</c-></code></dfn>,
     <dfn class="dfn-paneled idl-code" data-dfn-for="ExecutionWorld" data-dfn-type="enum-value" data-export id="dom-executionworld-main"><code><c- s>"MAIN"</c-></code></dfn>
@@ -1155,13 +1155,13 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
     <li data-md>
      <p>Let <var>url</var> be the document’s URL.</p>
     <li data-md>
-     <p>If the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-scheme" id="ref-for-concept-origin-scheme">scheme</a> of <var>url</var> is <code>http</code>, <code>https</code> or <code>file</code>:</p>
+     <p>If the <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme">scheme</a> of <var>url</var> is <code>http</code>, <code>https</code> or <code>file</code>:</p>
      <ol>
       <li data-md>
        <p>Return <var>url</var>.</p>
      </ol>
     <li data-md>
-     <p>If the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-scheme" id="ref-for-concept-origin-scheme①">scheme</a> of <var>url</var> is <code>blob</code>, <code>data</code> or <code>filesystem</code>, or if <var>url</var> is <code>about:blank</code> or <code>about:srcdoc</code>:</p>
+     <p>If the <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme①">scheme</a> of <var>url</var> is <code>blob</code>, <code>data</code> or <code>filesystem</code>, or if <var>url</var> is <code>about:blank</code> or <code>about:srcdoc</code>:</p>
      <ol>
       <li data-md>
        <p>If <code>match_origin_as_fallback</code> is set to <code>true</code>:</p>
@@ -1170,9 +1170,9 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
          <p>If the document’s origin is a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-tuple" id="ref-for-concept-origin-tuple①">tuple origin</a>:</p>
          <ol>
           <li data-md>
-           <p>Let <var>document-origin</var> be the <a href="https://html.spec.whatwg.org/#ascii-serialisation-of-an-origin">serialization</a> of the document’s origin.</p>
+           <p>Let <var>document-origin</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#ascii-serialisation-of-an-origin" id="ref-for-ascii-serialisation-of-an-origin">serialization</a> of the document’s origin.</p>
           <li data-md>
-           <p>If the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-scheme" id="ref-for-concept-origin-scheme②">scheme</a> of <var>document-origin</var> is <code>http</code>, <code>https</code> or <code>file</code>:</p>
+           <p>If the <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme②">scheme</a> of <var>document-origin</var> is <code>http</code>, <code>https</code> or <code>file</code>:</p>
            <ol>
             <li data-md>
              <p>Return <var>document-origin</var>.</p>
@@ -1184,10 +1184,10 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
          <p class="note" role="note"><span class="marker">Note:</span> If not a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-tuple" id="ref-for-concept-origin-tuple②">tuple origin</a>, the document’s origin is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-opaque" id="ref-for-concept-origin-opaque">opaque origin</a>.</p>
          <ol>
           <li data-md>
-           <p>Let <var>precursor-origin</var> be the <a href="https://html.spec.whatwg.org/#ascii-serialisation-of-an-origin">serialization</a> of the document’s precursor origin, if any.</p>
-           <p class="issue" id="issue-efba42d5"><a class="self-link" href="#issue-efba42d5"></a> "precursor origin" concept needs to be specified. It is not in the HTML spec at the moment. At least Chrome and Firefox recognize the concept, see e.g. <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1715167">https://bugzilla.mozilla.org/show_bug.cgi?id=1715167</a>.</p>
+           <p>Let <var>precursor-origin</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#ascii-serialisation-of-an-origin" id="ref-for-ascii-serialisation-of-an-origin①">serialization</a> of the document’s precursor origin, if any.</p>
+           <p class="issue" id="issue-efba42d5"><a class="self-link" href="#issue-efba42d5"></a> "precursor origin" concept needs to be specified. It is not in the HTML spec at the moment. At least Chrome and Firefox recognize the concept, see e.g. https://bugzilla.mozilla.org/show_bug.cgi?id=1715167.</p>
           <li data-md>
-           <p>If the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-scheme" id="ref-for-concept-origin-scheme③">scheme</a> of <var>precursor-origin</var> is <code>http</code>, <code>https</code> or <code>file</code>:</p>
+           <p>If the <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme③">scheme</a> of <var>precursor-origin</var> is <code>http</code>, <code>https</code> or <code>file</code>:</p>
            <ol>
             <li data-md>
              <p>Return <var>precursor-origin</var>.</p>
@@ -1210,8 +1210,7 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
             <li data-md>
              <p><var>opener</var> is not null</p>
             <li data-md>
-             <p><var>opener</var>’s origin is still the same as the document’s <u class="link-error" data-lt="opener origin at creation" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;opener origin at creation&apos; that are marked for export.
-  (Possible specs this could be from: html)">opener origin at creation</u></p>
+             <p><var>opener</var>’s origin is still the same as the document’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#opener-origin-at-creation" id="ref-for-opener-origin-at-creation">opener origin at creation</a></p>
             <li data-md>
              <p>The algorithm has not been repeated for <var>opener</var> yet.</p>
            </ul>
@@ -1341,7 +1340,7 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
    <li><a href="#dom-alarms-clearall">clearAll()</a><span>, in § 19.1.1</span>
    <li><a href="#dom-alarms-clear">clear(name)</a><span>, in § 19.1.1</span>
    <li><a href="#content-script-context">content script context</a><span>, in § 3</span>
-   <li><a href="#content-scripts①">Content scripts</a><span>, in § 13.2</span>
+   <li><a href="#dfn-content-scripts">Content scripts</a><span>, in § 13.2</span>
    <li><a href="#dom-alarms-create">create()</a><span>, in § 19.1.1</span>
    <li><a href="#dom-alarms-create">create(alarmInfo)</a><span>, in § 19.1.1</span>
    <li><a href="#dom-alarms-create-name-alarminfo">create(name)</a><span>, in § 19.1.1</span>
@@ -1350,14 +1349,9 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
    <li><a href="#dom-runat-document_end">"document_end"</a><span>, in § 13.2.12</span>
    <li><a href="#dom-runat-document_idle">"document_idle"</a><span>, in § 13.2.12</span>
    <li><a href="#dom-runat-document_start">"document_start"</a><span>, in § 13.2.12</span>
-   <li>
-    ExecutionWorld
-    <ul>
-     <li><a href="#enumdef-executionworld">(enum)</a><span>, in § 13.2.13</span>
-     <li><a href="#executionworld">definition of</a><span>, in § 13.2.13</span>
-    </ul>
+   <li><a href="#enumdef-executionworld">ExecutionWorld</a><span>, in § 13.2.13</span>
    <li><a href="#extension-context">extension context</a><span>, in § 3</span>
-   <li><a href="#extension-origin①">Extension origin</a><span>, in § 6</span>
+   <li><a href="#dfn-extension-origin">Extension origin</a><span>, in § 6</span>
    <li><a href="#extension-scheme">extension scheme</a><span>, in § 6</span>
    <li><a href="#dom-alarms-get">get()</a><span>, in § 19.1.1</span>
    <li><a href="#dom-alarms-getall">getAll()</a><span>, in § 19.1.1</span>
@@ -1368,7 +1362,7 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
    <li><a href="#isolated-world">isolated world</a><span>, in § 3.1</span>
    <li><a href="#dom-executionworld-main">"MAIN"</a><span>, in § 13.2.13</span>
    <li><a href="#main-world">main world</a><span>, in § 3.1</span>
-   <li><a href="#manifest①">manifest</a><span>, in § 2</span>
+   <li><a href="#dfn-manifest">manifest</a><span>, in § 2</span>
    <li><a href="#match-pattern">match pattern</a><span>, in § 9</span>
    <li>
     name
@@ -1392,12 +1386,7 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
     </ul>
    <li><a href="#privileged-extension-context">privileged extension context</a><span>, in § 3</span>
    <li><a href="#dom-onalarmevent-removelistener">removeListener(listener)</a><span>, in § 19.1.1</span>
-   <li>
-    RunAt
-    <ul>
-     <li><a href="#enumdef-runat">(enum)</a><span>, in § 13.2.12</span>
-     <li><a href="#runat">definition of</a><span>, in § 13.2.12</span>
-    </ul>
+   <li><a href="#enumdef-runat">RunAt</a><span>, in § 13.2.12</span>
    <li><a href="#dom-alarm-scheduledtime">scheduledTime</a><span>, in § 19.1.1</span>
    <li><a href="#dom-alarmcreateinfo-when">when</a><span>, in § 19.1.1</span>
    <li><a href="#world">world</a><span>, in § 3.1</span>
@@ -1412,8 +1401,7 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
    <li>
     <a data-link-type="biblio">[ECMASCRIPT]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="00bda90a">list</span>
-     <li><span class="dfn-paneled" id="0593b716">realm</span>
+     <li><span class="dfn-paneled" id="a5f015e3">realm</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
@@ -1422,13 +1410,20 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
      <li><span class="dfn-paneled" id="168f1b6e">global object</span>
      <li><span class="dfn-paneled" id="b01b1359">opaque origin</span>
      <li><span class="dfn-paneled" id="78787bc5">opener browsing context</span>
-     <li><span class="dfn-paneled" id="a23d12a9">scheme</span>
+     <li><span class="dfn-paneled" id="48a89037">opener origin at creation</span>
+     <li><span class="dfn-paneled" id="dae0bfde">serialization of an origin</span>
      <li><span class="dfn-paneled" id="1d2aa117">tuple origin</span>
     </ul>
    <li>
     <a data-link-type="biblio">[INFRA]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="649608b9">list</span>
      <li><span class="dfn-paneled" id="0698d556">string</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[URL]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="3a711be7">scheme</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
@@ -1456,6 +1451,8 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
    <dd>T. Bray, Ed.. <a href="https://www.rfc-editor.org/info/rfc8259/"><cite>The JavaScript Object Notation (JSON) Data Interchange Format</cite></a>. December 2017. Internet Standard. URL: <a href="https://www.rfc-editor.org/info/rfc8259/">https://www.rfc-editor.org/info/rfc8259/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
+   <dt id="biblio-url">[URL]
+   <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/"><cite>URL Standard</cite></a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
@@ -1524,7 +1521,7 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
   <div style="counter-reset:issue">
    <div class="issue"> Specify background scripts. For relevant discussion, see https://github.com/w3c/webextensions/issues/282 <a class="issue-return" href="#issue-b818e7fd" title="Jump to section">↵</a></div>
    <div class="issue"> Specify localization handling. <a href="https://github.com/w3c/webextensions/issues/62">[Issue #62]</a> <a class="issue-return" href="#issue-e5b8cfc7" title="Jump to section">↵</a></div>
-   <div class="issue"> "precursor origin" concept needs to be specified. It is not in the HTML spec at the moment. At least Chrome and Firefox recognize the concept, see e.g. <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1715167">https://bugzilla.mozilla.org/show_bug.cgi?id=1715167</a>. <a class="issue-return" href="#issue-efba42d5" title="Jump to section">↵</a></div>
+   <div class="issue"> "precursor origin" concept needs to be specified. It is not in the HTML spec at the moment. At least Chrome and Firefox recognize the concept, see e.g. https://bugzilla.mozilla.org/show_bug.cgi?id=1715167. <a class="issue-return" href="#issue-efba42d5" title="Jump to section">↵</a></div>
    <div class="issue"> If the same extension specifies the same script twice, what should happen? (<a href="https://crbug.com/324096753">bug</a>) <a class="issue-return" href="#issue-9b040dd0" title="Jump to section">↵</a></div>
    <div class="issue"> Some user-agents set <code class="idl"><a data-link-type="idl" href="#dom-alarm-periodinminutes">periodInMinutes</a></code> to null instead of not including it in the dictionary. <a href="https://github.com/w3c/webextensions/issues/1124">[Issue #1124]</a> <a class="issue-return" href="#issue-abd88e98" title="Jump to section">↵</a></div>
    <div class="issue"> Should we rename <code class="idl"><a data-link-type="idl" href="#dictdef-alarmcreateinfo">AlarmCreateInfo</a></code> to <code>CreateInfo</code> per <a href="http://crbug.com/123073">crbug.com/123073</a>? <a class="issue-return" href="#issue-ba9ea111" title="Jump to section">↵</a></div>
@@ -1730,28 +1727,32 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
-"00bda90a": {"dfnID":"00bda90a","dfnText":"list","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-list-and-record-specification-type"}],"title":"2.2.11. Key content_scripts"},{"refs":[{"id":"ref-for-sec-list-and-record-specification-type\u2460"}],"title":"2.2.18.1. Key ids"},{"refs":[{"id":"ref-for-sec-list-and-record-specification-type\u2461"}],"title":"2.2.18.2. Key matches"},{"refs":[{"id":"ref-for-sec-list-and-record-specification-type\u2462"}],"title":"2.2.20. Key trial_tokens"},{"refs":[{"id":"ref-for-sec-list-and-record-specification-type\u2463"}],"title":"13.2.1. Key matches"},{"refs":[{"id":"ref-for-sec-list-and-record-specification-type\u2464"}],"title":"13.2.2. Key exclude_matches"},{"refs":[{"id":"ref-for-sec-list-and-record-specification-type\u2465"}],"title":"13.2.3. Key js"},{"refs":[{"id":"ref-for-sec-list-and-record-specification-type\u2466"}],"title":"13.2.4. Key css"},{"refs":[{"id":"ref-for-sec-list-and-record-specification-type\u2467"}],"title":"13.2.10. Key exclude_globs"}],"url":"https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type"},
 "0591e11c": {"dfnID":"0591e11c","dfnText":"CustomEvent","external":true,"refSections":[{"refs":[{"id":"ref-for-customevent"}],"title":"3.1. Isolated worlds"}],"url":"https://dom.spec.whatwg.org/#customevent"},
-"0593b716": {"dfnID":"0593b716","dfnText":"realm","external":true,"refSections":[{"refs":[{"id":"ref-for-table-state-components-for-all-execution-contexts"}],"title":"3. Execution contexts"},{"refs":[{"id":"ref-for-table-state-components-for-all-execution-contexts\u2460"},{"id":"ref-for-table-state-components-for-all-execution-contexts\u2461"},{"id":"ref-for-table-state-components-for-all-execution-contexts\u2462"}],"title":"3.1. Isolated worlds"}],"url":"https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#table-state-components-for-all-execution-contexts"},
 "0698d556": {"dfnID":"0698d556","dfnText":"string","external":true,"refSections":[{"refs":[{"id":"ref-for-string"}],"title":"10. Globs"}],"url":"https://infra.spec.whatwg.org/#string"},
 "168f1b6e": {"dfnID":"168f1b6e","dfnText":"global object","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-realm-global"},{"id":"ref-for-concept-realm-global\u2460"},{"id":"ref-for-concept-realm-global\u2461"}],"title":"3.1. Isolated worlds"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global"},
 "1d2aa117": {"dfnID":"1d2aa117","dfnText":"tuple origin","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-origin-tuple"}],"title":"6. Extension origin"},{"refs":[{"id":"ref-for-concept-origin-tuple\u2460"},{"id":"ref-for-concept-origin-tuple\u2461"}],"title":"18.1. Determine the URL for matching a document"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-tuple"},
+"3a711be7": {"dfnID":"3a711be7","dfnText":"scheme","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-url-scheme"},{"id":"ref-for-concept-url-scheme\u2460"},{"id":"ref-for-concept-url-scheme\u2461"},{"id":"ref-for-concept-url-scheme\u2462"}],"title":"18.1. Determine the URL for matching a document"}],"url":"https://url.spec.whatwg.org/#concept-url-scheme"},
+"48a89037": {"dfnID":"48a89037","dfnText":"opener origin at creation","external":true,"refSections":[{"refs":[{"id":"ref-for-opener-origin-at-creation"}],"title":"18.1. Determine the URL for matching a document"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#opener-origin-at-creation"},
 "5372cca8": {"dfnID":"5372cca8","dfnText":"boolean","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-boolean"},{"id":"ref-for-idl-boolean\u2460"},{"id":"ref-for-idl-boolean\u2461"},{"id":"ref-for-idl-boolean\u2462"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-boolean"},
 "5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"},{"id":"ref-for-window\u2460"}],"title":"3.1. Isolated worlds"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
 "5f90bbfb": {"dfnID":"5f90bbfb","dfnText":"undefined","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-undefined"},{"id":"ref-for-idl-undefined\u2460"},{"id":"ref-for-idl-undefined\u2461"},{"id":"ref-for-idl-undefined\u2462"},{"id":"ref-for-idl-undefined\u2463"},{"id":"ref-for-idl-undefined\u2464"},{"id":"ref-for-idl-undefined\u2465"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-undefined"},
+"649608b9": {"dfnID":"649608b9","dfnText":"list","external":true,"refSections":[{"refs":[{"id":"ref-for-list"}],"title":"2.2.11. Key content_scripts"},{"refs":[{"id":"ref-for-list\u2460"}],"title":"2.2.18.1. Key ids"},{"refs":[{"id":"ref-for-list\u2461"}],"title":"2.2.18.2. Key matches"},{"refs":[{"id":"ref-for-list\u2462"}],"title":"2.2.20. Key trial_tokens"},{"refs":[{"id":"ref-for-list\u2463"}],"title":"13.2.1. Key matches"},{"refs":[{"id":"ref-for-list\u2464"}],"title":"13.2.2. Key exclude_matches"},{"refs":[{"id":"ref-for-list\u2465"}],"title":"13.2.3. Key js"},{"refs":[{"id":"ref-for-list\u2466"}],"title":"13.2.4. Key css"},{"refs":[{"id":"ref-for-list\u2467"}],"title":"13.2.10. Key exclude_globs"}],"url":"https://infra.spec.whatwg.org/#list"},
 "6728fdee": {"dfnID":"6728fdee","dfnText":"platform object","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-platform-object"}],"title":"3.1. Isolated worlds"}],"url":"https://webidl.spec.whatwg.org/#dfn-platform-object"},
 "78787bc5": {"dfnID":"78787bc5","dfnText":"opener browsing context","external":true,"refSections":[{"refs":[{"id":"ref-for-opener-browsing-context"}],"title":"18.1. Determine the URL for matching a document"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#opener-browsing-context"},
 "8855a9aa": {"dfnID":"8855a9aa","dfnText":"DOMString","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-DOMString"},{"id":"ref-for-idl-DOMString\u2460"},{"id":"ref-for-idl-DOMString\u2461"},{"id":"ref-for-idl-DOMString\u2462"},{"id":"ref-for-idl-DOMString\u2463"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
 "889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"},{"id":"ref-for-Exposed\u2460"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
 "8c800cdf": {"dfnID":"8c800cdf","dfnText":"double","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-double"},{"id":"ref-for-idl-double\u2460"},{"id":"ref-for-idl-double\u2461"},{"id":"ref-for-idl-double\u2462"},{"id":"ref-for-idl-double\u2463"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-double"},
 "9cce47fd": {"dfnID":"9cce47fd","dfnText":"sequence","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-sequence"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-sequence"},
-"a23d12a9": {"dfnID":"a23d12a9","dfnText":"scheme","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-origin-scheme"},{"id":"ref-for-concept-origin-scheme\u2460"},{"id":"ref-for-concept-origin-scheme\u2461"},{"id":"ref-for-concept-origin-scheme\u2462"}],"title":"18.1. Determine the URL for matching a document"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-scheme"},
+"a5f015e3": {"dfnID":"a5f015e3","dfnText":"realm","external":true,"refSections":[{"refs":[{"id":"ref-for-realm"}],"title":"3. Execution contexts"},{"refs":[{"id":"ref-for-realm\u2460"},{"id":"ref-for-realm\u2461"},{"id":"ref-for-realm\u2462"}],"title":"3.1. Isolated worlds"}],"url":"https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#realm"},
 "alarms": {"dfnID":"alarms","dfnText":"Alarms","external":false,"refSections":[{"refs":[{"id":"ref-for-alarms"}],"title":"19.1.1. Alarms interface"}],"url":"#alarms"},
 "b01b1359": {"dfnID":"b01b1359","dfnText":"opaque origin","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-origin-opaque"}],"title":"18.1. Determine the URL for matching a document"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-opaque"},
 "bdbd19d1": {"dfnID":"bdbd19d1","dfnText":"Promise","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-promise"},{"id":"ref-for-idl-promise\u2460"},{"id":"ref-for-idl-promise\u2461"},{"id":"ref-for-idl-promise\u2462"},{"id":"ref-for-idl-promise\u2463"},{"id":"ref-for-idl-promise\u2464"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-promise"},
 "callbackdef-alarmlistener": {"dfnID":"callbackdef-alarmlistener","dfnText":"AlarmListener","external":false,"refSections":[{"refs":[{"id":"ref-for-callbackdef-alarmlistener"},{"id":"ref-for-callbackdef-alarmlistener\u2460"},{"id":"ref-for-callbackdef-alarmlistener\u2461"}],"title":"19.1.1. Alarms interface"}],"url":"#callbackdef-alarmlistener"},
 "content-script-context": {"dfnID":"content-script-context","dfnText":"content script context","external":false,"refSections":[{"refs":[{"id":"ref-for-content-script-context"}],"title":"3.1. Isolated worlds"}],"url":"#content-script-context"},
-"content-scripts①": {"dfnID":"content-scripts\u2460","dfnText":"Content scripts","external":false,"refSections":[{"refs":[{"id":"ref-for-content-scripts\u2460"}],"title":"2.2.11. Key content_scripts"},{"refs":[{"id":"ref-for-content-scripts\u2460\u2460"}],"title":"2.2.18. Key externally_connectable"},{"refs":[{"id":"ref-for-content-scripts\u2460\u2461"}],"title":"3. Execution contexts"},{"refs":[{"id":"ref-for-content-scripts\u2460\u2462"}],"title":"3.1. Isolated worlds"}],"url":"#content-scripts\u2460"},
+"dae0bfde": {"dfnID":"dae0bfde","dfnText":"serialization of an origin","external":true,"refSections":[{"refs":[{"id":"ref-for-ascii-serialisation-of-an-origin"},{"id":"ref-for-ascii-serialisation-of-an-origin\u2460"}],"title":"18.1. Determine the URL for matching a document"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#ascii-serialisation-of-an-origin"},
+"dfn-content-scripts": {"dfnID":"dfn-content-scripts","dfnText":"Content scripts","external":false,"refSections":[{"refs":[{"id":"ref-for-dfn-content-scripts"}],"title":"2.2.11. Key content_scripts"},{"refs":[{"id":"ref-for-dfn-content-scripts\u2460"}],"title":"2.2.18. Key externally_connectable"},{"refs":[{"id":"ref-for-dfn-content-scripts\u2461"}],"title":"3. Execution contexts"},{"refs":[{"id":"ref-for-dfn-content-scripts\u2462"}],"title":"3.1. Isolated worlds"}],"url":"#dfn-content-scripts"},
+"dfn-extension-origin": {"dfnID":"dfn-extension-origin","dfnText":"Extension origin","external":false,"refSections":[{"refs":[{"id":"ref-for-dfn-extension-origin"},{"id":"ref-for-dfn-extension-origin\u2460"}],"title":"3. Execution contexts"}],"url":"#dfn-extension-origin"},
+"dfn-manifest": {"dfnID":"dfn-manifest","dfnText":"manifest","external":false,"refSections":[{"refs":[{"id":"ref-for-dfn-manifest"}],"title":"1.3. Other files"}],"url":"#dfn-manifest"},
 "dictdef-alarm": {"dfnID":"dictdef-alarm","dfnText":"Alarm","external":false,"refSections":[{"refs":[{"id":"ref-for-dictdef-alarm"},{"id":"ref-for-dictdef-alarm\u2460"},{"id":"ref-for-dictdef-alarm\u2461"}],"title":"19.1.1. Alarms interface"}],"url":"#dictdef-alarm"},
 "dictdef-alarmcreateinfo": {"dfnID":"dictdef-alarmcreateinfo","dfnText":"AlarmCreateInfo","external":false,"refSections":[{"refs":[{"id":"ref-for-dictdef-alarmcreateinfo"},{"id":"ref-for-dictdef-alarmcreateinfo\u2460"},{"id":"ref-for-dictdef-alarmcreateinfo\u2461"}],"title":"19.1.1. Alarms interface"}],"url":"#dictdef-alarmcreateinfo"},
 "dom-alarm-name": {"dfnID":"dom-alarm-name","dfnText":"name","external":false,"refSections":[],"url":"#dom-alarm-name"},
@@ -1790,18 +1791,14 @@ let dfnPanelData = {
 "dom-runat-document_start": {"dfnID":"dom-runat-document_start","dfnText":"\"document_start\"","external":false,"refSections":[],"url":"#dom-runat-document_start"},
 "enumdef-executionworld": {"dfnID":"enumdef-executionworld","dfnText":"ExecutionWorld","external":false,"refSections":[{"refs":[{"id":"ref-for-enumdef-executionworld"}],"title":"13.2.11. Key world"},{"refs":[{"id":"ref-for-enumdef-executionworld\u2460"}],"title":"13.2.13. ExecutionWorld enum"}],"url":"#enumdef-executionworld"},
 "enumdef-runat": {"dfnID":"enumdef-runat","dfnText":"RunAt","external":false,"refSections":[{"refs":[{"id":"ref-for-enumdef-runat"}],"title":"13.2.8. Key run_at"},{"refs":[{"id":"ref-for-enumdef-runat\u2460"}],"title":"13.2.12. RunAt enum"}],"url":"#enumdef-runat"},
-"executionworld": {"dfnID":"executionworld","dfnText":"ExecutionWorld","external":false,"refSections":[],"url":"#executionworld"},
 "extension-context": {"dfnID":"extension-context","dfnText":"extension context","external":false,"refSections":[{"refs":[{"id":"ref-for-extension-context"},{"id":"ref-for-extension-context\u2460"}],"title":"3. Execution contexts"},{"refs":[{"id":"ref-for-extension-context\u2461"},{"id":"ref-for-extension-context\u2462"}],"title":"5. The browser global"}],"url":"#extension-context"},
-"extension-origin①": {"dfnID":"extension-origin\u2460","dfnText":"Extension origin","external":false,"refSections":[{"refs":[{"id":"ref-for-extension-origin\u2460"},{"id":"ref-for-extension-origin\u2460\u2460"}],"title":"3. Execution contexts"}],"url":"#extension-origin\u2460"},
 "extension-scheme": {"dfnID":"extension-scheme","dfnText":"extension scheme","external":false,"refSections":[{"refs":[{"id":"ref-for-extension-scheme"},{"id":"ref-for-extension-scheme\u2460"}],"title":"6. Extension origin"}],"url":"#extension-scheme"},
 "glob": {"dfnID":"glob","dfnText":"glob","external":false,"refSections":[{"refs":[{"id":"ref-for-glob"}],"title":"13.2.9. Key include_globs"},{"refs":[{"id":"ref-for-glob\u2460"}],"title":"13.2.10. Key exclude_globs"}],"url":"#glob"},
 "isolated-world": {"dfnID":"isolated-world","dfnText":"isolated world","external":false,"refSections":[{"refs":[{"id":"ref-for-isolated-world"},{"id":"ref-for-isolated-world\u2460"}],"title":"3. Execution contexts"},{"refs":[{"id":"ref-for-isolated-world\u2461"},{"id":"ref-for-isolated-world\u2462"}],"title":"3.1. Isolated worlds"},{"refs":[{"id":"ref-for-isolated-world\u2463"}],"title":"13.2. Content scripts"},{"refs":[{"id":"ref-for-isolated-world\u2464"}],"title":"13.2.13. ExecutionWorld enum"}],"url":"#isolated-world"},
 "main-world": {"dfnID":"main-world","dfnText":"main world","external":false,"refSections":[{"refs":[{"id":"ref-for-main-world"}],"title":"3. Execution contexts"},{"refs":[{"id":"ref-for-main-world\u2460"},{"id":"ref-for-main-world\u2461"},{"id":"ref-for-main-world\u2462"}],"title":"3.1. Isolated worlds"},{"refs":[{"id":"ref-for-main-world\u2463"}],"title":"5. The browser global"},{"refs":[{"id":"ref-for-main-world\u2464"}],"title":"13.2.13. ExecutionWorld enum"}],"url":"#main-world"},
-"manifest①": {"dfnID":"manifest\u2460","dfnText":"manifest","external":false,"refSections":[{"refs":[{"id":"ref-for-manifest\u2460"}],"title":"1.3. Other files"}],"url":"#manifest\u2460"},
 "match-pattern": {"dfnID":"match-pattern","dfnText":"match pattern","external":false,"refSections":[{"refs":[{"id":"ref-for-match-pattern"}],"title":"2.2.18.2. Key matches"},{"refs":[{"id":"ref-for-match-pattern\u2460"}],"title":"13.2.1. Key matches"},{"refs":[{"id":"ref-for-match-pattern\u2461"}],"title":"13.2.2. Key exclude_matches"}],"url":"#match-pattern"},
 "onalarmevent": {"dfnID":"onalarmevent","dfnText":"OnAlarmEvent","external":false,"refSections":[{"refs":[{"id":"ref-for-onalarmevent"}],"title":"19.1.1. Alarms interface"}],"url":"#onalarmevent"},
 "privileged-extension-context": {"dfnID":"privileged-extension-context","dfnText":"privileged extension context","external":false,"refSections":[{"refs":[{"id":"ref-for-privileged-extension-context"}],"title":"2.2.18. Key externally_connectable"}],"url":"#privileged-extension-context"},
-"runat": {"dfnID":"runat","dfnText":"RunAt","external":false,"refSections":[],"url":"#runat"},
 "world": {"dfnID":"world","dfnText":"world","external":false,"refSections":[{"refs":[{"id":"ref-for-world"}],"title":"13.2.11. Key world"},{"refs":[{"id":"ref-for-world\u2460"}],"title":"13.2.13. ExecutionWorld enum"}],"url":"#world"},
 };
 
@@ -2194,7 +2191,9 @@ let refsData = {
 "#alarms": {"displayText":"Alarms","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"Alarms","type":"interface","url":"#alarms"},
 "#callbackdef-alarmlistener": {"displayText":"AlarmListener","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"AlarmListener","type":"callback","url":"#callbackdef-alarmlistener"},
 "#content-script-context": {"displayText":"content script context","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"content script context","type":"dfn","url":"#content-script-context"},
-"#content-scripts①": {"displayText":"content scripts","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"content scripts","type":"dfn","url":"#content-scripts\u2460"},
+"#dfn-content-scripts": {"displayText":"content scripts","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"content scripts","type":"dfn","url":"#dfn-content-scripts"},
+"#dfn-extension-origin": {"displayText":"extension origin","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"extension origin","type":"dfn","url":"#dfn-extension-origin"},
+"#dfn-manifest": {"displayText":"manifest","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"manifest","type":"dfn","url":"#dfn-manifest"},
 "#dictdef-alarm": {"displayText":"Alarm","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"Alarm","type":"dictionary","url":"#dictdef-alarm"},
 "#dictdef-alarmcreateinfo": {"displayText":"AlarmCreateInfo","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"AlarmCreateInfo","type":"dictionary","url":"#dictdef-alarmcreateinfo"},
 "#dom-alarm-periodinminutes": {"displayText":"periodInMinutes","export":true,"for_":["Alarm"],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"periodInMinutes","type":"dict-member","url":"#dom-alarm-periodinminutes"},
@@ -2203,26 +2202,26 @@ let refsData = {
 "#enumdef-executionworld": {"displayText":"ExecutionWorld","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"ExecutionWorld","type":"enum","url":"#enumdef-executionworld"},
 "#enumdef-runat": {"displayText":"RunAt","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"RunAt","type":"enum","url":"#enumdef-runat"},
 "#extension-context": {"displayText":"extension context","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"extension context","type":"dfn","url":"#extension-context"},
-"#extension-origin①": {"displayText":"extension origin","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"extension origin","type":"dfn","url":"#extension-origin\u2460"},
 "#extension-scheme": {"displayText":"extension scheme","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"extension scheme","type":"dfn","url":"#extension-scheme"},
 "#glob": {"displayText":"glob","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"glob","type":"dfn","url":"#glob"},
 "#isolated-world": {"displayText":"isolated world","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"isolated world","type":"dfn","url":"#isolated-world"},
 "#main-world": {"displayText":"main world","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"main world","type":"dfn","url":"#main-world"},
-"#manifest①": {"displayText":"manifest","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"manifest","type":"dfn","url":"#manifest\u2460"},
 "#match-pattern": {"displayText":"match pattern","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"match pattern","type":"dfn","url":"#match-pattern"},
 "#onalarmevent": {"displayText":"OnAlarmEvent","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"OnAlarmEvent","type":"interface","url":"#onalarmevent"},
 "#privileged-extension-context": {"displayText":"privileged extension context","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"privileged extension context","type":"dfn","url":"#privileged-extension-context"},
 "#world": {"displayText":"world","export":true,"for_":[],"level":"1","normative":true,"shortname":"webextensions","spec":"webextensions-1","status":"local","text":"world","type":"dfn","url":"#world"},
 "https://dom.spec.whatwg.org/#customevent": {"displayText":"CustomEvent","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"CustomEvent","type":"interface","url":"https://dom.spec.whatwg.org/#customevent"},
+"https://html.spec.whatwg.org/multipage/browsers.html#ascii-serialisation-of-an-origin": {"displayText":"serialization of an origin","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"serialization of an origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#ascii-serialisation-of-an-origin"},
 "https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-opaque": {"displayText":"opaque origin","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"opaque origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-opaque"},
-"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-scheme": {"displayText":"scheme","export":true,"for_":["origin"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"scheme","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-scheme"},
 "https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-tuple": {"displayText":"tuple origin","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"tuple origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-tuple"},
 "https://html.spec.whatwg.org/multipage/document-sequences.html#opener-browsing-context": {"displayText":"opener browsing context","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"opener browsing context","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#opener-browsing-context"},
+"https://html.spec.whatwg.org/multipage/document-sequences.html#opener-origin-at-creation": {"displayText":"opener origin at creation","export":false,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"opener origin at creation","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#opener-origin-at-creation"},
 "https://html.spec.whatwg.org/multipage/nav-history-apis.html#window": {"displayText":"Window","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"Window","type":"interface","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
 "https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global": {"displayText":"global object","export":true,"for_":["realm"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"global object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global"},
+"https://infra.spec.whatwg.org/#list": {"displayText":"list","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"list","type":"dfn","url":"https://infra.spec.whatwg.org/#list"},
 "https://infra.spec.whatwg.org/#string": {"displayText":"string","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"string","type":"dfn","url":"https://infra.spec.whatwg.org/#string"},
-"https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type": {"displayText":"list","export":true,"for_":["ECMAScript"],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"list","type":"dfn","url":"https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-list-and-record-specification-type"},
-"https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#table-state-components-for-all-execution-contexts": {"displayText":"realm","export":true,"for_":["All Execution Contexts"],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"realm","type":"dfn","url":"https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#table-state-components-for-all-execution-contexts"},
+"https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#realm": {"displayText":"realm","export":true,"for_":["ECMAScript"],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"realm","type":"dfn","url":"https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#realm"},
+"https://url.spec.whatwg.org/#concept-url-scheme": {"displayText":"scheme","export":true,"for_":["url"],"level":"1","normative":true,"shortname":"url","spec":"url","status":"current","text":"scheme","type":"dfn","url":"https://url.spec.whatwg.org/#concept-url-scheme"},
 "https://webidl.spec.whatwg.org/#Exposed": {"displayText":"Exposed","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
 "https://webidl.spec.whatwg.org/#dfn-platform-object": {"displayText":"platform object","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"platform object","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-platform-object"},
 "https://webidl.spec.whatwg.org/#idl-DOMString": {"displayText":"DOMString","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMString","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
