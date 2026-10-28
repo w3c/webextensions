@@ -44,7 +44,19 @@ A manifest file is a [[!JSON]] document named `manifest.json`. Malformed JSON fi
 
 If manifest keys that are not defined in this specification are specified, implementors must ignore those keys.
 
-If manifest keys that are defined in this specification are specified with a different JSON type than defined in this specification, implementors must ignore those keys.
+A manifest value that this specification calls <dfn>invalid</dfn> is one the user agent cannot use as written. The user agent should [=report a warning=] or [=report an error=]. It may ignore the value, use a default, or not load the extension.
+
+If manifest keys that are defined in this specification are specified with a different JSON type than defined in this specification, implementors must ignore those keys and may [=report a warning=], unless this specification calls the value [=invalid=].
+
+To <dfn>report a warning</dfn> or <dfn>report an error</dfn>, the user agent makes a message available to the extension developer in a way the user agent chooses.
+
+A manifest value that this specification requires to be a [=package path=] is [=invalid=] if any of the following is true:
+
+* It is not a [=string=].
+* It is the empty string.
+* Running [=resolve a package path=] with the value and an empty [=list=] returns null.
+
+A manifest value that this specification requires to be a [=list=] of [=package paths=] is [=invalid=] if any of its items is invalid by the rule above.
 
 The following keys must be considered valid:
 
@@ -108,9 +120,31 @@ This key must be present if the `_locales` subdirectory is present, must be abse
 
 ### Key `background` ### {#key-background}
 
-This key may be present.
+This key may be present. Its value is an object that declares the extension's [=background content=]. A value that is not an object is [=invalid=]. [[#background-content]] describes how the user agent uses its keys.
 
-Issue: Specify background scripts. For relevant discussion, see https://github.com/w3c/webextensions/issues/282
+This key may include the following optional keys:
+
+#### Key `service_worker` #### {#key-background-service_worker}
+
+A [=package path=] of the resource for a [=service worker environment=]. The resource is a JavaScript file.
+
+#### Key `scripts` #### {#key-background-scripts}
+
+A [=list=] of [=package paths=] of JavaScript files. The [=generated service worker=] or [=generated background document=] loads these files, as described in [[#resource-of-a-background-environment]]. An empty list must be treated as if the key were absent. A value that is not a list, or that contains an item that is not a [=package path=], is [=invalid=].
+
+Issue(#1127): Firefox loads a background document when the `scripts` list is empty. Chrome and Safari do not load background content.
+
+#### Key `page` #### {#key-background-page}
+
+A [=package path=] of the resource for a [=document environment=]. The resource is an [=HTML document=].
+
+#### Key `type` #### {#key-background-type}
+
+A [=string=], either `"classic"` or `"module"`. Defaults to `"classic"`. Any other value is [=invalid=]. See [[#resource-of-a-background-environment]] for how it applies.
+
+#### Key `preferred_environment` #### {#key-background-preferred_environment}
+
+A [=list=] of [=strings=] that names environments in order of preference. The recognized items are `"service_worker"`, for the [=service worker environment=], and `"document"`, for the [=document environment=]. An empty list names no preference. The user agent must ignore any other string and must not treat it as [=invalid=], so that an environment added in the future does not prevent an extension that names it from loading in a user agent that predates it. The user agent may [=report a warning=] for an ignored string. A value that is not a list, or that contains an item that is not a string, is [=invalid=].
 
 ### Key `commands` ### {#key-commands}
 
@@ -176,14 +210,14 @@ The <a href="#key-trial_tokens">`trial_tokens`</a> key is an optional [=list=] o
 
 ## Reserved file names ## {#reserved-file-names}
 
-Filenames beginning with an underscore (`_`) are reserved for use by user agent.
+Filenames in the root of the package that begin with U+005F (_) are reserved for use by the user agent. A user agent may [=report a warning=] for a file or directory in the root of the package whose name is reserved and not defined by this specification.
 
 # Execution contexts # {#execution-contexts}
 
 Extensions can execute JavaScript code, in any of the following execution contexts:
 
 * An <dfn>extension context</dfn> is a [=realm=] associated with an [=extension origin=].
-* A <dfn>privileged extension context</dfn> is an [=extension context=] with access to the full set of extension APIs available to the extension. For example, the background page or worker defined through [[#key-background]].
+* A <dfn>privileged extension context</dfn> is an [=extension context=] with access to the full set of extension APIs available to the extension. For example, the [=background content=] declared through [[#key-background]].
 * A <dfn>content script context</dfn> is an [=extension context=] and [=isolated world=] with limited access to a subset of extension APIs. This is the default execution environment of all [=content scripts=] of an extension.
 * The [=main world=] of a web page not associated with an [=extension origin=] is not an extension context. It does not have access to any extension API, except when an extension allows so through [[#key-externally_connectable]].
 
@@ -257,6 +291,20 @@ A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards 
 
 # Concepts # {#concepts}
 
+## Package paths ## {#package-paths}
+
+A <dfn>package path</dfn> is a non-empty [=string=] that identifies a location in the extension's package. The user agent resolves a package path against a directory of the package by running the steps in [[#resolve-a-package-path]]. The <dfn>root of the package</dfn> is the directory that contains the [=manifest=]. A manifest value is resolved against the root of the package. Where an API accepts a package path, that API states the directory it is resolved against.
+
+The <dfn>resolved path</dfn> of a [=package path=] is the [=string=] made of U+002F (/) followed by the items of the [=list=] that [[#resolve-a-package-path]] returns for it against the root of the package, joined with U+002F (/).
+
+The user agent determines how it matches the names in a [=package path=] to the files in the package, including whether the match is case-sensitive and how Unicode normalization applies. A symbolic link that points outside the package must not be followed. A package path that names no file in the package is not [=invalid=]. The content that uses the path fails to load.
+
+Issue(#1122): Safari and Firefox resolve a [=package path=] that an API accepts, such as a path to an icon, against the root of the package. Chrome resolves it against the page or worker script that makes the call.
+
+Issue(#1157): A path that escapes the root of the package, such as `../background.js`, is handled three ways. Chrome does not load the file for keys such as content scripts and icons. Firefox resolves every manifest path as a URL, which drops the extra `..` segments. Safari does the same when a file is loaded through a URL, such as a background page, and does not load the file when it reads the file directly, such as a content script. The steps in [[#resolve-a-package-path]] return null for such a path.
+
+Issue(#1035): Specify which characters a path segment may contain, such as U+0000 NULL, U+005C (\), U+0025 (%), U+003F (?) and U+0023 (#), whether names are matched with case sensitivity, and whether the URL Standard defines what a path segment is. Chrome rejects U+005C (\) anywhere in a path. Safari and Firefox parse the path as a URL, so `?` and `#` do not name part of a file.
+
 ## Uniqueness of extension IDs ## {#uniqueness-of-extension-ids}
 
 ## Promises and callbacks ## {#promises-and-callbacks}
@@ -270,6 +318,53 @@ A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards 
 # Architecture # {#architecture}
 
 ## Background content ## {#background-content}
+
+<dfn id="dfn-background-content">Background content</dfn> is code that runs independently of any web page, browser window, or extension page. It responds to events from the extension APIs and the user agent, and it can use the extension APIs that the extension has permission for. It runs in a [=privileged extension context=]. It is event-based: the user agent loads it when an event occurs and may unload it when it is idle, as described in [[#background-lifecycle]]. The extension declares it in the [[#key-background]] manifest key.
+
+The user agent runs background content in one of two environments:
+
+* A <dfn>service worker environment</dfn>, in which the user agent runs a [=service worker=] from the [=extension origin=].
+* A <dfn>document environment</dfn>, in which the user agent loads an [=HTML document=] from the [=extension origin=] without displaying it.
+
+A user agent supports the [=service worker environment=], the [=document environment=], or both.
+
+When the user agent loads an extension that has a `background` key, it runs the steps to [=select the background environment=] on the value of that key. The steps return a <dfn>background selection</dfn>, a pair of an environment and a key of the `background` object, or null. The key is the one whose value determines the resource: `service_worker`, `page`, or `scripts`.
+
+The user agent runs the resource of a [=background selection=] in the environment of that selection, as described in [[#resource-of-a-background-environment]]. When the steps return null, the extension has no background content.
+
+Background content can fail to load, for example when its resource cannot be fetched or a script throws as it first runs. A [=document environment=] loads its resource as any [=HTML document=] loads, and a [=service worker environment=] loads its resource as any [=service worker=] script loads, so the default behavior of each applies. An API that expects background content can fail when the content did not load. A failure to load the resource must not by itself prevent the extension from loading, and the user agent must not select a second environment. The user agent may [=report an error=].
+
+Issue(#1156): Specify what counts as a failure to load, such as a resource that cannot be fetched or a script that throws while it first runs. Also specify how a failure affects the other scripts of a [=background selection=] that uses [[#key-background-scripts]]. In Safari's [=generated service worker=], the scripts load one after another, so a script that cannot be fetched prevents the scripts after it from loading. In the [=generated background document=] of Safari and Firefox, each <{script}> element loads on its own, so the scripts after a failed one still run. The two generated resources are expected to fail in the same way.
+
+### Resource of a background environment ### {#resource-of-a-background-environment}
+
+The key and the environment of a [=background selection=] determine the resource that the user agent runs:
+
+* For [[#key-background-service_worker]], the environment is a [=service worker environment=], and the resource is the JavaScript file at the [=resolved path=] of the value. The file is run as a [=module script=] when [[#key-background-type]] is `"module"`, and as a [=classic script=] otherwise.
+* For [[#key-background-page]], the environment is a [=document environment=], and the resource is the [=HTML document=] at the [=resolved path=] of the value. [[#key-background-type]] does not affect the document.
+* For [[#key-background-scripts]], the environment is either one, and the resource depends on it:
+    * In a [=service worker environment=], the resource is the [=generated service worker=].
+    * In a [=document environment=], the resource is the [=generated background document=].
+
+The <dfn>generated service worker</dfn> is a JavaScript file in the [=extension origin=], at the path `/_generated_service_worker.js`, whose filename is [reserved](#reserved-file-names). It loads the [=resolved path=] of each path in [[#key-background-scripts]], in order. When [[#key-background-type]] is `"module"`, it imports each path as a [=module script=]. Otherwise, it loads the paths as [=classic scripts=] with {{WorkerGlobalScope/importScripts()}}. All of the scripts run in the same [=global object=].
+
+Issue(#785): Only Safari implements the [=generated service worker=].
+
+The <dfn>generated background document</dfn> is an [=HTML document=] in the [=extension origin=], at the path `/_generated_background_page.html`, whose filename is [reserved](#reserved-file-names). It contains one <{script}> element for each path in [[#key-background-scripts]], in order, with the [=resolved path=] of that path as its `src`. Each element is a [=module script=] when [[#key-background-type]] is `"module"`, and a [=classic script=] otherwise. All of the scripts run in the same [=global object=].
+
+### Declaring several environments ### {#declaring-several-environments}
+
+[[#key-background-service_worker]] may be present together with [[#key-background-scripts]] or with [[#key-background-page]], so that one manifest works in user agents that support different environments. `scripts` and `page` are alternatives, and the user agent may [=report a warning=] when both are present. When two keys provide a resource for the same environment, `service_worker` and `page` take precedence over `scripts`. The [[#key-background-preferred_environment]] key lets the extension choose between the environments that a user agent supports.
+
+A user agent must ignore the keys that belong only to environments it does not support, even when their values would otherwise be [=invalid=], and may [=report a warning=] for them.
+
+### Background lifecycle ### {#background-lifecycle}
+
+[=Background content=] is event-based. The user agent loads it when an event occurs for which it has registered a listener, and may unload it when it is idle. Unloading discards the [=global object=] of the environment and the state held in it. A later event loads the background content again.
+
+Issue(#1158): Define when a listener counts as registered. The user agent has to observe the listeners that the background content adds while it loads, and keep them so that a later event can load the background content again. Safari records a listener whenever it is added and saves the set after each load completes. Firefox records only the listeners added during the initial load. Chrome records any service worker listener when it is first added. A proposal adds a method that lets the extension tell the user agent it has finished registering listeners, and Chrome implements it behind a feature flag, queueing events until the extension calls it. See [Asynchronous Listener Registration](https://github.com/w3c/webextensions/blob/main/proposals/async-listener-registration.md).
+
+Issue: Specify when the background content first loads, what counts as idle, and how events that arrive while it is loading are ordered. See <#147>, <#416>, and <#464>.
 
 ## <dfn id="dfn-content-scripts">Content scripts</dfn> ## {#content-scripts}
 
@@ -285,11 +380,11 @@ A [=list=] of [=match patterns=] that can be used to specify URLs where the cont
 
 ### Key `js` ### {#key-js}
 
-A [=list=] of file paths, relative to the extension's package, that should be injected as scripts.
+A [=list=] of [=package paths=] of JavaScript files that should be injected as scripts. A value that contains an item that is not a [=package path=] is [=invalid=].
 
 ### Key `css` ### {#key-css}
 
-A [=list=] of file paths, relative to the extension's package, that should be injected as stylesheets.
+A [=list=] of [=package paths=] of CSS files that should be injected as stylesheets. A value that contains an item that is not a [=package path=] is [=invalid=].
 
 ### Key `all_frames` ### {#key-all_frames}
 
@@ -410,6 +505,41 @@ To determine if a content script should be injected in a document:
 1. If this is a child frame, and `all_frames` is not `true`, return.
 1. Otherwise, inject the content script. This should be done based on the `run_at` setting.
 
+## Resolve a package path ## {#resolve-a-package-path}
+
+To <dfn id="dfn-resolve-a-package-path">resolve a package path</dfn>, given |path|, a [=package path=], and |directory|, a [=list=] of [=strings=] that are the segments of the directory that |path| is relative to, return a list of strings or null. The list is empty for the [=root of the package=]. The steps return null when |path| would leave the root of the package or names a directory:
+
+1. If |path| starts with U+002F (/), remove that first code point from |path| and set |directory| to an empty [=list=].
+1. Let |segments| be the result of [=strictly splitting=] |path| on U+002F (/).
+1. If the last item of |segments| is `""`, a [=single-dot URL path segment=], or a [=double-dot URL path segment=], return null.
+1. Let |resolved| be a clone of |directory|.
+1. For each |segment| of |segments|:
+    1. If |segment| is `""` or a [=single-dot URL path segment=], continue.
+    1. If |segment| is a [=double-dot URL path segment=]:
+        1. If |resolved| is [=list/empty=], |path| escapes the root of the package. Return null.
+        1. [=list/Remove=] the last item of |resolved|.
+        1. Continue.
+    1. [=list/Append=] |segment| to |resolved|.
+1. Return |resolved|.
+
+## Select the background environment ## {#select-the-background-environment}
+
+To <dfn id="dfn-select-the-background-environment">select the background environment</dfn>, given |background|, the value of the `background` key, return a [=background selection=] or null. A key is present if |background| contains it and the user agent did not ignore its value as [=invalid=], except that an empty `scripts` list is treated as absent:
+
+1. Let |preferences| be the [=strings=] in |background|'s `preferred_environment` that are `"service_worker"` or `"document"` and name an environment the user agent supports. If `preferred_environment` is absent, |preferences| is empty.
+1. For each |preference| of |preferences|:
+    1. If |preference| is `"service_worker"`:
+        1. If `service_worker` is present, return the [=service worker environment=] and `service_worker`.
+        1. If `scripts` is present, return the [=service worker environment=] and `scripts`.
+    1. If |preference| is `"document"`:
+        1. If `page` is present, return the [=document environment=] and `page`.
+        1. If `scripts` is present, return the [=document environment=] and `scripts`.
+1. If `page` is present and the user agent supports the [=document environment=], return the [=document environment=] and `page`.
+1. If `scripts` is present and the user agent supports the [=document environment=], return the [=document environment=] and `scripts`.
+1. If `service_worker` is present and the user agent supports the [=service worker environment=], return the [=service worker environment=] and `service_worker`.
+1. If `scripts` is present and the user agent supports the [=service worker environment=], return the [=service worker environment=] and `scripts`.
+1. [=Report a warning=] and return null.
+
 # APIs
 
 ## Alarms API
@@ -474,6 +604,9 @@ interface Alarms {
 <pre class="link-defaults">
 spec:html; type:dfn; for:realm; text:global object
 spec:infra; type:dfn; text:list
+spec:infra; type:dfn; text:string
+spec:service-workers; type:dfn; for:/; text:service worker
+spec:html; type:element; text:script
 spec:ecmascript; type:dfn; for:ECMAScript; text:realm
 spec:url; type:dfn; text:scheme
 </pre>
