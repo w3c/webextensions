@@ -14,33 +14,33 @@ Repository: w3c/webextensions
 Markup Shorthands: markdown yes
 </pre>
 
-# File structure
+# File structure # {#file-structure}
 
 Once unpacked from the distribution format, a WebExtension is a directory containing a number of files.
 
 Note: In some operating systems, filenames are case insensitive. This can lead to naming collisions.
 
-## manifest.json
+## manifest.json ## {#manifestjson}
 
 A <a href="#manifest">Manifest</a> file.
 
-## _locales subdirectory
+## _locales subdirectory ## {#_locales-subdirectory}
 
 An optional directory containing strings as defined in <a href="#localization">localization</a>.
 
-## Other files
+## Other files ## {#other-files}
 
 An extension may also contain other files, such as those referenced in the [[#key-content_scripts]] and [[#key-background]] parts of the [=manifest=].
 
-# Manifest
+# Manifest # {#manifest}
 
-A WebExtension must have a <dfn>manifest</dfn> file at its root directory.
+A WebExtension must have a <dfn id="dfn-manifest">manifest</dfn> file at its root directory.
 
-## Manifest file
+## Manifest file ## {#manifest-file}
 
 A manifest file is a [[!JSON]] document named `manifest.json`. Malformed JSON files are not supported. Note that some implementors may accept comments, represented by any content following `//` outside of a JSON string.
 
-## Manifest keys
+## Manifest keys ## {#manifest-keys}
 
 If manifest keys that are not defined in this specification are specified, implementors must ignore those keys.
 
@@ -84,41 +84,41 @@ The following keys must be considered valid in Manifest V3:
 * <a href="#key-host_permissions">`host_permissions`</a>: optional
 * <a href="#key-optional_host_permissions">`optional_host_permissions`</a>: optional
 
-### Key `manifest_version`
+### Key `manifest_version` ### {#key-manifest_version}
 
 This key must be present.
 
-### Key `name`
+### Key `name` ### {#key-name}
 
 Name of the extension used in the browser’s user interface. This should be the full name used to identify the extension. See also <a href="#key-short_name">`short_name`</a>.
 
 This key must be present. This property can be localized.
 
-### Key `version`
+### Key `version` ### {#key-version}
 
 This key must be present.
 
-### Key `permissions`
+### Key `permissions` ### {#key-permissions}
 
 This key may be present.
 
-### Key `optional_permissions`
+### Key `optional_permissions` ### {#key-optional_permissions}
 
 This key may be present.
 
-### Key `host_permissions`
+### Key `host_permissions` ### {#key-host_permissions}
 
 This key may be present.
 
-### Key `optional_host_permissions`
+### Key `optional_host_permissions` ### {#key-optional_host_permissions}
 
 This key may be present.
 
-### Key `default_locale`
+### Key `default_locale` ### {#key-default_locale}
 
 This key must be present if the `_locales` subdirectory is present, must be absent otherwise.
 
-### Key `background`
+### Key `background` ### {#key-background}
 
 This key may be present. Its value is an object that declares the extension's [=background content=]. A value that is not an object is [=invalid=]. [[#background-content]] describes how the user agent uses its keys.
 
@@ -146,51 +146,51 @@ A [=string=], either `"classic"` or `"module"`. Defaults to `"classic"`. Any oth
 
 A [=list=] of [=strings=] that names environments in order of preference. The recognized items are `"service_worker"`, for the [=service worker environment=], and `"document"`, for the [=document environment=]. An empty list names no preference. The user agent must ignore any other string and must not treat it as [=invalid=], so that an environment added in the future does not prevent an extension that names it from loading in a user agent that predates it. The user agent may [=report a warning=] for an ignored string. A value that is not a list, or that contains an item that is not a string, is [=invalid=].
 
-### Key `commands`
+### Key `commands` ### {#key-commands}
 
 This key may be present.
 
-### Key `content_scripts`
+### Key `content_scripts` ### {#key-content_scripts}
 
 The <a href="#key-content_scripts">`content_scripts`</a> key is a [=list=] of items representing [=content scripts=] that should be registered.
 
-### Key `content_security_policy`
+### Key `content_security_policy` ### {#key-content_security_policy}
 
 This key may be present.
 
-### Key `description`
+### Key `description` ### {#key-description}
 
 This key may be present.
 
-### Key `icons`
+### Key `icons` ### {#key-icons}
 
 This key may be present.
 
-### Key `options_ui`
+### Key `options_ui` ### {#key-options_ui}
 
 This key may be present.
 
-### Key `short_name`
+### Key `short_name` ### {#key-short_name}
 
 The short name of the extension. This value should be used in contexts where <a href="#key-name">`name`</a> is too long to use in full. If `short_name` is not provided, manifest consumers should use a truncated version of `name`.
 
 This key may be present. This property can be localized.
 
-### Key `web_accessible_resources`
+### Key `web_accessible_resources` ### {#key-web_accessible_resources}
 
 This key may be present.
 
-### Key `externally_connectable`
+### Key `externally_connectable` ### {#key-externally_connectable}
 
-The <a href="#key-externally_connectable">`externally_connectable`</a> key declares which extensions and web pages can establish connections to the extension using [=runtime.connect()=] and [=runtime.sendMessage()=]. If omitted, all extensions may connect, but no web pages can connect.
+The <a href="#key-externally_connectable">`externally_connectable`</a> key declares which extensions and web pages can establish connections to the extension using `runtime.connect()` and `runtime.sendMessage()`. If omitted, all extensions may connect, but no web pages can connect.
 
-A call to [=runtime.connect()=] from an external web page or extension triggers the [=runtime.onConnectExternal=] event listener to fire. Similarly, a message sent by an external web page or extension with [=runtime.sendMessage()=] triggers the [=runtime.onMessageExternal=] event listener to fire. These events are only available in a [=privileged extension context=], not in web pages or less-privileged contexts like [=content scripts=].
+A call to `runtime.connect()` from an external web page or extension triggers the `runtime.onConnectExternal` event listener to fire. Similarly, a message sent by an external web page or extension with `runtime.sendMessage()` triggers the `runtime.onMessageExternal` event listener to fire. These events are only available in a [=privileged extension context=], not in web pages or less-privileged contexts like [=content scripts=].
 
 This key may be present and may include the following optional keys:
 
 #### Key `ids` #### {#key-externally_connectable-ids}
 
-A [=list=] of [=extension IDs=] that specifies which extensions can communicate with the extension. To allow all extensions to connect, include the wildcard pattern `"*"`.
+A [=list=] of extension IDs that specifies which extensions can communicate with the extension. To allow all extensions to connect, include the wildcard pattern `"*"`.
 
 Note: The default of whether an extension can connect changes based on whether the `externally_connectable` key is present. If the key is omitted, the default is to allow all extensions to connect. If the key is present, no extensions can connect unless specified in `"ids"`, even if the `"ids"` key is ommitted.
 
@@ -200,19 +200,19 @@ A [=list=] of [=match patterns=] that specifies which web pages can communicate 
 
 Note: Only the document's own URL is used for matching. There is no fallback to the URL of the document that created it.
 
-### Key `devtools_page`
+### Key `devtools_page` ### {#key-devtools_page}
 
 This key may be present.
 
-### Key `trial_tokens`
+### Key `trial_tokens` ### {#key-trial_tokens}
 
 The <a href="#key-trial_tokens">`trial_tokens`</a> key is an optional [=list=] of strings. These may be used by the user agent to enable experimental features for the [[#extension-origin]]. The user agent may ignore or warn about any unrecognized, expired or malformed keys but any such entries must not prevent the extension from loading.
 
-## Reserved file names
+## Reserved file names ## {#reserved-file-names}
 
 Filenames in the root of the package that begin with U+005F (_) are reserved for use by the user agent. A user agent may [=report a warning=] for a file or directory in the root of the package whose name is reserved and not defined by this specification.
 
-# Execution contexts
+# Execution contexts # {#execution-contexts}
 
 Extensions can execute JavaScript code, in any of the following execution contexts:
 
@@ -223,7 +223,7 @@ Extensions can execute JavaScript code, in any of the following execution contex
 
 Some extension APIs may involve the execution of JavaScript code in contexts other than what is specified above. For example, the `userScripts` API allows the creation of `USER_SCRIPT` worlds that are isolated similarly to [=isolated worlds=] but with distinct API availability.
 
-## Isolated worlds
+## Isolated worlds ## {#isolated-worlds}
 
 A <dfn>world</dfn> is a [=realm=] with its own [=global object=].
 
@@ -255,15 +255,15 @@ an object from one realm to another. Potential resolutions include:
 
 </div>
 
-# Unavailable APIs
+# Unavailable APIs # {#unavailable-apis}
 
-# The `browser` global
+# The `browser` global # {#the-browser-global}
 
 [[webextensions-browser-global inline]] is the primary namespace hosting extension APIs, available to [=extension contexts=].
 
 Although the [=main world=] of a web page is not an [=extension context=], it may also contain the `browser` global to offer access to functionality granted by [[#key-externally_connectable]].
 
-# <dfn>Extension origin</dfn>
+# <dfn id="dfn-extension-origin">Extension origin</dfn> # {#extension-origin}
 
 The extension origin is a [=tuple origin=] consisting of an [=extension scheme=] and an extension-specific host. An <dfn>extension scheme</dfn> is a browser-specific scheme reserved for extension use.
 
@@ -271,27 +271,27 @@ The extension origin is a [=tuple origin=] consisting of an [=extension scheme=]
 Examples of [=extension schemes=] include `chrome-extension`, `moz-extension`, and `safari-web-extension`.
 </div>
 
-# Localization
+# Localization # {#localization}
 
 The _locales subdirectory of a WebExtension can contain strings for internationalization purposes.
 
 Issue(62): Specify localization handling.
 
-# Host permissions
+# Host permissions # {#host-permissions}
 
-## Cross-origin fetch
+## Cross-origin fetch ## {#cross-origin-fetch}
 
-# Match patterns
+# Match patterns # {#match-patterns}
 
 A <dfn>match pattern</dfn> is a pattern used to match URLs. They are case-insensitive.
 
-# Globs
+# Globs # {#globs}
 
 A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards where `*` can match zero or more characters and `?` matches exactly one character.
 
-# Concepts
+# Concepts # {#concepts}
 
-## Package paths
+## Package paths ## {#package-paths}
 
 A <dfn>package path</dfn> is a non-empty [=string=] that identifies a location in the extension's package. The user agent resolves a package path against a directory of the package by running the steps in [[#resolve-a-package-path]]. The <dfn>root of the package</dfn> is the directory that contains the [=manifest=]. A manifest value is resolved against the root of the package. Where an API accepts a package path, that API states the directory it is resolved against.
 
@@ -305,21 +305,21 @@ Issue(#1157): A path that escapes the root of the package, such as `../backgroun
 
 Issue(#1035): Specify which characters a path segment may contain, such as U+0000 NULL, U+005C (\), U+0025 (%), U+003F (?) and U+0023 (#), whether names are matched with case sensitivity, and whether the URL Standard defines what a path segment is. Chrome rejects U+005C (\) anywhere in a path. Safari and Firefox parse the path as a URL, so `?` and `#` do not name part of a file.
 
-## Uniqueness of extension IDs
+## Uniqueness of extension IDs ## {#uniqueness-of-extension-ids}
 
-## Promises and callbacks
+## Promises and callbacks ## {#promises-and-callbacks}
 
-## User gestures and activeTab
+## User gestures and activeTab ## {#user-gestures-and-activetab}
 
-## Extension permissions and web perissions
+## Extension permissions and web perissions ## {#extension-permissions-and-web-perissions}
 
-# Content security policy
+# Content security policy # {#content-security-policy}
 
-# Architecture
+# Architecture # {#architecture}
 
-## Background content
+## Background content ## {#background-content}
 
-<dfn>Background content</dfn> is code that runs independently of any web page, browser window, or extension page. It responds to events from the extension APIs and the user agent, and it can use the extension APIs that the extension has permission for. It runs in a [=privileged extension context=]. It is event-based: the user agent loads it when an event occurs and may unload it when it is idle, as described in [[#background-lifecycle]]. The extension declares it in the [[#key-background]] manifest key.
+<dfn id="dfn-background-content">Background content</dfn> is code that runs independently of any web page, browser window, or extension page. It responds to events from the extension APIs and the user agent, and it can use the extension APIs that the extension has permission for. It runs in a [=privileged extension context=]. It is event-based: the user agent loads it when an event occurs and may unload it when it is idle, as described in [[#background-lifecycle]]. The extension declares it in the [[#key-background]] manifest key.
 
 The user agent runs background content in one of two environments:
 
@@ -336,7 +336,7 @@ Background content can fail to load, for example when its resource cannot be fet
 
 Issue(#1156): Specify what counts as a failure to load, such as a resource that cannot be fetched or a script that throws while it first runs. Also specify how a failure affects the other scripts of a [=background selection=] that uses [[#key-background-scripts]]. In Safari's [=generated service worker=], the scripts load one after another, so a script that cannot be fetched prevents the scripts after it from loading. In the [=generated background document=] of Safari and Firefox, each <{script}> element loads on its own, so the scripts after a failed one still run. The two generated resources are expected to fail in the same way.
 
-### Resource of a background environment
+### Resource of a background environment ### {#resource-of-a-background-environment}
 
 The key and the environment of a [=background selection=] determine the resource that the user agent runs:
 
@@ -352,13 +352,13 @@ Issue(#785): Only Safari implements the [=generated service worker=].
 
 The <dfn>generated background document</dfn> is an [=HTML document=] in the [=extension origin=], at the path `/_generated_background_page.html`, whose filename is [reserved](#reserved-file-names). It contains one <{script}> element for each path in [[#key-background-scripts]], in order, with the [=resolved path=] of that path as its `src`. Each element is a [=module script=] when [[#key-background-type]] is `"module"`, and a [=classic script=] otherwise. All of the scripts run in the same [=global object=].
 
-### Declaring several environments
+### Declaring several environments ### {#declaring-several-environments}
 
 [[#key-background-service_worker]] may be present together with [[#key-background-scripts]] or with [[#key-background-page]], so that one manifest works in user agents that support different environments. `scripts` and `page` are alternatives, and the user agent may [=report a warning=] when both are present. When two keys provide a resource for the same environment, `service_worker` and `page` take precedence over `scripts`. The [[#key-background-preferred_environment]] key lets the extension choose between the environments that a user agent supports.
 
 A user agent must ignore the keys that belong only to environments it does not support, even when their values would otherwise be [=invalid=], and may [=report a warning=] for them.
 
-### Background lifecycle
+### Background lifecycle ### {#background-lifecycle}
 
 [=Background content=] is event-based. The user agent loads it when an event occurs for which it has registered a listener, and may unload it when it is idle. Unloading discards the [=global object=] of the environment and the state held in it. A later event loads the background content again.
 
@@ -366,7 +366,7 @@ Issue(#1158): Define when a listener counts as registered. The user agent has to
 
 Issue: Specify when the background content first loads, what counts as idle, and how events that arrive while it is loading are ordered. See <#147>, <#416>, and <#464>.
 
-## <dfn>Content scripts</dfn>
+## <dfn id="dfn-content-scripts">Content scripts</dfn> ## {#content-scripts}
 
 Content scripts represent a set of JS and CSS files that should be injected into matching pages loaded by the user agent. They are injected using the steps in [[#inject-a-content-script]]. Content scripts run in an [=isolated world=] by default.
 
@@ -374,27 +374,27 @@ Content scripts represent a set of JS and CSS files that should be injected into
 
 A [=list=] of [=match patterns=] that are used to decide which pages the user agent injects the content script into. This key is required.
 
-### Key `exclude_matches`
+### Key `exclude_matches` ### {#key-exclude_matches}
 
 A [=list=] of [=match patterns=] that can be used to specify URLs where the content script should not run, even if the URL matches entries in [[#key-content_scripts-matches]] and (if specified) [[#key-include_globs]].
 
-### Key `js`
+### Key `js` ### {#key-js}
 
 A [=list=] of [=package paths=] of JavaScript files that should be injected as scripts. A value that contains an item that is not a [=package path=] is [=invalid=].
 
-### Key `css`
+### Key `css` ### {#key-css}
 
 A [=list=] of [=package paths=] of CSS files that should be injected as stylesheets. A value that contains an item that is not a [=package path=] is [=invalid=].
 
-### Key `all_frames`
+### Key `all_frames` ### {#key-all_frames}
 
 If `all_frames` is `true`, the content script must be injected into any subframes that match the other matching criteria for the content script. If `false`, content scripts will only be injected into top-level documents. Defaults to `false`.
 
-### Key `match_about_blank`
+### Key `match_about_blank` ### {#key-match_about_blank}
 
 If this is `true`, use the URL of the parent frame when matching a child frame whose document URL is `about:blank` or `about:srcdoc`. See also [[#determine-the-url-for-matching-a-document]]. Defaults to `false`.
 
-### Key `match_origin_as_fallback`
+### Key `match_origin_as_fallback` ### {#key-match_origin_as_fallback}
 
 If this is `true`, use fallbacks as described in [[#determine-the-url-for-matching-a-document]].
 
@@ -402,23 +402,23 @@ No path is available when the URL to match against falls back to an origin. Ther
 
 Defaults to `false`.
 
-### Key `run_at`
+### Key `run_at` ### {#key-run_at}
 
 Specifies when the content script should be injected. Valid values are defined by the {{RunAt}} enum.
 
-### Key `include_globs`
+### Key `include_globs` ### {#key-include_globs}
 
 A list of [=globs=] that a document should match. A document matches if the URL matches both the [[#key-content_scripts-matches]] field and the [[#key-include_globs]] field.
 
-### Key `exclude_globs`
+### Key `exclude_globs` ### {#key-exclude_globs}
 
 A [=list=] of [=globs=] that can be used to specify URLs where the content script should not run, even if the URL matches entries in [[#key-content_scripts-matches]] and (if specified) [[#key-include_globs]].
 
-### Key `world`
+### Key `world` ### {#key-world}
 
 The [=world=] any JavaScript scripts should be injected into. Defaults to `ISOLATED`. Valid values are defined by the {{ExecutionWorld}} enum.
 
-### <dfn>RunAt</dfn> enum
+### `RunAt` enum ### {#runat-enum}
 
 <pre class="idl">
 enum RunAt {
@@ -430,7 +430,7 @@ enum RunAt {
 
 The {{RunAt}} enum represents when a content script should be injected.
 
-### <dfn>ExecutionWorld</dfn> enum
+### `ExecutionWorld` enum ### {#executionworld-enum}
 
 <pre class="idl">
 enum ExecutionWorld {
@@ -445,21 +445,21 @@ The {{ExecutionWorld}} enum represents a JavaScript [=world=].
 
 "MAIN" corresponds to the [=main world=].
 
-## Extension pages
+## Extension pages ## {#extension-pages}
 
-# Classes of security risk
+# Classes of security risk # {#classes-of-security-risk}
 
-# Web accessible resources
+# Web accessible resources # {#web-accessible-resources}
 
-# Interaction with the web
+# Interaction with the web # {#interaction-with-the-web}
 
-## Current behavior of cookie partitioning
+## Current behavior of cookie partitioning ## {#current-behavior-of-cookie-partitioning}
 
-# Version number handling
+# Version number handling # {#version-number-handling}
 
-# Algorithms
+# Algorithms # {#algorithms}
 
-## Determine the URL for matching a document
+## Determine the URL for matching a document ## {#determine-the-url-for-matching-a-document}
 
 To determine the URL to use for matching a document, given the document, `match_origin_as_fallback` and `match_about_blank`:
 
@@ -469,14 +469,14 @@ To determine the URL to use for matching a document, given the document, `match_
 1. If the [=scheme=] of |url| is `blob`, `data` or `filesystem`, or if |url| is `about:blank` or `about:srcdoc`:
     1. If `match_origin_as_fallback` is set to `true`:
         1. If the document's origin is a [=tuple origin=]:
-            1. Let |document-origin| be the <a href="https://html.spec.whatwg.org/#ascii-serialisation-of-an-origin">serialization</a> of the document's origin.
+            1. Let |document-origin| be the [=serialization of an origin|serialization=] of the document's origin.
             1. If the [=scheme=] of |document-origin| is `http`, `https` or `file`:
                 1. Return |document-origin|.
             1. Else, return null.
         1.  Note: If not a [=tuple origin=], the document’s origin is an [=opaque origin=].
-            1. Let |precursor-origin| be the <a href="https://html.spec.whatwg.org/#ascii-serialisation-of-an-origin">serialization</a> of the document’s precursor origin, if any.
-                
-                Issue: "precursor origin" concept needs to be specified. It is not in the HTML spec at the moment. At least Chrome and Firefox recognize the concept, see e.g. <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1715167">https://bugzilla.mozilla.org/show_bug.cgi?id=1715167</a>.
+            1. Let |precursor-origin| be the [=serialization of an origin|serialization=] of the document’s precursor origin, if any.
+
+                Issue: "precursor origin" concept needs to be specified. It is not in the HTML spec at the moment. At least Chrome and Firefox recognize the concept, see e.g. https://bugzilla.mozilla.org/show_bug.cgi?id=1715167.
             1. If the [=scheme=] of |precursor-origin| is `http`, `https` or `file`:
                 1. Return |precursor-origin|.
             1. Else, return null.
@@ -485,13 +485,13 @@ To determine the URL to use for matching a document, given the document, `match_
             1. Let |opener| be the active document of document’s [=opener browsing context=].
             1. If all of the following conditions are true:
                 - |opener| is not null
-                - |opener|’s origin is still the same as the document’s [=opener origin at creation=]
+                - |opener|’s origin is still the same as the document’s <l spec=html>[=opener origin at creation=]</l>
                 - The algorithm has not been repeated for |opener| yet.
-                 
+
                  Then repeat the algorithm for |opener|.
 1. Return null.
 
-## Inject a content script
+## Inject a content script ## {#inject-a-content-script}
 
 Issue: If the same extension specifies the same script twice, what should happen? ([bug](https://crbug.com/324096753))
 
@@ -505,9 +505,9 @@ To determine if a content script should be injected in a document:
 1. If this is a child frame, and `all_frames` is not `true`, return.
 1. Otherwise, inject the content script. This should be done based on the `run_at` setting.
 
-## Resolve a package path
+## Resolve a package path ## {#resolve-a-package-path}
 
-To <dfn>resolve a package path</dfn>, given |path|, a [=package path=], and |directory|, a [=list=] of [=strings=] that are the segments of the directory that |path| is relative to, return a list of strings or null. The list is empty for the [=root of the package=]. The steps return null when |path| would leave the root of the package or names a directory:
+To <dfn id="dfn-resolve-a-package-path">resolve a package path</dfn>, given |path|, a [=package path=], and |directory|, a [=list=] of [=strings=] that are the segments of the directory that |path| is relative to, return a list of strings or null. The list is empty for the [=root of the package=]. The steps return null when |path| would leave the root of the package or names a directory:
 
 1. If |path| starts with U+002F (/), remove that first code point from |path| and set |directory| to an empty [=list=].
 1. Let |segments| be the result of [=strictly splitting=] |path| on U+002F (/).
@@ -522,9 +522,9 @@ To <dfn>resolve a package path</dfn>, given |path|, a [=package path=], and |dir
     1. [=list/Append=] |segment| to |resolved|.
 1. Return |resolved|.
 
-## Select the background environment
+## Select the background environment ## {#select-the-background-environment}
 
-To <dfn>select the background environment</dfn>, given |background|, the value of the `background` key, return a [=background selection=] or null. A key is present if |background| contains it and the user agent did not ignore its value as [=invalid=], except that an empty `scripts` list is treated as absent:
+To <dfn id="dfn-select-the-background-environment">select the background environment</dfn>, given |background|, the value of the `background` key, return a [=background selection=] or null. A key is present if |background| contains it and the user agent did not ignore its value as [=invalid=], except that an empty `scripts` list is treated as absent:
 
 1. Let |preferences| be the [=strings=] in |background|'s `preferred_environment` that are `"service_worker"` or `"document"` and name an environment the user agent supports. If `preferred_environment` is absent, |preferences| is empty.
 1. For each |preference| of |preferences|:
@@ -607,6 +607,8 @@ spec:infra; type:dfn; text:list
 spec:infra; type:dfn; text:string
 spec:service-workers; type:dfn; for:/; text:service worker
 spec:html; type:element; text:script
+spec:ecmascript; type:dfn; for:ECMAScript; text:realm
+spec:url; type:dfn; text:scheme
 </pre>
 
 <pre class="biblio">
