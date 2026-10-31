@@ -46,13 +46,15 @@ the extension language in the extension settings.
 An example of content-script matching is "Category Tabs for Google Keep", which
 needs to match it's language with the page in question to properly integrate.
 
-A simple naive implementation would be:
+The API in action:
 ```js
 const [pageLanguage, supportedLanguages] = await Promise.all([
   tabs.detectLanguage(),
   i18n.getAvailableLanguages(),
 ]);
-const resourceLanguage = supportedLanguages.includes(pageLanguage);
+const requestedLanguages = [pageLanguage, navigator.language];
+const resourceLanguage = Intl.LocaleMatcher(requestedLanguages, supportedLanguages, 'en');
+ // Intl.LocaleMatcher is not yet implemented in any browser see https://github.com/tc39/proposal-intl-localematcher for the stage 1 proposal and https://formatjs.github.io/docs/polyfills/intl-localematcher for the ponyfill.
 const resourceFile = chrome.runtime.getURL(`_locales/${resourceLanguage}/messages.json`);
 const messages = await fetch(resourceFile);
 ```
