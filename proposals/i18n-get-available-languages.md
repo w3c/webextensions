@@ -8,7 +8,7 @@ An API which allows extensions to get a list of BCP47 language tags containing t
 
 **Author:** carlosjeurissen
 
-**Sponsoring Browser:** TBD
+**Sponsoring Browser:** Mozilla Firefox
 
 **Contributors:** hanguokai
 
