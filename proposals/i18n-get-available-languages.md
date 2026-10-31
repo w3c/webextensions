@@ -100,7 +100,7 @@ As this does not expose sensitive data, there is no abuse potential.
 
 ### Additional Security Considerations
 
-Exposing the list of locales an extension has resource files for is unlikely to introduce any new security risks.
+Exposing the list of locales an extension has resource files for does not introduce new attack vectors as the result is derived from the extension's own package, which the extension can already read with fetch(browser.runtime.getURL(...)). This applies to content scripts too, because the list comes from the extension and not from the page.
 
 ## Alternatives
 
