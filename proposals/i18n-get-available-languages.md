@@ -26,10 +26,10 @@ hardcoding them first or need to rely on fetch try and error.
 
 #### Use Cases
 
-Allow to list the languages for extension settings language pickers.
-
 Use the list of supported languages to match a specific website when applying
 a content script.
+
+Allow to list the languages for extension settings language pickers.
 
 Have this list independent of distribution (As some extension stores disallow
 certain language tags).
