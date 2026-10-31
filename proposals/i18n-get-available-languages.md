@@ -72,6 +72,10 @@ Given an extension with the following resource files:
 
 The `i18n.getAvailableLanguages()` method would return a promise which resolves with the following array: `['en', 'es', 'es-419']`.
 
+The returned array should be sorted by code unit. Each returned language code should be formatted to be a proper BCP47 tag. For example: `zh_hant` should be returned as `zh-Hant`.
+
+However the actual codes themselves should not be modified. For example, `iw` should not be returned as `he`, but as `iw`. So the language tags should only be formatted, not canonicalised.
+
 If no resource files are specified, and/or `default_locale` in the manifest is missing, the promise will reject with an error stating extension localisation is required for this method to work properly.
 
 If a browser is unable to offer a specific language tag in `i18n.withLanguage()` or `i18n.setLanguage()`, for example, because it does not understand the tag (think about `_locales/n/messages.json`), or if a directory has no messages.json file, it should not include said language tag. This does not mean a browser should only return languages the browser UI itself supports. An extension could offer additional languages outside the set of languages used for its own browser UI. In that case browsers can offer support for these languages and preferably should support and return them.
