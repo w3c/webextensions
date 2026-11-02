@@ -34,6 +34,8 @@ jobs:
             source: ./specification/webdriver-classic.bs
           - name: window-browser
             source: ./specification/window.browser.bs
+          - name: extension-service-workers
+            source: ./specification/extension-service-workers.bs
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
