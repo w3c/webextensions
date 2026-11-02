@@ -410,13 +410,13 @@ To determine if a content script should be injected in a document:
 1. If this is a child frame, and `all_frames` is not `true`, return.
 1. Otherwise, inject the content script. This should be done based on the `run_at` setting.
 
-# APIs
+# APIs # {#apis}
 
-## Alarms API
+## Alarms API ## {#alarms-api}
 
 The <dfn attribute for=Browser>alarms</dfn> attribute allows you to access the Alarms API to schedule one-time or repeating alarms.
 
-### Alarms interface
+### Alarms interface ### {#alarms-interface}
 
 <script type=idl>
 partial interface Browser {
@@ -476,6 +476,11 @@ spec:html; type:dfn; for:realm; text:global object
 spec:infra; type:dfn; text:list
 spec:ecmascript; type:dfn; for:ECMAScript; text:realm
 spec:url; type:dfn; text:scheme
+</pre>
+
+<pre class="anchors">
+spec: webextensions-browser-global; urlPrefix: https://w3c.github.io/webextensions/specification/window.browser.html
+    type: interface; text: Browser; url: browser-interface
 </pre>
 
 <pre class="biblio">
