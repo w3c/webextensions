@@ -11,7 +11,7 @@ Repository: w3c/webextensions
 </pre>
 
   <section class="non-normative">
-    ## Introduction
+    ## Introduction ## {#introduction}
       <em>This section is non-normative.</em>
 
       This specification is non-normative.The intention of this spec is to
@@ -19,7 +19,7 @@ Repository: w3c/webextensions
       for browser vendors who choose to implement it.
   </section>
   <section>
-    <h3> Endpoints</h3>
+    <h3 id="endpoints">Endpoints</h3>
 
     <table class=simple>
      <tr>
@@ -37,7 +37,7 @@ Repository: w3c/webextensions
   </section>
 
   <section>
-    <h3>Errors</h3>
+    <h3 id="errors">Errors</h3>
     <table class=simple>
      <tr>
       <th>Error Code
@@ -71,15 +71,15 @@ Repository: w3c/webextensions
   </section>
 
   <section>
-    <h3>Commands</h3>
+    <h3 id="commands">Commands</h3>
     <section>
-      <h2>WebExtensions</h2>
+      <h2 id="webextensions">WebExtensions</h2>
       <p>The WebExtensions API provides an interface that allows
       extensions to modify and enhance the capability of the browser.
       This section describes the interaction with WebExtensions.
 
       <section>
-        <h3>Install WebExtension</h3>
+        <h3 id="install-webextension">Install WebExtension</h3>
         <table class="simple jsoncommand">
          <tr>
           <th>HTTP Method</th>
@@ -161,7 +161,7 @@ Repository: w3c/webextensions
       </section> <!-- /Install WebExtension -->
 
       <section>
-        <h3>Uninstall WebExtension</h3>
+        <h3 id="uninstall-webextension">Uninstall WebExtension</h3>
         <table class="simple jsoncommand">
          <tr>
           <th>HTTP Method</th>
