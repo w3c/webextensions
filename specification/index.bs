@@ -44,7 +44,7 @@ A manifest file is a [[!JSON]] document named `manifest.json`. Malformed JSON fi
 
 If manifest keys that are not defined in this specification are specified, implementors must ignore those keys.
 
-A manifest value that this specification calls <dfn>invalid</dfn> is one the user agent cannot use as written. The user agent should [=report a warning=] or [=report an error=]. It may ignore the value, use a default, or not load the extension.
+A manifest value that this specification calls <dfn>invalid</dfn> is one the user agent cannot use as written. The user agent should [=report a warning=] or [=report an error=], ignore the value or use a default, and continue to load the extension. A user agent may refuse to load the extension when it cannot continue without the value.
 
 If manifest keys that are defined in this specification are specified with a different JSON type than defined in this specification, implementors must ignore those keys and may [=report a warning=], unless this specification calls the value [=invalid=].
 
@@ -350,7 +350,7 @@ The <dfn>generated service worker</dfn> is a JavaScript file in the [=extension 
 
 Issue(#785): Only Safari implements the [=generated service worker=].
 
-The <dfn>generated background document</dfn> is an [=HTML document=] in the [=extension origin=], at the path `/_generated_background_page.html`, whose filename is [reserved](#reserved-file-names). It contains one <{script}> element for each path in [[#key-background-scripts]], in order, with the [=resolved path=] of that path as its `src`. Each element is a [=module script=] when [[#key-background-type]] is `"module"`, and a [=classic script=] otherwise. All of the scripts run in the same [=global object=].
+The <dfn>generated background document</dfn> is an [=HTML document=] in the [=extension origin=], at the path `/_generated_background_page.html`, whose filename is [reserved](#reserved-file-names). Its character encoding is [=UTF-8=]. It contains one <{script}> element for each path in [[#key-background-scripts]], in order, with the [=resolved path=] of that path as its `src`. Each element is a [=module script=] when [[#key-background-type]] is `"module"`, and a [=classic script=] otherwise. All of the scripts run in the same [=global object=].
 
 ### Declaring several environments ### {#declaring-several-environments}
 
