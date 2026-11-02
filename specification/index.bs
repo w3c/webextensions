@@ -540,13 +540,13 @@ To <dfn id="dfn-select-the-background-environment">select the background environ
 1. If `scripts` is present and the user agent supports the [=service worker environment=], return the [=service worker environment=] and `scripts`.
 1. [=Report a warning=] and return null.
 
-# APIs
+# APIs # {#apis}
 
-## Alarms API
+## Alarms API ## {#alarms-api}
 
 The <dfn attribute for=Browser>alarms</dfn> attribute allows you to access the Alarms API to schedule one-time or repeating alarms.
 
-### Alarms interface
+### Alarms interface ### {#alarms-interface}
 
 <script type=idl>
 partial interface Browser {
@@ -609,6 +609,11 @@ spec:service-workers; type:dfn; for:/; text:service worker
 spec:html; type:element; text:script
 spec:ecmascript; type:dfn; for:ECMAScript; text:realm
 spec:url; type:dfn; text:scheme
+</pre>
+
+<pre class="anchors">
+spec: webextensions-browser-global; urlPrefix: https://w3c.github.io/webextensions/specification/window.browser.html
+    type: interface; text: Browser; url: browser-interface
 </pre>
 
 <pre class="biblio">

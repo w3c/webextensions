@@ -21,7 +21,7 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
 </pre>
 
 <section class="non-normative">
-  ## Introduction
+  ## Introduction ## {#introduction}
   <em>This section is non-normative.</em>
 
   Browser extensions are programs to extend the capabilities of web browsers.
@@ -54,15 +54,15 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
 
   Note: This interface is intentionally left blank to allow APIs to be exposed by other specifications.
 
-  Issue(1065): In all known implementations, {{browser}} is currently a plain object and does not have the semantics expected from a WebIDL interface.
+  Issue(1065): In all known implementations, {{Window/browser}} is currently a plain object and does not have the semantics expected from a WebIDL interface.
 </section>
 
   <section>
     <h2 id="window-interface">
-      <a attribute lt="browser"><code>window.browser</code></a> API
+      <a attribute for="Window" lt="browser"><code>window.browser</code></a> API
     </h2>
 
-    {{browser}} is UA defined attribute exposed on {{window}}. When implemented,
+    {{Window/browser}} is UA defined attribute exposed on {{window}}. When implemented,
     it MUST be used only for WebExtension related functionality.
   </section>
 
@@ -70,12 +70,12 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
     For backwards compatibility with older versions of WebExtensions that used
     <code>chrome</code> as a global identifier for WebExtension related methods,
     a UA MAY define a global <code>chrome</code> object that includes all
-    properties of {{browser}}.
-    {{browser}} and <code>chrome</code> MAY be direct aliases of each other.
-    When {{browser}} and <code>chrome</code> are distinct objects, each initial
-    property of {{browser}} SHOULD be defined on the <code>chrome</code> object,
+    properties of {{Window/browser}}.
+    {{Window/browser}} and <code>chrome</code> MAY be direct aliases of each other.
+    When {{Window/browser}} and <code>chrome</code> are distinct objects, each initial
+    property of {{Window/browser}} SHOULD be defined on the <code>chrome</code> object,
     and each property descriptor on the <code>chrome</code> object SHOULD return
-    the same value as the corresponding property on the {{browser}} object.
+    the same value as the corresponding property on the {{Window/browser}} object.
 
     <div class="example" id="example-1">
       Here's an example of the expected alias behavior
@@ -86,7 +86,7 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
         globalThis.browser.FAKE = true
         console.log(globalThis.chrome.FAKE);
         // ^ undefined when chrome and browser are not direct aliases.
-        // ^ may be true if browser === chrome.
+        // ^ true when chrome and browser are direct aliases.
 
         // Individual properties are aliased, so updating a known property
         // directly changes the matching property on the other
@@ -113,9 +113,9 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
       Worker API
     </h2>
 
-    When {{browser}} is defined on {{window}}, it SHOULD also be exposed on {{ServiceWorkerGlobalScope}}
+    When {{Window/browser}} is defined on {{window}}, it SHOULD also be exposed on {{ServiceWorkerGlobalScope}}
     of origins associated with WebExtensions.
-    It MUST be used exclusively for WebExtension purposes, however the contents of each instance of {{browser}} is UA defined.
+    It MUST be used exclusively for WebExtension purposes, however the contents of each instance of {{Window/browser}} is UA defined.
   </section>
 
 <pre class="idl">

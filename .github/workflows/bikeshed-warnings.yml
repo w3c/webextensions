@@ -76,13 +76,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
       - name: Install Bikeshed
         run: |
-          pip install bikeshed
+          pipx install 'bikeshed==7.*'
           bikeshed update
 
       - name: Build with Bikeshed
