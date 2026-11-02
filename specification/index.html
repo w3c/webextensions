@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version 49e9fdd4f, updated Tue Oct 13 14:27:53 2026 -0700" name="generator">
   <link href="https://w3c.github.io/webextensions/specification/" rel="canonical">
-  <meta content="41fb86208d748f72685162c5f264c5b57b67b1a0" name="revision">
+  <meta content="570789f01447084ae15194174e10fd984687f4f2" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -1244,7 +1244,7 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
    <h3 class="heading settled" data-level="19.1" id="alarms-api"><span class="secno">19.1. </span><span class="content">Alarms API</span><a class="self-link" href="#alarms-api"></a></h3>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Browser" data-dfn-type="attribute" data-export id="dom-browser-alarms"><code>alarms</code></dfn> attribute allows you to access the Alarms API to schedule one-time or repeating alarms.</p>
    <h4 class="heading settled" data-level="19.1.1" id="alarms-interface"><span class="secno">19.1.1. </span><span class="content">Alarms interface</span><a class="self-link" href="#alarms-interface"></a></h4>
-<pre class="def highlight idl"><c- b>partial</c-> <c- b>interface</c-> <u class="link-error" data-lt="Browser" title="LINK ERROR: No &apos;interface&apos; refs found for &apos;Browser&apos;."><c- g>Browser</c-></u> {
+<pre class="def highlight idl"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://w3c.github.io/webextensions/specification/window.browser.html#browser-interface" id="ref-for-browser-interface"><c- g>Browser</c-></a> {
   <c- b>attribute</c-> <a data-link-type="idl-name" href="#alarms" id="ref-for-alarms"><c- n>Alarms</c-></a> <a class="idl-code" data-link-type="attribute" data-type="Alarms" href="#dom-browser-alarms" id="ref-for-dom-browser-alarms"><c- g>alarms</c-></a>;
 };
 </pre>
@@ -1426,6 +1426,11 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
      <li><span class="dfn-paneled" id="3a711be7">scheme</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[WEBEXTENSIONS-BROWSER-GLOBAL]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="7d294a6c">Browser</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="8855a9aa">DOMString</span>
@@ -1453,6 +1458,8 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-url">[URL]
    <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/"><cite>URL Standard</cite></a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
+   <dt id="biblio-webextensions-browser-global">[WEBEXTENSIONS-BROWSER-GLOBAL]
+   <dd>Patrick Kettner. <a href="https://w3c.github.io/webextensions/specification/window.browser.html"><cite>window.browser</cite></a>. CG-DRAFT. URL: <a href="https://w3c.github.io/webextensions/specification/window.browser.html">https://w3c.github.io/webextensions/specification/window.browser.html</a>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
@@ -1460,8 +1467,6 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
   <dl>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
-   <dt id="biblio-webextensions-browser-global">[WEBEXTENSIONS-BROWSER-GLOBAL]
-   <dd>Patrick Kettner. <a href="https://w3c.github.io/webextensions/specification/window.browser.html"><cite>window.browser</cite></a>. CG-DRAFT. URL: <a href="https://w3c.github.io/webextensions/specification/window.browser.html">https://w3c.github.io/webextensions/specification/window.browser.html</a>
   </dl>
   <h2 class="heading no-num no-ref settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
 <pre class="def highlight idl"><c- b>enum</c-> <a href="#enumdef-runat"><code><c- g>RunAt</c-></code></a> {
@@ -1475,7 +1480,7 @@ Examples of <a data-link-type="dfn" href="#extension-scheme" id="ref-for-extensi
     <a href="#dom-executionworld-main"><code><c- s>"MAIN"</c-></code></a>
 };
 
-<c- b>partial</c-> <c- b>interface</c-> <u class="link-error" data-lt="Browser" title="LINK ERROR: No &apos;interface&apos; refs found for &apos;Browser&apos;."><c- g>Browser</c-></u> {
+<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://w3c.github.io/webextensions/specification/window.browser.html#browser-interface"><c- g>Browser</c-></a> {
   <c- b>attribute</c-> <a data-link-type="idl-name" href="#alarms"><c- n>Alarms</c-></a> <a class="idl-code" data-link-type="attribute" data-type="Alarms" href="#dom-browser-alarms"><c- g>alarms</c-></a>;
 };
 
@@ -1739,6 +1744,7 @@ let dfnPanelData = {
 "649608b9": {"dfnID":"649608b9","dfnText":"list","external":true,"refSections":[{"refs":[{"id":"ref-for-list"}],"title":"2.2.11. Key content_scripts"},{"refs":[{"id":"ref-for-list\u2460"}],"title":"2.2.18.1. Key ids"},{"refs":[{"id":"ref-for-list\u2461"}],"title":"2.2.18.2. Key matches"},{"refs":[{"id":"ref-for-list\u2462"}],"title":"2.2.20. Key trial_tokens"},{"refs":[{"id":"ref-for-list\u2463"}],"title":"13.2.1. Key matches"},{"refs":[{"id":"ref-for-list\u2464"}],"title":"13.2.2. Key exclude_matches"},{"refs":[{"id":"ref-for-list\u2465"}],"title":"13.2.3. Key js"},{"refs":[{"id":"ref-for-list\u2466"}],"title":"13.2.4. Key css"},{"refs":[{"id":"ref-for-list\u2467"}],"title":"13.2.10. Key exclude_globs"}],"url":"https://infra.spec.whatwg.org/#list"},
 "6728fdee": {"dfnID":"6728fdee","dfnText":"platform object","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-platform-object"}],"title":"3.1. Isolated worlds"}],"url":"https://webidl.spec.whatwg.org/#dfn-platform-object"},
 "78787bc5": {"dfnID":"78787bc5","dfnText":"opener browsing context","external":true,"refSections":[{"refs":[{"id":"ref-for-opener-browsing-context"}],"title":"18.1. Determine the URL for matching a document"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#opener-browsing-context"},
+"7d294a6c": {"dfnID":"7d294a6c","dfnText":"Browser","external":true,"refSections":[{"refs":[{"id":"ref-for-browser-interface"}],"title":"19.1.1. Alarms interface"}],"url":"https://w3c.github.io/webextensions/specification/window.browser.html#browser-interface"},
 "8855a9aa": {"dfnID":"8855a9aa","dfnText":"DOMString","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-DOMString"},{"id":"ref-for-idl-DOMString\u2460"},{"id":"ref-for-idl-DOMString\u2461"},{"id":"ref-for-idl-DOMString\u2462"},{"id":"ref-for-idl-DOMString\u2463"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
 "889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"},{"id":"ref-for-Exposed\u2460"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
 "8c800cdf": {"dfnID":"8c800cdf","dfnText":"double","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-double"},{"id":"ref-for-idl-double\u2460"},{"id":"ref-for-idl-double\u2461"},{"id":"ref-for-idl-double\u2462"},{"id":"ref-for-idl-double\u2463"}],"title":"19.1.1. Alarms interface"}],"url":"https://webidl.spec.whatwg.org/#idl-double"},
@@ -2222,6 +2228,7 @@ let refsData = {
 "https://infra.spec.whatwg.org/#string": {"displayText":"string","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"string","type":"dfn","url":"https://infra.spec.whatwg.org/#string"},
 "https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#realm": {"displayText":"realm","export":true,"for_":["ECMAScript"],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"realm","type":"dfn","url":"https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#realm"},
 "https://url.spec.whatwg.org/#concept-url-scheme": {"displayText":"scheme","export":true,"for_":["url"],"level":"1","normative":true,"shortname":"url","spec":"url","status":"current","text":"scheme","type":"dfn","url":"https://url.spec.whatwg.org/#concept-url-scheme"},
+"https://w3c.github.io/webextensions/specification/window.browser.html#browser-interface": {"displayText":"Browser","export":true,"for_":[],"level":"","normative":true,"shortname":"webextensions-browser-global","spec":"webextensions-browser-global","status":"anchor-block","text":"Browser","type":"interface","url":"https://w3c.github.io/webextensions/specification/window.browser.html#browser-interface"},
 "https://webidl.spec.whatwg.org/#Exposed": {"displayText":"Exposed","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
 "https://webidl.spec.whatwg.org/#dfn-platform-object": {"displayText":"platform object","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"platform object","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-platform-object"},
 "https://webidl.spec.whatwg.org/#idl-DOMString": {"displayText":"DOMString","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMString","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
