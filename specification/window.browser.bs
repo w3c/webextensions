@@ -115,7 +115,7 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
 
     When {{Window/browser}} is defined on {{window}}, it SHOULD also be exposed on {{ServiceWorkerGlobalScope}}
     of origins associated with WebExtensions.
-    It MUST be used exclusively for WebExtension purposes, however the contents of each instance of {{ServiceWorkerGlobalScope/browser}} is UA defined.
+    It MUST be used exclusively for WebExtension purposes, however the contents of each instance of {{Window/browser}} is UA defined.
   </section>
 
 <pre class="idl">
