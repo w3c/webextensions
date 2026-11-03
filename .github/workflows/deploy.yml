@@ -50,3 +50,7 @@ jobs:
           SOURCE: ${{ matrix.source }}
           TOOLCHAIN: 'bikeshed'
           ARTIFACT_NAME: ${{ matrix.name }}
+          # The Nu HTML checker rejects CSS properties in Bikeshed's generated stylesheet
+          # (position-area, position-try-fallbacks). Turn this back on when it accepts them.
+          # See https://github.com/w3c/webextensions/issues/1178
+          VALIDATE_MARKUP: 'false'
