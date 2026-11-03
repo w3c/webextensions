@@ -44,7 +44,7 @@ A manifest file is a [[!JSON]] document named `manifest.json`. Malformed JSON fi
 
 If manifest keys that are not defined in this specification are specified, implementors must ignore those keys.
 
-A manifest value that this specification calls <dfn>invalid</dfn> is one the user agent cannot use as written. The user agent should [=report a warning=] or [=report an error=], ignore the value or use a default, and continue to load the extension. A user agent may refuse to load the extension when it cannot continue without the value.
+A manifest value that this specification calls <dfn>invalid</dfn> is one the user agent cannot use as written. The user agent should [=report a warning=] or [=report an error=], ignore the value or use a default, and continue to load the extension. An ignored value is treated as absent. A user agent may refuse to load the extension when it cannot continue without the value.
 
 If manifest keys that are defined in this specification are specified with a different JSON type than defined in this specification, implementors must ignore those keys and may [=report a warning=], unless this specification calls the value [=invalid=].
 
@@ -122,21 +122,21 @@ This key must be present if the `_locales` subdirectory is present, must be abse
 
 This key may be present. Its value is an object that declares the extension's [=background content=]. A value that is not an object is [=invalid=]. [[#background-content]] describes how the user agent uses its keys.
 
-This key may include the following optional keys:
+This key may include the following optional keys. The user agent must ignore any other key of the object.
 
 #### Key `service_worker` #### {#key-background-service_worker}
 
-A [=package path=] of the resource for a [=service worker environment=]. The resource is a JavaScript file.
+A [=package path=] of the resource for a [=service worker environment=]. The resource is a JavaScript file. A value that is not a [=package path=] is [=invalid=].
 
 #### Key `scripts` #### {#key-background-scripts}
 
 A [=list=] of [=package paths=] of JavaScript files. The [=generated service worker=] or [=generated background document=] loads these files, as described in [[#resource-of-a-background-environment]]. An empty list must be treated as if the key were absent. A value that is not a list, or that contains an item that is not a [=package path=], is [=invalid=].
 
-Issue(#1127): Firefox loads a background document when the `scripts` list is empty. Chrome and Safari do not load background content.
+Issue(#1127): When `scripts` is the only key that provides background content and the list is empty, Firefox loads a background document. Chrome and Safari do not load background content.
 
 #### Key `page` #### {#key-background-page}
 
-A [=package path=] of the resource for a [=document environment=]. The resource is an [=HTML document=].
+A [=package path=] of the resource for a [=document environment=]. The resource is an [=HTML document=]. A value that is not a [=package path=] is [=invalid=].
 
 #### Key `type` #### {#key-background-type}
 
@@ -293,7 +293,7 @@ A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards 
 
 ## Package paths ## {#package-paths}
 
-A <dfn>package path</dfn> is a non-empty [=string=] that identifies a location in the extension's package. The user agent resolves a package path against a directory of the package by running the steps in [[#resolve-a-package-path]]. The <dfn>root of the package</dfn> is the directory that contains the [=manifest=]. A manifest value is resolved against the root of the package. Where an API accepts a package path, that API states the directory it is resolved against.
+A <dfn>package path</dfn> is a [=string=] that identifies a location in the extension's package. The user agent resolves a package path against a directory of the package by running the steps in [[#resolve-a-package-path]]. The <dfn>root of the package</dfn> is the directory that contains the [=manifest=]. A manifest value is resolved against the root of the package. Where an API accepts a package path, that API states the directory it is resolved against.
 
 The <dfn>resolved path</dfn> of a [=package path=] is the [=string=] made of U+002F (/) followed by the items of the [=list=] that [[#resolve-a-package-path]] returns for it against the root of the package, joined with U+002F (/).
 
@@ -301,9 +301,9 @@ The user agent determines how it matches the names in a [=package path=] to the 
 
 Issue(#1122): Safari and Firefox resolve a [=package path=] that an API accepts, such as a path to an icon, against the root of the package. Chrome resolves it against the page or worker script that makes the call.
 
-Issue(#1157): A path that escapes the root of the package, such as `../background.js`, is handled three ways. Chrome does not load the file for keys such as content scripts and icons. Firefox resolves every manifest path as a URL, which drops the extra `..` segments. Safari does the same when a file is loaded through a URL, such as a background page, and does not load the file when it reads the file directly, such as a content script. The steps in [[#resolve-a-package-path]] return null for such a path.
+Issue(#1157): A path that escapes the root of the package, such as `../background.js`, is handled three ways. Chrome does not load the file for keys such as content scripts and icons. Firefox resolves every manifest path as a URL, which drops the extra `..` segments. Safari does the same when a file is loaded through a URL, such as a background document, and does not load the file when it reads the file directly, such as a content script. The steps in [[#resolve-a-package-path]] return null for such a path.
 
-Issue(#1035): Specify which characters a path segment may contain, such as U+0000 NULL, U+005C (\), U+0025 (%), U+003F (?) and U+0023 (#), whether names are matched with case sensitivity, and whether the URL Standard defines what a path segment is. Chrome rejects U+005C (\) anywhere in a path. Safari and Firefox parse the path as a URL, so `?` and `#` do not name part of a file.
+Issue(#1035): Specify which characters a path segment may contain, such as U+0000 NULL, U+005C (\), U+0025 (%), U+003F (?) and U+0023 (#), whether names are matched with case sensitivity, whether the URL Standard defines what a path segment is, and how the resolved path is encoded when it becomes a URL. Chrome rejects U+005C (\) anywhere in a path. Safari and Firefox parse the path as a URL, so `?` and `#` do not name part of a file.
 
 ## Uniqueness of extension IDs ## {#uniqueness-of-extension-ids}
 
@@ -323,12 +323,12 @@ Issue(#1035): Specify which characters a path segment may contain, such as U+000
 
 The user agent runs background content in one of two environments:
 
-* A <dfn>service worker environment</dfn>, in which the user agent runs a [=service worker=] from the [=extension origin=].
+* A <dfn>service worker environment</dfn>, in which the user agent runs a [=service worker=] from the [=extension origin=], registered as described in [[#registering-the-background-service-worker]].
 * A <dfn>document environment</dfn>, in which the user agent loads an [=HTML document=] from the [=extension origin=] without displaying it.
 
 A user agent supports the [=service worker environment=], the [=document environment=], or both.
 
-When the user agent loads an extension that has a `background` key, it runs the steps to [=select the background environment=] on the value of that key. The steps return a <dfn>background selection</dfn>, a pair of an environment and a key of the `background` object, or null. The key is the one whose value determines the resource: `service_worker`, `page`, or `scripts`.
+When the user agent loads an extension that has a `background` key whose value is an object, it runs the steps to [=select the background environment=] on the value of that key. The steps return a <dfn>background selection</dfn>, a pair of an environment and a key of the `background` object, or null. The key is the one whose value determines the resource: `service_worker`, `page`, or `scripts`.
 
 The user agent runs the resource of a [=background selection=] in the environment of that selection, as described in [[#resource-of-a-background-environment]]. When the steps return null, the extension has no background content.
 
@@ -346,15 +346,42 @@ The key and the environment of a [=background selection=] determine the resource
     * In a [=service worker environment=], the resource is the [=generated service worker=].
     * In a [=document environment=], the resource is the [=generated background document=].
 
-The <dfn>generated service worker</dfn> is a JavaScript file in the [=extension origin=], at the path `/_generated_service_worker.js`, whose filename is [reserved](#reserved-file-names). It loads the [=resolved path=] of each path in [[#key-background-scripts]], in order. When [[#key-background-type]] is `"module"`, it imports each path as a [=module script=]. Otherwise, it loads the paths as [=classic scripts=] with {{WorkerGlobalScope/importScripts()}}. All of the scripts run in the same [=global object=].
+The <dfn>generated service worker</dfn> is a JavaScript file in the [=extension origin=], at the path `/_generated_service_worker.js`, whose filename is [reserved](#reserved-file-names). It loads the [=resolved path=] of each path in [[#key-background-scripts]], in order. When [[#key-background-type]] is `"module"`, it imports each path as a [=module script=] with an import declaration. Otherwise, it loads the paths as [=classic scripts=] with {{WorkerGlobalScope/importScripts()}}. All of the scripts run in the same [=global object=].
 
 Issue(#785): Only Safari implements the [=generated service worker=].
 
-The <dfn>generated background document</dfn> is an [=HTML document=] in the [=extension origin=], at the path `/_generated_background_page.html`, whose filename is [reserved](#reserved-file-names). Its character encoding is [=UTF-8=]. It contains one <{script}> element for each path in [[#key-background-scripts]], in order, with the [=resolved path=] of that path as its `src`. Each element is a [=module script=] when [[#key-background-type]] is `"module"`, and a [=classic script=] otherwise. All of the scripts run in the same [=global object=].
+The <dfn>generated background document</dfn> is an [=HTML document=] in the [=extension origin=], at the path `/_generated_background_page.html`, whose filename is [reserved](#reserved-file-names). Its character encoding is [=UTF-8=], and its doctype is `<!DOCTYPE html>`. It contains one <{script}> element for each path in [[#key-background-scripts]], in order, with the [=resolved path=] of that path as its `src`. Each element is a [=module script=] when [[#key-background-type]] is `"module"`, and a [=classic script=] otherwise. All of the scripts run in the same [=global object=].
+
+### Registering the background service worker ### {#registering-the-background-service-worker}
+
+The <dfn id="extension-root-url" export>extension root URL</dfn> is the [=/URL=] whose [=url/origin=] is the [=extension origin=] and whose [=url/path=] is « the empty string ». It locates the [=root of the package=].
+
+When the user agent loads the background content in a [=service worker environment=], it must [=register the background service worker=].
+
+To <dfn id="register-the-background-service-worker" export>register the background service worker</dfn>, the user agent runs these steps:
+
+1. Let |path| be the [=resolved path=] of the value of [[#key-background-service_worker]] when the key of the [=background selection=] is `service_worker`, and the path of the [=generated service worker=] when it is `scripts`.
+1. Let |scriptURL| be the result of [=URL parser|parsing=] |path| relative to the [=extension root URL=].
+1. If |scriptURL| is failure, or |scriptURL|'s [=url/origin=] is not the [=extension origin=], [=report an error=] and return.
+1. Set |scriptURL|'s [=url/fragment=] to null.
+1. Let |scopeURL| be the [=extension root URL=].
+1. Let |storageKey| be a new [=/storage key=] whose origin is the [=extension origin=].
+
+    Note: If the user agent partitions storage, the registration uses the unpartitioned key.
+1. Let |workerType| be the value of [[#key-background-type]].
+1. Let |job| be the result of running [=Create Job=] with *register*, |storageKey|, |scopeURL|, |scriptURL|, a new promise, and null.
+1. Set |job|'s [=job/worker type=] to |workerType| and |job|'s [=job/update via cache mode=] to "`none`".
+1. Invoke [=Schedule Job=] with |job|.
+
+The [=/service worker registration=] that results is the extension's <dfn id="background-service-worker-registration" export>background service worker registration</dfn>.
+
+Issue(#1176): Specify what [[SERVICE-WORKERS]] must admit for this job (the scheme check, a null [=job/client=] and [=job/referrer=], the settings object, and the maximum scope), how the script is fetched from an [=extension scheme=], and where the worker's policy comes from. Safari uses the script's directory as the scope, where these steps use the extension root, as Chrome does.
+
+Issue(#1177): Specify what happens when the job fails, when the extension is updated, and when it is uninstalled or disabled. Safari creates the registration when the background loads and removes it when the background unloads, where Chrome registers when the extension is installed, enabled or updated and keeps the registration. Whether the registration exists while the background is unloaded matters to web platform specifications whose functional events, such as USB `connect` and `disconnect`, start the worker. Extension events are not affected.
 
 ### Declaring several environments ### {#declaring-several-environments}
 
-[[#key-background-service_worker]] may be present together with [[#key-background-scripts]] or with [[#key-background-page]], so that one manifest works in user agents that support different environments. `scripts` and `page` are alternatives, and the user agent may [=report a warning=] when both are present. When two keys provide a resource for the same environment, `service_worker` and `page` take precedence over `scripts`. The [[#key-background-preferred_environment]] key lets the extension choose between the environments that a user agent supports.
+[[#key-background-service_worker]] may be present together with [[#key-background-scripts]] or with [[#key-background-page]], so that one manifest works in user agents that support different environments. `scripts` and `page` are alternatives, and the user agent may [=report a warning=] when both are present. When two keys provide a resource for the same environment, `service_worker` and `page` take precedence over `scripts`. Without a preference, the user agent chooses the first of these that it supports: `page`, `scripts` in a [=document environment=], `service_worker`, and `scripts` in a [=service worker environment=]. The [[#key-background-preferred_environment]] key lets the extension choose between the environments that a user agent supports.
 
 A user agent must ignore the keys that belong only to environments it does not support, even when their values would otherwise be [=invalid=], and may [=report a warning=] for them.
 
@@ -507,7 +534,7 @@ To determine if a content script should be injected in a document:
 
 ## Resolve a package path ## {#resolve-a-package-path}
 
-To <dfn id="dfn-resolve-a-package-path">resolve a package path</dfn>, given |path|, a [=package path=], and |directory|, a [=list=] of [=strings=] that are the segments of the directory that |path| is relative to, return a list of strings or null. The list is empty for the [=root of the package=]. The steps return null when |path| would leave the root of the package or names a directory:
+To <dfn id="dfn-resolve-a-package-path">resolve a package path</dfn>, given |path|, a [=package path=], and |directory|, a [=list=] of [=strings=] that are the segments of the directory that |path| is relative to, return a list of strings or null. The list is empty for the [=root of the package=]. The steps return null when |path| would leave the root of the package, or ends in an empty, single-dot or double-dot segment, which names a directory:
 
 1. If |path| starts with U+002F (/), remove that first code point from |path| and set |directory| to an empty [=list=].
 1. Let |segments| be the result of [=strictly splitting=] |path| on U+002F (/).
@@ -600,6 +627,18 @@ interface Alarms {
   attribute OnAlarmEvent onAlarm;
 };
 </script>
+
+<pre class="anchors">
+spec: service-workers; urlPrefix: https://w3c.github.io/ServiceWorker/
+    type: dfn
+        text: Create Job; url: create-job-algorithm
+        text: Schedule Job; url: schedule-job-algorithm
+        for: job
+            text: worker type; url: dfn-job-worker-type
+            text: update via cache mode; url: dfn-job-update-via-cache-mode
+            text: client; url: dfn-job-client
+            text: referrer; url: job-referrer
+</pre>
 
 <pre class="link-defaults">
 spec:html; type:dfn; for:realm; text:global object
