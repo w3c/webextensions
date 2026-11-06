@@ -332,7 +332,7 @@ When the user agent loads an extension that has a `background` key whose value i
 
 The user agent runs the resource of a [=background selection=] in the environment of that selection, as described in [[#resource-of-a-background-environment]]. When the steps return null, the extension has no background content.
 
-Background content can fail to load, for example when its resource cannot be fetched or a script throws as it first runs. A [=document environment=] loads its resource as any [=HTML document=] loads, and a [=service worker environment=] loads its resource as any [=service worker=] script loads, so the default behavior of each applies. An API that expects background content can fail when the content did not load. A failure to load the resource must not by itself prevent the extension from loading, and the user agent must not select a second environment. The user agent may [=report an error=].
+Background content can fail to load, for example when its resource cannot be fetched or a script throws as it first runs. A [=document environment=] loads its resource as any [=HTML document=] loads, and a [=service worker environment=] loads its resource as any [=service worker=] script loads, so the default behavior of each applies. An API that expects background content can fail when the content did not load. A failure to load the resource should not by itself prevent the extension from loading, and the user agent must not select a second environment. The user agent may [=report an error=], and may refuse to load the extension when the resource of the [=background selection=], or a script it loads, names no file in the package.
 
 Issue(#1156): Specify what counts as a failure to load, such as a resource that cannot be fetched or a script that throws while it first runs. Also specify how a failure affects the other scripts of a [=background selection=] that uses [[#key-background-scripts]]. In Safari's [=generated service worker=], the scripts load one after another, so a script that cannot be fetched prevents the scripts after it from loading. In the [=generated background document=] of Safari and Firefox, each <{script}> element loads on its own, so the scripts after a failed one still run. The two generated resources are expected to fail in the same way.
 
@@ -370,7 +370,7 @@ To <dfn id="register-the-background-service-worker" export>register the backgrou
     Note: If the user agent partitions storage, the registration uses the unpartitioned key.
 1. Let |workerType| be the value of [[#key-background-type]].
 1. Let |job| be the result of running [=Create Job=] with *register*, |storageKey|, |scopeURL|, |scriptURL|, a new promise, and null.
-1. Set |job|'s [=job/worker type=] to |workerType| and |job|'s [=job/update via cache mode=] to "`none`".
+1. Set |job|'s [=job/worker type=] to |workerType| and |job|'s [=job/update via cache mode=] to "`imports`".
 1. Invoke [=Schedule Job=] with |job|.
 
 The [=/service worker registration=] that results is the extension's <dfn id="background-service-worker-registration" export>background service worker registration</dfn>.
