@@ -2,11 +2,11 @@
 Title: Extension Service Workers
 Shortname: webextensions-service-workers
 Level: 1
-Group: wecg
-Status: w3c/CG-DRAFT
+Group: webextensions
+Status: w3c/ED
 URL: https://w3c.github.io/webextensions/specification/extension-service-workers.html
 Editor: Patrick Kettner, Google, patrickkettner@google.com
-Abstract: A WebExtension can declare a service worker as its <a href="https://w3c.github.io/webextensions/specification/#key-background">background</a> context. Because WebExtensions have a permission model and user expectations that differ from those of web content, that service worker has access to capabilities that other service workers do not. This specification defines [=extension service workers=], what distinguishes their realms for WebIDL, and the criteria under which a capability is made available to them.
+Abstract: A WebExtension can declare a service worker as its <a href="https://w3c.github.io/webextensions/specification/#key-background">background</a> context. Because WebExtensions have a permission model and user expectations that differ from those of web content, that service worker has access to capabilities that other service workers do not. This specification defines [=extension service workers=], what distinguishes their realms for WebIDL, and what a specification that exposes a capability only to them has to define.
 Repository: w3c/webextensions
 Markup Shorthands: markdown yes
 Complain About: accidental-2119 on, missing-example-ids on
@@ -49,68 +49,13 @@ not available in other [=/service workers=]. This is done where user
 permission is better granted at a different level in the extension permission
 model than the web offers, such as hardware access.
 
-Today each such capability is implemented ad hoc, without specification,
-because WebIDL has no way to name "the [=/service worker=] that belongs to an
-extension". The result is that the IDL of the owning specification does not
-match what Chromium, at present the only engine that ships these capabilities
-in [=extension service workers=], implements:
-
-<div class="example" id="example-status-quo">
-<table class="data">
-  <thead>
-    <tr>
-      <th>API</th>
-      <th>The IDL says</th>
-      <th>Chromium ships</th>
-      <th>The gap</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>WebUSB [[WEBUSB]]</td>
-      <td>`[Exposed=(Worker,Window)]`: every worker, including every
-          [=/service worker=]. Added for [=extension service workers=] in
-          <a href="https://github.com/whatwg/usb/pull/221">whatwg/usb#221</a>.</td>
-      <td>Windows, dedicated workers, and the [=extension service worker=].</td>
-      <td>The IDL claims shared workers and all [=/service workers=]. No
-          engine implements that.</td>
-    </tr>
-    <tr>
-      <td>WebHID [[WEBHID]]</td>
-      <td>`[Exposed=(DedicatedWorker,ServiceWorker,Window)]`, with a note
-          that a user agent "<span class=allow-2119>may</span>" limit the
-          [=/service worker=] exposure to extension contexts. Added in
-          <a href="https://github.com/whatwg/hid/pull/97">whatwg/hid#97</a>.</td>
-      <td>Windows, dedicated workers, and the [=extension service worker=].</td>
-      <td>The restriction is in a note, not in the IDL.</td>
-    </tr>
-    <tr>
-      <td>Clipboard [[CLIPBOARD-APIS]]</td>
-      <td>`[Exposed=Window]`. [=/Service worker=] exposure for the web was
-          declined in
-          <a href="https://github.com/w3c/editing/issues/458">w3c/editing#458</a>.</td>
-      <td>The [=extension service worker=], without user activation, gated
-          on the extension's clipboard permissions.</td>
-      <td>No IDL describes the shipped exposure.</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
 This specification does not define the lifetime of an
 [=extension service worker=], and it does not revisit the processing model of
 [=/service workers=].
 
-This specification defines [=extension service workers=]. To do so it:
-
-1.  Defines the [=extension service worker realm=], so that WebIDL can
-    expose a construct in [=extension service workers=] without exposing it
-    in other [=/service workers=].
-1.  Sets the criteria this group applies before a capability is exposed to
-    [=extension service workers=]. New behavior belongs in the feature's own
-    specification and in [[SERVICE-WORKERS]]. Exposure to
-    [=extension service workers=] alone is for the cases where that has been
-    considered and declined.
+This specification defines [=extension service workers=] and the
+[=extension service worker realm=], so that WebIDL can expose a construct in
+[=extension service workers=] without exposing it in other [=/service workers=].
 
 </section>
 
@@ -120,48 +65,12 @@ The requirements in this specification are on user agents that implement
 [[SERVICE-WORKERS]] and support WebExtensions. They are stated in
 [[#exposure-condition]] and [[#security]].
 
-The criteria in [[#exposing]] are applied by this group. They are not
-conformance requirements on any specification or user agent.
-
 ## Extension service workers ## {#extension-service-workers}
-
-A WebExtension can declare a [=/service worker=] in its
-<a href="https://w3c.github.io/webextensions/specification/#key-background">manifest</a>
-under `background.service_worker`. The user agent registers it by running
-[=register the background service worker=] [[webextensions]]. The resulting
-[=/service worker registration=] is the WebExtension's
-[=background service worker registration=]. Its [=service worker
-registration/scope url=] is the WebExtension's root URL.
 
 The <dfn export lt="extension service worker|background service worker">extension
 service worker</dfn> of a WebExtension is the [=active worker=] of that
-WebExtension's [=background service worker registration=]. A WebExtension has
-at most one active [=extension service worker=] at a time, and none if its
-manifest has no `background.service_worker` entry. The extension service
-worker is a [=privileged extension context=]. The [=url/origin=] of its
-[=service worker/script url=] is the [=extension origin=].
-
-Note: The definition is in terms of the registration rather than a particular
-[=/service worker=] because the [=/service worker=] is replaced when the
-extension updates, and the registration persists. Every [=/service worker=] of
-the registration, including one that is still installing, has an
-[=extension service worker realm=], because a worker's realm is created
-before the worker becomes active.
-
-<div class="issue">
-<p>The manifest is the only expected way to register an
-[=extension service worker=]. A document on the [=extension origin=] can
-nevertheless call {{ServiceWorkerContainer/register()}} with the
-[=extension root URL=] as the scope. Within an origin, [[SERVICE-WORKERS]]
-identifies a [=/service worker registration=] by its
-[=service worker registration/scope url=], so such a call names the
-[=background service worker registration=] and would replace its
-[=/service worker=] with the script passed to the call.</p>
-
-<p>This group needs to decide two things: whether such a registration is
-permitted at all, and, if it is, whether the resulting [=/service worker=] is
-the [=extension service worker=] under the definition above.</p>
-</div>
+WebExtension's [=background service worker registration=]. The extension service
+worker is a [=privileged extension context=].
 
 An [=extension service worker=] is a [=secure context=], as
 [[SERVICE-WORKERS]] requires, because [[webextensions]] makes each
@@ -198,79 +107,18 @@ Issue: WebIDL does not currently allow a condition on an individual entry of
 an [=exposure set=]. Its exposure conditions ([{{SecureContext}}] and
 [{{CrossOriginIsolated}}]) apply to a whole construct. This requires a
 proposal to WebIDL. Until WebIDL accepts a mechanism, no specification can
-reference the [=extension service worker realm=] from IDL, and
-[[#current-exposures]] describes intended exposure.
+reference the [=extension service worker realm=] from IDL.
 
-## Exposing a capability to extension service workers ## {#exposing}
+Issue: [[webextensions-browser-global]] declares
+`partial interface ServiceWorkerGlobalScope { attribute Browser browser; }`,
+which, read literally, exposes {{Browser}} in every [=/service worker=]. The
+`ServiceWorker` entry of that partial's [=exposure set=] should be limited to
+the [=extension service worker realm=] once WebIDL supports it.
 
-### Criteria ### {#criteria}
+## What the owning specification defines ## {#owning-spec-defines}
 
-When a capability is wanted in [=extension service workers=], this group
-works through the following options in order and stops at the first that
-applies.
-
-1.  <dfn lt="exposure to all service workers">Expose it to all
-    [=/service workers=]</dfn>. The group asks the specification that owns
-    the construct to add `ServiceWorker` (or `Worker`) to its
-    [=exposure set=]. If the feature needs the worker to be started, kept
-    alive, or notified, the owning specification uses the extension points
-    of [[SERVICE-WORKERS]]: a [=functional event=], an event handler on
-    {{ServiceWorkerGlobalScope}}, and [=Fire Functional Event=]. If those
-    extension points are insufficient, the missing hook is proposed to
-    [[SERVICE-WORKERS]].
-
-    <div class="example" id="example-all-workers-first">
-    The `CSS` namespace is not [=exposed=] in workers. An extension wants
-    `CSS.supports()` for feature detection in its
-    [=extension service worker=]
-    (<a href="https://github.com/w3c/webextensions/issues/1151">issue
-    #1151</a>). The feature needs neither a document nor a prompt, so
-    [=exposure to all service workers=] applies: [[CSSOM]] exposes the
-    namespace to all workers, as
-    <a href="https://github.com/w3c/csswg-drafts/issues/14229">csswg-drafts#14229</a>
-    proposes.
-    </div>
-
-1.  Among [=/service workers=],
-    <dfn lt="exposure to extension service workers only">expose it to
-    [=extension service workers=] only</dfn>. The condition is a public
-    record from the group that owns the construct. The record either
-    accepts an exposure intended for [=extension service workers=] or
-    declines to expose the construct to all [=/service workers=] for a
-    reason the web cannot remove: the construct needs a chooser, a prompt,
-    [=transient activation=], or a permission that web content cannot hold
-    without a document. In either case an extension permission takes the
-    place of that gate.
-
-    The owning specification limits the `ServiceWorker` entry of the
-    construct's [=exposure set=] to the [=extension service worker realm=]
-    and calls the [=extension permission check=] where its algorithms would
-    otherwise prompt or consult [=transient activation=]. Only the
-    declaration that owns an interface can widen its [=exposure set=].
-
-    <div class="example" id="example-declined-for-the-web">
-    <a href="https://github.com/w3c/editing/issues/458">w3c/editing#458</a>
-    asked the Web Editing Working Group to expose `navigator.clipboard` in
-    [=/service workers=]. The group asked for web use cases and noted that
-    user activation is bound to a {{Window}} and that it would not pursue
-    clipboard access without a focused document and a user-visible
-    affordance. The request was not taken further for the web. These
-    reasons are intrinsic to the web, so
-    [=exposure to extension service workers only=] applies: an extension's
-    `clipboardRead` and `clipboardWrite` permissions take the place of the
-    gate.
-    </div>
-
-Neither [=exposure to all service workers=] nor
-[=exposure to extension service workers only=] is met by using `Worker` or
-`ServiceWorker` in an [=exposure set=] to mean "[=extension service workers=]"
-and narrowing the exposure in prose, in a note, or by leaving it to the
-user agent.
-
-### What the owning specification defines ### {#owning-spec-defines}
-
-A specification that exposes a construct to [=extension service workers=]
-defines the following.
+A specification that limits a construct's `ServiceWorker` exposure to the
+[=extension service worker realm=] defines the following.
 
 : The exposure.
 :: The constructs whose `ServiceWorker` exposure is limited to the
@@ -281,10 +129,9 @@ defines the following.
     workers, those [=global names=] appear in the same declarations.
 
 : User-facing operations.
-:: Any operation that presents a chooser, a prompt, or other user interface,
-    or that requires [=transient activation=], stays `[Exposed=Window]`. If
-    such an operation is needed in a worker, what replaces the user interface
-    and the activation.
+:: For any operation that presents a chooser, a prompt, or other user
+    interface, or that requires [=transient activation=]: whether it stays
+    `[Exposed=Window]`, and if it is exposed in the worker, what gates it there.
 
 : Document assumptions.
 :: For every algorithm step that consults [=transient activation=], the
@@ -294,96 +141,14 @@ defines the following.
     which has none of these.
 
 : The permission.
-:: Which manifest permission, host permission, or runtime-granted permission
-    the [=extension permission check=] consults for the feature, in terms of
-    the permission model of [[webextensions]].
+:: Whether it invokes the [=extension permission check=] and, if so, which
+    permission it passes.
 
 : Lifetime.
 :: Whether, and how, pending work keeps the worker alive and whether any
     event starts it, using {{ExtendableEvent}} and [=functional events=] from
     [[SERVICE-WORKERS]], without assuming the worker stays alive longer than
     [[SERVICE-WORKERS]] allows.
-
-### Current exposures ### {#current-exposures}
-
-For WebUSB and WebHID the owning specifications accepted exposure for
-[=extension service workers=]
-(<a href="https://github.com/whatwg/usb/pull/221">whatwg/usb#221</a>,
-<a href="https://github.com/whatwg/usb/pull/224">whatwg/usb#224</a>,
-<a href="https://github.com/whatwg/hid/pull/97">whatwg/hid#97</a>). For the
-Clipboard API the Web Editing Working Group confirmed that it does not wish
-to expose the API to all [=/service workers=]
-(<a href="https://github.com/w3c/editing/issues/458">w3c/editing#458</a>),
-and the exposure awaits the Web Editing Working Group attaching the
-condition.
-
-Gecko and WebKit have no construct in this category. Gecko does not ship
-[=extension service workers=] by default. WebKit runs
-[=extension service workers=] and injects the `browser` namespace into them
-by script, but exposes no web platform interface in them beyond what the
-owning specification's IDL says.
-
-<table class="data">
-  <thead>
-    <tr>
-      <th>Construct</th>
-      <th>Owning specification today</th>
-      <th>Chromium</th>
-      <th>Gecko</th>
-      <th>WebKit</th>
-      <th>Intended exposure</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>{{USB}}, `WorkerNavigator.usb` and the `USB*` interfaces</td>
-      <td>`[Exposed=(Worker,Window)]` [[WEBUSB]], since
-          <a href="https://github.com/whatwg/usb/pull/221">whatwg/usb#221</a></td>
-      <td>Windows, dedicated workers and [=extension service workers=]. Not
-          shared workers, not other [=/service workers=]. `connect` and
-          `disconnect` start the extension's worker.</td>
-      <td>Not implemented.</td>
-      <td>Not implemented.</td>
-      <td>`Window` and `DedicatedWorker` unconditionally, and `ServiceWorker`
-          in the [=extension service worker realm=] only. `connect` and
-          `disconnect` as [=functional events=].</td>
-    </tr>
-    <tr>
-      <td>{{HID}}, `WorkerNavigator.hid` and the `HID*` interfaces</td>
-      <td>`[Exposed=(DedicatedWorker,ServiceWorker,Window)]` with a note that
-          user agents may expose it only in extension contexts [[WEBHID]],
-          since <a href="https://github.com/whatwg/hid/pull/97">whatwg/hid#97</a></td>
-      <td>Windows, dedicated workers and [=extension service workers=].</td>
-      <td>Not implemented.</td>
-      <td>Not implemented.</td>
-      <td>`Window` and `DedicatedWorker` unconditionally, and `ServiceWorker`
-          in the [=extension service worker realm=] only, replacing the note.
-          `connect` and `disconnect` as [=functional events=].</td>
-    </tr>
-    <tr>
-      <td>{{Clipboard}}, {{ClipboardItem}} and `WorkerNavigator.clipboard`</td>
-      <td>`[Exposed=Window]` only [[CLIPBOARD-APIS]]</td>
-      <td>Exposed in [=extension service workers=], with no
-          [=transient activation=] requirement. Writes are gated per call on
-          the extension's `clipboardWrite` permission.</td>
-      <td>`[Exposed=Window]`, as specified.</td>
-      <td>`[Exposed=Window]`, as specified. Background clipboard access goes
-          through an offscreen document.</td>
-      <td>`ServiceWorker` in the [=extension service worker realm=] only, on
-          {{Clipboard}}, {{ClipboardItem}} and a `WorkerNavigator` partial.
-          The [=transient activation=] check replaced by the
-          [=extension permission check=] for `clipboardRead` or
-          `clipboardWrite` on each call. Requires a change to
-          [[CLIPBOARD-APIS]].</td>
-    </tr>
-  </tbody>
-</table>
-
-Issue: [[webextensions-browser-global]] declares
-`partial interface ServiceWorkerGlobalScope { attribute Browser browser; }`,
-which, read literally, exposes {{Browser}} in every [=/service worker=]. The
-`ServiceWorker` entry of that partial's [=exposure set=] should be limited to
-the [=extension service worker realm=] once WebIDL supports it.
 
 ## Security considerations ## {#security}
 
