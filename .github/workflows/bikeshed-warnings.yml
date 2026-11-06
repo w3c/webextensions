@@ -25,7 +25,8 @@ env:
     [
       {"name": "specification", "source": "specification/index.bs"},
       {"name": "webdriver-classic", "source": "specification/webdriver-classic.bs"},
-      {"name": "window-browser", "source": "specification/window.browser.bs"}
+      {"name": "window-browser", "source": "specification/window.browser.bs"},
+      {"name": "extension-service-workers", "source": "specification/extension-service-workers.bs"}
     ]
 
 jobs:
