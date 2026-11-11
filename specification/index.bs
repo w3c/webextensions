@@ -561,6 +561,8 @@ Walk through the sorted icon sizes and return the first [=icon resource=] whose 
 
 Issue(949): User agents differ on whether `any` is preferred over a numeric size or used only when no numeric size is large enough.
 
+Issue: User agents differ on the size chosen when none matches exactly. Firefox prefers a 2x size, an icon resource of twice the lookup size, over the smallest larger size.
+
 <pre class="link-defaults">
 spec:html; type:dfn; for:realm; text:global object
 </pre>
