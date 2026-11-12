@@ -110,39 +110,7 @@ This key must be present if the `_locales` subdirectory is present, must be abse
 
 This key may be present.
 
-Issue: Specify background pages (`scripts`, `persistent`). For relevant discussion, see https://github.com/w3c/webextensions/issues/282
-
-#### Key `service_worker` #### {#key-background-service_worker}
-
-A path, relative to the [=extension root URL=], of a script to run as the extension's background service worker. When present, the user agent must [=register the background service worker=] when the extension is installed, enabled, or loaded at user agent startup. Running the steps again for the same extension creates a [=job/equivalent=] job and has no further effect.
-
-#### Key `type` #### {#key-background-type}
-
-Either `"classic"` or `"module"`. Determines the [=job/worker type=] used by [=register the background service worker=]. Defaults to `"classic"`. Any other value is treated as if the key were absent.
-
-The <dfn id="extension-root-url" export>extension root URL</dfn> of an extension is the [=/URL=] whose [=url/origin=] is the [=extension origin=] and whose [=url/path=] is « the empty string ».
-
-To <dfn id="register-the-background-service-worker" export>register the background service worker</dfn> for an extension, the user agent runs these steps:
-
-1. Let |scriptURL| be the result of [=URL parser|parsing=] the value of [[#key-background-service_worker]] relative to the [=extension root URL=].
-1. If |scriptURL| is failure, or |scriptURL|'s [=url/origin=] is not the [=extension origin=], the extension fails to load.
-1. Set |scriptURL|'s [=url/fragment=] to null.
-1. Let |scopeURL| be the [=extension root URL=].
-1. Let |storageKey| be a new [=/storage key=] whose origin is the [=extension origin=].
-
-    Note: If the user agent partitions storage, the background service worker registration uses the unpartitioned key.
-1. Let |workerType| be the value of [[#key-background-type]].
-1. Let |job| be the result of running [=Create Job=] with *register*, |storageKey|, |scopeURL|, |scriptURL|, a new promise, and null.
-1. Set |job|'s [=job/worker type=] to |workerType| and |job|'s [=job/update via cache mode=] to "`none`".
-1. Invoke [=Schedule Job=] with |job|.
-
-The [=/service worker registration=] that results is the extension's <dfn id="background-service-worker-registration" export>background service worker registration</dfn>.
-
-Issue: [[SERVICE-WORKERS]] needs the following to admit this job: Start Register's scheme check admits schemes the user agent treats as authenticated; Register and Update tolerate a null [=job/client=] and null [=job/referrer=] for user-agent-initiated jobs; Setup ServiceWorkerGlobalScope derives the settings object's origin and top-level origin from the registration when the client is null, and associates the global object with its service worker before the realm's initial objects are created; the path restriction in Update is lifted for this registration (the maximum scope is the root); and job failure is observable to the user agent when there is no client to receive the promise.
-
-Issue: Define fetching a URL with an [=extension scheme=] (so that Update can fetch the script with a JavaScript MIME type) and state that the background service worker's policy container derives from [[#key-content_security_policy]] rather than from response headers.
-
-Issue: Specify what the user agent does when the job fails (for example a missing script or a parse error), how the registration is updated when the extension is updated, and that it is removed when the extension is uninstalled or disabled.
+Issue: Specify background scripts. For relevant discussion, see https://github.com/w3c/webextensions/issues/282
 
 ### Key `commands` ### {#key-commands}
 
@@ -518,25 +486,7 @@ interface Alarms {
 };
 </script>
 
-<pre class="anchors">
-spec: service-workers; urlPrefix: https://w3c.github.io/ServiceWorker/
-    type: dfn
-        text: Create Job; url: create-job-algorithm
-        text: Schedule Job; url: schedule-job-algorithm
-        text: Register; url: register-algorithm
-        text: Update; url: update-algorithm
-        for: job
-            text: equivalent; url: dfn-job-equivalent
-            text: worker type; url: dfn-job-worker-type
-            text: update via cache mode; url: dfn-job-update-via-cache-mode
-            text: client; url: dfn-job-client
-            text: referrer; url: job-referrer
-            text: script url; url: dfn-job-script-url
-            text: scope url; url: dfn-job-scope-url
-</pre>
-
 <pre class="link-defaults">
-spec:html; type:dfn; for:/; text:environment
 spec:html; type:dfn; for:realm; text:global object
 spec:infra; type:dfn; text:list
 spec:ecmascript; type:dfn; for:ECMAScript; text:realm
