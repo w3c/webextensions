@@ -290,16 +290,16 @@ A <dfn>document in a tab</dfn> is a [=Document/fully active=] [=document=] whose
 
 ### Invoking an extension
 
-An <dfn>invocation</dfn> of an extension is one of the following user interactions, each of which identifies a [=tab=], called the <dfn for="invocation">target tab</dfn>. No other user interaction is an invocation.
+An <dfn>invocation</dfn> of an extension is a user interaction that identifies a [=tab=], called the <dfn for="invocation">target tab</dfn>. Invocations include the following user interactions. This list is not exhaustive, and a user agent may treat other user interactions as invocations.
 
 * Clicking the extension's action, a button that the user agent shows for the extension, such as a toolbar button. The target tab is the [=selected tab=] of the browser window in which the user activates the action.
-* Choosing a menu item that the extension created with the `menus` or `contextMenus` API, in a menu that the user agent shows for a tab, for a [=document in a tab=], or for the extension's action. The target tab is that tab, the tab of that document, or, for a menu shown for the action, the [=selected tab=] of the browser window that contains the action.
+* Choosing a menu item that the extension created with the `menus` or `contextMenus` API, in a menu that the user agent shows for a tab, for a [=document in a tab=], or for the extension's action. The target tab is that tab, the tab of that document, including a document in a subframe of the tab whatever its origin, or, for a menu shown for the action, the [=selected tab=] of the browser window that contains the action.
 * Pressing the keyboard shortcut of a command that the extension declares, including a shortcut that activates the extension's action, while a browser window is focused. The target tab is the [=selected tab=] of the focused window.
 * Accepting input in the address bar while the extension's `omnibox` keyword is active, which dispatches `omnibox.onInputEntered`. The target tab is the [=selected tab=] of the browser window that contains the address bar.
 
 Note: A call that the extension makes itself, such as `action.openPopup()`, is not an [=invocation=].
 
-Issue(1152): User agents differ on whether the user agent shows a menu item in a menu for a subframe whose origin is not [=same origin=] with the origin of the tab's top-level document.
+Issue: User agents differ on whether the user agent shows a menu item in a menu for a subframe whose origin is not [=same origin=] with the origin of the tab's top-level document. This specification shows it, and choosing it gives a grant for the origin of the tab's top-level document, as described in [[#granting-the-activetab-permission]].
 
 Issue(1149): User agents differ on whether a call to `action.openPopup()` made while the extension has a user gesture is an invocation. This specification does not treat it as one.
 
@@ -322,6 +322,8 @@ When an [=invocation=] of an extension that [=has a permission|has=] the [=activ
 Issue: User agents differ on whether the user agent gives a grant when the origin of the grant is null, for example when the tab's active document has an [=opaque origin=] with no precursor origin. This specification gives the grant, and a grant with a null origin gives access only to the tab's properties described in [[#access-from-an-activetab-grant]].
 
 A grant follows the tab's top-level document, whichever [=document in a tab|document=] in the tab the [=invocation=] came from, so a subframe never receives a grant of its own. Access to a subframe whose origin is not [=same origin=] with the [=activeTab grant/origin of the grant=] comes only from a separate host permission.
+
+Issue(1195): Specify whether choosing a menu item in a subframe whose origin is not [=same origin=] with the [=activeTab grant/origin of the grant=] also gives the extension access to that subframe.
 
 A grant does not let the extension run scripts in a document that the user agent does not let extensions access, such as a document that is part of the user agent's own user interface.
 
@@ -348,8 +350,6 @@ The user agent removes an extension's [=activeTab grant=] for a [=tab=] when any
 * The extension is disabled, uninstalled, or reloaded.
 
 A navigation of the tab to a document whose origin, determined in the same way, is same origin with the [=activeTab grant/origin of the grant=], including a reload, keeps the grant. So does a navigation that does not change the tab's active document, such as a navigation to a fragment, and a navigation of a [=child navigable=] in the tab. Navigating back to a document after the grant was removed does not restore the grant.
-
-Issue(1152): User agents differ on whether a grant ends when the tab navigates to a URL with the same host but a different scheme or port. This specification compares origins, so such a navigation ends the grant, and a navigation to a different path keeps it.
 
 Issue(55): User agents differ on whether a grant ends when the tab navigates to a document whose origin is same origin with the [=activeTab grant/origin of the grant=], including a reload. This specification keeps the grant.
 
