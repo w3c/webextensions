@@ -83,6 +83,11 @@ runtime.ExtensionContext = {
   documentOrigin?: string,
   // Whether the context is for an incognito profile.
   incognito: boolean,
+  // The associated tab id. If not a valid tab id, should be undefined.
+  // ContextType "DEVELOPER_TOOLS": The inspected tab, equivalent to devtools.inspectedWindow.tabId
+  // ContextType "SIDE_PANEL": For per-tab documents, the tabId of the associated tab, otherwise TAB_ID_NONE
+  // ContextType "POPUP": The tabId the popup got opened on or the tabId which replaced that tabId while the popup stayed open
+  associatedTabId?: int,
 }
 ```
 
@@ -107,6 +112,9 @@ extension.ContextType = {
   SIDE_PANEL: 'SIDE_PANEL',
   // A developer tools context.
   DEVELOPER_TOOLS: 'DEVELOPER_TOOLS',
+  // An embedded extension document. See https://github.com/w3c/webextensions/issues/807
+  // For example, the embedded options_ui in Chromium and Firefox
+  EMBEDDED: 'EMBEDDED',
 };
 ```
 
@@ -119,6 +127,8 @@ runtime.getContexts(
   filter?: ContextFilter
 ): Promise<ExtensionContext[]>;
 ```
+
+Note: the filter is not optional in the current Chrome and Firefox implementations. See: https://github.com/w3c/webextensions/issues/1191
 
 A `ContextFilter` will be defined as:
 
@@ -282,10 +292,10 @@ Among these changes are the additions of `DocumentLifecycle`, `FrameType`, and
 `parentDocumentId`. If there is sufficient demand, we can consider adding these
 fields to the `ExtensionContext` type.
 
-### runtime.getCurrentContext()
+### runtime.getOwnContext()
 
-We would like to provide an additional API, `runtime.getCurrentContext()`, to
-return the calling context.
+We would like to provide an additional API, `runtime.getOwnContext()`, to
+return the calling context. See https://github.com/w3c/webextensions/issues/1147
 
 ### Content Script Contexts
 
