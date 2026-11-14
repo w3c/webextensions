@@ -26,7 +26,11 @@ Calendars:
 ## Past meetings
 
 * 2026-11-05 ([minutes](2026-11-05-wecg.md))
-* (WEWG/WECG minutes at TPAC 2026 will be added here and mentioned in [issue 1072](https://github.com/w3c/webextensions/issues/1072))
+* 2026-10-30 at TPAC ([minutes](2026-10-30-wewg-wecg-tpac.md))
+* 2026-10-29 at TPAC ([minutes](2026-10-29-wewg-wecg-tpac.md))
+* 2026-10-28 at TPAC ([minutes](2026-10-28-wewg-wecg-tpac.md))
+* 2026-10-27 at TPAC ([minutes](2026-10-27-wewg-wecg-tpac.md))
+* 2026-10-26 at TPAC ([minutes](2026-10-26-wewg-wecg-tpac.md))
 * 2026-10-22 ([minutes](2026-10-22-wecg.md))
 * 2026-10-15 WEWG meeting ([minutes](2026-10-15-wewg.md))
 * 2026-10-08 ([minutes](2026-10-08-wecg.md))
@@ -40,7 +44,11 @@ Calendars:
 **2026**
 
 * 2026-11-05 ([minutes](2026-11-05-wecg.md))
-* (WEWG/WECG minutes at TPAC 2026 will be added here and mentioned in [issue 1072](https://github.com/w3c/webextensions/issues/1072))
+* 2026-10-30 at TPAC ([minutes](2026-10-30-wewg-wecg-tpac.md))
+* 2026-10-29 at TPAC ([minutes](2026-10-29-wewg-wecg-tpac.md))
+* 2026-10-28 at TPAC ([minutes](2026-10-28-wewg-wecg-tpac.md))
+* 2026-10-27 at TPAC ([minutes](2026-10-27-wewg-wecg-tpac.md))
+* 2026-10-26 at TPAC ([minutes](2026-10-26-wewg-wecg-tpac.md))
 * 2026-10-22 ([minutes](2026-10-22-wecg.md))
 * 2026-10-15 WEWG meeting ([minutes](2026-10-15-wewg.md))
 * 2026-10-08 ([minutes](2026-10-08-wecg.md))
