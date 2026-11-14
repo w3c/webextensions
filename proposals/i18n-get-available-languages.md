@@ -68,9 +68,11 @@ This API should also be exposed in content scripts.
 ### Behavior
 
 Given an extension with the following resource files:
-`_locales/en/messages.json`, `_locales/es/messages.json` and `_locales/es_419/messages.json`.
+`_locales/en/messages.json`, `_locales/es_419/messages.json`.
 
-The `i18n.getAvailableLanguages()` method would return a promise which resolves with the following array: `['en', 'es', 'es-419']`.
+The `i18n.getAvailableLanguages()` method would return a promise which resolves with the following array: `['en', 'es-419']`.
+
+The API specifically should not return fallback language codes (like in the above example, 'es' should NOT be included).
 
 The returned array should be sorted by code unit. Each returned language code should be formatted to be a proper BCP47 tag. For example: `zh_hant` should be returned as `zh-Hant`.
 
