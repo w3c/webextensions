@@ -14,7 +14,7 @@ Extend the `changes` parameter of `browser.bookmarks.update(id, changes)` with a
 
 **Created:** 2026-10-28
 
-**Related Issues:** [#1200](https://github.com/w3c/webextensions/issues/1200), [crbug.com/41244345](https://issues.chromium.org/issues/41244345) ([Prototype CL](https://chromium-review.googlesource.com/c/chromium/src/+/8668246))
+**Related Issues:** [#1200](https://github.com/w3c/webextensions/issues/1200) ([WECG PR #1201](https://github.com/w3c/webextensions/pull/1201)), [crbug.com/41244345](https://issues.chromium.org/issues/41244345) ([Prototype CL](https://chromium-review.googlesource.com/c/chromium/src/+/8668246))
 
 ## Motivation
 
@@ -95,9 +95,10 @@ await browser.bookmarks.update(bookmarkId, {
 
 ### Behavior
 
-* **Valid `iconDataUrl`:** Must be a valid `data:` URL containing encoded image bytes. The browser decodes the image in an isolated/sandboxed image decoder, resizes it if necessary (e.g., up to `64x64` px), persists it in the browser's local favicon storage, and notifies bookmark UI observers so the icon updates immediately.
+* **Valid `iconDataUrl`:** Must be a valid `data:` URL containing encoded image bytes within a reasonable size limit (e.g., 128 KB maximum string length). The browser decodes the image in an isolated/sandboxed image decoder, resizes it if necessary (e.g., up to `64x64` px), persists it in the browser's local favicon storage, and notifies bookmark UI observers so the icon updates immediately.
 * **Folders:** Calling `bookmarks.update(folderId, {iconDataUrl})` rejects with an error (`"Can't set favicon of a bookmark folder."`), matching the existing behavior when attempting to set `url` on a folder (`"Can't set URL of a bookmark folder."`).
-* **Invalid `iconDataUrl`:** Non-`data:` URLs (such as `https://...`), empty strings, or corrupted/undecodable image bytes reject with `"Invalid favicon."` without mutating `title` or `url`.
+* **Invalid `iconDataUrl`:** Non-`data:` URLs (such as `https://...`), empty strings, oversized `data:` URLs, or corrupted/undecodable image bytes reject with `"Invalid favicon."` without mutating `title` or `url`.
+* **Static Icons / Rate Limiting:** Custom bookmark favicons are intended to be static icons persisted to disk. Animated favicons or rapid updates to simulate animation are not supported, and browsers may throttle or rate-limit frequent `iconDataUrl` updates to avoid excessive image-decoder and disk I/O churn.
 
 ### New Permissions
 
@@ -116,6 +117,8 @@ This API is write-only (`iconDataUrl` in `bookmarks.update`) and does not expose
 ### Abuse Mitigations
 
 * **No Remote Network Fetches:** Accepting only `data:` URLs (rather than remote `http:`/`https:` URLs) avoids browser-initiated network requests on behalf of the extension and prevents server-side tracking beacons triggered when bookmarks are rendered.
+* **Payload & Storage Bounds:** Enforcing an upfront string length cap on `iconDataUrl` (e.g., 128 KB) prevents accidental or malicious multi-megabyte IPC payloads, and downscaling decoded icons to standard favicon dimensions (e.g., `16x16`–`64x64` px) ensures each persisted icon occupies only a few kilobytes in local favicon storage.
+* **Rate Limiting / No Animation:** Because bookmark favicons are persisted to disk rather than held purely in memory, browsers may rate-limit or coalesce rapid `iconDataUrl` updates to prevent disk I/O thrashing and distracting animated icons on the bookmarks bar.
 * **User Attribution & Control:** Requires the `"bookmarks"` permission, which already displays a clear install-time permission warning (`"Read and change your bookmarks"`).
 
 ### Additional Security Considerations
