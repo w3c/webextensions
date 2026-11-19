@@ -1,0 +1,209 @@
+<pre class="metadata">
+Title: Extension Service Workers
+Shortname: webextensions-service-workers
+Level: 1
+Group: webextensions
+Status: w3c/ED
+URL: https://w3c.github.io/webextensions/specification/extension-service-workers.html
+Editor: Patrick Kettner, Google, patrickkettner@google.com
+Abstract: A WebExtension can declare a service worker as its <a href="https://w3c.github.io/webextensions/specification/#key-background">background</a> context. Because WebExtensions have a permission model and user expectations that differ from those of web content, that service worker has access to capabilities that other service workers do not. This specification defines [=extension service workers=], what distinguishes their realms for WebIDL, and what a specification that exposes a capability only to them has to define.
+Repository: w3c/webextensions
+Markup Shorthands: markdown yes
+Complain About: accidental-2119 on, missing-example-ids on
+</pre>
+
+
+<pre class="anchors">
+spec: webextensions; urlPrefix: https://w3c.github.io/webextensions/specification/
+    type: dfn
+        text: extension origin; url: dfn-extension-origin
+        text: extension scheme; url: extension-scheme
+        text: extension context; url: extension-context
+        text: privileged extension context; url: privileged-extension-context
+        text: register the background service worker; url: register-the-background-service-worker
+        text: background service worker registration; url: background-service-worker-registration
+        text: extension permission check; url: extension-permission-check
+        text: extension root URL; url: extension-root-url
+spec: webextensions-browser-global; urlPrefix: https://w3c.github.io/webextensions/specification/window.browser.html
+    type: interface
+        text: Browser; url: browser-interface
+</pre>
+
+<pre class="link-defaults">
+spec:webidl; type:dfn; text:exposed
+spec:ecmascript; type:dfn; for:ECMAScript; text:realm
+spec:html; type:dfn; for:realm; text:global object
+spec:html; type:dfn; for:/; text:browsing context
+spec:url; type:dfn; for:url; text:origin
+</pre>
+
+<section class="non-normative">
+## Introduction ## {#introduction}
+
+*This section is non-normative.*
+
+A WebExtension can declare a [=/service worker=] as its
+<a href="https://w3c.github.io/webextensions/specification/#key-background">background</a>
+context. Browsers make some capabilities available in that worker that are
+not available in other [=/service workers=]. This is done where user
+permission is better granted at a different level in the extension permission
+model than the web offers, such as hardware access.
+
+This specification does not define the lifetime of an
+[=extension service worker=], and it does not revisit the processing model of
+[=/service workers=].
+
+This specification defines [=extension service workers=] and the
+[=extension service worker realm=], so that WebIDL can expose a construct in
+[=extension service workers=] without exposing it in other [=/service workers=].
+
+</section>
+
+## Conformance of user agents ## {#conformance-of-user-agents}
+
+The requirements in this specification are on user agents that implement
+[[SERVICE-WORKERS]] and support WebExtensions. They are stated in
+[[#exposure-condition]] and [[#security]].
+
+## Extension service workers ## {#extension-service-workers}
+
+The <dfn export lt="extension service worker|background service worker">extension
+service worker</dfn> of a WebExtension is the [=active worker=] of that
+WebExtension's [=background service worker registration=]. The extension service
+worker is a [=privileged extension context=].
+
+An [=extension service worker=] is a [=secure context=], as
+[[SERVICE-WORKERS]] requires, because [[webextensions]] makes each
+[=extension scheme=] a scheme the user agent considers to be authenticated in
+the sense of [[SECURE-CONTEXTS]].
+
+## The extension service worker realm ## {#exposure-condition}
+
+A [=realm=] is an <dfn export>extension service worker realm</dfn> if it was
+created for a [=/service worker=] of a
+[=background service worker registration=].
+
+Note: An [=extension service worker realm=] is defined by the registration
+the realm was created for, rather than by the realm's eventual
+[=global object=], because WebIDL decides exposure while the realm's initial
+objects are being created, before [[SERVICE-WORKERS]] associates the
+[=global object=] with its [=/service worker=].
+
+The [=extension service worker realm=] is meant to be used as a condition
+on the `ServiceWorker` entry of a construct's [=exposure set=] in the
+[{{Exposed}}] extended attribute. The construct is then [=exposed=] in the
+[=extension service worker realm=] and not in other [=/service workers=].
+Entries for other [=global names=] are unaffected. A construct whose
+[=exposure set=] names `Worker`, which covers every worker global, lists
+`DedicatedWorker` and `ServiceWorker` separately so that the condition can be
+placed on the latter alone.
+
+A user agent must not treat the presence of a construct in a [=realm=] as
+authorization to use the capability it provides. The extension's permissions
+are checked on each use, independently of exposure, as described in
+[[#security]].
+
+Issue: WebIDL does not currently allow a condition on an individual entry of
+an [=exposure set=]. Its exposure conditions ([{{SecureContext}}] and
+[{{CrossOriginIsolated}}]) apply to a whole construct. This requires a
+proposal to WebIDL. Until WebIDL accepts a mechanism, no specification can
+reference the [=extension service worker realm=] from IDL.
+
+Issue: [[webextensions-browser-global]] declares
+`partial interface ServiceWorkerGlobalScope { attribute Browser browser; }`,
+which, read literally, exposes {{Browser}} in every [=/service worker=]. The
+`ServiceWorker` entry of that partial's [=exposure set=] should be limited to
+the [=extension service worker realm=] once WebIDL supports it.
+
+## What the owning specification defines ## {#owning-spec-defines}
+
+A specification that limits a construct's `ServiceWorker` exposure to the
+[=extension service worker realm=] defines the following.
+
+: The exposure.
+:: The constructs whose `ServiceWorker` exposure is limited to the
+    [=extension service worker realm=], including every `partial interface`
+    or member through which the construct is reached, such as a member added
+    to {{WorkerNavigator}}. If the construct
+    is also meant to be available in the extension's windows or dedicated
+    workers, those [=global names=] appear in the same declarations.
+
+: User-facing operations.
+:: For any operation that presents a chooser, a prompt, or other user
+    interface, or that requires [=transient activation=]: whether it stays
+    `[Exposed=Window]`, and if it is exposed in the worker, what gates it there.
+
+: Document assumptions.
+:: For every algorithm step that consults [=transient activation=], the
+    [=relevant global object=]'s associated {{Document}}, a
+    [=browsing context=], or a top-level origin, what happens when the
+    [=relevant global object=] is that of an [=extension service worker=],
+    which has none of these.
+
+: The permission.
+:: Whether it invokes the [=extension permission check=] and, if so, which
+    permission it passes.
+
+: Lifetime.
+:: Whether, and how, pending work keeps the worker alive and whether any
+    event starts it, using {{ExtendableEvent}} and [=functional events=] from
+    [[SERVICE-WORKERS]], without assuming the worker stays alive longer than
+    [[SERVICE-WORKERS]] allows.
+
+## Security considerations ## {#security}
+
+Exposing a construct in an [=extension service worker=] gives extension code
+headless access to a capability that the web gates on one or more of a
+document, a user gesture, and a prompt. The extension permission model of
+[[webextensions]] takes the place of those gates: the user consents when the
+permission is granted, at install time or at run time, and can withdraw it.
+
+Where an algorithm of the owning specification would prompt, consult
+[=transient activation=], or evaluate a document's permissions policy, in an
+[=extension service worker=] it instead runs the
+[=extension permission check=] for the feature. A prompt is never shown from
+an [=extension service worker=], and [[PERMISSIONS-POLICY]], which defines no
+policy for a [=/service worker=]'s settings object, is not consulted.
+
+The user agent must run the [=extension permission check=] on each use of the
+capability, so that a permission revoked while the worker is running takes
+effect on the next use.
+
+The user agent must make use of such a capability from an
+[=extension service worker=] attributable to the extension in its user
+interface, since the tab-level indicators that accompany the capability in a
+window are not available.
+
+Whether an [=extension service worker=] runs in a private browsing session,
+and with which granted permissions, is governed by [[webextensions]].
+
+## Privacy considerations ## {#privacy}
+
+This specification exposes nothing to web content. An
+[=extension service worker realm=] belongs only to an
+[=extension service worker=], whose script already runs with the extension's
+permissions. What the headless path removes is the user
+gesture and the visible surface that accompany the same capability in a
+window, which is why [[#security]] requires use to be attributable to the
+extension.
+
+<pre class="biblio">
+{
+  "webextensions": {
+    "authors": ["Mukul Purohit", "Tomislav Jovanovic", "Oliver Dunk", "Kiara Rose"],
+    "href": "https://w3c.github.io/webextensions/specification/",
+    "title": "Web Extensions",
+    "status": "CG-DRAFT",
+    "publisher": "WECG",
+    "deliveredBy": ["https://www.w3.org/groups/cg/webextensions/"]
+  },
+  "webextensions-browser-global": {
+    "authors": ["Patrick Kettner"],
+    "href": "https://w3c.github.io/webextensions/specification/window.browser.html",
+    "title": "window.browser",
+    "status": "CG-DRAFT",
+    "publisher": "WECG",
+    "deliveredBy": ["https://www.w3.org/groups/cg/webextensions/"]
+  }
+}
+</pre>

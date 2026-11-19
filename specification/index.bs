@@ -233,6 +233,8 @@ Although the [=main world=] of a web page is not an [=extension context=], it ma
 
 The extension origin is a [=tuple origin=] consisting of an [=extension scheme=] and an extension-specific host. An <dfn>extension scheme</dfn> is a browser-specific scheme reserved for extension use.
 
+A user agent must treat each [=extension scheme=] as a scheme it considers to be authenticated for the purpose of the [=potentially trustworthy origin=] algorithm of [[SECURE-CONTEXTS]]. An [=extension origin=] is therefore a [=potentially trustworthy origin=].
+
 <div class="example">
 Examples of [=extension schemes=] include `chrome-extension`, `moz-extension`, and `safari-web-extension`.
 </div>
@@ -263,7 +265,20 @@ A <dfn>glob</dfn> can be any [=string=]. It can contain any number of wildcards 
 
 ## User gestures and activeTab ## {#user-gestures-and-activetab}
 
-## Extension permissions and web perissions ## {#extension-permissions-and-web-perissions}
+## Extension permissions and web permissions ## {#extension-permissions-and-web-permissions}
+
+Some web platform features are exposed to [=privileged extension contexts=] without the prompt or [=transient activation=] that gates them for web content. In those contexts the extension's permissions take the place of the gate.
+
+To run the <dfn id="extension-permission-check" export>extension permission check</dfn> for a permission |permission| given an [=environment settings object=] |settings|, the user agent runs these steps:
+
+1. Let |extension| be the extension whose [=extension origin=] is |settings|' [=environment settings object/origin=], or null if there is none or if that extension is disabled or uninstalled.
+1. If |extension| is null, return "`denied`".
+1. If |extension| has been granted |permission|, through [[#key-permissions]] or [[#key-optional_permissions]], return "`granted`".
+1. Return "`denied`".
+
+The result reflects the permissions granted at the time the steps run. A specification that invokes these steps does so on each use of the feature, not once, and names the permission it passes.
+
+Issue: Define the permission model that this section refers to: the set of permissions, how [[#key-permissions]] and [[#key-optional_permissions]] grant them, and how a grant is withdrawn.
 
 # Content security policy # {#content-security-policy}
 
