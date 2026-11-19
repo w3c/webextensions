@@ -95,10 +95,10 @@ await browser.bookmarks.update(bookmarkId, {
 
 ### Behavior
 
-* **Valid `iconDataUrl`:** Must be a valid `data:` URL containing encoded image bytes within a reasonable size limit (e.g., 128 KB maximum string length). The browser decodes the image in an isolated/sandboxed image decoder, resizes it if necessary (e.g., up to `64x64` px), persists it in the browser's local favicon storage, and notifies bookmark UI observers so the icon updates immediately.
+* **Valid `iconDataUrl`:** Must be a valid `data:` URL containing encoded image bytes within a reasonable size limit (e.g., 128 KB maximum string length). All browsers MUST support **PNG (`image/png`)** (`data:image/png;base64,...`) as the required baseline format for interoperability, and browsers MAY additionally accept other common raster image formats supported by their image decoders (such as `image/jpeg`, `image/webp`, or `image/x-icon`, extracting a single static frame). The browser decodes the image in an isolated/sandboxed image decoder, resizes it if necessary (e.g., up to `64x64` px), persists it in the browser's local favicon storage, and notifies bookmark UI observers so the icon updates immediately.
 * **Folders:** Calling `bookmarks.update(folderId, {iconDataUrl})` rejects with an error (`"Can't set favicon of a bookmark folder."`), matching the existing behavior when attempting to set `url` on a folder (`"Can't set URL of a bookmark folder."`).
-* **Invalid `iconDataUrl`:** Non-`data:` URLs (such as `https://...`), empty strings, oversized `data:` URLs, or corrupted/undecodable image bytes reject with `"Invalid favicon."` without mutating `title` or `url`.
-* **Static Icons / Rate Limiting:** Custom bookmark favicons are intended to be static icons persisted to disk. Animated favicons or rapid updates to simulate animation are not supported, and browsers may throttle or rate-limit frequent `iconDataUrl` updates to avoid excessive image-decoder and disk I/O churn.
+* **Invalid `iconDataUrl`:** Upfront string-length and `data:` URI checks act only as an initial filter; the returned promise may reject synchronously or asynchronously at any validation stage—including non-`data:` URLs (such as `https://...`), empty strings, oversized `data:` URLs, failed base64 decoding, unsupported image formats, or failures during out-of-process image decoding/resizing—rejecting with `"Invalid favicon."` without mutating `title` or `url`.
+* **Static Icons / Rate Limiting:** Custom bookmark favicons are intended to be static icons persisted to disk. Animated favicons or rapid updates to simulate animation are not supported, and browsers may apply per-extension throttling or rate-limiting to frequent `iconDataUrl` updates to avoid excessive image-decoder and disk I/O churn without impacting other extensions.
 
 ### New Permissions
 
@@ -118,7 +118,7 @@ This API is write-only (`iconDataUrl` in `bookmarks.update`) and does not expose
 
 * **No Remote Network Fetches:** Accepting only `data:` URLs (rather than remote `http:`/`https:` URLs) avoids browser-initiated network requests on behalf of the extension and prevents server-side tracking beacons triggered when bookmarks are rendered.
 * **Payload & Storage Bounds:** Enforcing an upfront string length cap on `iconDataUrl` (e.g., 128 KB) prevents accidental or malicious multi-megabyte IPC payloads, and downscaling decoded icons to standard favicon dimensions (e.g., `16x16`–`64x64` px) ensures each persisted icon occupies only a few kilobytes in local favicon storage.
-* **Rate Limiting / No Animation:** Because bookmark favicons are persisted to disk rather than held purely in memory, browsers may rate-limit or coalesce rapid `iconDataUrl` updates to prevent disk I/O thrashing and distracting animated icons on the bookmarks bar.
+* **Rate Limiting / No Animation:** Because bookmark favicons are persisted to disk rather than held purely in memory, browsers may apply per-extension rate-limiting or coalescing to rapid `iconDataUrl` updates to prevent disk I/O thrashing and distracting animated icons on the bookmarks bar without affecting unrelated extensions.
 * **User Attribution & Control:** Requires the `"bookmarks"` permission, which already displays a clear install-time permission warning (`"Read and change your bookmarks"`).
 
 ### Additional Security Considerations
