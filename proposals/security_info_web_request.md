@@ -1,8 +1,8 @@
-# Proposal: `SecurityInfo` in `webRequest` 
+# Proposal: `SecurityInfo` in `webRequest`
 
 **Summary**
 
-An API proposal to extend the `webRequest` API to provide TLS/QUIC certificate information and connection state for a given request.
+An API proposal to extend the `webRequest` API with the TLS/QUIC connection state, parameters and server certificates of a request.
 
 **Document Metadata**
 
@@ -10,11 +10,10 @@ An API proposal to extend the `webRequest` API to provide TLS/QUIC certificate i
 
 **Sponsoring Browser:** Google Chrome
 
-**Contributors:** <other contributors emails or GitHub handles>
-
 **Created:** 2025-11-05
 
 **Related Issues:**
+* [WECG issue #882](https://github.com/w3c/webextensions/issues/882)
 * [Mozilla Bug 1322748](https://bugzilla.mozilla.org/show_bug.cgi?id=1322748)
 * [Previous abandoned Chromium Proposal](https://github.com/EFForg/webrequest-tlsinfo-api/blob/master/proposal.md)
 * [Chromium Feature Request: webRequest.getSecurityInfo()](https://g-issues.chromium.org/issues/40754456)
@@ -24,143 +23,217 @@ An API proposal to extend the `webRequest` API to provide TLS/QUIC certificate i
 
 ### Objective
 
-This API enables extensions to inspect the server certificate of a web request after a secure connection (TLS/QUIC) has been established. This fulfills a long-standing developer need for TLS introspection, allowing for the creation of advanced security and debugging tools.
+Give extensions the TLS facts the browser already has for each request, which developers have requested for years (see Related Issues).
 
 #### Use Cases
 
-The lack of TLS introspection prevents the development of a number of security-focused browser extensions. This API would enable extensions to:
+This API would enable extensions to:
 * Replicate the functionality of security scoring tools.
 * Provide more granular or prominent certificate chain introspection than the browser's built-in UI.
-* Attempt to detect Man-in-the-Middle (MITM) attacks.
+* Attempt to detect Man-in-the-Middle (MITM) attacks, e.g. a trust anchor that does not ship with the browser.
 * Assist in debugging TLS deployment and configuration issues.
-* Enforce custom security policies by blocking requests with insecure or non-compliant certificates.
+* Enforce custom security policies by blocking requests with insecure or non-compliant certificates (where `webRequestBlocking` is available).
 
 ### Known Consumers
 
-This API would lay the groundwork for enabling the mentioned use-cases and facilitate the migration of existing Firefox extensions to Chrome and other browsers that adopt this specification. 
-A notable example is [IndicateTLS](https://addons.mozilla.org/en-US/firefox/addon/indicatetls/), which relies on similar functionality. Note, that this extension requires more fields to be present and 
-cannot be fully build in the current revisions of the API.
+Existing Firefox extensions could move to Chrome and other browsers that adopt this specification:
+* A notable example is [IndicateTLS](https://addons.mozilla.org/en-US/firefox/addon/indicatetls/), which relies on similar functionality.
+* 54 extensions call Firefox's `webRequest.getSecurityInfo()`, and 36 of them pass `certificateChain: true`.
 
 ## Specification
 
 ### Schema
 
-This proposal introduces a new optional field, `securityInfo`, to the details object of the `webRequest.onHeadersReceived` event. Its presence is controlled by new `OnHeadersReceivedOptions`.
+New `extraInfoSpec` values (in `OnHeadersReceivedOptions`, `OnCompletedOptions`, `OnErrorOccurredOptions`) and a new optional `securityInfo` field in those events' details.
+
+Firefox's `onErrorOccurred` has no `extraInfoSpec` parameter today, so it would gain one.
 
 ```typescript
-
-export enum OnHeadersReceivedOptions {
-   // .. old fields,
-
-   // If used, then securityInfo will be provided.
-   "securityInfo",
-   // The option is used to provide securityInfo with raw bytes of a server certificate.
-   "securityInfoRawDer"
+export enum SecurityInfoOptions {
+  /** Include details.securityInfo. */
+  SecurityInfo = "securityInfo",
+  /** Also include CertificateInfo.rawDER. Implies "securityInfo". */
+  SecurityInfoRawDer = "securityInfoRawDer",
+  /** Include the validated chain; see Certificates. Implies "securityInfo". */
+  SecurityInfoCertificateChain = "securityInfoCertificateChain",
 }
 
 export interface Fingerprint {
-    /**
-     * SHA-256 hash of the certificate.
-     */ 
-    sha256: string;
+  /** SHA-256 of the DER certificate, uppercase colon-separated hex ("AB:CD:..."). */
+  sha256: string;
 }
 
 export interface CertificateInfo {
-    fingerprint: Fingerprint;
-    // Only included if "securityInfoRawDer" is passed to extraInfoSpec
-    rawDER?: Uint8Array;
+  fingerprint: Fingerprint;
+  /** DER bytes. */
+  rawDER?: ArrayBuffer;
+  /** True if the trust anchor ships with the browser. Only with "securityInfoCertificateChain", only on the last certificate. */
+  isBuiltInRoot?: boolean;
 }
 
-/**
- * Represents the state of the network connection.
- */
 export enum ConnectionState {
-    /**
-     * The TLS handshake failed (for example, the certificate has expired).
-     */
-    Broken = "broken",
+  /** The request did not use TLS (e.g. http://). */
+  Insecure = "insecure",
+  /** TLS connection with a weakness listed in weaknessReasons. */
+  Weak = "weak",
+  /** TLS handshake or certificate verification failed. onErrorOccurred only. */
+  Broken = "broken",
+  /** TLS handshake and certificate verification succeeded. */
+  Secure = "secure",
+}
 
-    /**
-     * The connection is not a TLS connection.
-     */
-    Insecure = "insecure",
+export enum TransportWeaknessReason {
+  /** See "Overridden certificate error". */
+  DistrustOverriddenByUser = "distrustOverriddenByUser",
+}
 
-    /**
-     * The connection is a secure TLS connection.
-     */
-    Secure = "secure"
+export enum OverridableErrorCategory {
+  /** The chain is not trusted or fails a trust requirement (e.g. unknown issuer, self-signed, weak key). */
+  TrustError = "trust_error",
+  /** The certificate does not match the host name. */
+  DomainMismatch = "domain_mismatch",
+  /** Outside the certificate's validity period. */
+  ExpiredOrNotYetValid = "expired_or_not_yet_valid",
 }
 
 export interface SecurityInfo {
-    /**
-     * The array contains a single CertificateInfo object, for the server certificate.
-     * The field is absent in a case when the connection state is "insecure" (http).
-     */
-    certificates?: CertificateInfo[];
-    /**
-     * State of the connection.
-     */
-    state: ConnectionState;
+  state: ConnectionState;
+
+  /** The fields below are present only when state is "secure" or "weak". */
+  certificates?: CertificateInfo[];
+  protocolVersion?: "TLSv1" | "TLSv1.1" | "TLSv1.2" | "TLSv1.3";
+  cipherSuite?: string;
+  keaGroupName?: string;
+  secretKeyLength?: number;
+  usedEch?: boolean;
+  weaknessReasons?: TransportWeaknessReason[];
+  /** See "Overridden certificate error". */
+  overridableErrorCategory?: OverridableErrorCategory;
 }
 
-export interface OnHeadersReceivedDetails {
-    // ... existing fields
-    /**
-     * Information about the security of the connection. This is only
-     * present if "securityInfo" is passed in the extraInfoSpec parameter
-     * and the request used a secure connection.
-     */
-    securityInfo?: SecurityInfo;
+export interface DetailsWithSecurityInfo {
+  /** ... existing fields */
+  securityInfo?: SecurityInfo;
 }
-
 ```
 
 ### Behavior
 
-* New `onHeadersReceivedOptions` are necessary for performance reasons. They specify whether ssl data must be kept for as long as the web request is alive. Without them, unnecessary data can be kept for longer. Which is very undesirable especially in post quantum cryptography, since certificates can take a significant amount of memory space. 
-Note that Firefox has no such an option, because it only supports blocking web requests call while there’s still ssl data.
+#### Opt-in and events
 
-* A new `securityInfo` object can be obtained in the `onHeadersReceived` event listener.
+* An extension receives `securityInfo` only if its listener passes one of the three values in `extraInfoSpec`. It needs the `webRequest` permission and host permissions, but not `webRequestBlocking`.
+* The data comes in the event details, not through a separate method like Firefox's `getSecurityInfo(requestId)` ([WECG review](https://github.com/w3c/webextensions/pull/899#discussion_r2621147426)).
+  * Non-blocking listeners: in Chrome, Manifest V3 extensions can't use blocking webRequest; only policy-installed extensions keep `webRequestBlocking` ([Chrome docs](https://developer.chrome.com/docs/extensions/reference/api/webRequest)). A method called after a non-blocking event can't hold the request, so the browser would have to keep every request's certificate data until each interested extension asks, or block the request.
+  * Performance: the browser keeps a request's certificate data and builds `securityInfo` only for such listeners, once per event. This matters most for raw DER, which grows with post-quantum signatures ([FIPS 204](https://csrc.nist.gov/pubs/fips/204/final)).
 
-* To receive this information, an extension **must** include `"securityInfo"` or `"securityInfoRawDer"` in the `extraInfoSpec` array when calling `addListener`. This opt-in design prevents performance overhead for the majority of extensions that don't need this data.
+| Event | `securityInfo` describes |
+| --- | --- |
+| `onHeadersReceived` | The connection that delivered this response. |
+| `onCompleted` | The connection that delivered the final response. |
+| `onErrorOccurred` | See [onErrorOccurred](#onerroroccurred). |
 
-* The `securityInfo` object will only be populated for requests made over a secure protocol (e.g., HTTPS, WSS) where the TLS/QUIC handshake has successfully completed or also in case of certificate errors.
-Browsers interrupt connections when there's a certificate error, unless user has explicitely allowed it in the browser UI, only in this case it is possible to have SecurityInfo with `state = "broken"`.
+For a response served from the HTTP cache, the connection is the one that originally fetched it.
 
-* `certificates` - will contain only the leaf server certificate. This is done for future extensibility and Firefox API compatibility, because there they also provide a leaf if [certificateChain](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/getSecurityInfo#certificatechain) is not included in getSecurityInfo options.
+#### `state`
 
-* `state` - State of the connection. One of:
-    * `"broken"`: the TLS handshake failed (for example, the certificate has expired)
-    * `"insecure"`: the connection is not a TLS connection
-    * `"secure"`: the connection is a secure TLS connection
+`ConnectionState` in the schema defines each value.
 
-* The `CertificateInfo.rawDER` field contains the raw certificate bytes in DER format, which can be parsed by the extension using a third-party library. This field is only provided if `extraInfoSpec` array includes `"securityInfoRawDer"`. The reason for it is a performance optimization to not pass raw bytes when
-it is not necessary, and compatibility with Firefox extensions API.
+**Overridden certificate error.** When the browser lets a request continue despite a certificate error (e.g. the user proceeded through a certificate warning, or a flag such as Chrome's `--ignore-certificate-errors` is set):
+* `state` is `"weak"`, and `weaknessReasons` contains `"distrustOverriddenByUser"`.
+* `overridableErrorCategory` names the error (`OverridableErrorCategory` in the schema).
+* If several errors apply, the first in that order wins (Firefox's order): `trust_error`, then `domain_mismatch`, then `expired_or_not_yet_valid`.
+* A certificate error that fits none of the categories leaves `overridableErrorCategory` unset.
+
+#### Fields
+
+| Field | Value |
+| --- | --- |
+| `protocolVersion` | QUIC reports `"TLSv1.3"`. Omitted if unknown. |
+| `cipherSuite` | IANA name, e.g. `"TLS_AES_128_GCM_SHA256"`. |
+| `keaGroupName` | Firefox's names, e.g. `"x25519"`, `"P256"`, `"mlkem768x25519"`. |
+| `secretKeyLength` | Symmetric key length in bits, e.g. 128 for AES-128. |
+| `usedEch` | `true` if the connection used Encrypted Client Hello. |
+
+#### Certificates
+
+* **Default:** `certificates` is `[leaf]`.
+* **With `"securityInfoCertificateChain"`:** the path the browser built and validated, leaf first, trust anchor last. This is the meaning of Firefox's `certificateChain: true`.
+  * The trust anchor is not always a self-signed root. The Chrome Root Store marks some intermediates as trust anchors ([example entry](https://chromium.googlesource.com/chromium/src/+/5b301efcac4f5881eebda429845b1de916fd8bf3/net/data/ssl/chrome_root_store/root_store.textproto#1711)), so the path ends there. Example (2026-11): www.google.com gives 2 certificates in Chromium's verifier and 3 in Firefox.
+  * The chain is browser-specific and may change over time, e.g. after a root store update. Extensions must not assume a chain length.
+* **After an overridden certificate error:** `certificates` is `[leaf]`, even with `"securityInfoCertificateChain"`, because the browser has no validated path. In Chromium the chain is then [a copy of what the server sent](https://chromium.googlesource.com/chromium/src/+/5b301efcac4f5881eebda429845b1de916fd8bf3/net/socket/ssl_client_socket_impl.cc#1105) after a click-through, or a path that failed validation with a flag. `isBuiltInRoot` is absent.
+* **The list the server sent is not exposed.** Chromium does not keep it for HTTP/3 connections or for responses from the HTTP cache, and no Chrome UI uses it.
+
+#### onErrorOccurred
+
+* **`"broken"`:** `securityInfo` is `{state: "broken"}`.
+  * Why no certificates: exposing certificates the browser rejected effectively invites extensions to trust them. An extension may check only the part it cares about (e.g. a root it recognises) and ignore why the browser rejected the certificate, which gives the appearance of security without real security. Tools that debug a failed handshake can fetch the server's certificates out of band.
+  * Why no `errorMessage`: `details.error` already carries the error, and Chrome documents that this string must not be parsed ([web_request.json](https://chromium.googlesource.com/chromium/src/+/5b301efcac4f5881eebda429845b1de916fd8bf3/extensions/common/api/web_request.json#718)). `state: "broken"` is the stable signal.
+* **The request failed for another reason after a successful handshake:** the same `securityInfo` as in `onHeadersReceived`, including certificates, when available.
+  * Chromium has it when the error occurred after response headers were received, e.g. the connection dropped while reading the body, or an extension cancelled the request in `onHeadersReceived`.
+  * Chromium has nothing when the error occurred before response headers, e.g. a connection reset right after the handshake. `securityInfo` is then omitted.
+* **The request did not use TLS** (e.g. `http://`): `{state: "insecure"}`.
+* **A TLS request failed before any handshake** (e.g. DNS failure, connection refused): `securityInfo` is omitted.
+
+#### Feature detection
+
+For an `extraInfoSpec` value it doesn't know, Chrome's `addListener` throws a `TypeError` and Firefox's throws an `Error`. Safari doesn't throw ([WECG minutes, 2025-10-09](https://github.com/w3c/webextensions/blob/4d082136528cc59a685cb0d230be720211ac11d1/_minutes/2025-10-09-wecg.md#L159-L160)). The portable check is `"securityInfo" in details`.
 
 ### Example
 
-Here is an example of an extension listening for web requests to log the server's certificate fingerprint.
+Log the negotiated parameters and the chain, and flag overridden certificate errors and TLS failures.
 
 ```javascript
-chrome.webRequest.onHeadersReceived.addListener(
-  (details) => {
-    if (details.securityInfo && details.securityInfo.state == "secure") {
-      console.log(`Received certificate for ${details.url}. The fingerprint is ${details.securityInfo.certificates[0].fingerprint.sha256}`);
-    }
-  },
-  // Filter for requests.
-  { urls: ["<all_urls>"] },
-  // Opt-in to receive the security info.
-  ["securityInfo"]
-);
+const filter = { urls: ["https://*/*", "wss://*/*"] };
+
+chrome.webRequest.onCompleted.addListener((details) => {
+  const info = details.securityInfo;
+  if (!info || info.state === "insecure") return;
+
+  if (info.weaknessReasons?.includes("distrustOverriddenByUser")) {
+    console.warn(`${details.url}: certificate error overridden (${info.overridableErrorCategory ?? "other"})`);
+    return;
+  }
+
+  const [leaf] = info.certificates;
+  const anchor = info.certificates.at(-1);
+  console.log(`${details.url}: ${info.protocolVersion} ${info.cipherSuite} ${info.keaGroupName}`);
+  console.log(`leaf ${leaf.fingerprint.sha256}, anchor built-in: ${anchor.isBuiltInRoot}`);
+}, filter, ["securityInfoCertificateChain"]);
+
+chrome.webRequest.onErrorOccurred.addListener((details) => {
+  if (details.securityInfo?.state === "broken") {
+    console.warn(`${details.url}: TLS handshake or certificate verification failed`);
+  }
+}, filter, ["securityInfo"]);
 ```
+
+### New Permissions
+
+None.
+
+### Manifest File Changes
+
+None.
 
 ## Security and Privacy
 
 ### Exposed Sensitive Data
 
-This API exposes the server's leaf certificate for a given connection. This is public information that is exchanged as part of any standard TLS handshake.
-So, no sensitive data is exposed.
+* The server sends its certificates in every TLS handshake, so any client connecting to it can obtain them. The TLS parameters describe the browser's own connection.
+* With `"securityInfoCertificateChain"`, a connection that chains to a locally installed root (e.g. a corporate TLS-inspecting proxy) reveals that root. It does not enumerate the trust store: a local root only shows up when a visited site chains to it.
+* `overridableErrorCategory` reveals that a certificate error was overridden for the host.
+* Certificates from a failed TLS handshake are never exposed (see [onErrorOccurred](#onerroroccurred)).
+
+Firefox already exposes all of the above.
+
+### Abuse Mitigations
+
+Only listeners that opt in receive the data, under existing permissions ([Opt-in and events](#opt-in-and-events)).
+
+### Additional Security Considerations
+
+* The API cannot change any trust decision; it only reports the browser's.
+* Certificates are delivered as DER bytes and fingerprints. Extensions that parse them do so in their own process.
 
 ## Alternatives
 
@@ -172,26 +245,49 @@ Currently, extensions can only approximate this functionality by capturing a req
 * **Performance**: It introduces significant latency and network overhead for both the user and the extension's backend.
 * **Privacy**: It requires sending the user's browsing-related URLs to a third-party server, which is a privacy concern.
 
-This API resolves all three issues by providing the exact, browser-verified information directly.
-
 ### Open Web API
 
-This proposal extends Web Request API which is not available on Open Web.
-However, the Open Web has [Controlled Frame API](https://wicg.github.io/controlled-frame) which includes WebRequest as well. It is planned to extend Controlled Frame API, although in a separate web proposal.
+This proposal extends the `webRequest` API, which is not available on the open web.
+
+The [Controlled Frame API](https://wicg.github.io/controlled-frame/) for Isolated Web Apps already exposes a `SecurityInfo` dictionary (`state` and `certificates`) on its `headersreceived` event. This proposal's object is a superset of it, except for overridden certificate errors (see Chromium status).
 
 ## Implementation Notes
 
-This proposal is heavily inspired by Firefox's `webRequest.getSecurityInfo()` to promote cross-browser compatibility. However, it adapts the design to fit Chrome's non-blocking, event-driven architecture (Manifest V3):
+* **Relation to Firefox:** field names and value formats follow Firefox's [`webRequest.getSecurityInfo()`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/getSecurityInfo). Deliberate differences:
 
-* **Event-Based vs. Function Call**: Instead of a separate `getSecurityInfo(requestId)` function (as in Firefox), this API injects the data into the existing `onHeadersReceived` event.
-* **Rationale**: In a non-blocking model, the internal network and certificate data associated with a request is often discarded immediately after the request pipeline advances. A separate asynchronous getSecurityInfo call would be racy and unreliable. By "opting in" with extraInfoSpec, the extension signals the browser to hold onto this data just long enough to deliver it with the onHeadersReceived event, ensuring data availability without blocking.
+| Difference | Firefox today | Reason |
+| --- | --- | --- |
+| `rawDER` type | Array of integers | `ArrayBuffer` is compact; it's what Chrome's binary schema type produces. |
+| `isBuiltInRoot` | On every certificate (`false` except possibly the last), also without the chain option | Absence means "not applicable" instead of a misleading `false`. |
+| `weaknessReasons: "cipher"` | The only value. Nothing sets the [`STATE_USES_WEAK_CRYPTO`](https://searchfox.org/mozilla-central/search?q=STATE_USES_WEAK_CRYPTO) flag it reads; the [handshake code](https://github.com/mozilla-firefox/firefox/blob/deb2f407762a61a775f79b4dbe605f95c92e9d6d/security/manager/ssl/nsNSSCallbacks.cpp#L1179-L1190) marks a connection broken only for TLS < 1.2 or unsafe renegotiation. | Dropped as dead. |
+| Overridden certificate error | `"secure"` + `overridableErrorCategory` | A connection whose certificate failed verification should not read as `"secure"` ([details](#state)). |
+| `protocolVersion` unknown | `"unknown"` | Absence is how every optional field signals "no data". |
+| Chain after an overridden error | `[]` ([bug 1678492](https://bugzilla.mozilla.org/show_bug.cgi?id=1678492)) | See [Certificates](#certificates). |
+| `onErrorOccurred` | `getSecurityInfo()` returns `undefined` ([bug 1474657](https://bugzilla.mozilla.org/show_bug.cgi?id=1474657)) | See [onErrorOccurred](#onerroroccurred). |
 
+* **Chromium status:**
+  * Controlled Frame: on by default since Chrome 145. Controlled Frame needs Isolated Web Apps, which are enabled by default only on ChromeOS.
+  * Extensions: behind `chrome://flags/#web-request-security-info` (off by default, desktop only). With the flag off, Chrome accepts the new `extraInfoSpec` values but logs a console error and drops the listener.
+  * Implemented for extensions: `onHeadersReceived` with `state`, the leaf and `rawDER`. [CL 8637229](https://chromium-review.googlesource.com/c/chromium/src/+/8637229) adds `onCompleted`, `protocolVersion` and `cipherSuite`.
+  * Not yet implemented: `keaGroupName` (mapped from BoringSSL's names `"X25519"`, `"P-256"`, `"X25519MLKEM768"`), `secretKeyLength`, `usedEch`, `weaknessReasons`, `overridableErrorCategory`, the chain and `onErrorOccurred`.
+  * Chromium currently reports an overridden certificate error as `"broken"`, in extensions and Controlled Frame; this proposal changes that to `"weak"`.
+* **Chromium `overridableErrorCategory` mapping** (`cert_status` flags; Firefox's categories are in [`CategorizeCertificateError`](https://github.com/mozilla-firefox/firefox/blob/deb2f407762a61a775f79b4dbe605f95c92e9d6d/security/manager/ssl/SSLServerCertVerification.cpp#L247-L280)):
+  * `trust_error`: `CERT_STATUS_AUTHORITY_INVALID`, `CERT_STATUS_WEAK_KEY`, `CERT_STATUS_WEAK_SIGNATURE_ALGORITHM`, `CERT_STATUS_CERTIFICATE_TRANSPARENCY_REQUIRED`, `CERT_STATUS_KNOWN_INTERCEPTION_BLOCKED`.
+  * `domain_mismatch`: `CERT_STATUS_COMMON_NAME_INVALID`.
+  * `expired_or_not_yet_valid`: `CERT_STATUS_DATE_INVALID`.
+  * No category: Chromium errors with no Firefox equivalent, e.g. `CERT_STATUS_NAME_CONSTRAINT_VIOLATION`, `CERT_STATUS_NON_UNIQUE_NAME`, `CERT_STATUS_VALIDITY_TOO_LONG`.
+* **Firefox fields left out:**
+
+| Field | Reason |
+| --- | --- |
+| `subject`, `issuer`, `validity`, `serialNumber`, `fingerprint.sha1`, `subjectPublicKeyInfoDigest` | Derivable from `rawDER`. |
+| `isUntrusted`, `isDomainMismatch`, `isNotValidAtThisTime` | Deprecated in favour of `overridableErrorCategory` (see the note below). |
+| `usedDelegatedCredentials`, `usedOcsp`, `usedPrivateDns` | Not exposed by Chromium's network stack: [`SSLInfo`](https://chromium.googlesource.com/chromium/src/+/5b301efcac4f5881eebda429845b1de916fd8bf3/net/ssl/ssl_info.h) has no such data. |
+| `hpkp` | HPKP headers are obsolete; Firefox reports only its built-in pin list, which is browser-specific. |
+
+**Note on MDN:** MDN's `SecurityInfo` page doesn't list `overridableErrorCategory` and still shows [`isDomainMismatch`, `isNotValidAtThisTime` and `isUntrusted`](https://github.com/mdn/content/blob/09109b6f9444d22215ba330ec1e64e73980b2a6c/files/en-us/mozilla/add-ons/webextensions/api/webrequest/securityinfo/index.md#L38-L45) as regular fields. Firefox has shipped `overridableErrorCategory` since Firefox 106 (2022): [commit](https://github.com/mozilla-firefox/firefox/commit/2e8528c351e8429cc1a59243981988d1f8d23c47) for [bug 1781104](https://bugzilla.mozilla.org/show_bug.cgi?id=1781104), and the current schema has [the field](https://github.com/mozilla-firefox/firefox/blob/deb2f407762a61a775f79b4dbe605f95c92e9d6d/toolkit/components/extensions/schemas/web_request.json#L303-L312) and [marks the three booleans deprecated](https://github.com/mozilla-firefox/firefox/blob/deb2f407762a61a775f79b4dbe605f95c92e9d6d/toolkit/components/extensions/schemas/web_request.json#L313-L329). The change landed in a Core :: Security: PSM bug with no `dev-doc-needed` keyword.
 
 ## Future Work
 
-This proposal focuses on the most critical and high-priority data (the leaf certificate). The `SecurityInfo` object can be extended in the future to include:
-
-* The full certificate chain (`CertificateInfo[]`).
-* Specific TLS parameters (e.g., protocol version, cipher suite).
-* Additional properties like `isDomainMismatch` or `isEV`.
-* `securityInfo` object in `webRequest.onErrorOccurred` to allow extensions to measure connection failures and debug it.
+* **Porting the new fields to Controlled Frame:** a separate effort.
+* **Possible additions if there is demand:** `signatureSchemeName`, `certificateTransparencyStatus`, `hsts`, `isExtendedValidation`.
