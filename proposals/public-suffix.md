@@ -686,6 +686,9 @@ classes of input `hostname` parameter:
 | example..com       | contains an empty domain label                   | Error                  |
 | .example.com       | dot in front                                     | Error                  |
 | ..example.com      | two dots in front                                | Error                  |
+| .127.0.0.1         | dot in front of IPv4 address                     | Error                  |
+| .[::1]             | dot in front of IPv6 address                     | Error                  |
+| ::1                | IPv6 address without brackets                    | Error                  |
 
 #### 6. Sync vs Async
 
